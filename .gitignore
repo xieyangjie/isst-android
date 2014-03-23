@@ -27,3 +27,21 @@ proguard/
 *.ipr
 *.iws
 .idea/
+
+# backup files                                                                                                      
+*.bak
+*.old
+*.*~
+*~
+ 
+# private files
+#private/
+ 
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+
+.classpath
