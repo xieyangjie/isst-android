@@ -3,5 +3,7 @@
     <string name="app_name">ISST</string>
     <string name="dummy_text">Dummy Text</string>
     <string name="dummy_item">Dummy Item</string>
+    <string name="autologin">自动登录</string>
+    <string name="login">登录</string>
 
 </resources>

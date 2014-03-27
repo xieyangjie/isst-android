@@ -3,19 +3,32 @@
  */
 package cn.edu.zju.isst.ui.main;
 
-import cn.edu.zju.isst.R;
-import cn.edu.zju.isst.constant.Nav;
-import cn.edu.zju.isst.dummy.DummyFragment;
-import cn.edu.zju.isst.util.L;
-import static cn.edu.zju.isst.constant.Nav.*;
-
-import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
-
+import static cn.edu.zju.isst.constant.Nav.CIAC;
+import static cn.edu.zju.isst.constant.Nav.CIAL;
+import static cn.edu.zju.isst.constant.Nav.CIMA;
+import static cn.edu.zju.isst.constant.Nav.CONT;
+import static cn.edu.zju.isst.constant.Nav.EXPE;
+import static cn.edu.zju.isst.constant.Nav.INTE;
+import static cn.edu.zju.isst.constant.Nav.JOBS;
+import static cn.edu.zju.isst.constant.Nav.NEWS;
+import static cn.edu.zju.isst.constant.Nav.REFE;
+import static cn.edu.zju.isst.constant.Nav.SCAC;
+import static cn.edu.zju.isst.constant.Nav.SERV;
+import static cn.edu.zju.isst.constant.Nav.STUD;
+import static cn.edu.zju.isst.constant.Nav.USCE;
+import static cn.edu.zju.isst.constant.Nav.WIKI;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import cn.edu.zju.isst.R;
+import cn.edu.zju.isst.constant.Nav;
+import cn.edu.zju.isst.dummy.DummyFragment;
+import cn.edu.zju.isst.net.HttpUtil;
+import cn.edu.zju.isst.util.L;
+
+import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
 
 /**
@@ -38,7 +51,7 @@ public class MainActivity extends ActionBarActivity implements
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.content_frame, new SlidingMenuFragment())
+                    .add(R.id.content_frame, DummyFragment.newInstance(NEWS.getName()))
                     .commit();
         }
 
@@ -77,6 +90,12 @@ public class MainActivity extends ActionBarActivity implements
 				break;
 			case WIKI:
 				switchContent(DummyFragment.newInstance(WIKI.getName()));
+			try {
+				L.i("!?!" + HttpUtil.getRequest("http://yplan.cloudapp.net:8080/isst/api/archives/1"));
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 				break;
 			case SCAC:
 				switchContent(DummyFragment.newInstance(SCAC.getName()));
