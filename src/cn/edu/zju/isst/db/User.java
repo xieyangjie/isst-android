@@ -42,10 +42,10 @@ public class User implements Serializable {
 	private boolean privatePosition;
 
 	public User(JSONObject jsonObject) {
-		upadte(jsonObject);
+		update(jsonObject);
 	}
 
-	public void upadte(JSONObject jsonObject) {
+	public void update(JSONObject jsonObject) {
 		try {
 			id = jsonObject.getInt("id");
 			username = jsonObject.getString("username");

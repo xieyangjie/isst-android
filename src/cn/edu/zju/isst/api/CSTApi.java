@@ -3,6 +3,7 @@ package cn.edu.zju.isst.api;
 import java.util.Map;
 
 import cn.edu.zju.isst.net.AsyncWebServiceRunner;
+import cn.edu.zju.isst.net.BetterAsyncWebServiceRunner;
 import cn.edu.zju.isst.net.RequestListener;
 import cn.edu.zju.isst.util.L;
 
@@ -14,7 +15,8 @@ public class CSTApi {
 	protected static void request(final String methodName, final String subUrl,
 			final Map<String, String> params, RequestListener listener) {
 		String url = PREFIX + subUrl;
-		AsyncWebServiceRunner.request(methodName, url, params, listener);
-		L.i("path:" + url);
+//		AsyncWebServiceRunner.request(methodName, url, params, listener);
+		BetterAsyncWebServiceRunner.getInstance().request(methodName, url, params, listener);
+		L.i("CSTApi Request URL = " + url);
 	}
 }

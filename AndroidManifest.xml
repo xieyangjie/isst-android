@@ -32,6 +32,12 @@
             android:name="cn.edu.zju.isst.ui.main.MainActivity"
             android:label="@string/app_name" >
         </activity>
+        
+        <activity
+            android:name="cn.edu.zju.isst.ui.life.ArchiveDetailActivity"
+            android:label="@string/app_name" >
+        </activity>
+        
     </application>
     
     

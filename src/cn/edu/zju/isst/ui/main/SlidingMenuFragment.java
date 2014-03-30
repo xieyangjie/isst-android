@@ -13,6 +13,7 @@ import cn.edu.zju.isst.constant.Nav;
 import cn.edu.zju.isst.constant.NavGroup;
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +25,7 @@ import android.widget.ListView;
  * @author theasir
  *
  */
-public class SlidingMenuFragment extends BaseFragment {
+public class SlidingMenuFragment extends Fragment {
 
 	private List<String> m_listGroupNames = new ArrayList<String>();
 	private Map<String, List<String>> m_mapGroupCollection = new HashMap<String, List<String>>();

@@ -3,8 +3,6 @@
  */
 package cn.edu.zju.isst;
 
-import org.apache.http.client.CookieStore;
-
 import android.app.Application;
 import cn.edu.zju.isst.util.L;
 
@@ -14,8 +12,6 @@ import cn.edu.zju.isst.util.L;
  */
 public class MainApplication extends Application {
 
-	private static CookieStore cookieStore = null;
-	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -27,13 +23,5 @@ public class MainApplication extends Application {
 		L.setDebuggable(true);
 
 	}
-	
-	public static void setCookieStore(CookieStore cookieStore){
-		MainApplication.cookieStore = cookieStore;
-	}
-	
-	public static CookieStore getCookieStore(){
-		return MainApplication.cookieStore;
-	}
-	
+
 }

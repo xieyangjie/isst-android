@@ -28,25 +28,23 @@ public class AsyncWebServiceRunner {
 				try {
 					JSONObject result;
 					String tempResult;
-					if (methodName == "get") {
-						// HttpUtil.getRequest(url);
+					if (methodName.equalsIgnoreCase("GET")) {
 						L.i("AsyncWebServiceRunner_____get");
-						tempResult = HttpUtil.getRequest(url);
+						tempResult = HttpInvoker.getRequest(url);
+						result = new JSONObject(tempResult);
+					} else if (methodName.equalsIgnoreCase("POST")) {
+						L.i("AsyncWebServiceRunner_____post");
+						tempResult = HttpInvoker.postRequest(url, params);
 						result = new JSONObject(tempResult);
 					} else {
-						L.i("AsyncWebServiceRunner_____post");
-						tempResult = HttpUtil.postRequest(url, params);
-						result = new JSONObject(tempResult);
-						L.i("result = " + result.toString());
-						// result = new JSONObject(HttpUtil.postRequest(url,
-						// params));
+						result = null;
 					}
 					if (result.length() > 0)// ?有问题
 					{
 						listener.onComplete(result);
 
 					} else {
-						listener.onError(new Exception("NotConnected"));
+						listener.onError(new Exception("Not Connected OR Unsupport Method"));
 					}
 				} catch (Exception e) {
 					listener.onError(e);

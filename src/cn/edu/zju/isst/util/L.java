@@ -15,6 +15,10 @@ public class L {
 	public static void setDebuggable(boolean isDebuggable){
 		L.isDebuggable = isDebuggable;
 	}
+	
+	public static boolean isDebuggable(){
+		return isDebuggable;
+	}
 
 	// 下面四个是默认tag的函数
 	public static void v(String msg) {
