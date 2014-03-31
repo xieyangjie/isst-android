@@ -3,35 +3,40 @@
  */
 package cn.edu.zju.isst.ui.life;
 
+import static cn.edu.zju.isst.constant.Constants.STATUS_NOT_LOGIN;
+import static cn.edu.zju.isst.constant.Constants.STATUS_REQUEST_SUCCESS;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import cn.edu.zju.isst.R;
-import cn.edu.zju.isst.api.ArchiveApi;
-import cn.edu.zju.isst.db.Archive;
-import cn.edu.zju.isst.net.RequestListener;
-import cn.edu.zju.isst.ui.main.MainActivity;
-import cn.edu.zju.isst.util.L;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
-import android.text.Html;
-import android.text.method.LinkMovementMethod;
 import android.view.MenuItem;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.TextView;
-import static cn.edu.zju.isst.constant.Constants.*;
+import cn.edu.zju.isst.R;
+import cn.edu.zju.isst.api.ArchiveApi;
+import cn.edu.zju.isst.db.Archive;
+import cn.edu.zju.isst.net.CSTResponse;
+import cn.edu.zju.isst.net.RequestListener;
+import cn.edu.zju.isst.util.L;
 
 /**
+ * 归档详情页
+ * 
  * @author theasir
  * 
+ *         TODO WIP
  */
 public class ArchiveDetailActivity extends ActionBarActivity {
 
+	/**
+	 * 归档id
+	 */
 	private int m_nId;
 
 	private Archive m_archiveCurrent;
@@ -40,8 +45,15 @@ public class ArchiveDetailActivity extends ActionBarActivity {
 	private TextView m_txvTitle;
 	private TextView m_txvDate;
 	private TextView m_txvPublisher;
-	private TextView m_txvContent;
 	private WebView m_webvContent;
+
+	// Activity需要工厂方法吗？
+	// public ArchiveDetailActivity(){
+	// }
+	//
+	// public static ArchiveDetailActivity newInstance(){
+	// return new ArchiveDetailActivity();
+	// }
 
 	/*
 	 * (non-Javadoc)
@@ -72,12 +84,12 @@ public class ArchiveDetailActivity extends ActionBarActivity {
 			@Override
 			public void handleMessage(Message msg) {
 				switch (msg.what) {
-				case REQUEST_SUCCESS:
+				case STATUS_REQUEST_SUCCESS:
 					L.i("Handler Success Archieve id = "
 							+ m_archiveCurrent.getId());
 					showArchiveDetail();
 					break;
-				case NOT_LOGIN:
+				case STATUS_NOT_LOGIN:
 					break;
 				default:
 					break;
@@ -96,11 +108,11 @@ public class ArchiveDetailActivity extends ActionBarActivity {
 					JSONObject jsonObject = (JSONObject) result;
 					final int status = jsonObject.getInt("status");
 					switch (status) {
-					case REQUEST_SUCCESS:
+					case STATUS_REQUEST_SUCCESS:
 						m_archiveCurrent = new Archive(jsonObject
 								.getJSONObject("body"));
 						break;
-					case NOT_LOGIN:
+					case STATUS_NOT_LOGIN:
 						break;
 					default:
 						break;
@@ -116,8 +128,14 @@ public class ArchiveDetailActivity extends ActionBarActivity {
 			}
 
 			@Override
-			public void onError(Exception e) {
-				m_archiveCurrent = new Archive(null);
+			public void onHttpError(CSTResponse response) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void onException(Exception e) {
+				// m_archiveCurrent = new Archive(null);
 				L.i("ArchiveDetailActivity onError : id = " + m_nId + "!");
 				if (L.isDebuggable()) {
 					e.printStackTrace();
@@ -151,27 +169,29 @@ public class ArchiveDetailActivity extends ActionBarActivity {
 		}
 	}
 
+	/**
+	 * 初始化组件
+	 */
 	private void initComponent() {
 		m_txvTitle = (TextView) findViewById(R.id.archive_detail_title_txv);
 		m_txvDate = (TextView) findViewById(R.id.archive_detail_date_txv);
 		m_txvPublisher = (TextView) findViewById(R.id.archive_detail_publisher_txv);
-		m_txvContent = (TextView) findViewById(R.id.archive_detail_content_txv);
 		m_webvContent = (WebView) findViewById(R.id.archive_detail_content_webv);
 		WebSettings settings = m_webvContent.getSettings();
-		settings.setUseWideViewPort(true); 
-        settings.setLoadWithOverviewMode(true);
+		settings.setUseWideViewPort(true);
+		settings.setLoadWithOverviewMode(true);
 	}
 
+	/**
+	 * 绑定数据并显示
+	 */
 	private void showArchiveDetail() {
 		m_txvTitle.setText(m_archiveCurrent.getTitle());
 		m_txvDate.setText(String.valueOf(m_archiveCurrent.getUpdatedAt()));
-		// m_txvPublisher.setText(m_archiveCurrent.getPublisher().getName());
-		m_txvPublisher.setText("TESTER");
-		// m_txvContent.setText(Html.fromHtml(m_archiveCurrent.getContent()));
-		// m_txvContent.setMovementMethod(LinkMovementMethod.getInstance());
+		m_txvPublisher.setText(m_archiveCurrent.getPublisher().getName());
 		m_webvContent.loadDataWithBaseURL(null, m_archiveCurrent.getContent(),
 				"text/html", "utf-8", null);
-		
+
 	}
 
 }

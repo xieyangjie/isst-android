@@ -7,24 +7,37 @@ import static cn.edu.zju.isst.constant.Nav.*;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import cn.edu.zju.isst.R;
 import cn.edu.zju.isst.constant.Nav;
 import cn.edu.zju.isst.dummy.DummyFragment;
 import cn.edu.zju.isst.ui.life.NewsListFragment;
+import cn.edu.zju.isst.util.T;
 
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
 /**
+ * 主页面
+ * 
  * @author theasir
  * 
+ *         TODO WIP
  */
 public class MainActivity extends ActionBarActivity implements
 		SlidingMenuFragment.OnGroupMenuItemClickListener {
 
+	private long m_lExitTime = -1;
+	
+	/**
+	 * 侧拉菜单
+	 */
 	private SlidingMenu m_smMainMenu;
 
+	/**
+	 * 当前显示fragment
+	 */
 	private Fragment m_fragCurrentContent;
 
 	/*
@@ -37,11 +50,12 @@ public class MainActivity extends ActionBarActivity implements
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.content_frame);
 
+		m_fragCurrentContent = null;
+
 		if (savedInstanceState == null) {
-			getSupportFragmentManager()
-					.beginTransaction()
-					.add(R.id.content_frame,
-							DummyFragment.newInstance(NEWS.getName())).commit();
+			m_fragCurrentContent = NewsListFragment.getInstance();
+			getSupportFragmentManager().beginTransaction()
+					.add(R.id.content_frame, m_fragCurrentContent).commit();
 		}
 
 		setUpSlidingMenu();
@@ -75,11 +89,34 @@ public class MainActivity extends ActionBarActivity implements
 		return super.onOptionsItemSelected(item);
 	}
 
+	/* (non-Javadoc)
+	 * @see android.app.Activity#onKeyUp(int, android.view.KeyEvent)
+	 */
+	@Override
+	public boolean onKeyUp(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_BACK
+				&& event.getAction() == KeyEvent.ACTION_UP) {
+			if ((System.currentTimeMillis() - m_lExitTime) > 2000) {
+				T.showShort(MainActivity.this, R.string.back_twice_to_exit);
+				m_smMainMenu.toggle();
+				m_lExitTime = System.currentTimeMillis();
+			} else {
+				//finish();
+				System.exit(0);
+			}
+			return true;
+		}
+		return super.onKeyUp(keyCode, event);
+	}
+
+	/* (non-Javadoc)
+	 * @see cn.edu.zju.isst.ui.main.SlidingMenuFragment.OnGroupMenuItemClickListener#onGroupMenuItemClick(cn.edu.zju.isst.constant.Nav)
+	 */
 	@Override
 	public void onGroupMenuItemClick(Nav item) {
 		switch (item) {
 		case NEWS:
-			switchContent(new NewsListFragment());
+			switchContent(NewsListFragment.getInstance());
 			break;
 		case WIKI:
 			switchContent(DummyFragment.newInstance(WIKI.getName()));
@@ -126,6 +163,9 @@ public class MainActivity extends ActionBarActivity implements
 
 	}
 
+	/**
+	 * 设置侧拉菜单
+	 */
 	private void setUpSlidingMenu() {
 		m_smMainMenu = new SlidingMenu(this);
 		m_smMainMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
@@ -140,11 +180,16 @@ public class MainActivity extends ActionBarActivity implements
 				.commit();
 	}
 
+	/**切换fragment
+	 * @param fragment
+	 */
 	private void switchContent(Fragment fragment) {
-		m_fragCurrentContent = fragment;
+		if (fragment != m_fragCurrentContent) {
+			m_fragCurrentContent = fragment;
 
-		getSupportFragmentManager().beginTransaction()
-				.replace(R.id.content_frame, m_fragCurrentContent).commit();
+			getSupportFragmentManager().beginTransaction()
+					.replace(R.id.content_frame, m_fragCurrentContent).commit();
+		}
 		m_smMainMenu.showContent();
 	}
 

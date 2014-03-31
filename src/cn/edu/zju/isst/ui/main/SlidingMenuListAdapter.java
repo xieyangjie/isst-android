@@ -10,8 +10,11 @@ import android.content.Context;
 import android.widget.SimpleAdapter;
 
 /**
+ * 侧拉菜单ListAdapter类
+ * 
  * @author theasir
- *
+ * 
+ *         TODO WIP
  */
 public class SlidingMenuListAdapter extends SimpleAdapter {
 
@@ -21,7 +24,5 @@ public class SlidingMenuListAdapter extends SimpleAdapter {
 		super(context, data, resource, from, to);
 		// TODO Auto-generated constructor stub
 	}
-	
-	
 
 }

@@ -9,6 +9,8 @@ import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
 
 /**
+ * Crouton管理类
+ * 
  * @author theasir
  * 
  */

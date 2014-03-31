@@ -3,50 +3,80 @@
  */
 package cn.edu.zju.isst.ui.life;
 
+import static cn.edu.zju.isst.constant.Constants.*;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import cn.edu.zju.isst.R;
-import cn.edu.zju.isst.api.ArchiveApi;
-import cn.edu.zju.isst.db.Archive;
-import cn.edu.zju.isst.db.DataManager;
-import cn.edu.zju.isst.net.RequestListener;
-import cn.edu.zju.isst.util.L;
-import android.R.anim;
 import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import static cn.edu.zju.isst.constant.Constants.*;
+import cn.edu.zju.isst.R;
+import cn.edu.zju.isst.api.ArchiveApi;
+import cn.edu.zju.isst.db.Archive;
+import cn.edu.zju.isst.db.DataManager;
+import cn.edu.zju.isst.exception.ExceptionWeeder;
+import cn.edu.zju.isst.exception.HttpErrorWeeder;
+import cn.edu.zju.isst.net.CSTResponse;
+import cn.edu.zju.isst.net.NetworkConnection;
+import cn.edu.zju.isst.net.RequestListener;
+import cn.edu.zju.isst.util.L;
 
 /**
+ * 新闻列表页
+ * 
  * @author theasir
  * 
+ *         TODO WIP
  */
-public class NewsListFragment extends ListFragment {
+public class NewsListFragment extends ListFragment implements OnScrollListener {
 
-	private static final int TYPE_NEW = 100;
-	private static final int TYPE_OLD = 200;
+	private int m_nVisibleLastIndex;
 
-	private List<Archive> m_listAchive;
+	private final List<Archive> m_listAchive = new ArrayList<Archive>();
 	private Handler m_handlerNewsList;
 	private NewsListAdapter m_adapterNewsList;
 
 	private ListView m_lsvNewsList;
+
+	private static NewsListFragment INSTANCE = new NewsListFragment();
+
+	public NewsListFragment() {
+	}
+
+	public static NewsListFragment getInstance() {
+		return INSTANCE;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.support.v4.app.Fragment#onCreate(android.os.Bundle)
+	 */
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		// TODO Auto-generated method stub
+		super.onCreate(savedInstanceState);
+		setHasOptionsMenu(true);
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -73,8 +103,8 @@ public class NewsListFragment extends ListFragment {
 		super.onViewCreated(view, savedInstanceState);
 
 		m_lsvNewsList = (ListView) view.findViewById(android.R.id.list);
-		
-		m_listAchive = new ArrayList<Archive>();
+
+		initNewsList();
 
 		m_handlerNewsList = new Handler() {
 
@@ -86,10 +116,10 @@ public class NewsListFragment extends ListFragment {
 			@Override
 			public void handleMessage(Message msg) {
 				switch (msg.what) {
-				case REQUEST_SUCCESS + TYPE_NEW:
+				case STATUS_REQUEST_SUCCESS:
 					m_adapterNewsList.notifyDataSetChanged();
 					break;
-				case NOT_LOGIN:
+				case STATUS_NOT_LOGIN:
 					break;
 				default:
 					break;
@@ -100,31 +130,11 @@ public class NewsListFragment extends ListFragment {
 
 		m_adapterNewsList = new NewsListAdapter(getActivity());
 
-		// new AsyncTask<Void, Void, Void>() {
-		//
-		// @Override
-		// protected Void doInBackground(Void... params) {
-		// requestData(TYPE_NEW, null, null, null);
-		// return null;
-		// }
-		//
-		// /*
-		// * (non-Javadoc)
-		// *
-		// * @see android.os.AsyncTask#onPostExecute(java.lang.Object)
-		// */
-		// @Override
-		// protected void onPostExecute(Void result) {
-		// m_adapterNewsList.notifyDataSetChanged();
-		// }
-		//
-		// }.execute();
-
-		L.i("!!!!!!!!!!");
-		
-		requestData(TYPE_NEW, null, null, null);
-
 		setListAdapter(m_adapterNewsList);
+
+		if (m_listAchive.size() == 0) {
+			requestData(LoadType.REFRESH);
+		}
 	}
 
 	/*
@@ -136,52 +146,181 @@ public class NewsListFragment extends ListFragment {
 	public void onActivityCreated(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onActivityCreated(savedInstanceState);
+		// requestData(LoadType.REFRESH);
+
 	}
 
-	/* (non-Javadoc)
-	 * @see android.support.v4.app.ListFragment#onListItemClick(android.widget.ListView, android.view.View, int, long)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * android.support.v4.app.Fragment#onCreateOptionsMenu(android.view.Menu,
+	 * android.view.MenuInflater)
+	 */
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		// TODO Auto-generated method stub
+		super.onCreateOptionsMenu(menu, inflater);
+		inflater.inflate(R.menu.news_list_fragment_ab_menu, menu);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * android.support.v4.app.Fragment#onOptionsItemSelected(android.view.MenuItem
+	 * )
+	 */
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.action_refresh:
+			requestData(LoadType.REFRESH);
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * android.support.v4.app.ListFragment#onListItemClick(android.widget.ListView
+	 * , android.view.View, int, long)
 	 */
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
+		L.i(this.getClass().getName() + " onListItemClick postion = ");
 		Intent intent = new Intent(getActivity(), ArchiveDetailActivity.class);
 		intent.putExtra("id", m_listAchive.get(position).getId());
 		getActivity().startActivity(intent);
 	}
 
-	private void refreshList(JSONObject jsonObject) {
-		// m_listAchive = new ArrayList<Archive>();
+	@Override
+	public void onScrollStateChanged(AbsListView view, int scrollState) {
+		L.i(this.getClass().getName()
+				+ " onScrollStateChanged VisibleLastIndex = "
+				+ m_nVisibleLastIndex);
+		if (scrollState == SCROLL_STATE_IDLE
+				&& m_nVisibleLastIndex == m_adapterNewsList.getCount() - 1) {
+			requestData(LoadType.LOADMORE);
+		}
+	}
+
+	@Override
+	public void onScroll(AbsListView view, int firstVisibleItem,
+			int visibleItemCount, int totalItemCount) {
+		m_nVisibleLastIndex = firstVisibleItem + visibleItemCount - 1;
+	}
+
+	/**
+	 * 初始化新闻列表，若有缓存则读取缓存
+	 */
+	private void initNewsList() {
+		List<Archive> dbNewsList = DataManager
+				.getCurrentNewsList(getActivity());
+		if (dbNewsList != null && !dbNewsList.equals(null)) {
+			for (Archive news : dbNewsList) {
+				m_listAchive.add(news);
+			}
+		}
+	}
+
+	/**
+	 * 刷新列表
+	 * 
+	 * @param jsonObject
+	 *            数据源
+	 */
+	private void refresh(JSONObject jsonObject) {
+		if (!m_listAchive.isEmpty()) {
+			m_listAchive.clear();
+		}
 		try {
 			JSONArray jsonArray = jsonObject.getJSONArray("body");
 			for (int i = 0; i < jsonArray.length(); i++) {
 				m_listAchive.add(new Archive((JSONObject) jsonArray.get(i)));
-				L.i("Add archive to list!");
 			}
+			L.i(this.getClass().getName() + " refreshList: "
+					+ "Added archives to newsList!");
+			DataManager.syncNewsList(m_listAchive, getActivity());
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
+			L.i(this.getClass().getName() + " refreshList!");
 			e.printStackTrace();
 		}
-		// DataManager.syncNewsList(m_listAchive, getActivity());
 	}
 
-	private void requestData(int type, Integer page, Integer pageSize,
-			String keywords) {
-		switch (type) {
-		case TYPE_NEW:
-			ArchiveApi.getNewsList(page, pageSize, keywords,
-					new NewsListRequestListener(type));
-			break;
-		case TYPE_OLD:
-			break;
-		default:
-			break;
+	/**
+	 * 加载更多
+	 * 
+	 * @param jsonObject
+	 *            数据源
+	 */
+	private void loadMore(JSONObject jsonObject) {
+		JSONArray jsonArray;
+		try {
+			jsonArray = jsonObject.getJSONArray("body");
+			for (int i = 0; i < jsonArray.length(); i++) {
+				m_listAchive.add(new Archive((JSONObject) jsonArray.get(i)));
+			}
+			L.i(this.getClass().getName() + " loadMore: "
+					+ "Added archives to newsList!");
+		} catch (JSONException e) {
+			L.i(this.getClass().getName() + " loadMore!");
+			e.printStackTrace();
 		}
 	}
 
+	/**
+	 * 请求数据
+	 * 
+	 * @param type
+	 *            加载方式
+	 */
+	private void requestData(LoadType type) {
+		if (NetworkConnection.isNetworkConnected(getActivity())) {
+			switch (type) {// TODO 刷新策略
+			case REFRESH:
+				// 设置刷新策略，一次性加载最新若干条
+				ArchiveApi.getNewsList(null, 10, null,
+						new NewsListRequestListener(type));
+				break;
+			case LOADMORE:
+				ArchiveApi.getNewsList(null, 5, null,
+						new NewsListRequestListener(type));
+				break;
+			default:
+				break;
+			}
+		} else {
+			Message msg = m_handlerNewsList.obtainMessage();
+			msg.what = NETWORK_NOT_CONNECTED;
+			m_handlerNewsList.sendMessage(msg);
+		}
+	}
+
+	/**
+	 * 加载方式枚举类
+	 * 
+	 * @author theasir
+	 * 
+	 */
+	private enum LoadType {
+		REFRESH, LOADMORE;
+	}
+
+	/**
+	 * 新闻列表RequestListener类
+	 * 
+	 * @author theasir
+	 * 
+	 */
 	private class NewsListRequestListener implements RequestListener {
 
-		private int type;
+		private LoadType type;
 
-		public NewsListRequestListener(int type) {
+		public NewsListRequestListener(LoadType type) {
 			this.type = type;
 		}
 
@@ -189,10 +328,19 @@ public class NewsListFragment extends ListFragment {
 		public void onComplete(Object result) {
 			Message msg = m_handlerNewsList.obtainMessage();
 			try {
-				msg.what = ((JSONObject) result).getInt("status") + type;
-				refreshList((JSONObject) result);
+				msg.what = ((JSONObject) result).getInt("status");
+				switch (type) {
+				case REFRESH:
+					refresh((JSONObject) result);
+					break;
+				case LOADMORE:
+					loadMore((JSONObject) result);
+					break;
+				default:
+					break;
+				}
 			} catch (JSONException e) {
-				// TODO Auto-generated catch block
+				L.i(this.getClass().getName() + " onComplete!");
 				e.printStackTrace();
 			}
 
@@ -200,20 +348,43 @@ public class NewsListFragment extends ListFragment {
 		}
 
 		@Override
-		public void onError(Exception e) {
-			// TODO Auto-generated method stub
+		public void onHttpError(CSTResponse response) {
+			L.i(this.getClass().getName() + " onHttpError!");
+			Message msg = m_handlerNewsList.obtainMessage();
+			HttpErrorWeeder.fckHttpError(response, msg);
+			m_handlerNewsList.sendMessage(msg);
+		}
 
+		@Override
+		public void onException(Exception e) {
+			L.i(this.getClass().getName() + " onException!");
+			Message msg = m_handlerNewsList.obtainMessage();
+			ExceptionWeeder.fckException(e, msg);
+			m_handlerNewsList.sendMessage(msg);
 		}
 
 	}
 
+	/**
+	 * View容器类
+	 * 
+	 * @author theasir
+	 * 
+	 */
 	private final class ViewHolder {
 		public TextView titleTxv;
 		public TextView dateTxv;
 		public TextView publisherTxv;
 		public TextView descriptionTxv;
+		public View indicatorView;
 	}
 
+	/**
+	 * 新闻列表自定义适配器类
+	 * 
+	 * @author theasir
+	 * 
+	 */
 	private class NewsListAdapter extends BaseAdapter {
 
 		private LayoutInflater inflater;
@@ -224,7 +395,6 @@ public class NewsListFragment extends ListFragment {
 
 		@Override
 		public int getCount() {
-			// TODO Auto-generated method stub
 			return m_listAchive.size();
 		}
 
@@ -255,6 +425,8 @@ public class NewsListFragment extends ListFragment {
 						.findViewById(R.id.publisher_txv);
 				holder.descriptionTxv = (TextView) convertView
 						.findViewById(R.id.description_txv);
+				holder.indicatorView = (View) convertView
+						.findViewById(R.id.indicator_view);
 
 				convertView.setTag(holder);
 			} else {
@@ -264,11 +436,11 @@ public class NewsListFragment extends ListFragment {
 			holder.titleTxv.setText(m_listAchive.get(position).getTitle());
 			holder.dateTxv.setText(String.valueOf(m_listAchive.get(position)
 					.getUpdatedAt()));
-//			holder.publisherTxv.setText(m_listAchive.get(position)
-//					.getPublisher().getName());
-			holder.publisherTxv.setText("TEST");
+			holder.publisherTxv.setText(m_listAchive.get(position)
+					.getPublisher().getName());
 			holder.descriptionTxv.setText(m_listAchive.get(position)
 					.getDescription());
+			// holder.indicatorView.setBackgroundColor(Color.BLUE);
 
 			return convertView;
 		}

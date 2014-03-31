@@ -4,8 +4,10 @@
 package cn.edu.zju.isst.constant;
 
 /**
- * @author theasir
  * 导航组常量类
+ * 
+ * @author theasir
+ * 
  */
 public enum NavGroup {
 
@@ -13,9 +15,15 @@ public enum NavGroup {
 	WORK("职场信息", 1),
 	CITY("同城", 2);
 	
+	/**
+	 * 导航组名称
+	 */
 	private String name;
+	/**
+	 * index
+	 */
 	private int index;
-	NavGroup(String name, int index){
+	private NavGroup(String name, int index){
 		this.name = name;
 		this.index = index;
 	}

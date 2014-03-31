@@ -7,9 +7,11 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @author theasir
+ * 响应类
  * 
- *         Represents the result of a Http request.
+ * @see https://code.google.com/p/aerc/
+ * 
+ *      Represents the result of a Http request.
  */
 public class CSTResponse {
 

@@ -3,48 +3,94 @@
  */
 package cn.edu.zju.isst.net;
 
+import static cn.edu.zju.isst.constant.Constants.HTTP_CONNECT_TIMEOUT;
+
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static cn.edu.zju.isst.constant.Constants.*;
-
 import cn.edu.zju.isst.util.L;
 
 /**
- * @author theasir
+ * HTTP请求类
+ * 
+ * @see https://code.google.com/p/aerc/
  * 
  */
 public class BetterHttpInvoker {
 
+	/**
+	 * 单个实例
+	 */
 	private static BetterHttpInvoker INSTANCE = new BetterHttpInvoker();
 
+	/**
+	 * 私有构造器，防止初始化新的实例
+	 */
 	private BetterHttpInvoker() {
 	}
 
+	/**
+	 * 单例模式
+	 * 
+	 * @return 单个实例
+	 */
 	public static BetterHttpInvoker getInstance() {
 		return INSTANCE;
 	}
 
-	public CSTResponse get(URL uri, Map<String, List<String>> headers) {
+	/**
+	 * GET请求
+	 * 
+	 * @param uri
+	 *            URL
+	 * @param headers
+	 *            Http Headers
+	 * @return CSTResponse
+	 * @throws IOException
+	 *             未处理异常
+	 */
+	public CSTResponse get(URL uri, Map<String, List<String>> headers)
+			throws IOException {
 		GET get = new GET(uri, headers);
 		return getOrPost(get);
 	}
 
+	/**
+	 * POST请求
+	 * 
+	 * @param uri
+	 *            URL
+	 * @param headers
+	 *            Http Headers
+	 * @param body
+	 *            参数
+	 * @return CSTResponse
+	 * @throws IOException
+	 *             未处理异常
+	 */
 	public CSTResponse post(URL uri, Map<String, List<String>> headers,
-			byte[] body) {
+			byte[] body) throws IOException {
 		POST post = new POST(uri, headers, body);
 		return getOrPost(post);
 	}
 
-	private CSTResponse getOrPost(Request request) {
+	/**
+	 * 发送请求
+	 * 
+	 * @param request
+	 *            请求
+	 * @return CSTResponse
+	 * @throws IOException
+	 *             未处理异常
+	 */
+	private CSTResponse getOrPost(Request request) throws IOException {
 		HttpURLConnection conn = null;
 		CSTResponse response = null;
 		System.setProperty("http.keepAlive", "false");
@@ -65,24 +111,23 @@ public class BetterHttpInvoker {
 				byte[] payload = ((POST) request).getBody();
 				conn.setDoOutput(true);
 				conn.setFixedLengthStreamingMode(payload.length);
-//				conn.setDoInput(true);
-//				conn.setRequestMethod("POST");
-//				conn.setUseCaches(false);
-//				conn.setInstanceFollowRedirects(true);
-//				conn.setRequestProperty("Content-Type",
-//						"application/x-www-form-urlencoded");
-				conn.setConnectTimeout(CONNECT_TIMEOUT);
+				// conn.setDoInput(true);
+				// conn.setRequestMethod("POST");
+				// conn.setUseCaches(false);
+				// conn.setInstanceFollowRedirects(true);
+				// conn.setRequestProperty("Content-Type",
+				// "application/x-www-form-urlencoded");
+				conn.setConnectTimeout(HTTP_CONNECT_TIMEOUT);
 				conn.setReadTimeout(10000);
 
 				L.i("BetterHttpInvoker Before POST getOutputStream()");
 
 				conn.getOutputStream().write(payload);
-				final int status = conn.getResponseCode();
 
 				L.i("BetterHttpInvoker After POST getResponseCode() = "
-						+ status);
-				if (status != HttpURLConnection.HTTP_OK) {
-					response = new CSTResponse(status,
+						+ conn.getResponseCode());
+				if (conn.getResponseCode() != HttpURLConnection.HTTP_OK) {
+					response = new CSTResponse(conn.getResponseCode(),
 							new ConcurrentHashMap<String, List<String>>(), conn
 									.getResponseMessage().getBytes());
 				}
@@ -98,11 +143,6 @@ public class BetterHttpInvoker {
 				response = new CSTResponse(conn.getResponseCode(),
 						conn.getHeaderFields(), body);
 			}
-
-		} catch (IOException e) {
-			if (L.isDebuggable()) {
-				e.printStackTrace();
-			}
 		} finally {
 			if (conn != null) {
 				conn.disconnect();
@@ -111,6 +151,15 @@ public class BetterHttpInvoker {
 		return response;
 	}
 
+	/**
+	 * 读取输入流
+	 * 
+	 * @param in
+	 *            输入流
+	 * @return 字节流
+	 * @throws IOException
+	 *             未处理异常
+	 */
 	private static byte[] readStream(InputStream in) throws IOException {
 		byte[] buf = new byte[1024];
 		int count = 0;
@@ -121,6 +170,12 @@ public class BetterHttpInvoker {
 		return out.toByteArray();
 	}
 
+	/**
+	 * 请求类
+	 * 
+	 * @author theasir
+	 * 
+	 */
 	private class Request {
 		private URL uri;
 		private Map<String, List<String>> headers;
@@ -146,6 +201,12 @@ public class BetterHttpInvoker {
 
 	}
 
+	/**
+	 * POST请求类
+	 * 
+	 * @author theasir
+	 * 
+	 */
 	private class POST extends Request {
 		private byte[] body;
 
@@ -163,6 +224,12 @@ public class BetterHttpInvoker {
 
 	}
 
+	/**
+	 * GET请求类
+	 * 
+	 * @author theasir
+	 * 
+	 */
 	private class GET extends Request {
 		public GET(URL uri, Map<String, List<String>> headers) {
 			super(uri, headers);

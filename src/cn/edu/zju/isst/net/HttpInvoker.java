@@ -3,9 +3,10 @@
  */
 package cn.edu.zju.isst.net;
 
+import static cn.edu.zju.isst.constant.Constants.HTTP_CONNECT_TIMEOUT;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -15,15 +16,13 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 
+import android.webkit.CookieManager;
 import cn.edu.zju.isst.util.L;
 
-import android.os.Build;
-import android.webkit.CookieManager;
-
-import static cn.edu.zju.isst.constant.Constants.*;
-
 /**
- * @author theasir
+ * 前辈遗留，感谢
+ * 
+ * @deprecated
  * 
  */
 public class HttpInvoker {
@@ -57,7 +56,7 @@ public class HttpInvoker {
 						conn.setRequestMethod("POST");
 						conn.setUseCaches(false);
 						conn.setInstanceFollowRedirects(true);
-//						conn.setConnectTimeout(CONNECT_TIMEOUT);
+						// conn.setConnectTimeout(CONNECT_TIMEOUT);
 						conn.setRequestProperty("Content-Type",
 								"application/x-www-form-urlencoded");
 						// Gzip compression can be disabled by setting the
@@ -75,12 +74,6 @@ public class HttpInvoker {
 
 						L.i("HttpInvoker POST cookie: " + cookie);
 						L.i("HttpInvoker Before POST getOutputStream!");
-
-						// 下面的这段代码运行会出现这样的问题：登录时第一次调用HttpInvoker请求的话conn.getOutputStream()会抛出EOF异常，第二次请求通常是正常的。原因有待考证。
-						// conn.connect();
-						// OutputStream os = conn.getOutputStream();
-						// os.write(entity);
-						// os.close();
 
 						conn.getOutputStream().write(entity);
 
@@ -135,7 +128,7 @@ public class HttpInvoker {
 						conn.setRequestMethod("GET");
 						// conn.setUseCaches(false);
 						conn.setInstanceFollowRedirects(true);
-						conn.setConnectTimeout(CONNECT_TIMEOUT);
+						conn.setConnectTimeout(HTTP_CONNECT_TIMEOUT);
 						conn.setRequestProperty("Content-Type",
 								"application/x-www-form-urlencoded");
 

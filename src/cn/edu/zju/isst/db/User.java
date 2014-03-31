@@ -8,7 +8,11 @@ import java.io.Serializable;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import cn.edu.zju.isst.util.Judgement;
+
 /**
+ * 用户解析类
+ * 
  * @author theasir
  * 
  */
@@ -19,6 +23,9 @@ public class User implements Serializable {
 	 */
 	private static final long serialVersionUID = -1512168798814691417L;
 
+	/**
+	 * 以下字段详见服务器接口文档
+	 */
 	private int id;
 	private String username;
 	private String password;
@@ -26,7 +33,7 @@ public class User implements Serializable {
 	private int gender;
 	private int grade;
 	private int classId;
-	private int majotId;
+	private int majorId;
 	private int cityId;
 	private String email;
 	private String phone;
@@ -41,36 +48,112 @@ public class User implements Serializable {
 	private boolean privateCompany;
 	private boolean privatePosition;
 
-	public User(JSONObject jsonObject) {
+	/**
+	 * 默认值初始化并更新
+	 * 
+	 * @param jsonObject
+	 *            数据源
+	 * @throws JSONException
+	 *             未处理异常
+	 */
+	public User(JSONObject jsonObject) throws JSONException {
+		id = -1;
+		username = "";
+		password = "";
+		name = "";
+		gender = -1;
+		grade = -1;
+		classId = -1;
+		majorId = -1;
+		cityId = -1;
+		email = "";
+		phone = "";
+		qq = "";
+		company = "";
+		position = "";
+		signature = "";
+		cityPrincipal = false;
+		privateQQ = false;
+		privateEmail = false;
+		privatePhone = false;
+		privateCompany = false;
+		privatePosition = false;
 		update(jsonObject);
 	}
 
-	public void update(JSONObject jsonObject) {
-		try {
-			id = jsonObject.getInt("id");
-			username = jsonObject.getString("username");
-			password = jsonObject.getString("password");
-			name = jsonObject.getString("name");
-			gender = jsonObject.getInt("gender");
-			grade = jsonObject.getInt("grade");
-			classId = jsonObject.getInt("classId");
-			majotId = jsonObject.getInt("majorId");
-			cityId = jsonObject.getInt("cityId");
-			email = jsonObject.getString("email");
-			phone = jsonObject.getString("phone");
-			qq = jsonObject.getString("qq");
-			company = jsonObject.getString("company");
-			position = jsonObject.getString("position");
-			signature = jsonObject.getString("signature");
-			cityPrincipal = jsonObject.getBoolean("cityPrincipal");
-			privateQQ = jsonObject.getBoolean("privateQQ");
-			privateEmail = jsonObject.getBoolean("privateEmail");
-			privatePhone = jsonObject.getBoolean("privatePhone");
-			privateCompany = jsonObject.getBoolean("privateCompany");
-			privatePosition = jsonObject.getBoolean("privatePosition");
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+	/**
+	 * 更新数据，强制判断设计
+	 * 
+	 * @param jsonObject
+	 *            数据源
+	 * @throws JSONException
+	 *             未处理异常
+	 */
+	public void update(JSONObject jsonObject) throws JSONException {
+		if (!Judgement.isNullOrEmpty(jsonObject)) {
+			if (jsonObject.has("id")) {
+				id = jsonObject.getInt("id");
+			}
+			if (jsonObject.has("username")) {
+				username = jsonObject.getString("username");
+			}
+			if (jsonObject.has("password")) {
+				password = jsonObject.getString("password");
+			}
+			if (jsonObject.has("name")) {
+				name = jsonObject.getString("name");
+			}
+			if (jsonObject.has("gender")) {
+				gender = jsonObject.getInt("gender");
+			}
+			if (jsonObject.has("grade")) {
+				grade = jsonObject.getInt("grade");
+			}
+			if (jsonObject.has("classId")) {
+				classId = jsonObject.getInt("classId");
+			}
+			if (jsonObject.has("majorId")) {
+				majorId = jsonObject.getInt("majorId");
+			}
+			if (jsonObject.has("cityId")) {
+				cityId = jsonObject.getInt("cityId");
+			}
+			if (jsonObject.has("email")) {
+				email = jsonObject.getString("email");
+			}
+			if (jsonObject.has("phone")) {
+				phone = jsonObject.getString("phone");
+			}
+			if (jsonObject.has("qq")) {
+				qq = jsonObject.getString("qq");
+			}
+			if (jsonObject.has("company")) {
+				company = jsonObject.getString("company");
+			}
+			if (jsonObject.has("position")) {
+				position = jsonObject.getString("position");
+			}
+			if (jsonObject.has("signature")) {
+				signature = jsonObject.getString("signature");
+			}
+			if (jsonObject.has("cityPrincipal")) {
+				cityPrincipal = jsonObject.getBoolean("cityPrincipal");
+			}
+			if (jsonObject.has("privateQQ")) {
+				privateQQ = jsonObject.getBoolean("privateQQ");
+			}
+			if (jsonObject.has("privateEmail")) {
+				privateEmail = jsonObject.getBoolean("privateEmail");
+			}
+			if (jsonObject.has("privatePhone")) {
+				privatePhone = jsonObject.getBoolean("privatePhone");
+			}
+			if (jsonObject.has("privateCompany")) {
+				privateCompany = jsonObject.getBoolean("privateCompany");
+			}
+			if (jsonObject.has("privatePosition")) {
+				privatePosition = jsonObject.getBoolean("privatePosition");
+			}
 		}
 	}
 
@@ -127,7 +210,7 @@ public class User implements Serializable {
 	 * @return the majotId
 	 */
 	public int getMajotId() {
-		return majotId;
+		return majorId;
 	}
 
 	/**

@@ -22,8 +22,10 @@ import android.widget.ExpandableListView;
 import android.widget.ListView;
 
 /**
+ * 侧拉菜单Fragment类
+ * 
  * @author theasir
- *
+ * 
  */
 public class SlidingMenuFragment extends Fragment {
 
@@ -32,37 +34,41 @@ public class SlidingMenuFragment extends Fragment {
 	private String[] m_strFrom;
 	private int[] m_nTo;
 	private List<Map<String, Object>> m_listDataOfListItem = new ArrayList<Map<String, Object>>();
-	
+
 	private OnGroupMenuItemClickListener m_listenerOnMenuItemClick;
-	
+
 	private ExpandableListView m_explsvMenu;
 	private ListView m_lsvMenu;
-	
+
 	private static SlidingMenuFragment INSTANCE = new SlidingMenuFragment();
-	
-	public SlidingMenuFragment(){
+
+	public SlidingMenuFragment() {
 		initConstants();
 	}
-	
-	public static SlidingMenuFragment getInstance(){
+
+	public static SlidingMenuFragment getInstance() {
 		return INSTANCE;
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see android.support.v4.app.Fragment#onAttach(android.app.Activity)
 	 */
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
-		try{
+		try {
 			m_listenerOnMenuItemClick = (OnGroupMenuItemClickListener) activity;
-		}catch (ClassCastException e) {
+		} catch (ClassCastException e) {
 			throw new ClassCastException(activity.toString()
-                    + " must implement OnMenuItemClickListener");
+					+ " must implement OnMenuItemClickListener");
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see android.support.v4.app.Fragment#onCreate(android.os.Bundle)
 	 */
 	@Override
@@ -71,21 +77,28 @@ public class SlidingMenuFragment extends Fragment {
 		super.onCreate(savedInstanceState);
 	}
 
-	/* (non-Javadoc)
-	 * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater, android.view.ViewGroup, android.os.Bundle)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
+	 * android.view.ViewGroup, android.os.Bundle)
 	 */
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.sm_main, null);
+		View rootView = inflater.inflate(R.layout.sm_main, null);
 
-        m_explsvMenu = (ExpandableListView)rootView.findViewById(R.id.main_group);
-        m_lsvMenu = (ListView)rootView.findViewById(R.id.main_list);
+		m_explsvMenu = (ExpandableListView) rootView
+				.findViewById(R.id.main_group);
+		m_lsvMenu = (ListView) rootView.findViewById(R.id.main_list);
 
-        return rootView;
+		return rootView;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see android.support.v4.app.Fragment#onActivityCreated(android.os.Bundle)
 	 */
 	@Override
@@ -122,12 +135,14 @@ public class SlidingMenuFragment extends Fragment {
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
 				// TODO Auto-generated method stub
-				
+
 			}
 		});
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see android.support.v4.app.Fragment#onDetach()
 	 */
 	@Override
@@ -136,41 +151,52 @@ public class SlidingMenuFragment extends Fragment {
 		m_listenerOnMenuItemClick = null;
 	}
 
-	public interface OnGroupMenuItemClickListener{
-		// TODO comment
+	/**
+	 * This interface must be implemented by activities that contain this
+	 * fragment to allow an interaction in this fragment to be communicated to
+	 * the activity and potentially other fragments contained in that activity.
+	 * <p>
+	 * See the Android Training lesson <a href=
+	 * "http://developer.android.com/training/basics/fragments/communicating.html"
+	 * >Communicating with Other Fragments</a> for more information.
+	 */
+	public interface OnGroupMenuItemClickListener {
 		public void onGroupMenuItemClick(Nav item);
 	}
-	
-	private void initConstants(){
-		for (NavGroup group : NavGroup.values()){
+
+	/**
+	 * 初始化导航常量
+	 */
+	private void initConstants() {
+		for (NavGroup group : NavGroup.values()) {
 			m_listGroupNames.add(group.getName());
 		}
-		
-		for (int i = 0; i < m_listGroupNames.size(); i++){
+
+		for (int i = 0; i < m_listGroupNames.size(); i++) {
 			List<String> tempList = new ArrayList<String>();
-			for (Nav nav : Nav.values()){
-				if (nav.getIndex() == i){
+			for (Nav nav : Nav.values()) {
+				if (nav.getIndex() == i) {
 					tempList.add(nav.getName());
 				}
 			}
 			m_mapGroupCollection.put(m_listGroupNames.get(i), tempList);
 		}
-		
-		m_strFrom = new String[]{"menu_name"};
-		m_nTo = new int[]{R.id.list_nav};
+
+		m_strFrom = new String[] { "menu_name" };
+		m_nTo = new int[] { R.id.list_nav };
 		List<String> listMenu = new ArrayList<String>();
-		
-		for(Nav nav : Nav.values()){
-			if(nav.getIndex() >= m_listGroupNames.size()){
+
+		for (Nav nav : Nav.values()) {
+			if (nav.getIndex() >= m_listGroupNames.size()) {
 				listMenu.add(nav.getName());
 			}
 		}
-		
-		for(int i = 0; i < listMenu.size(); i++){
+
+		for (int i = 0; i < listMenu.size(); i++) {
 			Map<String, Object> tempMap = new HashMap<String, Object>();
 			tempMap.put(m_strFrom[0], listMenu.get(i));
 			m_listDataOfListItem.add(tempMap);
 		}
-		
+
 	}
 }

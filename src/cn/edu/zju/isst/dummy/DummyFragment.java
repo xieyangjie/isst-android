@@ -14,29 +14,33 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 /**
+ * 测试用fragment
+ * 
  * @author theasir
- *
+ * 
  */
 public class DummyFragment extends Fragment {
 
 	private static final String ARG_PARAM = "param";
-	
+
 	private String m_strText;
-	
+
 	private TextView m_txvDummy;
-	
-	public static DummyFragment newInstance(String text){
+
+	public static DummyFragment newInstance(String text) {
 		Fragment instance = new DummyFragment();
 		Bundle args = new Bundle();
 		args.putString(ARG_PARAM, text);
 		instance.setArguments(args);
 		return (DummyFragment) instance;
 	}
-	
-	public DummyFragment(){
+
+	public DummyFragment() {
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see android.support.v4.app.Fragment#onActivityCreated(android.os.Bundle)
 	 */
 	@Override
@@ -45,7 +49,9 @@ public class DummyFragment extends Fragment {
 		super.onActivityCreated(savedInstanceState);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see android.support.v4.app.Fragment#onAttach(android.app.Activity)
 	 */
 	@Override
@@ -54,7 +60,9 @@ public class DummyFragment extends Fragment {
 		super.onAttach(activity);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see android.support.v4.app.Fragment#onCreate(android.os.Bundle)
 	 */
 	@Override
@@ -66,19 +74,25 @@ public class DummyFragment extends Fragment {
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater, android.view.ViewGroup, android.os.Bundle)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
+	 * android.view.ViewGroup, android.os.Bundle)
 	 */
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.dummy_fragment, null);
-		m_txvDummy = (TextView)rootView.findViewById(R.id.textView1);
+		m_txvDummy = (TextView) rootView.findViewById(R.id.textView1);
 		m_txvDummy.setText(m_strText);
 		return rootView;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see android.support.v4.app.Fragment#onDetach()
 	 */
 	@Override
@@ -87,8 +101,12 @@ public class DummyFragment extends Fragment {
 		super.onDetach();
 	}
 
-	/* (non-Javadoc)
-	 * @see android.support.v4.app.Fragment#onOptionsItemSelected(android.view.MenuItem)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * android.support.v4.app.Fragment#onOptionsItemSelected(android.view.MenuItem
+	 * )
 	 */
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
@@ -96,7 +114,9 @@ public class DummyFragment extends Fragment {
 		return super.onOptionsItemSelected(item);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see android.support.v4.app.Fragment#onPause()
 	 */
 	@Override
@@ -105,7 +125,9 @@ public class DummyFragment extends Fragment {
 		super.onPause();
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see android.support.v4.app.Fragment#onResume()
 	 */
 	@Override
@@ -114,8 +136,11 @@ public class DummyFragment extends Fragment {
 		super.onResume();
 	}
 
-	/* (non-Javadoc)
-	 * @see android.support.v4.app.Fragment#onViewCreated(android.view.View, android.os.Bundle)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.support.v4.app.Fragment#onViewCreated(android.view.View,
+	 * android.os.Bundle)
 	 */
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {

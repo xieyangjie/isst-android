@@ -3,8 +3,6 @@
  */
 package cn.edu.zju.isst.net;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -17,20 +15,29 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.json.JSONObject;
 
 import android.webkit.CookieManager;
-
+import cn.edu.zju.isst.util.Judgement;
 import cn.edu.zju.isst.util.L;
 
-/**
+/**异步请求类
  * @author theasir
  * 
  */
 public class BetterAsyncWebServiceRunner {
 
+	/**
+	 * 单个实例
+	 */
 	private static BetterAsyncWebServiceRunner INSTANCE = new BetterAsyncWebServiceRunner();
 
+	/**
+	 * 私有构造器，防止初始化新的实例
+	 */
 	private BetterAsyncWebServiceRunner() {
 	}
 
+	/**单例模式
+	 * @return 单个实例
+	 */
 	public static BetterAsyncWebServiceRunner getInstance() {
 		return INSTANCE;
 	}
@@ -54,43 +61,50 @@ public class BetterAsyncWebServiceRunner {
 			public void run() {
 				try {
 					JSONObject result = null;
-					String resultString;
+					String resultString = null;
 					CSTResponse response = null;
 					if (methodName.equalsIgnoreCase("GET")) {
-						L.i("AsyncWebServiceRunner_____get");
+						L.i("BetterAsyncWebServiceRunner_____get");
 						response = BetterHttpInvoker.getInstance().get(
 								new URL(url), getHeaders(url));
 					} else if (methodName.equalsIgnoreCase("POST")) {
-						L.i("AsyncWebServiceRunner_____post");
+						L.i("BetterAsyncWebServiceRunner_____post");
 						response = BetterHttpInvoker.getInstance().post(
 								new URL(url), getHeaders(url),
 								paramsToBytes(params));
 					} else {
-						// result = null;
+						L.i("BetterAsyncWebServiceRunner Unsupported Method: "
+								+ (Judgement.isNullOrEmpty(methodName) ? "null" : methodName));
 					}
 
-					if (response.getStatus() == HttpURLConnection.HTTP_OK) {
+					if (response != null
+							&& response.getStatus() == HttpURLConnection.HTTP_OK) {
 						refreshCookies(url, response.getHeaders());
 						resultString = readByte(response.getBody());
-						result = new JSONObject(resultString);
+						if (resultString != null) {
+							result = new JSONObject(resultString);
+						}
 					}
 
-					if (result != null)// ?有问题
+					if (result != null && response != null)
 					{
+						L.i(resultString);
 						listener.onComplete(result);
-
-					} else {
-						listener.onError(new Exception(
-								"Not Connected OR Unsupport Method"));
+					} else if (response != null) {
+						listener.onHttpError(response);
 					}
 				} catch (Exception e) {
-					listener.onError(e);
+					listener.onException(e);
 				}
 
 			}
 		}.start();
 	}
 
+	/**获取Http Headers，此处的主要目的是获取cookie
+	 * @param url URL
+	 * @return Http Headers
+	 */
 	private Map<String, List<String>> getHeaders(String url) {
 		Map<String, List<String>> headers = new ConcurrentHashMap<String, List<String>>();
 		List<String> cookieList = new ArrayList<String>();
@@ -107,6 +121,10 @@ public class BetterAsyncWebServiceRunner {
 
 	}
 
+	/**刷新cookie
+	 * @param url URL
+	 * @param headers Http Headers
+	 */
 	private void refreshCookies(String url, Map<String, List<String>> headers) {
 		List<String> cookieList = headers.get("Set-Cookie");
 		if (cookieList != null) {
@@ -116,6 +134,11 @@ public class BetterAsyncWebServiceRunner {
 		}
 	}
 
+	/**将参数转化为字节流（用于POST请求）
+	 * @param params 参数
+	 * @return 字节流
+	 * @throws UnsupportedEncodingException 未处理异常
+	 */
 	private static byte[] paramsToBytes(Map<String, String> params)
 			throws UnsupportedEncodingException {
 		StringBuilder sbParams = new StringBuilder();
@@ -130,6 +153,11 @@ public class BetterAsyncWebServiceRunner {
 		return sbParams.toString().getBytes();
 	}
 
+	/**读取字节流
+	 * @param body 目标字节流
+	 * @return 字符串
+	 * @throws Exception 未处理异常
+	 */
 	private static String readByte(byte[] body) throws Exception {
 		return new String(body, "UTF-8");
 	}

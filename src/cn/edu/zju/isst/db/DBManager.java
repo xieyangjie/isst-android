@@ -10,6 +10,8 @@ import android.database.sqlite.SQLiteDatabase;
 import cn.edu.zju.isst.util.L;
 
 /**
+ * 数据库管理类
+ * 
  * @author theasir
  * 
  */
@@ -35,22 +37,30 @@ public class DBManager {
 		// 所以要确保context已初始化,我们可以把实例化DBManager的步骤放在Activity的onCreate里
 	}
 
+	/**
+	 * 添加表记录
+	 * 
+	 * @param name
+	 *            记录名
+	 * @param data
+	 *            记录数据
+	 */
 	public void add(String name, byte[] data) {
 		db.beginTransaction(); // 开始事务
 		try {
 			L.i("??");
 			Cursor cursor = db.rawQuery("select * from main where name = '"
-					+ name +"'", null);
+					+ name + "'", null);
 			L.i("cursor count = " + cursor.getCount());
 			if (cursor.getCount() == 0) {
 				cursor.close();
 				L.i("DB add!");
-//				String sql = "INSERT INTO main (name, object) VALUES(?,?)";
-//				SQLiteStatement insertStatement = db.compileStatement(sql);
-//				insertStatement.clearBindings();
-//				insertStatement.bindString(0, name);
-//				insertStatement.bindBlob(1, data);
-//				insertStatement.executeInsert();
+				// String sql = "INSERT INTO main (name, object) VALUES(?,?)";
+				// SQLiteStatement insertStatement = db.compileStatement(sql);
+				// insertStatement.clearBindings();
+				// insertStatement.bindString(0, name);
+				// insertStatement.bindBlob(1, data);
+				// insertStatement.executeInsert();
 				ContentValues cv = new ContentValues();
 				cv.put("name", name);
 				cv.put("object", data);
@@ -66,9 +76,18 @@ public class DBManager {
 			}
 		} finally {
 			db.endTransaction(); // 结束事务
+			db.close();
 		}
 	}
 
+	/**
+	 * 更新表记录
+	 * 
+	 * @param name
+	 *            记录名
+	 * @param data
+	 *            记录数据
+	 */
 	public void update(String name, byte[] data) {
 		db.beginTransaction(); // 开始事务
 		try {
@@ -77,15 +96,23 @@ public class DBManager {
 			cv.put("name", name);
 			cv.put("object", data);
 			db.update("main", cv, "name = '" + name + "'", null);
-//			db.execSQL("update main set object = ? where name = '" + name + "'",
-//					new Object[] { data });
+			// db.execSQL("update main set object = ? where name = '" + name +
+			// "'",
+			// new Object[] { data });
 			L.i("DB update!");
 			db.setTransactionSuccessful(); // 设置事务成功完成
 		} finally {
-//			db.endTransaction(); // 结束事务
+			// db.endTransaction(); // 结束事务
 		}
 	}
 
+	/**
+	 * 获取表记录
+	 * 
+	 * @param name
+	 *            记录名
+	 * @return 记录数据
+	 */
 	public byte[] get(String name) {
 		byte[] data = null;
 		db.beginTransaction(); // 开始事务
@@ -94,13 +121,16 @@ public class DBManager {
 			Cursor cursor = db.rawQuery("select * from main where name = '"
 					+ name + "'", null);
 			L.i("cursor count = " + cursor.getCount());
-			cursor.moveToFirst();
-			data = cursor.getBlob(cursor.getColumnIndex("object"));
-			L.i("DB get successful!");
+			if (cursor.getCount() > 0) {
+				cursor.moveToFirst();
+				data = cursor.getBlob(cursor.getColumnIndex("object"));
+				L.i("DB get successful!");
+			}
 			cursor.close();
 			db.setTransactionSuccessful(); // 设置事务成功完成
 		} finally {
 			db.endTransaction(); // 结束事务
+			db.close();
 		}
 		return data;
 	}

@@ -9,12 +9,20 @@ import android.database.sqlite.SQLiteOpenHelper;
 import cn.edu.zju.isst.util.L;
 
 /**
+ * 数据库辅助类
+ * 
  * @author theasir
  * 
  */
 public class DBHelper extends SQLiteOpenHelper {
 
+	/**
+	 * 数据库名称（文件名）
+	 */
 	private static final String DATABASE_NAME = "main.db";
+	/**
+	 * 数据库版本
+	 */
 	private static final int DATABASE_VERSION = 1;
 
 	/**

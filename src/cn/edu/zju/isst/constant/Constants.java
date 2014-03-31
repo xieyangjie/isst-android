@@ -1,22 +1,87 @@
 package cn.edu.zju.isst.constant;
 
+/**
+ * 常量类
+ * 
+ * @author theasir
+ * 
+ *         TODO WIP
+ */
 public final class Constants {
 
-	public static final int REQUEST_SUCCESS = 0;
-	
-	public static final int LOGIN_USERNAME_NOT_EXIST = 10;
-	public static final int LOGIN_PASSWORD_ERROR = 11;
-	public static final int LOGIN_AUTH_EXPIRED = 12;
-	public static final int LOGIN_AUTH_FAILED = 13;
-	
-	public static final int NOT_LOGIN = 1;
+	/**
+	 * 私有构造方法，防止对象实例化
+	 */
+	private Constants() {
+	}
 
-	public static final int CONNECT_TIMEOUT = 10000;
-	
-	public static final String USER_IN_DB = "user";
-	public static final String NEWS_LIST_IN_DB = "newslist";
-	public static final String WIKI_LIST_IN_DB = "wikilist";
-	public static final String STUD_LIST_IN_DB = "studlist";
-	public static final String SCAC_LIST_IN_DB = "scaclist";
+	/**
+	 * 成功返回
+	 */
+	public static final int STATUS_REQUEST_SUCCESS = 0;
+	/**
+	 * 用户不存在
+	 */
+	public static final int STATUS_LOGIN_USERNAME_NOT_EXIST = 10;
+	/**
+	 * 密码错误
+	 */
+	public static final int STATUS_LOGIN_PASSWORD_ERROR = 11;
+	/**
+	 * 认证失效
+	 */
+	public static final int STATUS_LOGIN_AUTH_EXPIRED = 12;
+	/**
+	 * 认证失败
+	 */
+	public static final int STATUS_LOGIN_AUTH_FAILED = 13;
+	/**
+	 * 未登录
+	 */
+	public static final int STATUS_NOT_LOGIN = 1;
+
+	/**
+	 * 网络未连接
+	 */
+	public static final int NETWORK_NOT_CONNECTED = -0xa0;
+
+	/**
+	 * 未知异常
+	 */
+	public static final int EXCEPTION_UNKNOWN = -0xe0;
+	/**
+	 * IO异常
+	 */
+	public static final int EXCEPTION_IO = -0xe1;
+	/**
+	 * Socket超时异常
+	 */
+	public static final int EXCEPTION_SOCKETTIMEOUT = -0xe2;
+	/**
+	 * JSON异常
+	 */
+	public static final int EXCEPTION_JSON = -0xe3;
+	/**
+	 * 类型转换异常
+	 */
+	public static final int EXCEPTION_CLASSCAST = -0xe4;
+
+	/**
+	 * 未知网络错误
+	 */
+	public static final int HTTPERROR_UNKNOWN = -0xf0;
+	/**
+	 * HTTP 4xx
+	 */
+	public static final int HTTPERROR_CLIENTERROR = -0xf4;
+	/**
+	 * HTTP 5xx
+	 */
+	public static final int HTTPERROR_SERVERERROR = -0xf5;
+
+	/**
+	 * HTTP请求超时
+	 */
+	public static final int HTTP_CONNECT_TIMEOUT = 10000;
 
 }

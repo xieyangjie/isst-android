@@ -8,7 +8,11 @@ import java.io.Serializable;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import cn.edu.zju.isst.util.Judgement;
+
 /**
+ * 归档解析类
+ * 
  * @author theasir
  * 
  */
@@ -19,6 +23,9 @@ public class Archive implements Serializable {
 	 */
 	private static final long serialVersionUID = 3086117832107474161L;
 
+	/**
+	 * 以下字段详见服务器接口文档
+	 */
 	private int id;
 	private String title;
 	private String description;
@@ -27,32 +34,62 @@ public class Archive implements Serializable {
 	private Publisher publisher;
 	private String content;
 
-	public Archive(JSONObject jsonObject) {
+	/**
+	 * 默认值初始化并更新
+	 * 
+	 * @param jsonObject
+	 *            数据源
+	 * @throws JSONException
+	 *             未处理异常
+	 */
+	public Archive(JSONObject jsonObject) throws JSONException {
+		id = -1;
+		title = "";
+		description = "";
+		updatedAt = 0;// TODO 转换成日期
+		publisher = new Publisher(new JSONObject("{}"));// TODO 怎样初始化比较好？
+		publisherId = publisher.getId();
+		content = "";
 		update(jsonObject);
 	}
 
-	public void update(JSONObject jsonObject) {
-		try {
-			id = jsonObject.getInt("id");
-			title = jsonObject.getString("title");
-			description = jsonObject.getString("description");
-			updatedAt = jsonObject.getInt("updatedAt");
-			//publisher = new Publisher(jsonObject.getJSONObject("user"));
-			publisher = null;
-			if (jsonObject.has("userId")) {//列表请求时附带userId没有content
-				publisherId = jsonObject.getInt("userId");
-//				content = "";
-				content = jsonObject.getString("content");
-			} else if (jsonObject.has("content")) {//详情页请求时返回content
-				content = jsonObject.getString("content");
-				publisherId = publisher.getId();
-			}else {//这种情况应该不会发生，是由服务器返回的json数据正确性保证的，参见接口文档
-				publisherId = -1;
-				content = "";
+	/**
+	 * 更新数据，强制判断设计
+	 * 
+	 * @param jsonObject
+	 *            数据源
+	 * @throws JSONException
+	 *             未处理异常
+	 */
+	public void update(JSONObject jsonObject) throws JSONException {
+		if (!Judgement.isNullOrEmpty(jsonObject)) {
+			if (jsonObject.has("id")) {
+				id = jsonObject.getInt("id");
 			}
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			if (jsonObject.has("title")) {
+				title = jsonObject.getString("title");
+			}
+			if (jsonObject.has("description")) {
+				description = jsonObject.getString("description");
+			}
+			if (jsonObject.has("updatedAt")) {
+				updatedAt = jsonObject.getInt("updatedAt");
+			}
+			if (jsonObject.has("user")) {
+				Object tryObject = jsonObject.get("user");
+				if (!Judgement.isNullOrEmpty(tryObject)
+						&& !tryObject.equals("") && !tryObject.equals("null")) {
+					publisher = new Publisher(jsonObject.getJSONObject("user"));
+				}
+			}
+			if (jsonObject.has("userId")) {
+				publisherId = jsonObject.getInt("userId");
+			} else {
+				publisherId = publisher.getId();
+			}
+			if (jsonObject.has("content")) {
+				content = jsonObject.getString("content");
+			}
 		}
 	}
 

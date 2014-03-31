@@ -4,19 +4,19 @@
 package cn.edu.zju.isst.api;
 
 /**
+ * 归档类别枚举类
+ * 
  * @author theasir
- *
+ * 
  */
 public enum Category {
 
-	CAMPUS("campus"),
-	ENCYCLOPEDIA("encyclopediqa"),
-	STUDING("studying"),
-	EXPERIENCE("experience");
-	
+	CAMPUS("campus"), ENCYCLOPEDIA("encyclopediqa"), STUDING("studying"), EXPERIENCE(
+			"experience");
+
 	private String subUrl;
-	
-	private Category(String subUrl){
+
+	private Category(String subUrl) {
 		this.subUrl = subUrl;
 	}
 
@@ -26,5 +26,5 @@ public enum Category {
 	public String getSubUrl() {
 		return subUrl;
 	}
-	
+
 }

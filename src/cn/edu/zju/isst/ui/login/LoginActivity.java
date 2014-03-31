@@ -5,9 +5,9 @@ package cn.edu.zju.isst.ui.login;
 
 import static cn.edu.zju.isst.constant.Constants.*;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -21,15 +21,19 @@ import cn.edu.zju.isst.R;
 import cn.edu.zju.isst.api.LoginApi;
 import cn.edu.zju.isst.db.DataManager;
 import cn.edu.zju.isst.db.User;
+import cn.edu.zju.isst.exception.ExceptionWeeder;
+import cn.edu.zju.isst.exception.HttpErrorWeeder;
+import cn.edu.zju.isst.net.CSTResponse;
 import cn.edu.zju.isst.net.NetworkConnection;
 import cn.edu.zju.isst.net.RequestListener;
+import cn.edu.zju.isst.settings.CSTSettings;
 import cn.edu.zju.isst.ui.main.MainActivity;
 import cn.edu.zju.isst.util.CM;
 import cn.edu.zju.isst.util.L;
 
-import de.keyboardsurfer.android.widget.crouton.*;
-
 /**
+ * 登录页面
+ * 
  * @author theasir
  * 
  */
@@ -44,6 +48,7 @@ public class LoginActivity extends ActionBarActivity {
 	private EditText m_edtxPassword;
 	private CheckBox m_chbAutologin;
 	private Button m_btnLogin;
+	private ProgressDialog m_pgdWating;
 
 	/*
 	 * (non-Javadoc)
@@ -61,6 +66,12 @@ public class LoginActivity extends ActionBarActivity {
 		m_chbAutologin = (CheckBox) findViewById(R.id.autologin_chb);
 		m_btnLogin = (Button) findViewById(R.id.login_btn);
 
+		// 为什么要这么做？参看CSTSettings类以及SharedPreferences#getBoolean(String key,
+		// boolean defValue)
+		if (CSTSettings.isForTheFirstTime(LoginActivity.this)) {
+			CSTSettings.setForTheFirstTime(true, LoginActivity.this);
+		}
+
 		m_handlerLogin = new Handler() {
 
 			/*
@@ -70,27 +81,33 @@ public class LoginActivity extends ActionBarActivity {
 			 */
 			@Override
 			public void handleMessage(Message msg) {
+				m_pgdWating.dismiss();
+
 				switch (msg.what) {
-				case REQUEST_SUCCESS:
+				case STATUS_REQUEST_SUCCESS:
+					if(m_chbAutologin.isChecked()){
+						CSTSettings.setAutoLogin(true, LoginActivity.this);
+					}
 					LoginActivity.this.startActivity(new Intent(
 							LoginActivity.this, MainActivity.class));
 					LoginActivity.this.finish();
 					break;
-				case LOGIN_USERNAME_NOT_EXIST: {
+				case STATUS_LOGIN_USERNAME_NOT_EXIST:
 					m_edtxUserName.setText("");
 					m_edtxPassword.setText("");
 					CM.showAlert(LoginActivity.this, (String) msg.obj);
 					break;
-				}
-				case LOGIN_PASSWORD_ERROR: {
+				case STATUS_LOGIN_PASSWORD_ERROR:
 					m_edtxPassword.setText("");
 					CM.showAlert(LoginActivity.this, (String) msg.obj);
 					break;
-				}
-				case LOGIN_AUTH_EXPIRED:
+				case STATUS_LOGIN_AUTH_EXPIRED:
 					break;
-				case LOGIN_AUTH_FAILED:
+				case STATUS_LOGIN_AUTH_FAILED:
 					break;
+				case NETWORK_NOT_CONNECTED:
+					CM.showAlert(LoginActivity.this,
+							R.string.network_not_connected);
 				default:
 					break;
 				}
@@ -102,6 +119,10 @@ public class LoginActivity extends ActionBarActivity {
 
 			@Override
 			public void onClick(View v) {
+
+				m_pgdWating = ProgressDialog.show(LoginActivity.this,
+						getString(R.string.loading),
+						getString(R.string.please_wait), true, false);
 
 				m_nUserId = m_edtxUserName.getText().toString();
 				m_strPassword = m_edtxPassword.getText().toString()
@@ -125,7 +146,7 @@ public class LoginActivity extends ActionBarActivity {
 										final int status = jsonObject
 												.getInt("status");
 										switch (status) {
-										case REQUEST_SUCCESS:
+										case STATUS_REQUEST_SUCCESS:
 											L.i("LOGIN SUCCESS!!!");
 											DataManager.syncLogin(
 													new User(
@@ -133,10 +154,10 @@ public class LoginActivity extends ActionBarActivity {
 																	.getJSONObject("body")),
 													LoginActivity.this);
 											break;
-										case LOGIN_USERNAME_NOT_EXIST:
-										case LOGIN_PASSWORD_ERROR:
-										case LOGIN_AUTH_EXPIRED:
-										case LOGIN_AUTH_FAILED:
+										case STATUS_LOGIN_USERNAME_NOT_EXIST:
+										case STATUS_LOGIN_PASSWORD_ERROR:
+										case STATUS_LOGIN_AUTH_EXPIRED:
+										case STATUS_LOGIN_AUTH_FAILED:
 											msg.obj = jsonObject.get("message");
 											break;
 										default:
@@ -145,11 +166,9 @@ public class LoginActivity extends ActionBarActivity {
 										}
 										msg.what = status;
 										L.i("Msg = " + msg.what);
-									} catch (JSONException e) {
-										L.e("Login Requestlistener onComplete JSONException!");
-										if (L.isDebuggable()) {
-											e.printStackTrace();
-										}
+									} catch (Exception e) {
+										L.e("Login Requestlistener onComplete Exception!");
+										onException(e);
 									}
 
 									m_handlerLogin.sendMessage(msg);
@@ -157,13 +176,28 @@ public class LoginActivity extends ActionBarActivity {
 								}
 
 								@Override
-								public void onError(Exception e) {
-									L.e("Login Requestlistener onError Exception!");
-									if (L.isDebuggable()) {
-										e.printStackTrace();
-									}
+								public void onHttpError(CSTResponse response) {
+									L.w("Login Requestlistener onHttpError!");
+									Message msg = m_handlerLogin
+											.obtainMessage();
+									HttpErrorWeeder.fckHttpError(response, msg);
+									m_handlerLogin.sendMessage(msg);
 								}
+
+								@Override
+								public void onException(Exception e) {
+									L.e("Login Requestlistener onException!");
+									Message msg = m_handlerLogin
+											.obtainMessage();
+									ExceptionWeeder.fckException(e, msg);
+									m_handlerLogin.sendMessage(msg);
+								}
+
 							});
+				} else {
+					Message msg = m_handlerLogin.obtainMessage();
+					msg.what = NETWORK_NOT_CONNECTED;
+					m_handlerLogin.sendMessage(msg);
 				}
 			}
 		});

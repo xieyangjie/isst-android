@@ -6,6 +6,11 @@ import org.json.JSONObject;
 
 import cn.edu.zju.isst.util.L;
 
+/**
+ * 前辈遗留，感谢
+ * 
+ * @deprecated
+ */
 public class AsyncWebServiceRunner {
 
 	/**
@@ -44,10 +49,11 @@ public class AsyncWebServiceRunner {
 						listener.onComplete(result);
 
 					} else {
-						listener.onError(new Exception("Not Connected OR Unsupport Method"));
+						listener.onException(new Exception(
+								"Not Connected OR Unsupport Method"));
 					}
 				} catch (Exception e) {
-					listener.onError(e);
+					listener.onException(e);
 				}
 
 			}
