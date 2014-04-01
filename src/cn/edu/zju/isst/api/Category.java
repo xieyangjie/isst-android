@@ -11,7 +11,7 @@ package cn.edu.zju.isst.api;
  */
 public enum Category {
 
-	CAMPUS("campus"), ENCYCLOPEDIA("encyclopediqa"), STUDING("studying"), EXPERIENCE(
+	CAMPUS("campus"), ENCYCLOPEDIA("encyclopedia"), STUDING("studying"), EXPERIENCE(
 			"experience");
 
 	private String subUrl;

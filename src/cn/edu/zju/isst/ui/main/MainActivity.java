@@ -14,6 +14,7 @@ import cn.edu.zju.isst.R;
 import cn.edu.zju.isst.constant.Nav;
 import cn.edu.zju.isst.dummy.DummyFragment;
 import cn.edu.zju.isst.ui.life.NewsListFragment;
+import cn.edu.zju.isst.ui.life.WikiListFragment;
 import cn.edu.zju.isst.util.T;
 
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
@@ -119,7 +120,7 @@ public class MainActivity extends ActionBarActivity implements
 			switchContent(NewsListFragment.getInstance());
 			break;
 		case WIKI:
-			switchContent(DummyFragment.newInstance(WIKI.getName()));
+			switchContent(WikiListFragment.getInstance());
 			break;
 		case SCAC:
 			switchContent(DummyFragment.newInstance(SCAC.getName()));
