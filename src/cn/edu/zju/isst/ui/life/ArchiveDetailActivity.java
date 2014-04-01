@@ -3,8 +3,7 @@
  */
 package cn.edu.zju.isst.ui.life;
 
-import static cn.edu.zju.isst.constant.Constants.STATUS_NOT_LOGIN;
-import static cn.edu.zju.isst.constant.Constants.STATUS_REQUEST_SUCCESS;
+import static cn.edu.zju.isst.constant.Constants.*;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -173,10 +172,10 @@ public class ArchiveDetailActivity extends ActionBarActivity {
 	 * 初始化组件
 	 */
 	private void initComponent() {
-		m_txvTitle = (TextView) findViewById(R.id.archive_detail_title_txv);
-		m_txvDate = (TextView) findViewById(R.id.archive_detail_date_txv);
-		m_txvPublisher = (TextView) findViewById(R.id.archive_detail_publisher_txv);
-		m_webvContent = (WebView) findViewById(R.id.archive_detail_content_webv);
+		m_txvTitle = (TextView) findViewById(R.id.archive_detail_activity_title_txv);
+		m_txvDate = (TextView) findViewById(R.id.archive_detail_activity_date_txv);
+		m_txvPublisher = (TextView) findViewById(R.id.archive_detail_activity_publisher_txv);
+		m_webvContent = (WebView) findViewById(R.id.archive_detail_activity_content_webv);
 		WebSettings settings = m_webvContent.getSettings();
 		settings.setUseWideViewPort(true);
 		settings.setLoadWithOverviewMode(true);

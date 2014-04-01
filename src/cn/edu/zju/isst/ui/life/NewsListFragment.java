@@ -418,15 +418,15 @@ public class NewsListFragment extends ListFragment implements OnScrollListener {
 				convertView = inflater
 						.inflate(R.layout.archive_list_item, null);
 				holder.titleTxv = (TextView) convertView
-						.findViewById(R.id.title_txv);
+						.findViewById(R.id.archive_list_item_title_txv);
 				holder.dateTxv = (TextView) convertView
-						.findViewById(R.id.date_txv);
+						.findViewById(R.id.archive_list_item_date_txv);
 				holder.publisherTxv = (TextView) convertView
-						.findViewById(R.id.publisher_txv);
+						.findViewById(R.id.archive_list_item_publisher_txv);
 				holder.descriptionTxv = (TextView) convertView
-						.findViewById(R.id.description_txv);
+						.findViewById(R.id.archive_list_item_description_txv);
 				holder.indicatorView = (View) convertView
-						.findViewById(R.id.indicator_view);
+						.findViewById(R.id.archive_list_item_indicator_view);
 
 				convertView.setTag(holder);
 			} else {

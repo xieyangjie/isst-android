@@ -7,7 +7,7 @@
     android:padding="10dp">
 
     <TextView
-        android:id="@+id/group_nav"
+        android:id="@+id/sm_group_item_nav"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingLeft="25dp"/>

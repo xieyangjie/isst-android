@@ -180,7 +180,9 @@ public class MainActivity extends ActionBarActivity implements
 				.commit();
 	}
 
-	/**切换fragment
+	/**
+	 * 切换fragment
+	 * 
 	 * @param fragment
 	 */
 	private void switchContent(Fragment fragment) {

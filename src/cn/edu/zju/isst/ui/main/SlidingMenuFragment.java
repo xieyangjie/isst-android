@@ -90,8 +90,8 @@ public class SlidingMenuFragment extends Fragment {
 		View rootView = inflater.inflate(R.layout.sm_main, null);
 
 		m_explsvMenu = (ExpandableListView) rootView
-				.findViewById(R.id.main_group);
-		m_lsvMenu = (ListView) rootView.findViewById(R.id.main_list);
+				.findViewById(R.id.sm_main_group);
+		m_lsvMenu = (ListView) rootView.findViewById(R.id.sm_main_list);
 
 		return rootView;
 	}
@@ -183,7 +183,7 @@ public class SlidingMenuFragment extends Fragment {
 		}
 
 		m_strFrom = new String[] { "menu_name" };
-		m_nTo = new int[] { R.id.list_nav };
+		m_nTo = new int[] { R.id.sm_list_item_nav };
 		List<String> listMenu = new ArrayList<String>();
 
 		for (Nav nav : Nav.values()) {
