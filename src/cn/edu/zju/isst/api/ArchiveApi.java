@@ -76,7 +76,7 @@ public class ArchiveApi extends CSTApi {
 	 * @param id
 	 *            id
 	 * @param listener
-	 *            回掉对象
+	 *            回调对象
 	 */
 	public static void getArchiveDetail(int id, RequestListener listener) {
 		request("GET", SUB_URL + id, null, listener);

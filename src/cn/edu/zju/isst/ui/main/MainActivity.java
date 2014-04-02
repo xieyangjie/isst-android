@@ -4,6 +4,7 @@
 package cn.edu.zju.isst.ui.main;
 
 import static cn.edu.zju.isst.constant.Nav.*;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
@@ -11,9 +12,18 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import cn.edu.zju.isst.R;
+import cn.edu.zju.isst.api.LogoutApi;
 import cn.edu.zju.isst.constant.Nav;
+import cn.edu.zju.isst.db.DataManager;
 import cn.edu.zju.isst.dummy.DummyFragment;
+import cn.edu.zju.isst.net.CSTResponse;
+import cn.edu.zju.isst.net.RequestListener;
+import cn.edu.zju.isst.settings.CSTSettings;
+import cn.edu.zju.isst.ui.life.CampusActivityListFragment;
 import cn.edu.zju.isst.ui.life.NewsListFragment;
+import cn.edu.zju.isst.ui.life.RestaurantListFragment;
+import cn.edu.zju.isst.ui.login.LoginActivity;
+import cn.edu.zju.isst.util.L;
 import cn.edu.zju.isst.util.T;
 
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
@@ -29,7 +39,7 @@ public class MainActivity extends ActionBarActivity implements
 		SlidingMenuFragment.OnGroupMenuItemClickListener {
 
 	private long m_lExitTime = -1;
-	
+
 	/**
 	 * 侧拉菜单
 	 */
@@ -70,7 +80,7 @@ public class MainActivity extends ActionBarActivity implements
 	 */
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// TODO Auto-generated method stub
+		getMenuInflater().inflate(R.menu.main_activity_ab_menu, menu);
 		return true;
 	}
 
@@ -85,11 +95,17 @@ public class MainActivity extends ActionBarActivity implements
 		case android.R.id.home:
 			m_smMainMenu.toggle();
 			return true;
+		case R.id.action_logout:
+			logout();
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
 		}
-		return super.onOptionsItemSelected(item);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see android.app.Activity#onKeyUp(int, android.view.KeyEvent)
 	 */
 	@Override
@@ -101,7 +117,7 @@ public class MainActivity extends ActionBarActivity implements
 				m_smMainMenu.toggle();
 				m_lExitTime = System.currentTimeMillis();
 			} else {
-				//finish();
+				// finish();
 				System.exit(0);
 			}
 			return true;
@@ -109,8 +125,12 @@ public class MainActivity extends ActionBarActivity implements
 		return super.onKeyUp(keyCode, event);
 	}
 
-	/* (non-Javadoc)
-	 * @see cn.edu.zju.isst.ui.main.SlidingMenuFragment.OnGroupMenuItemClickListener#onGroupMenuItemClick(cn.edu.zju.isst.constant.Nav)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * cn.edu.zju.isst.ui.main.SlidingMenuFragment.OnGroupMenuItemClickListener
+	 * #onGroupMenuItemClick(cn.edu.zju.isst.constant.Nav)
 	 */
 	@Override
 	public void onGroupMenuItemClick(Nav item) {
@@ -122,10 +142,10 @@ public class MainActivity extends ActionBarActivity implements
 			switchContent(DummyFragment.newInstance(WIKI.getName()));
 			break;
 		case SCAC:
-			switchContent(DummyFragment.newInstance(SCAC.getName()));
+			switchContent(CampusActivityListFragment.getInstance());
 			break;
 		case SERV:
-			switchContent(DummyFragment.newInstance(SERV.getName()));
+			switchContent(RestaurantListFragment.getInstance());
 			break;
 		case STUD:
 			switchContent(DummyFragment.newInstance(STUD.getName()));
@@ -193,6 +213,33 @@ public class MainActivity extends ActionBarActivity implements
 					.replace(R.id.content_frame, m_fragCurrentContent).commit();
 		}
 		m_smMainMenu.showContent();
+	}
+	
+	private void logout(){
+		LogoutApi.logout(new RequestListener() {
+
+			@Override
+			public void onComplete(Object result) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onHttpError(CSTResponse response) {
+				L.i("logout onHttpError: " + response.getStatus());
+				
+			}
+			
+			@Override
+			public void onException(Exception e) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		DataManager.deleteCurrentUser(MainActivity.this);
+		CSTSettings.setAutoLogin(false, MainActivity.this);
+		MainActivity.this.startActivity(new Intent(MainActivity.this, LoginActivity.class));
+		MainActivity.this.finish();
 	}
 
 }

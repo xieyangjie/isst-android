@@ -43,6 +43,9 @@ public class Publisher implements Serializable {
 	public Publisher(JSONObject jsonObject) throws JSONException {
 		id = 0;
 		name = "管理员";// TODO raw string should not appear in code
+		phone = "";
+		qq = "";
+		email = "";
 		update(jsonObject);
 	}
 
@@ -56,26 +59,25 @@ public class Publisher implements Serializable {
 	 */
 	public void update(JSONObject jsonObject) throws JSONException {
 		if (!Judgement.isNullOrEmpty(jsonObject)) {
-			if (jsonObject.has("id")) {
+			if (jsonObject.has("id")
+					&& !Judgement.isNullOrEmpty(jsonObject.get("id"))) {
 				id = jsonObject.getInt("id");
 			}
-			if (jsonObject.has("name")) {
+			if (jsonObject.has("name")
+					&& !Judgement.isNullOrEmpty(jsonObject.get("name"))) {
 				name = jsonObject.getString("name");
 			}
-			if (jsonObject.has("phone")) {
+			if (jsonObject.has("phone")
+					&& !Judgement.isNullOrEmpty(jsonObject.get("phone"))) {
 				phone = jsonObject.getString("phone");
-			} else {
-				phone = "";
 			}
-			if (jsonObject.has("qq")) {
+			if (jsonObject.has("qq")
+					&& !Judgement.isNullOrEmpty(jsonObject.get("qq"))) {
 				qq = jsonObject.getString("qq");
-			} else {
-				qq = "";
 			}
-			if (jsonObject.has("email")) {
+			if (jsonObject.has("email")
+					&& !Judgement.isNullOrEmpty(jsonObject.get("email"))) {
 				email = jsonObject.getString("email");
-			} else {
-				email = "";
 			}
 		}
 	}

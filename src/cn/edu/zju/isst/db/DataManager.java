@@ -31,6 +31,7 @@ public class DataManager {
 	private static final String WIKI_LIST_IN_DB = "wikilist";
 	private static final String STUD_LIST_IN_DB = "studlist";
 	private static final String SCAC_LIST_IN_DB = "scaclist";
+	private static final String RESTAURANT_LIST_IN_DB = "restaurantlist";
 
 	/**
 	 * 同步登录接口返回数据
@@ -71,6 +72,10 @@ public class DataManager {
 		return null;
 	}
 
+	public static void deleteCurrentUser(Context context){
+		new DBManager(context).delete(USER_IN_DB);
+	}
+	
 	/**
 	 * 同步新闻列表接口返回数据
 	 * 
@@ -94,7 +99,7 @@ public class DataManager {
 	 * @return 当前数据库中的新闻列表对象
 	 */
 	@SuppressWarnings("unchecked")
-	public static List<Archive> getCurrentNewsList(Context context) {
+	public static List<Archive> getNewsList(Context context) {
 		Object object = objectFromDB(NEWS_LIST_IN_DB, context);
 		if (!Judgement.isNullOrEmpty(object)) {
 			List<Archive> newsList = null;
@@ -109,7 +114,70 @@ public class DataManager {
 		}
 		return null;
 	}
+	
+	/**
+	 * 同步在校活动列表接口返回数据
+	 * 
+	 * @param campusActivityList
+	 *            新闻列表
+	 * @param context
+	 *            用于加载DBHelper获取当前数据库
+	 */
+	public static void syncCampusActivityList(List<CampusActivity> campusActivityList, Context context) {
+		if (!Judgement.isNullOrEmpty(campusActivityList)) {
+			writeObjectToDB(SCAC_LIST_IN_DB, (Serializable) campusActivityList, context);
+			L.i("Write campusActivityList to DB!");
+		}
+	}
 
+	/**
+	 * 获取当前数据库中的在校活动列表对象
+	 * 
+	 * @param context
+	 *            用于加载DBHelper获取当前数据库
+	 * @return 当前数据库中的新闻列表对象
+	 */
+	@SuppressWarnings("unchecked")
+	public static List<CampusActivity> getCampusActivityList(Context context) {
+		Object object = objectFromDB(SCAC_LIST_IN_DB, context);
+		if (!Judgement.isNullOrEmpty(object)) {
+			List<CampusActivity> campusActivityList = null;
+			try {
+				campusActivityList = (List<CampusActivity>) object;
+			} catch (ClassCastException e) {
+				// TODO: handle exception
+			}
+			if (!Judgement.isNullOrEmpty(campusActivityList)) {
+				return campusActivityList;
+			}
+		}
+		return null;
+	}
+
+	public static void syncRestaurantList(List<Restaurant> restaurantList, Context context){
+		if(!Judgement.isNullOrEmpty(restaurantList)){
+			writeObjectToDB(RESTAURANT_LIST_IN_DB, (Serializable) restaurantList, context);
+			L.i("Write restaurantlist to DB!");
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static List<Restaurant> getRestaurantList(Context context) {
+		Object object = objectFromDB(RESTAURANT_LIST_IN_DB, context);
+		if (!Judgement.isNullOrEmpty(object)) {
+			List<Restaurant> restaurantList = null;
+			try {
+				restaurantList = (List<Restaurant>) object;
+			} catch (ClassCastException e) {
+				// TODO: handle exception
+			}
+			if (!Judgement.isNullOrEmpty(restaurantList)) {
+				return restaurantList;
+			}
+		}
+		return null;
+	}
+	
 	/**
 	 * 将目标对象序列化后写入当前数据库
 	 * 
@@ -127,7 +195,7 @@ public class DataManager {
 			ObjectOutputStream oos = new ObjectOutputStream(bos);
 			oos.writeObject(object);
 			L.i("Write object!!!");
-			new DBManager(context).add(name, bos.toByteArray());
+			new DBManager(context).insertOrUpdate(name, bos.toByteArray());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

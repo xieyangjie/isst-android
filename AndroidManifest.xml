@@ -44,6 +44,11 @@
             android:label="@string/app_name" >
         </activity>
         
+        <activity
+            android:name=".ui.life.RestaurantDetailActivity"
+            android:label="@string/app_name" >
+        </activity>
+        
     </application>
     
     

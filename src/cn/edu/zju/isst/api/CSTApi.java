@@ -34,7 +34,7 @@ public class CSTApi {
 	 * @param params
 	 *            要传递的参数
 	 * @param listener
-	 *            回掉对象
+	 *            回调对象
 	 */
 	protected static void request(final String methodName, final String subUrl,
 			final Map<String, String> params, RequestListener listener) {

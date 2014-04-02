@@ -47,6 +47,11 @@ public class Restaurant implements Serializable {
 		id = -1;
 		name = "";
 		hotline = "";
+		picture = "";
+		address = "";
+		businessHours = "";
+		description = "";
+		content = "";
 		update(jsonObject);
 	}
 
@@ -60,39 +65,38 @@ public class Restaurant implements Serializable {
 	 */
 	public void update(JSONObject jsonObject) throws JSONException {
 		if (!Judgement.isNullOrEmpty(jsonObject)) {
-			if (jsonObject.has("id")) {
+			if (jsonObject.has("id")
+					&& !Judgement.isNullOrEmpty(jsonObject.get("id"))) {
 				id = jsonObject.getInt("id");
 			}
-			if (jsonObject.has("name")) {
+			if (jsonObject.has("name")
+					&& !Judgement.isNullOrEmpty(jsonObject.get("name"))) {
 				name = jsonObject.getString("name");
 			}
-			if (jsonObject.has("picture")) {
+			if (jsonObject.has("picture")
+					&& !Judgement.isNullOrEmpty(jsonObject.get("picture"))) {
 				picture = jsonObject.getString("picture");
-			} else {
-				picture = "";
 			}
-			if (jsonObject.has("address")) {
+			if (jsonObject.has("address")
+					&& !Judgement.isNullOrEmpty(jsonObject.get("address"))) {
 				address = jsonObject.getString("address");
-			} else {
-				address = "";
 			}
-			if (jsonObject.has("hotline")) {
+			if (jsonObject.has("hotline")
+					&& !Judgement.isNullOrEmpty(jsonObject.get("hotline"))) {
 				hotline = jsonObject.getString("hotline");
 			}
-			if (jsonObject.has("businessHours")) {
+			if (jsonObject.has("businessHours")
+					&& !Judgement
+							.isNullOrEmpty(jsonObject.get("businessHours"))) {
 				businessHours = jsonObject.getString("businessHours");
-			} else {
-				businessHours = "";
 			}
-			if (jsonObject.has("description")) {
+			if (jsonObject.has("description")
+					&& !Judgement.isNullOrEmpty(jsonObject.get("description"))) {
 				description = jsonObject.getString("description");
-			} else {
-				description = "";
 			}
-			if (jsonObject.has("content")) {
+			if (jsonObject.has("content")
+					&& !Judgement.isNullOrEmpty(jsonObject.get("content"))) {
 				content = jsonObject.getString("content");
-			} else {
-				content = "";
 			}
 		}
 	}

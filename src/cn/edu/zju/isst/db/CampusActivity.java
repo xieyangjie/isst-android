@@ -15,29 +15,28 @@ import org.json.JSONObject;
 import cn.edu.zju.isst.util.Judgement;
 
 /**
- * 归档解析类
- * 
  * @author theasir
  * 
  */
-public class Archive implements Serializable {
+public class CampusActivity implements Serializable {
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 3086117832107474161L;
+	private static final long serialVersionUID = 6366035213405880557L;
 
-	/**
-	 * 以下字段详见服务器接口文档
-	 */
 	private int id;
 	private String title;
+	private String picture;
 	private String description;
-	private long updatedAt;
-	private int publisherId;
-	private Publisher publisher;
 	private String content;
+	private String publisherName;
+	private long updatedAt;
+	private long startTime;
+	private long expireTime;
 	private String updateTimeString;
+	private String startTimeString;
+	private String expireTimeString;
 
 	/**
 	 * 默认值初始化并更新
@@ -47,15 +46,19 @@ public class Archive implements Serializable {
 	 * @throws JSONException
 	 *             未处理异常
 	 */
-	public Archive(JSONObject jsonObject) throws JSONException {
+	public CampusActivity(JSONObject jsonObject) throws JSONException {
 		id = -1;
 		title = "";
+		picture = "";
 		description = "";
-		updatedAt = 0;
-		publisher = new Publisher(new JSONObject("{}"));// TODO 怎样初始化比较好？
-		publisherId = publisher.getId();
 		content = "";
+		publisherName = "管理员";
+		updatedAt = 0;
+		startTime = 0;
+		expireTime = 0;
 		updateTimeString = "";
+		startTimeString = "";
+		expireTimeString = "";
 		update(jsonObject);
 	}
 
@@ -77,31 +80,37 @@ public class Archive implements Serializable {
 					&& !Judgement.isNullOrEmpty(jsonObject.get("title"))) {
 				title = jsonObject.getString("title");
 			}
+			if (jsonObject.has("picture")
+					&& !Judgement.isNullOrEmpty(jsonObject.get("picture"))) {
+				picture = jsonObject.getString("picture");
+			}
 			if (jsonObject.has("description")
 					&& !Judgement.isNullOrEmpty(jsonObject.get("description"))) {
 				description = jsonObject.getString("description");
+			}
+			if (jsonObject.has("content")
+					&& !Judgement.isNullOrEmpty(jsonObject.get("content"))) {
+				content = jsonObject.getString("content");
+			}
+			if (jsonObject.has("user")
+					&& !Judgement.isNullOrEmpty(jsonObject.get("user"))) {
+				publisherName = jsonObject.getJSONObject("user").getString(
+						"name");
 			}
 			if (jsonObject.has("updatedAt")
 					&& !Judgement.isNullOrEmpty(jsonObject.get("updatedAt"))) {
 				updatedAt = jsonObject.getLong("updatedAt");
 				updateTimeString = timeLongToString(updatedAt);
 			}
-			if (jsonObject.has("user")) {
-				Object tryObject = jsonObject.get("user");
-				if (!Judgement.isNullOrEmpty(tryObject)
-						&& !tryObject.equals("") && !tryObject.equals("null")) {
-					publisher = new Publisher(jsonObject.getJSONObject("user"));
-				}
+			if (jsonObject.has("startTime")
+					&& !Judgement.isNullOrEmpty(jsonObject.get("startTime"))) {
+				updatedAt = jsonObject.getLong("startTime");
+				startTimeString = timeLongToString(startTime);
 			}
-			if (jsonObject.has("userId")
-					&& !Judgement.isNullOrEmpty(jsonObject.get("userId"))) {
-				publisherId = jsonObject.getInt("userId");
-			} else {
-				publisherId = publisher.getId();
-			}
-			if (jsonObject.has("content")
-					&& !Judgement.isNullOrEmpty(jsonObject.get("content"))) {
-				content = jsonObject.getString("content");
+			if (jsonObject.has("expireTime")
+					&& !Judgement.isNullOrEmpty(jsonObject.get("expireTime"))) {
+				updatedAt = jsonObject.getLong("expireTime");
+				expireTimeString = timeLongToString(expireTime);
 			}
 		}
 	}
@@ -130,31 +139,17 @@ public class Archive implements Serializable {
 	}
 
 	/**
+	 * @return the picture
+	 */
+	public String getPicture() {
+		return picture;
+	}
+
+	/**
 	 * @return the description
 	 */
 	public String getDescription() {
 		return description;
-	}
-
-	/**
-	 * @return the updateAt
-	 */
-	public long getUpdatedAt() {
-		return updatedAt;
-	}
-
-	/**
-	 * @return the publisherId
-	 */
-	public int getPublisherId() {
-		return publisherId;
-	}
-
-	/**
-	 * @return the publisher
-	 */
-	public Publisher getPublisher() {
-		return publisher;
 	}
 
 	/**
@@ -165,10 +160,51 @@ public class Archive implements Serializable {
 	}
 
 	/**
-	 * @return the dateTimeString
+	 * @return the publisherName
 	 */
-	public String getDateTimeString() {
+	public String getPublisherName() {
+		return publisherName;
+	}
+
+	/**
+	 * @return the updatedAt
+	 */
+	public long getUpdatedAt() {
+		return updatedAt;
+	}
+
+	/**
+	 * @return the startTime
+	 */
+	public long getStartTime() {
+		return startTime;
+	}
+
+	/**
+	 * @return the expireTime
+	 */
+	public long getExpireTime() {
+		return expireTime;
+	}
+
+	/**
+	 * @return the updateTimeString
+	 */
+	public String getUpdateTimeString() {
 		return updateTimeString;
 	}
 
+	/**
+	 * @return the startTimeString
+	 */
+	public String getStartTimeString() {
+		return startTimeString;
+	}
+
+	/**
+	 * @return the expireTimeString
+	 */
+	public String getExpireTimeString() {
+		return expireTimeString;
+	}
 }

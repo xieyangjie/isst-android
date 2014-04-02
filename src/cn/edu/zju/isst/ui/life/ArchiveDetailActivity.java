@@ -186,7 +186,7 @@ public class ArchiveDetailActivity extends ActionBarActivity {
 	 */
 	private void showArchiveDetail() {
 		m_txvTitle.setText(m_archiveCurrent.getTitle());
-		m_txvDate.setText(String.valueOf(m_archiveCurrent.getUpdatedAt()));
+		m_txvDate.setText(m_archiveCurrent.getDateTimeString());
 		m_txvPublisher.setText(m_archiveCurrent.getPublisher().getName());
 		m_webvContent.loadDataWithBaseURL(null, m_archiveCurrent.getContent(),
 				"text/html", "utf-8", null);

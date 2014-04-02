@@ -76,7 +76,7 @@ public class LoginApi extends CSTApi {
 	 * @param latitude
 	 *            纬度
 	 * @param listener
-	 *            回掉对象
+	 *            回调对象
 	 */
 	public static void update(User currentUser, Double longitude,
 			Double latitude, RequestListener listener) {

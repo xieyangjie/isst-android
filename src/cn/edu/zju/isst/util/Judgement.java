@@ -6,6 +6,9 @@ package cn.edu.zju.isst.util;
 import java.util.Collection;
 import java.util.Map;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 /**
  * Judgement
  * 
@@ -50,15 +53,20 @@ public class Judgement {
 			if (object.length == 0) {
 				return true;
 			}
-			boolean empty = true;
+			boolean isEmpty = true;
 			for (int i = 0; i < object.length; i++) {
 				if (!isNullOrEmpty(object[i])) {
-					empty = false;
+					isEmpty = false;
 					break;
 				}
 			}
-			return empty;
+			return isEmpty;
 		}
+		
 		return false;
+	}
+	
+	public static boolean isValidJsonValue(String key, JSONObject jsonObject) throws JSONException{
+		return jsonObject.has(key) && !isNullOrEmpty(jsonObject.get(key));
 	}
 }

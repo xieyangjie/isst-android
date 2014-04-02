@@ -12,6 +12,17 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import cn.edu.zju.isst.R;
+import cn.edu.zju.isst.api.CampusActivityApi;
+import cn.edu.zju.isst.db.Archive;
+import cn.edu.zju.isst.db.CampusActivity;
+import cn.edu.zju.isst.db.DataManager;
+import cn.edu.zju.isst.exception.ExceptionWeeder;
+import cn.edu.zju.isst.exception.HttpErrorWeeder;
+import cn.edu.zju.isst.net.CSTResponse;
+import cn.edu.zju.isst.net.NetworkConnection;
+import cn.edu.zju.isst.net.RequestListener;
+import cn.edu.zju.isst.util.L;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -25,44 +36,32 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
-import android.widget.AbsListView.OnScrollListener;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import cn.edu.zju.isst.R;
-import cn.edu.zju.isst.api.ArchiveApi;
-import cn.edu.zju.isst.db.Archive;
-import cn.edu.zju.isst.db.DataManager;
-import cn.edu.zju.isst.exception.ExceptionWeeder;
-import cn.edu.zju.isst.exception.HttpErrorWeeder;
-import cn.edu.zju.isst.net.CSTResponse;
-import cn.edu.zju.isst.net.NetworkConnection;
-import cn.edu.zju.isst.net.RequestListener;
-import cn.edu.zju.isst.util.L;
+import android.widget.AbsListView.OnScrollListener;
 
 /**
- * 新闻列表页
- * 
  * @author theasir
  * 
- *         TODO WIP
  */
-public class NewsListFragment extends ListFragment implements OnScrollListener {
+public class CampusActivityListFragment extends ListFragment implements
+		OnScrollListener {
 
 	private int m_nVisibleLastIndex;
 
-	private final List<Archive> m_listAchive = new ArrayList<Archive>();
-	private Handler m_handlerNewsList;
-	private NewsListAdapter m_adapterNewsList;
+	private final List<CampusActivity> m_listCampusActivity = new ArrayList<CampusActivity>();
+	private Handler m_handlerCampusActivityList;
+	private CampusActivityListAdapter m_adapterCampusActivityList;
 
-	private ListView m_lsvNewsList;
+	private ListView m_lsvCampusActivityList;
 
-	private static NewsListFragment INSTANCE = new NewsListFragment();
+	private static CampusActivityListFragment INSTANCE = new CampusActivityListFragment();
 
-	public NewsListFragment() {
+	public CampusActivityListFragment() {
 	}
 
-	public static NewsListFragment getInstance() {
+	public static CampusActivityListFragment getInstance() {
 		return INSTANCE;
 	}
 
@@ -73,7 +72,6 @@ public class NewsListFragment extends ListFragment implements OnScrollListener {
 	 */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
 	}
@@ -88,7 +86,7 @@ public class NewsListFragment extends ListFragment implements OnScrollListener {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.news_list_fragment, null);
+		return inflater.inflate(R.layout.campus_activity_list_fragment, null);
 	}
 
 	/*
@@ -101,11 +99,12 @@ public class NewsListFragment extends ListFragment implements OnScrollListener {
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
-		m_lsvNewsList = (ListView) view.findViewById(android.R.id.list);
+		m_lsvCampusActivityList = (ListView) view
+				.findViewById(android.R.id.list);
 
-		initNewsList();
+		initCampusActivityList();
 
-		m_handlerNewsList = new Handler() {
+		m_handlerCampusActivityList = new Handler() {
 
 			/*
 			 * (non-Javadoc)
@@ -116,7 +115,7 @@ public class NewsListFragment extends ListFragment implements OnScrollListener {
 			public void handleMessage(Message msg) {
 				switch (msg.what) {
 				case STATUS_REQUEST_SUCCESS:
-					m_adapterNewsList.notifyDataSetChanged();
+					m_adapterCampusActivityList.notifyDataSetChanged();
 					break;
 				case STATUS_NOT_LOGIN:
 					break;
@@ -127,10 +126,10 @@ public class NewsListFragment extends ListFragment implements OnScrollListener {
 
 		};
 
-		m_adapterNewsList = new NewsListAdapter(getActivity());
-		setListAdapter(m_adapterNewsList);
+		m_adapterCampusActivityList = new CampusActivityListAdapter(getActivity());
+		setListAdapter(m_adapterCampusActivityList);
 
-		if (m_listAchive.size() == 0) {
+		if (m_listCampusActivity.size() == 0) {
 			requestData(LoadType.REFRESH);
 		}
 	}
@@ -156,7 +155,6 @@ public class NewsListFragment extends ListFragment implements OnScrollListener {
 	 */
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-		// TODO Auto-generated method stub
 		super.onCreateOptionsMenu(menu, inflater);
 		inflater.inflate(R.menu.news_list_fragment_ab_menu, menu);
 	}
@@ -188,10 +186,12 @@ public class NewsListFragment extends ListFragment implements OnScrollListener {
 	 */
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
-		L.i(this.getClass().getName() + " onListItemClick postion = " + position);
-		Intent intent = new Intent(getActivity(), ArchiveDetailActivity.class);
-		intent.putExtra("id", m_listAchive.get(position).getId());
-		getActivity().startActivity(intent);
+		L.i(this.getClass().getName() + " onListItemClick postion = "
+				+ position);
+		// Intent intent = new Intent(getActivity(),
+		// ArchiveDetailActivity.class);
+		// intent.putExtra("id", m_listCampusActivity.get(position).getId());
+		// getActivity().startActivity(intent);
 	}
 
 	@Override
@@ -200,7 +200,8 @@ public class NewsListFragment extends ListFragment implements OnScrollListener {
 				+ " onScrollStateChanged VisibleLastIndex = "
 				+ m_nVisibleLastIndex);
 		if (scrollState == SCROLL_STATE_IDLE
-				&& m_nVisibleLastIndex == m_adapterNewsList.getCount() - 1) {
+				&& m_nVisibleLastIndex == m_adapterCampusActivityList
+						.getCount() - 1) {
 			requestData(LoadType.LOADMORE);
 		}
 	}
@@ -212,17 +213,17 @@ public class NewsListFragment extends ListFragment implements OnScrollListener {
 	}
 
 	/**
-	 * 初始化新闻列表，若有缓存则读取缓存
+	 * 初始化在校活动列表，若有缓存则读取缓存
 	 */
-	private void initNewsList() {
-		List<Archive> dbNewsList = DataManager
-				.getNewsList(getActivity());
-		if (!m_listAchive.isEmpty()) {
-			m_listAchive.clear();
+	private void initCampusActivityList() {
+		List<CampusActivity> dbNewsList = DataManager
+				.getCampusActivityList(getActivity());
+		if (!m_listCampusActivity.isEmpty()) {
+			m_listCampusActivity.clear();
 		}
 		if (dbNewsList != null && !dbNewsList.equals(null)) {
-			for (Archive news : dbNewsList) {
-				m_listAchive.add(news);
+			for (CampusActivity news : dbNewsList) {
+				m_listCampusActivity.add(news);
 			}
 		}
 	}
@@ -234,17 +235,19 @@ public class NewsListFragment extends ListFragment implements OnScrollListener {
 	 *            数据源
 	 */
 	private void refresh(JSONObject jsonObject) {
-		if (!m_listAchive.isEmpty()) {
-			m_listAchive.clear();
+		if (!m_listCampusActivity.isEmpty()) {
+			m_listCampusActivity.clear();
 		}
 		try {
 			JSONArray jsonArray = jsonObject.getJSONArray("body");
 			for (int i = 0; i < jsonArray.length(); i++) {
-				m_listAchive.add(new Archive((JSONObject) jsonArray.get(i)));
+				m_listCampusActivity.add(new CampusActivity(
+						(JSONObject) jsonArray.get(i)));
 			}
 			L.i(this.getClass().getName() + " refreshList: "
-					+ "Added archives to newsList!");
-			DataManager.syncNewsList(m_listAchive, getActivity());
+					+ "Added campusActivity to newsList!");
+			DataManager.syncCampusActivityList(m_listCampusActivity,
+					getActivity());
 		} catch (JSONException e) {
 			L.i(this.getClass().getName() + " refreshList!");
 			e.printStackTrace();
@@ -262,10 +265,11 @@ public class NewsListFragment extends ListFragment implements OnScrollListener {
 		try {
 			jsonArray = jsonObject.getJSONArray("body");
 			for (int i = 0; i < jsonArray.length(); i++) {
-				m_listAchive.add(new Archive((JSONObject) jsonArray.get(i)));
+				m_listCampusActivity.add(new CampusActivity(
+						(JSONObject) jsonArray.get(i)));
 			}
 			L.i(this.getClass().getName() + " loadMore: "
-					+ "Added archives to newsList!");
+					+ "Added campusActivity to newsList!");
 		} catch (JSONException e) {
 			L.i(this.getClass().getName() + " loadMore!");
 			e.printStackTrace();
@@ -283,20 +287,20 @@ public class NewsListFragment extends ListFragment implements OnScrollListener {
 			switch (type) {// TODO 刷新策略
 			case REFRESH:
 				// 设置刷新策略，一次性加载最新若干条
-				ArchiveApi.getNewsList(null, 20, null,
+				CampusActivityApi.getCampusActivityList(null, 20, null,
 						new NewsListRequestListener(type));
 				break;
 			case LOADMORE:
-				ArchiveApi.getNewsList(null, 5, null,
+				CampusActivityApi.getCampusActivityList(null, 5, null,
 						new NewsListRequestListener(type));
 				break;
 			default:
 				break;
 			}
 		} else {
-			Message msg = m_handlerNewsList.obtainMessage();
+			Message msg = m_handlerCampusActivityList.obtainMessage();
 			msg.what = NETWORK_NOT_CONNECTED;
-			m_handlerNewsList.sendMessage(msg);
+			m_handlerCampusActivityList.sendMessage(msg);
 		}
 	}
 
@@ -326,7 +330,7 @@ public class NewsListFragment extends ListFragment implements OnScrollListener {
 
 		@Override
 		public void onComplete(Object result) {
-			Message msg = m_handlerNewsList.obtainMessage();
+			Message msg = m_handlerCampusActivityList.obtainMessage();
 			try {
 				msg.what = ((JSONObject) result).getInt("status");
 				if (msg.what == STATUS_REQUEST_SUCCESS) {
@@ -346,23 +350,23 @@ public class NewsListFragment extends ListFragment implements OnScrollListener {
 				e.printStackTrace();
 			}
 
-			m_handlerNewsList.sendMessage(msg);
+			m_handlerCampusActivityList.sendMessage(msg);
 		}
 
 		@Override
 		public void onHttpError(CSTResponse response) {
 			L.i(this.getClass().getName() + " onHttpError!");
-			Message msg = m_handlerNewsList.obtainMessage();
+			Message msg = m_handlerCampusActivityList.obtainMessage();
 			HttpErrorWeeder.fckHttpError(response, msg);
-			m_handlerNewsList.sendMessage(msg);
+			m_handlerCampusActivityList.sendMessage(msg);
 		}
 
 		@Override
 		public void onException(Exception e) {
 			L.i(this.getClass().getName() + " onException!");
-			Message msg = m_handlerNewsList.obtainMessage();
+			Message msg = m_handlerCampusActivityList.obtainMessage();
 			ExceptionWeeder.fckException(e, msg);
-			m_handlerNewsList.sendMessage(msg);
+			m_handlerCampusActivityList.sendMessage(msg);
 		}
 
 	}
@@ -375,29 +379,30 @@ public class NewsListFragment extends ListFragment implements OnScrollListener {
 	 */
 	private final class ViewHolder {
 		public TextView titleTxv;
-		public TextView dateTxv;
-		public TextView publisherTxv;
+		public TextView updateTimeTxv;
+		public TextView startTimeTxv;
+		public TextView expireTimeTxv;
 		public TextView descriptionTxv;
 		public View indicatorView;
 	}
 
 	/**
-	 * 新闻列表自定义适配器类
+	 * 在校活动列表自定义适配器类
 	 * 
 	 * @author theasir
 	 * 
 	 */
-	private class NewsListAdapter extends BaseAdapter {
+	private class CampusActivityListAdapter extends BaseAdapter {
 
 		private LayoutInflater inflater;
 
-		public NewsListAdapter(Context context) {
+		public CampusActivityListAdapter(Context context) {
 			this.inflater = LayoutInflater.from(context);
 		}
 
 		@Override
 		public int getCount() {
-			return m_listAchive.size();
+			return m_listCampusActivity.size();
 		}
 
 		@Override
@@ -417,35 +422,39 @@ public class NewsListFragment extends ListFragment implements OnScrollListener {
 			if (convertView == null) {
 				holder = new ViewHolder();
 
-				convertView = inflater
-						.inflate(R.layout.archive_list_item, null);
+				convertView = inflater.inflate(
+						R.layout.campus_activity_list_item, null);
 				holder.titleTxv = (TextView) convertView
-						.findViewById(R.id.archive_list_item_title_txv);
-				holder.dateTxv = (TextView) convertView
-						.findViewById(R.id.archive_list_item_date_txv);
-				holder.publisherTxv = (TextView) convertView
-						.findViewById(R.id.archive_list_item_publisher_txv);
+						.findViewById(R.id.campus_activity_list_item_title_txv);
+				holder.updateTimeTxv = (TextView) convertView
+						.findViewById(R.id.campus_activity_list_item_updatetime_txv);
+				holder.startTimeTxv = (TextView) convertView
+						.findViewById(R.id.campus_activity_list_item_starttime_txv);
+				holder.expireTimeTxv = (TextView) convertView
+						.findViewById(R.id.campus_activity_list_item_expiretime_txv);
 				holder.descriptionTxv = (TextView) convertView
-						.findViewById(R.id.archive_list_item_description_txv);
+						.findViewById(R.id.campus_activity_list_item_description_txv);
 				holder.indicatorView = (View) convertView
-						.findViewById(R.id.archive_list_item_indicator_view);
+						.findViewById(R.id.campus_activity_list_item_indicator_view);
 
 				convertView.setTag(holder);
 			} else {
 				holder = (ViewHolder) convertView.getTag();
 			}
 
-			holder.titleTxv.setText(m_listAchive.get(position).getTitle());
-			holder.dateTxv.setText(m_listAchive.get(position).getDateTimeString());
-			holder.publisherTxv.setText(m_listAchive.get(position)
-					.getPublisher().getName());
-			holder.descriptionTxv.setText(m_listAchive.get(position)
+			holder.titleTxv.setText(m_listCampusActivity.get(position)
+					.getTitle());
+			holder.updateTimeTxv.setText(m_listCampusActivity.get(position)
+					.getUpdateTimeString());
+			holder.startTimeTxv.setText(m_listCampusActivity.get(position)
+					.getStartTimeString());
+			holder.expireTimeTxv.setText(m_listCampusActivity.get(position)
+					.getExpireTimeString());
+			holder.descriptionTxv.setText(m_listCampusActivity.get(position)
 					.getDescription());
-			// holder.indicatorView.setBackgroundColor(Color.BLUE);
 
 			return convertView;
 		}
 
 	}
-
 }
