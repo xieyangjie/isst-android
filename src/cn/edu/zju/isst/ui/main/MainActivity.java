@@ -24,6 +24,8 @@ import cn.edu.zju.isst.ui.life.NewsListFragment;
 import cn.edu.zju.isst.ui.life.RestaurantListFragment;
 import cn.edu.zju.isst.ui.login.LoginActivity;
 import cn.edu.zju.isst.util.L;
+import cn.edu.zju.isst.ui.life.StudyListFragment;
+import cn.edu.zju.isst.ui.life.WikGridFragment;
 import cn.edu.zju.isst.util.T;
 
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
@@ -139,7 +141,7 @@ public class MainActivity extends ActionBarActivity implements
 			switchContent(NewsListFragment.getInstance());
 			break;
 		case WIKI:
-			switchContent(DummyFragment.newInstance(WIKI.getName()));
+			switchContent(WikGridFragment.getInstance());
 			break;
 		case SCAC:
 			switchContent(CampusActivityListFragment.getInstance());
@@ -148,7 +150,7 @@ public class MainActivity extends ActionBarActivity implements
 			switchContent(RestaurantListFragment.getInstance());
 			break;
 		case STUD:
-			switchContent(DummyFragment.newInstance(STUD.getName()));
+			switchContent(StudyListFragment.getInstance());
 			break;
 		case INTE:
 			switchContent(DummyFragment.newInstance(INTE.getName()));
