@@ -16,6 +16,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.view.MenuItem;
 import android.webkit.WebSettings;
+import android.webkit.WebSettings.LayoutAlgorithm;
 import android.webkit.WebView;
 import android.widget.TextView;
 import cn.edu.zju.isst.R;

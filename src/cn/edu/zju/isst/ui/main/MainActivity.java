@@ -14,6 +14,7 @@ import cn.edu.zju.isst.R;
 import cn.edu.zju.isst.constant.Nav;
 import cn.edu.zju.isst.dummy.DummyFragment;
 import cn.edu.zju.isst.ui.life.NewsListFragment;
+import cn.edu.zju.isst.ui.life.StudyListFragment;
 import cn.edu.zju.isst.util.T;
 
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
@@ -128,7 +129,7 @@ public class MainActivity extends ActionBarActivity implements
 			switchContent(DummyFragment.newInstance(SERV.getName()));
 			break;
 		case STUD:
-			switchContent(DummyFragment.newInstance(STUD.getName()));
+			switchContent(StudyListFragment.getInstance());
 			break;
 		case INTE:
 			switchContent(DummyFragment.newInstance(INTE.getName()));

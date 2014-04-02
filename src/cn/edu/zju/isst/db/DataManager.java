@@ -109,6 +109,46 @@ public class DataManager {
 		}
 		return null;
 	}
+	
+	
+	/**
+	 * 同步学习列表接口返回数据
+	 * 
+	 * @param studyList
+	 *            学习列表
+	 * @param context
+	 *            用于加载DBHelper获取当前数据库
+	 */
+	public static void syncStudysList(List<Archive> studyList, Context context) {
+		if (!Judgement.isNullOrEmpty(studyList)) {
+			writeObjectToDB(STUD_LIST_IN_DB, (Serializable) studyList, context);
+			L.i("Write studyList to DB!");
+		}
+	}
+
+	/**
+	 * 获取当前数据库中的新闻列表对象
+	 * 
+	 * @param context
+	 *            用于加载DBHelper获取当前数据库
+	 * @return 当前数据库中的新闻列表对象
+	 */
+	@SuppressWarnings("unchecked")
+	public static List<Archive> getCurrentStudyList(Context context) {
+		Object object = objectFromDB(STUD_LIST_IN_DB, context);
+		if (!Judgement.isNullOrEmpty(object)) {
+			List<Archive> newsList = null;
+			try {
+				newsList = (List<Archive>) object;
+			} catch (ClassCastException e) {
+				// TODO: handle exception
+			}
+			if (!Judgement.isNullOrEmpty(newsList)) {
+				return newsList;
+			}
+		}
+		return null;
+	}
 
 	/**
 	 * 将目标对象序列化后写入当前数据库

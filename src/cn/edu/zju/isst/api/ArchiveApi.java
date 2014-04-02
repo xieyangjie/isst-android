@@ -34,6 +34,23 @@ public class ArchiveApi extends CSTApi {
 		getArchiveList(Category.CAMPUS, page, pageSize, keywords, listener);
 	}
 
+	
+	/**
+	 * 获取学习列表
+	 * 
+	 * @param page
+	 *            页数
+	 * @param pageSize
+	 *            页面大小
+	 * @param keywords
+	 *            关键字
+	 * @param listener
+	 *            回调对象
+	 */
+	public static void getStudyList(Integer page, Integer pageSize,
+			String keywords, RequestListener listener) {
+		getArchiveList(Category.STUDING, page, pageSize, keywords, listener);
+	}
 	/**
 	 * 获取归档列表
 	 * 
