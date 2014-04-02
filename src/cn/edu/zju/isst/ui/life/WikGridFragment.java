@@ -17,6 +17,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -24,10 +25,13 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView.FindListener;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
-import android.widget.ListView;
+import android.widget.GridView;
 import android.widget.TextView;
 import cn.edu.zju.isst.R;
 import cn.edu.zju.isst.api.ArchiveApi;
@@ -47,7 +51,7 @@ import cn.edu.zju.isst.util.L;
  * 
  *         TODO WIP
  */
-public class WikiListFragment extends ListFragment implements OnScrollListener {
+public class WikGridFragment extends Fragment implements OnScrollListener {
 
 	private int m_nVisibleLastIndex;
 
@@ -55,14 +59,14 @@ public class WikiListFragment extends ListFragment implements OnScrollListener {
 	private Handler m_handlerWikiList;
 	private WikiListAdapter m_adapterWikiList;
 
-	private ListView m_lsvWikiList;
+	private GridView m_gvWiki;
 
-	private static WikiListFragment INSTANCE = new WikiListFragment();
+	private static WikGridFragment INSTANCE = new WikGridFragment();
 
-	public WikiListFragment() {
+	public WikGridFragment() {
 	}
 
-	public static WikiListFragment getInstance() {
+	public static WikGridFragment getInstance() {
 		return INSTANCE;
 	}
 
@@ -76,6 +80,8 @@ public class WikiListFragment extends ListFragment implements OnScrollListener {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
+		
+		
 	}
 
 	/*
@@ -88,7 +94,7 @@ public class WikiListFragment extends ListFragment implements OnScrollListener {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.wiki_list_fragment, null);
+		return inflater.inflate(R.layout.wiki_grid_fragment, null);
 	}
 
 	/*
@@ -102,7 +108,7 @@ public class WikiListFragment extends ListFragment implements OnScrollListener {
 		// TODO Auto-generated method stub
 		super.onViewCreated(view, savedInstanceState);
 
-		m_lsvWikiList = (ListView) view.findViewById(android.R.id.list);
+		m_gvWiki = (GridView) view.findViewById(R.id.wiki_gridview);
 
 		initWikiList();
 
@@ -130,11 +136,27 @@ public class WikiListFragment extends ListFragment implements OnScrollListener {
 
 		m_adapterWikiList = new WikiListAdapter(getActivity());
 
-		setListAdapter(m_adapterWikiList);
-
+		//setListAdapter(m_adapterWikiList);
+		m_gvWiki.setAdapter(m_adapterWikiList);
+		
 		if (m_listAchive.size() == 0) {
 			requestData(LoadType.REFRESH);
 		}
+		
+		//监听事件
+		m_gvWiki.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+					long arg3) {
+				// TODO Auto-generated method stub
+				L.i(this.getClass().getName() + " onListItemClick postion = ");
+				Intent intent = new Intent(getActivity(), ArchiveDetailActivity.class);
+				intent.putExtra("id", m_listAchive.get(arg2).getId());
+				getActivity().startActivity(intent);
+			}
+		});
+
 	}
 
 	/*
@@ -181,37 +203,22 @@ public class WikiListFragment extends ListFragment implements OnScrollListener {
 			return super.onOptionsItemSelected(item);
 		}
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * android.support.v4.app.ListFragment#onListItemClick(android.widget.ListView
-	 * , android.view.View, int, long)
-	 */
-	@Override
-	public void onListItemClick(ListView l, View v, int position, long id) {
-		L.i(this.getClass().getName() + " onListItemClick postion = ");
-		Intent intent = new Intent(getActivity(), ArchiveDetailActivity.class);
-		intent.putExtra("id", m_listAchive.get(position).getId());
-		getActivity().startActivity(intent);
-	}
-
+	
 	@Override
 	public void onScrollStateChanged(AbsListView view, int scrollState) {
-		L.i(this.getClass().getName()
-				+ " onScrollStateChanged VisibleLastIndex = "
-				+ m_nVisibleLastIndex);
-		if (scrollState == SCROLL_STATE_IDLE
-				&& m_nVisibleLastIndex == m_adapterWikiList.getCount() - 1) {
-			requestData(LoadType.LOADMORE);
-		}
+//		L.i(this.getClass().getName()
+//				+ " onScrollStateChanged VisibleLastIndex = "
+//				+ m_nVisibleLastIndex);
+//		if (scrollState == SCROLL_STATE_IDLE
+//				&& m_nVisibleLastIndex == m_adapterWikiList.getCount() - 1) {
+//			requestData(LoadType.LOADMORE);
+//		}
 	}
 
 	@Override
 	public void onScroll(AbsListView view, int firstVisibleItem,
 			int visibleItemCount, int totalItemCount) {
-		m_nVisibleLastIndex = firstVisibleItem + visibleItemCount - 1;
+//		m_nVisibleLastIndex = firstVisibleItem + visibleItemCount - 1;
 	}
 
 	/**
@@ -314,7 +321,7 @@ public class WikiListFragment extends ListFragment implements OnScrollListener {
 	}
 
 	/**
-	 * 新闻列表RequestListener类
+	 * 百科列表RequestListener类
 	 * 
 	 * @author yyy
 	 * 
@@ -417,19 +424,20 @@ public class WikiListFragment extends ListFragment implements OnScrollListener {
 			ViewHolder holder = null;
 			if (convertView == null) {
 				holder = new ViewHolder();
-
+				
 				convertView = inflater
-						.inflate(R.layout.archive_list_item, null);
+						.inflate(R.layout.wiki_grid_item, null);
+				//convertView.setLayoutParams(new GridView.LayoutParams(85, 85));
 				holder.titleTxv = (TextView) convertView
-						.findViewById(R.id.archive_list_item_title_txv);
+						.findViewById(R.id.wiki_grid_item_title_txv);
 				holder.dateTxv = (TextView) convertView
-						.findViewById(R.id.archive_list_item_date_txv);
+						.findViewById(R.id.wiki_grid_item_date_txv);
 				holder.publisherTxv = (TextView) convertView
-						.findViewById(R.id.archive_list_item_publisher_txv);
+						.findViewById(R.id.wiki_grid_item_publisher_txv);
 				holder.descriptionTxv = (TextView) convertView
-						.findViewById(R.id.archive_list_item_description_txv);
+						.findViewById(R.id.wiki_grid_item_description_txv);
 				holder.indicatorView = (View) convertView
-						.findViewById(R.id.archive_list_item_indicator_view);
+						.findViewById(R.id.wiki_grid_item_indicator_view);
 
 				convertView.setTag(holder);
 			} else {
