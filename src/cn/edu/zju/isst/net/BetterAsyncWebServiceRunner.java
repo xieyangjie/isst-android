@@ -18,9 +18,12 @@ import android.webkit.CookieManager;
 import cn.edu.zju.isst.util.Judgement;
 import cn.edu.zju.isst.util.L;
 
-/**异步请求类
+/**
+ * 异步请求类
+ * 
  * @author theasir
  * 
+ *         TODO 空值处理，数据流或对象为空时的处理
  */
 public class BetterAsyncWebServiceRunner {
 
@@ -35,7 +38,9 @@ public class BetterAsyncWebServiceRunner {
 	private BetterAsyncWebServiceRunner() {
 	}
 
-	/**单例模式
+	/**
+	 * 单例模式
+	 * 
 	 * @return 单个实例
 	 */
 	public static BetterAsyncWebServiceRunner getInstance() {
@@ -74,7 +79,8 @@ public class BetterAsyncWebServiceRunner {
 								paramsToBytes(params));
 					} else {
 						L.i("BetterAsyncWebServiceRunner Unsupported Method: "
-								+ (Judgement.isNullOrEmpty(methodName) ? "null" : methodName));
+								+ (Judgement.isNullOrEmpty(methodName) ? "null"
+										: methodName));
 					}
 
 					if (response != null
@@ -86,8 +92,7 @@ public class BetterAsyncWebServiceRunner {
 						}
 					}
 
-					if (result != null && response != null)
-					{
+					if (result != null && response != null) {
 						L.i(resultString);
 						listener.onComplete(result);
 					} else if (response != null) {
@@ -101,15 +106,18 @@ public class BetterAsyncWebServiceRunner {
 		}.start();
 	}
 
-	/**获取Http Headers，此处的主要目的是获取cookie
-	 * @param url URL
+	/**
+	 * 获取Http Headers，此处的主要目的是获取cookie
+	 * 
+	 * @param url
+	 *            URL
 	 * @return Http Headers
 	 */
 	private Map<String, List<String>> getHeaders(String url) {
 		Map<String, List<String>> headers = new ConcurrentHashMap<String, List<String>>();
 		List<String> cookieList = new ArrayList<String>();
 		String cookieString = CookieManager.getInstance().getCookie(url);
-		if (cookieString != null) {
+		if (!Judgement.isNullOrEmpty(cookieString)) {
 			String[] cookieArray = cookieString.split(";");
 			for (String cookie : cookieArray) {
 				cookieList.add(cookie);
@@ -121,28 +129,36 @@ public class BetterAsyncWebServiceRunner {
 
 	}
 
-	/**刷新cookie
-	 * @param url URL
-	 * @param headers Http Headers
+	/**
+	 * 刷新cookie
+	 * 
+	 * @param url
+	 *            URL
+	 * @param headers
+	 *            Http Headers
 	 */
 	private void refreshCookies(String url, Map<String, List<String>> headers) {
 		List<String> cookieList = headers.get("Set-Cookie");
-		if (cookieList != null) {
+		if (!Judgement.isNullOrEmpty(cookieList)) {
 			for (String cookie : cookieList) {
 				CookieManager.getInstance().setCookie(url, cookie);
 			}
 		}
 	}
 
-	/**将参数转化为字节流（用于POST请求）
-	 * @param params 参数
+	/**
+	 * 将参数转化为字节流（用于POST请求）
+	 * 
+	 * @param params
+	 *            参数
 	 * @return 字节流
-	 * @throws UnsupportedEncodingException 未处理异常
+	 * @throws UnsupportedEncodingException
+	 *             未处理异常
 	 */
 	private static byte[] paramsToBytes(Map<String, String> params)
 			throws UnsupportedEncodingException {
 		StringBuilder sbParams = new StringBuilder();
-		if (params != null && !params.isEmpty()) {
+		if (!Judgement.isNullOrEmpty(params)) {
 			for (Map.Entry<String, String> entry : params.entrySet()) {
 				sbParams.append(entry.getKey()).append('=');
 				sbParams.append(URLEncoder.encode(entry.getValue(), "UTF-8"));
@@ -153,10 +169,14 @@ public class BetterAsyncWebServiceRunner {
 		return sbParams.toString().getBytes();
 	}
 
-	/**读取字节流
-	 * @param body 目标字节流
+	/**
+	 * 读取字节流
+	 * 
+	 * @param body
+	 *            目标字节流
 	 * @return 字符串
-	 * @throws Exception 未处理异常
+	 * @throws Exception
+	 *             未处理异常
 	 */
 	private static String readByte(byte[] body) throws Exception {
 		return new String(body, "UTF-8");

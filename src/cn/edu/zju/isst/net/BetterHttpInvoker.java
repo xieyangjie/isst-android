@@ -20,7 +20,7 @@ import cn.edu.zju.isst.util.L;
 /**
  * HTTP请求类
  * 
- * @see https://code.google.com/p/aerc/
+ * @see {@link https://code.google.com/p/aerc/}
  * 
  */
 public class BetterHttpInvoker {

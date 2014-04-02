@@ -17,6 +17,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -24,10 +25,13 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView.FindListener;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
-import android.widget.ListView;
+import android.widget.GridView;
 import android.widget.TextView;
 import cn.edu.zju.isst.R;
 import cn.edu.zju.isst.api.ArchiveApi;
@@ -43,26 +47,26 @@ import cn.edu.zju.isst.util.L;
 /**
  * 新闻列表页
  * 
- * @author theasir
+ * @author yyy
  * 
  *         TODO WIP
  */
-public class NewsListFragment extends ListFragment implements OnScrollListener {
+public class WikGridFragment extends Fragment implements OnScrollListener {
 
 	private int m_nVisibleLastIndex;
 
 	private final List<Archive> m_listAchive = new ArrayList<Archive>();
-	private Handler m_handlerNewsList;
-	private NewsListAdapter m_adapterNewsList;
+	private Handler m_handlerWikiList;
+	private WikiListAdapter m_adapterWikiList;
 
-	private ListView m_lsvNewsList;
+	private GridView m_gvWiki;
 
-	private static NewsListFragment INSTANCE = new NewsListFragment();
+	private static WikGridFragment INSTANCE = new WikGridFragment();
 
-	public NewsListFragment() {
+	public WikGridFragment() {
 	}
 
-	public static NewsListFragment getInstance() {
+	public static WikGridFragment getInstance() {
 		return INSTANCE;
 	}
 
@@ -76,6 +80,8 @@ public class NewsListFragment extends ListFragment implements OnScrollListener {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
+		
+		
 	}
 
 	/*
@@ -88,7 +94,7 @@ public class NewsListFragment extends ListFragment implements OnScrollListener {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.news_list_fragment, null);
+		return inflater.inflate(R.layout.wiki_grid_fragment, null);
 	}
 
 	/*
@@ -102,11 +108,11 @@ public class NewsListFragment extends ListFragment implements OnScrollListener {
 		// TODO Auto-generated method stub
 		super.onViewCreated(view, savedInstanceState);
 
-		m_lsvNewsList = (ListView) view.findViewById(android.R.id.list);
+		m_gvWiki = (GridView) view.findViewById(R.id.wiki_gridview);
 
-		initNewsList();
+		initWikiList();
 
-		m_handlerNewsList = new Handler() {
+		m_handlerWikiList = new Handler() {
 
 			/*
 			 * (non-Javadoc)
@@ -117,7 +123,7 @@ public class NewsListFragment extends ListFragment implements OnScrollListener {
 			public void handleMessage(Message msg) {
 				switch (msg.what) {
 				case STATUS_REQUEST_SUCCESS:
-					m_adapterNewsList.notifyDataSetChanged();
+					m_adapterWikiList.notifyDataSetChanged();
 					break;
 				case STATUS_NOT_LOGIN:
 					break;
@@ -128,13 +134,29 @@ public class NewsListFragment extends ListFragment implements OnScrollListener {
 
 		};
 
-		m_adapterNewsList = new NewsListAdapter(getActivity());
+		m_adapterWikiList = new WikiListAdapter(getActivity());
 
-		setListAdapter(m_adapterNewsList);
-
+		//setListAdapter(m_adapterWikiList);
+		m_gvWiki.setAdapter(m_adapterWikiList);
+		
 		if (m_listAchive.size() == 0) {
 			requestData(LoadType.REFRESH);
 		}
+		
+		//监听事件
+		m_gvWiki.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+					long arg3) {
+				// TODO Auto-generated method stub
+				L.i(this.getClass().getName() + " onListItemClick postion = ");
+				Intent intent = new Intent(getActivity(), ArchiveDetailActivity.class);
+				intent.putExtra("id", m_listAchive.get(arg2).getId());
+				getActivity().startActivity(intent);
+			}
+		});
+
 	}
 
 	/*
@@ -161,7 +183,7 @@ public class NewsListFragment extends ListFragment implements OnScrollListener {
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		// TODO Auto-generated method stub
 		super.onCreateOptionsMenu(menu, inflater);
-		inflater.inflate(R.menu.news_list_fragment_ab_menu, menu);
+		inflater.inflate(R.menu.wiki_list_fragment_ab_menu, menu);
 	}
 
 	/*
@@ -181,48 +203,37 @@ public class NewsListFragment extends ListFragment implements OnScrollListener {
 			return super.onOptionsItemSelected(item);
 		}
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * android.support.v4.app.ListFragment#onListItemClick(android.widget.ListView
-	 * , android.view.View, int, long)
-	 */
-	@Override
-	public void onListItemClick(ListView l, View v, int position, long id) {
-		L.i(this.getClass().getName() + " onListItemClick postion = ");
-		Intent intent = new Intent(getActivity(), ArchiveDetailActivity.class);
-		intent.putExtra("id", m_listAchive.get(position).getId());
-		getActivity().startActivity(intent);
-	}
-
+	
 	@Override
 	public void onScrollStateChanged(AbsListView view, int scrollState) {
-		L.i(this.getClass().getName()
-				+ " onScrollStateChanged VisibleLastIndex = "
-				+ m_nVisibleLastIndex);
-		if (scrollState == SCROLL_STATE_IDLE
-				&& m_nVisibleLastIndex == m_adapterNewsList.getCount() - 1) {
-			requestData(LoadType.LOADMORE);
-		}
+//		L.i(this.getClass().getName()
+//				+ " onScrollStateChanged VisibleLastIndex = "
+//				+ m_nVisibleLastIndex);
+//		if (scrollState == SCROLL_STATE_IDLE
+//				&& m_nVisibleLastIndex == m_adapterWikiList.getCount() - 1) {
+//			requestData(LoadType.LOADMORE);
+//		}
 	}
 
 	@Override
 	public void onScroll(AbsListView view, int firstVisibleItem,
 			int visibleItemCount, int totalItemCount) {
-		m_nVisibleLastIndex = firstVisibleItem + visibleItemCount - 1;
+//		m_nVisibleLastIndex = firstVisibleItem + visibleItemCount - 1;
 	}
 
 	/**
-	 * 初始化新闻列表，若有缓存则读取缓存
+	 * 初始化百科列表，若有缓存则读取缓存
 	 */
-	private void initNewsList() {
-		List<Archive> dbNewsList = DataManager
-				.getCurrentNewsList(getActivity());
-		if (dbNewsList != null && !dbNewsList.equals(null)) {
-			for (Archive news : dbNewsList) {
-				m_listAchive.add(news);
+	private void initWikiList() {
+
+		List<Archive> dbWikiList = DataManager
+				.getCurrentWikiList(getActivity());
+		if (!m_listAchive.isEmpty()){
+			m_listAchive.clear();
+		}
+		if (dbWikiList != null && !dbWikiList.equals(null)) {
+			for (Archive wiki : dbWikiList) {
+				m_listAchive.add(wiki);
 			}
 		}
 	}
@@ -243,8 +254,8 @@ public class NewsListFragment extends ListFragment implements OnScrollListener {
 				m_listAchive.add(new Archive((JSONObject) jsonArray.get(i)));
 			}
 			L.i(this.getClass().getName() + " refreshList: "
-					+ "Added archives to newsList!");
-			DataManager.syncNewsList(m_listAchive, getActivity());
+					+ "Added archives to wikiList!");
+			DataManager.syncWikiList(m_listAchive, getActivity());
 		} catch (JSONException e) {
 			L.i(this.getClass().getName() + " refreshList!");
 			e.printStackTrace();
@@ -265,7 +276,7 @@ public class NewsListFragment extends ListFragment implements OnScrollListener {
 				m_listAchive.add(new Archive((JSONObject) jsonArray.get(i)));
 			}
 			L.i(this.getClass().getName() + " loadMore: "
-					+ "Added archives to newsList!");
+					+ "Added archives to wikiList!");
 		} catch (JSONException e) {
 			L.i(this.getClass().getName() + " loadMore!");
 			e.printStackTrace();
@@ -283,27 +294,29 @@ public class NewsListFragment extends ListFragment implements OnScrollListener {
 			switch (type) {// TODO 刷新策略
 			case REFRESH:
 				// 设置刷新策略，一次性加载最新若干条
-				ArchiveApi.getNewsList(null, 10, null,
-						new NewsListRequestListener(type));
+				ArchiveApi.getWikiList(null, 10, null,
+						new WikiListRequestListener(type));
+				ArchiveApi.getWikiList(null, 10, null,
+						new WikiListRequestListener(type));
 				break;
 			case LOADMORE:
-				ArchiveApi.getNewsList(null, 5, null,
-						new NewsListRequestListener(type));
+				ArchiveApi.getWikiList(null, 5, null,
+						new WikiListRequestListener(type));
 				break;
 			default:
 				break;
 			}
 		} else {
-			Message msg = m_handlerNewsList.obtainMessage();
+			Message msg = m_handlerWikiList.obtainMessage();
 			msg.what = NETWORK_NOT_CONNECTED;
-			m_handlerNewsList.sendMessage(msg);
+			m_handlerWikiList.sendMessage(msg);
 		}
 	}
 
 	/**
 	 * 加载方式枚举类
 	 * 
-	 * @author theasir
+	 * @author yyy
 	 * 
 	 */
 	private enum LoadType {
@@ -311,22 +324,22 @@ public class NewsListFragment extends ListFragment implements OnScrollListener {
 	}
 
 	/**
-	 * 新闻列表RequestListener类
+	 * 百科列表RequestListener类
 	 * 
-	 * @author theasir
+	 * @author yyy
 	 * 
 	 */
-	private class NewsListRequestListener implements RequestListener {
+	private class WikiListRequestListener implements RequestListener {
 
 		private LoadType type;
 
-		public NewsListRequestListener(LoadType type) {
+		public WikiListRequestListener(LoadType type) {
 			this.type = type;
 		}
 
 		@Override
 		public void onComplete(Object result) {
-			Message msg = m_handlerNewsList.obtainMessage();
+			Message msg = m_handlerWikiList.obtainMessage();
 			try {
 				msg.what = ((JSONObject) result).getInt("status");
 				switch (type) {
@@ -344,23 +357,23 @@ public class NewsListFragment extends ListFragment implements OnScrollListener {
 				e.printStackTrace();
 			}
 
-			m_handlerNewsList.sendMessage(msg);
+			m_handlerWikiList.sendMessage(msg);
 		}
 
 		@Override
 		public void onHttpError(CSTResponse response) {
 			L.i(this.getClass().getName() + " onHttpError!");
-			Message msg = m_handlerNewsList.obtainMessage();
+			Message msg = m_handlerWikiList.obtainMessage();
 			HttpErrorWeeder.fckHttpError(response, msg);
-			m_handlerNewsList.sendMessage(msg);
+			m_handlerWikiList.sendMessage(msg);
 		}
 
 		@Override
 		public void onException(Exception e) {
 			L.i(this.getClass().getName() + " onException!");
-			Message msg = m_handlerNewsList.obtainMessage();
+			Message msg = m_handlerWikiList.obtainMessage();
 			ExceptionWeeder.fckException(e, msg);
-			m_handlerNewsList.sendMessage(msg);
+			m_handlerWikiList.sendMessage(msg);
 		}
 
 	}
@@ -368,7 +381,7 @@ public class NewsListFragment extends ListFragment implements OnScrollListener {
 	/**
 	 * View容器类
 	 * 
-	 * @author theasir
+	 * @author yyy
 	 * 
 	 */
 	private final class ViewHolder {
@@ -382,14 +395,14 @@ public class NewsListFragment extends ListFragment implements OnScrollListener {
 	/**
 	 * 新闻列表自定义适配器类
 	 * 
-	 * @author theasir
+	 * @author yyy
 	 * 
 	 */
-	private class NewsListAdapter extends BaseAdapter {
+	private class WikiListAdapter extends BaseAdapter {
 
 		private LayoutInflater inflater;
 
-		public NewsListAdapter(Context context) {
+		public WikiListAdapter(Context context) {
 			this.inflater = LayoutInflater.from(context);
 		}
 
@@ -414,19 +427,20 @@ public class NewsListFragment extends ListFragment implements OnScrollListener {
 			ViewHolder holder = null;
 			if (convertView == null) {
 				holder = new ViewHolder();
-
+				
 				convertView = inflater
-						.inflate(R.layout.archive_list_item, null);
+						.inflate(R.layout.wiki_grid_item, null);
+				//convertView.setLayoutParams(new GridView.LayoutParams(85, 85));
 				holder.titleTxv = (TextView) convertView
-						.findViewById(R.id.archive_list_item_title_txv);
+						.findViewById(R.id.wiki_grid_item_title_txv);
 				holder.dateTxv = (TextView) convertView
-						.findViewById(R.id.archive_list_item_date_txv);
+						.findViewById(R.id.wiki_grid_item_date_txv);
 				holder.publisherTxv = (TextView) convertView
-						.findViewById(R.id.archive_list_item_publisher_txv);
+						.findViewById(R.id.wiki_grid_item_publisher_txv);
 				holder.descriptionTxv = (TextView) convertView
-						.findViewById(R.id.archive_list_item_description_txv);
+						.findViewById(R.id.wiki_grid_item_description_txv);
 				holder.indicatorView = (View) convertView
-						.findViewById(R.id.archive_list_item_indicator_view);
+						.findViewById(R.id.wiki_grid_item_indicator_view);
 
 				convertView.setTag(holder);
 			} else {

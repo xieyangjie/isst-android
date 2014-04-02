@@ -85,6 +85,21 @@ public class DataManager {
 			L.i("Write newslist to DB!");
 		}
 	}
+	
+	/**
+	 * 同步新闻列表接口返回数据
+	 * 
+	 * @param wikiList
+	 *            百科列表
+	 * @param context
+	 *            用于加载DBHelper获取当前数据库
+	 */
+	public static void syncWikiList(List<Archive> wikiList, Context context) {
+		if (!Judgement.isNullOrEmpty(wikiList)) {
+			writeObjectToDB(WIKI_LIST_IN_DB, (Serializable) wikiList, context);
+			L.i("Write wikilist to DB!");
+		}
+	}
 
 	/**
 	 * 获取当前数据库中的新闻列表对象
@@ -110,6 +125,7 @@ public class DataManager {
 		return null;
 	}
 	
+<<<<<<< HEAD
 	
 	/**
 	 * 同步学习列表接口返回数据
@@ -145,6 +161,27 @@ public class DataManager {
 			}
 			if (!Judgement.isNullOrEmpty(newsList)) {
 				return newsList;
+=======
+	/**
+	 * 获取当前数据库中的百科列表对象
+	 * 
+	 * @param context
+	 *            用于加载DBHelper获取当前数据库
+	 * @return 当前数据库中的百科列表对象
+	 */
+	@SuppressWarnings("unchecked")
+	public static List<Archive> getCurrentWikiList(Context context) {
+		Object object = objectFromDB(WIKI_LIST_IN_DB, context);
+		if (!Judgement.isNullOrEmpty(object)) {
+			List<Archive> wikiList = null;
+			try {
+				wikiList = (List<Archive>) object;
+			} catch (ClassCastException e) {
+				// TODO: handle exception
+			}
+			if (!Judgement.isNullOrEmpty(wikiList)) {
+				return wikiList;
+>>>>>>> 0b33f572911328d600b57a284bbc6b76e4735ea1
 			}
 		}
 		return null;

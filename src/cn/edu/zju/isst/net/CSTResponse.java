@@ -9,7 +9,7 @@ import java.util.Map;
 /**
  * 响应类
  * 
- * @see https://code.google.com/p/aerc/
+ * @see {@link https://code.google.com/p/aerc/}
  * 
  *      Represents the result of a Http request.
  */

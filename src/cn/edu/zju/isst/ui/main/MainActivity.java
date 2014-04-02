@@ -14,7 +14,11 @@ import cn.edu.zju.isst.R;
 import cn.edu.zju.isst.constant.Nav;
 import cn.edu.zju.isst.dummy.DummyFragment;
 import cn.edu.zju.isst.ui.life.NewsListFragment;
+<<<<<<< HEAD
 import cn.edu.zju.isst.ui.life.StudyListFragment;
+=======
+import cn.edu.zju.isst.ui.life.WikGridFragment;
+>>>>>>> 0b33f572911328d600b57a284bbc6b76e4735ea1
 import cn.edu.zju.isst.util.T;
 
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
@@ -120,7 +124,7 @@ public class MainActivity extends ActionBarActivity implements
 			switchContent(NewsListFragment.getInstance());
 			break;
 		case WIKI:
-			switchContent(DummyFragment.newInstance(WIKI.getName()));
+			switchContent(WikGridFragment.getInstance());
 			break;
 		case SCAC:
 			switchContent(DummyFragment.newInstance(SCAC.getName()));
@@ -181,7 +185,9 @@ public class MainActivity extends ActionBarActivity implements
 				.commit();
 	}
 
-	/**切换fragment
+	/**
+	 * 切换fragment
+	 * 
 	 * @param fragment
 	 */
 	private void switchContent(Fragment fragment) {

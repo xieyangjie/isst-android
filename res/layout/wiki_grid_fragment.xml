@@ -3,8 +3,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
     
-    <View android:id="@+id/loading_activity_test_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#66ccff" />    
+   <GridView
+    android:id="@+id/wiki_gridview"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:numColumns="2">
+  
+	</GridView>
+
 </RelativeLayout>

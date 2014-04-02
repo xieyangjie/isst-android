@@ -85,7 +85,7 @@ public class DummyFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.dummy_fragment, null);
-		m_txvDummy = (TextView) rootView.findViewById(R.id.textView1);
+		m_txvDummy = (TextView) rootView.findViewById(R.id.dummy_fragment_textView1);
 		m_txvDummy.setText(m_strText);
 		return rootView;
 	}

@@ -61,10 +61,10 @@ public class LoginActivity extends ActionBarActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.login_activity);
 
-		m_edtxUserName = (EditText) findViewById(R.id.username_input);
-		m_edtxPassword = (EditText) findViewById(R.id.password_input);
-		m_chbAutologin = (CheckBox) findViewById(R.id.autologin_chb);
-		m_btnLogin = (Button) findViewById(R.id.login_btn);
+		m_edtxUserName = (EditText) findViewById(R.id.login_activity_username_input);
+		m_edtxPassword = (EditText) findViewById(R.id.login_activity_password_input);
+		m_chbAutologin = (CheckBox) findViewById(R.id.login_activity_autologin_chb);
+		m_btnLogin = (Button) findViewById(R.id.login_activity_login_btn);
 
 		// 为什么要这么做？参看CSTSettings类以及SharedPreferences#getBoolean(String key,
 		// boolean defValue)
