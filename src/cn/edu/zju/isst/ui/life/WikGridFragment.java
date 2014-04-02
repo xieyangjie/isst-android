@@ -228,6 +228,9 @@ public class WikGridFragment extends Fragment implements OnScrollListener {
 
 		List<Archive> dbWikiList = DataManager
 				.getCurrentWikiList(getActivity());
+		if (!m_listAchive.isEmpty()){
+			m_listAchive.clear();
+		}
 		if (dbWikiList != null && !dbWikiList.equals(null)) {
 			for (Archive wiki : dbWikiList) {
 				m_listAchive.add(wiki);
