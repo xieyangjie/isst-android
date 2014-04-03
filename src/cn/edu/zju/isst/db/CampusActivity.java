@@ -72,43 +72,34 @@ public class CampusActivity implements Serializable {
 	 */
 	public void update(JSONObject jsonObject) throws JSONException {
 		if (!Judgement.isNullOrEmpty(jsonObject)) {
-			if (jsonObject.has("id")
-					&& !Judgement.isNullOrEmpty(jsonObject.get("id"))) {
+			if (Judgement.isValidJsonValue("id", jsonObject)) {
 				id = jsonObject.getInt("id");
 			}
-			if (jsonObject.has("title")
-					&& !Judgement.isNullOrEmpty(jsonObject.get("title"))) {
+			if (Judgement.isValidJsonValue("title", jsonObject)) {
 				title = jsonObject.getString("title");
 			}
-			if (jsonObject.has("picture")
-					&& !Judgement.isNullOrEmpty(jsonObject.get("picture"))) {
+			if (Judgement.isValidJsonValue("picture", jsonObject)) {
 				picture = jsonObject.getString("picture");
 			}
-			if (jsonObject.has("description")
-					&& !Judgement.isNullOrEmpty(jsonObject.get("description"))) {
+			if (Judgement.isValidJsonValue("description", jsonObject)) {
 				description = jsonObject.getString("description");
 			}
-			if (jsonObject.has("content")
-					&& !Judgement.isNullOrEmpty(jsonObject.get("content"))) {
+			if (Judgement.isValidJsonValue("content", jsonObject)) {
 				content = jsonObject.getString("content");
 			}
-			if (jsonObject.has("user")
-					&& !Judgement.isNullOrEmpty(jsonObject.get("user"))) {
+			if (Judgement.isValidJsonValue("user", jsonObject)) {
 				publisherName = jsonObject.getJSONObject("user").getString(
 						"name");
 			}
-			if (jsonObject.has("updatedAt")
-					&& !Judgement.isNullOrEmpty(jsonObject.get("updatedAt"))) {
+			if (Judgement.isValidJsonValue("updatedAt", jsonObject)) {
 				updatedAt = jsonObject.getLong("updatedAt");
 				updateTimeString = timeLongToString(updatedAt);
 			}
-			if (jsonObject.has("startTime")
-					&& !Judgement.isNullOrEmpty(jsonObject.get("startTime"))) {
+			if (Judgement.isValidJsonValue("startTime", jsonObject)) {
 				updatedAt = jsonObject.getLong("startTime");
 				startTimeString = timeLongToString(startTime);
 			}
-			if (jsonObject.has("expireTime")
-					&& !Judgement.isNullOrEmpty(jsonObject.get("expireTime"))) {
+			if (Judgement.isValidJsonValue("expireTime", jsonObject)) {
 				updatedAt = jsonObject.getLong("expireTime");
 				expireTimeString = timeLongToString(expireTime);
 			}

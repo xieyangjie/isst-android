@@ -53,18 +53,18 @@ public class RestaurantMenu implements Serializable{
 	 */
 	public void update(JSONObject jsonObject) throws JSONException {
 		if (!Judgement.isNullOrEmpty(jsonObject)) {
-			if (jsonObject.has("name")&& !Judgement.isNullOrEmpty(jsonObject.get("name"))) {
+			if (Judgement.isValidJsonValue("name", jsonObject)) {
 				name = jsonObject.getString("name");
 			}
-			if (jsonObject.has("price")&& !Judgement.isNullOrEmpty(jsonObject.get("price"))) {
+			if (Judgement.isValidJsonValue("price", jsonObject)) {
 				price = (float) jsonObject.getDouble("price");
 			}
-			if (jsonObject.has("picture")&& !Judgement.isNullOrEmpty(jsonObject.get("picture"))) {
+			if (Judgement.isValidJsonValue("picture", jsonObject)) {
 				picture = jsonObject.getString("picture");
 			} else {
 				description = "";
 			}
-			if (jsonObject.has("description")&& !Judgement.isNullOrEmpty(jsonObject.get("description"))) {
+			if (Judgement.isValidJsonValue("description", jsonObject)) {
 				description = jsonObject.getString("description");
 			} else {
 				description = "";

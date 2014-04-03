@@ -1,5 +1,6 @@
 package cn.edu.zju.isst.net;
 
+import cn.edu.zju.isst.util.Judgement;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -10,12 +11,12 @@ import android.net.NetworkInfo;
  */
 public class NetworkConnection {
 	public static boolean isNetworkConnected(Context context) {
-		if (context != null) {
+		if (!Judgement.isNullOrEmpty(context)) {
 			ConnectivityManager connectivityManager = (ConnectivityManager) context
 					.getSystemService(Context.CONNECTIVITY_SERVICE);
 			NetworkInfo networkInfo = connectivityManager
 					.getActiveNetworkInfo();
-			if (networkInfo == null) {
+			if (Judgement.isNullOrEmpty(networkInfo)) {
 				return false;
 			} else if (networkInfo.isAvailable()) {
 				return true;

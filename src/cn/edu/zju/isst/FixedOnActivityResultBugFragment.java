@@ -6,6 +6,8 @@ import android.util.SparseIntArray;
 
 import java.util.List;
 
+import cn.edu.zju.isst.util.Judgement;
+
 /**
  * User: qii
  * Date: 13-9-8
@@ -66,7 +68,7 @@ public class FixedOnActivityResultBugFragment extends Fragment {
         mRequestCodes.delete(requestCode);
 
         List<Fragment> fragments = getChildFragmentManager().getFragments();
-        if (fragments == null)
+        if (Judgement.isNullOrEmpty(fragments))
             return false;
 
         for (Fragment fragment : fragments) {

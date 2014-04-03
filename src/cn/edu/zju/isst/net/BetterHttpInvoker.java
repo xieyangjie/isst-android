@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import cn.edu.zju.isst.util.Judgement;
 import cn.edu.zju.isst.util.L;
 
 /**
@@ -91,6 +92,9 @@ public class BetterHttpInvoker {
 	 *             未处理异常
 	 */
 	private CSTResponse getOrPost(Request request) throws IOException {
+		if (Judgement.isNullOrEmpty(request)) {
+			return null;
+		}
 		HttpURLConnection conn = null;
 		CSTResponse response = null;
 		System.setProperty("http.keepAlive", "false");
@@ -133,7 +137,7 @@ public class BetterHttpInvoker {
 				}
 			}
 
-			if (response == null) {
+			if ( Judgement.isNullOrEmpty(response)) {
 				//TODO handle httpError like 404: return nothing and response won't initialize
 				L.i("BetterHttpInvoker Before getInputStream()");
 				BufferedInputStream in = new BufferedInputStream(
@@ -145,7 +149,7 @@ public class BetterHttpInvoker {
 						conn.getHeaderFields(), body);
 			}
 		} finally {
-			if (conn != null) {
+			if ( !Judgement.isNullOrEmpty(conn)) {
 				conn.disconnect();
 			}
 		}

@@ -38,6 +38,7 @@ import cn.edu.zju.isst.exception.HttpErrorWeeder;
 import cn.edu.zju.isst.net.CSTResponse;
 import cn.edu.zju.isst.net.NetworkConnection;
 import cn.edu.zju.isst.net.RequestListener;
+import cn.edu.zju.isst.util.Judgement;
 import cn.edu.zju.isst.util.L;
 
 /**
@@ -220,7 +221,7 @@ public class NewsListFragment extends ListFragment implements OnScrollListener {
 		if (!m_listAchive.isEmpty()) {
 			m_listAchive.clear();
 		}
-		if (dbNewsList != null && !dbNewsList.equals(null)) {
+		if (!Judgement.isNullOrEmpty(dbNewsList)) {
 			for (Archive news : dbNewsList) {
 				m_listAchive.add(news);
 			}

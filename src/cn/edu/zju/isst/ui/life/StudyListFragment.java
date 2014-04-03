@@ -38,6 +38,7 @@ import cn.edu.zju.isst.exception.HttpErrorWeeder;
 import cn.edu.zju.isst.net.CSTResponse;
 import cn.edu.zju.isst.net.NetworkConnection;
 import cn.edu.zju.isst.net.RequestListener;
+import cn.edu.zju.isst.util.Judgement;
 import cn.edu.zju.isst.util.L;
 
 /**
@@ -220,7 +221,7 @@ public class StudyListFragment extends ListFragment implements OnScrollListener 
 	private void initStudyList() {
 		List<Archive> dbStudyList = DataManager
 				.getCurrentStudyList(getActivity());
-		if (dbStudyList != null && !dbStudyList.equals(null)) {
+		if (!Judgement.isNullOrEmpty(dbStudyList)) {
 			for (Archive study : dbStudyList) {
 				m_listAchive.add(study);
 			}

@@ -65,37 +65,28 @@ public class Restaurant implements Serializable {
 	 */
 	public void update(JSONObject jsonObject) throws JSONException {
 		if (!Judgement.isNullOrEmpty(jsonObject)) {
-			if (jsonObject.has("id")
-					&& !Judgement.isNullOrEmpty(jsonObject.get("id"))) {
+			if (Judgement.isValidJsonValue("id", jsonObject)) {
 				id = jsonObject.getInt("id");
 			}
-			if (jsonObject.has("name")
-					&& !Judgement.isNullOrEmpty(jsonObject.get("name"))) {
+			if (Judgement.isValidJsonValue("name", jsonObject)) {
 				name = jsonObject.getString("name");
 			}
-			if (jsonObject.has("picture")
-					&& !Judgement.isNullOrEmpty(jsonObject.get("picture"))) {
+			if (Judgement.isValidJsonValue("picture", jsonObject)) {
 				picture = jsonObject.getString("picture");
 			}
-			if (jsonObject.has("address")
-					&& !Judgement.isNullOrEmpty(jsonObject.get("address"))) {
+			if (Judgement.isValidJsonValue("address", jsonObject)) {
 				address = jsonObject.getString("address");
 			}
-			if (jsonObject.has("hotline")
-					&& !Judgement.isNullOrEmpty(jsonObject.get("hotline"))) {
+			if (Judgement.isValidJsonValue("hotline", jsonObject)) {
 				hotline = jsonObject.getString("hotline");
 			}
-			if (jsonObject.has("businessHours")
-					&& !Judgement
-							.isNullOrEmpty(jsonObject.get("businessHours"))) {
+			if (Judgement.isValidJsonValue("businessHours", jsonObject)) {
 				businessHours = jsonObject.getString("businessHours");
 			}
-			if (jsonObject.has("description")
-					&& !Judgement.isNullOrEmpty(jsonObject.get("description"))) {
+			if (Judgement.isValidJsonValue("description", jsonObject)) {
 				description = jsonObject.getString("description");
 			}
-			if (jsonObject.has("content")
-					&& !Judgement.isNullOrEmpty(jsonObject.get("content"))) {
+			if (Judgement.isValidJsonValue("content", jsonObject)) {
 				content = jsonObject.getString("content");
 			}
 		}

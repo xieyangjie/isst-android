@@ -83,19 +83,20 @@ public class BetterAsyncWebServiceRunner {
 										: methodName));
 					}
 
-					if (response != null
+					if (!Judgement.isNullOrEmpty(response)
 							&& response.getStatus() == HttpURLConnection.HTTP_OK) {
 						refreshCookies(url, response.getHeaders());
 						resultString = readByte(response.getBody());
-						if (resultString != null) {
+						if (!Judgement.isNullOrEmpty(resultString)) {
 							result = new JSONObject(resultString);
 						}
 					}
 
-					if (result != null && response != null) {
+					if (!Judgement.isNullOrEmpty(result)
+							&& !Judgement.isNullOrEmpty(response)) {
 						L.i(resultString);
 						listener.onComplete(result);
-					} else if (response != null) {
+					} else if (!Judgement.isNullOrEmpty(response)) {
 						listener.onHttpError(response);
 					}
 				} catch (Exception e) {
@@ -114,6 +115,8 @@ public class BetterAsyncWebServiceRunner {
 	 * @return Http Headers
 	 */
 	private Map<String, List<String>> getHeaders(String url) {
+		if (Judgement.isNullOrEmpty(url))
+			return null;
 		Map<String, List<String>> headers = new ConcurrentHashMap<String, List<String>>();
 		List<String> cookieList = new ArrayList<String>();
 		String cookieString = CookieManager.getInstance().getCookie(url);

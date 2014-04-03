@@ -42,6 +42,7 @@ public class DataManager {
 	 *            用于加载DBHelper获取当前数据库
 	 */
 	public static void syncLogin(User user, Context context) {
+
 		if (user.getId() >= 0 && !user.getUsername().isEmpty()
 				&& !user.getPassword().isEmpty()) {// TODO 更好的判断user有效的方法
 			writeObjectToDB(USER_IN_DB, user, context);
@@ -72,10 +73,10 @@ public class DataManager {
 		return null;
 	}
 
-	public static void deleteCurrentUser(Context context){
+	public static void deleteCurrentUser(Context context) {
 		new DBManager(context).delete(USER_IN_DB);
 	}
-	
+
 	/**
 	 * 同步新闻列表接口返回数据
 	 * 
@@ -90,7 +91,7 @@ public class DataManager {
 			L.i("Write newslist to DB!");
 		}
 	}
-	
+
 	/**
 	 * 同步新闻列表接口返回数据
 	 * 
@@ -129,8 +130,8 @@ public class DataManager {
 		}
 		return null;
 	}
-	
-/**
+
+	/**
 	 * 同步在校活动列表接口返回数据
 	 * 
 	 * @param campusActivityList
@@ -138,13 +139,15 @@ public class DataManager {
 	 * @param context
 	 *            用于加载DBHelper获取当前数据库
 	 */
-	public static void syncCampusActivityList(List<CampusActivity> campusActivityList, Context context) {
+	public static void syncCampusActivityList(
+			List<CampusActivity> campusActivityList, Context context) {
 		if (!Judgement.isNullOrEmpty(campusActivityList)) {
-			writeObjectToDB(SCAC_LIST_IN_DB, (Serializable) campusActivityList, context);
+			writeObjectToDB(SCAC_LIST_IN_DB, (Serializable) campusActivityList,
+					context);
 			L.i("Write campusActivityList to DB!");
 		}
 	}
-	
+
 	/**
 	 * 同步学习列表接口返回数据
 	 * 
@@ -196,10 +199,11 @@ public class DataManager {
 			}
 			if (!Judgement.isNullOrEmpty(newsList)) {
 				return newsList;
-}
+			}
 		}
 		return null;
 	}
+
 	/**
 	 * 获取当前数据库中的百科列表对象
 	 * 
@@ -224,13 +228,15 @@ public class DataManager {
 		return null;
 	}
 
-	public static void syncRestaurantList(List<Restaurant> restaurantList, Context context){
-		if(!Judgement.isNullOrEmpty(restaurantList)){
-			writeObjectToDB(RESTAURANT_LIST_IN_DB, (Serializable) restaurantList, context);
+	public static void syncRestaurantList(List<Restaurant> restaurantList,
+			Context context) {
+		if (!Judgement.isNullOrEmpty(restaurantList)) {
+			writeObjectToDB(RESTAURANT_LIST_IN_DB,
+					(Serializable) restaurantList, context);
 			L.i("Write restaurantlist to DB!");
 		}
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public static List<Restaurant> getRestaurantList(Context context) {
 		Object object = objectFromDB(RESTAURANT_LIST_IN_DB, context);
@@ -247,7 +253,7 @@ public class DataManager {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * 将目标对象序列化后写入当前数据库
 	 * 
@@ -260,6 +266,9 @@ public class DataManager {
 	 */
 	public static void writeObjectToDB(String name, Serializable object,
 			Context context) {
+		if (Judgement.isNullOrEmpty(name) || Judgement.isNullOrEmpty(object)) {
+			return;
+		}
 		try {
 			ByteArrayOutputStream bos = new ByteArrayOutputStream();
 			ObjectOutputStream oos = new ObjectOutputStream(bos);
@@ -285,7 +294,7 @@ public class DataManager {
 		Serializable object = null;
 		try {
 			byte[] data = new DBManager(context).get(name);
-			if (data != null && !data.equals(null)) {
+			if (!Judgement.isNullOrEmpty(data)) {
 				ByteArrayInputStream bis = new ByteArrayInputStream(data);
 				ObjectInputStream ois = new ObjectInputStream(bis);
 				object = (Serializable) ois.readObject();
