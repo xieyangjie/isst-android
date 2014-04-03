@@ -4,10 +4,6 @@
 package cn.edu.zju.isst.db;
 
 import java.io.Serializable;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -37,7 +33,6 @@ public class Archive implements Serializable {
 	private int publisherId;
 	private Publisher publisher;
 	private String content;
-	private String updateTimeString;
 
 	/**
 	 * 默认值初始化并更新
@@ -53,9 +48,11 @@ public class Archive implements Serializable {
 		description = "";
 		updatedAt = 0;
 		publisher = new Publisher(new JSONObject("{}"));// TODO 怎样初始化比较好？
-		publisherId = publisher.getId();
+		if (!Judgement.isNullOrEmpty(publisher)) {
+			publisherId = publisher.getId();
+		}
+
 		content = "";
-		updateTimeString = "";
 		update(jsonObject);
 	}
 
@@ -69,50 +66,31 @@ public class Archive implements Serializable {
 	 */
 	public void update(JSONObject jsonObject) throws JSONException {
 		if (!Judgement.isNullOrEmpty(jsonObject)) {
-			if (jsonObject.has("id")
-					&& !Judgement.isNullOrEmpty(jsonObject.get("id"))) {
+			if (Judgement.isValidJsonValue("id", jsonObject)) {
 				id = jsonObject.getInt("id");
 			}
-			if (jsonObject.has("title")
-					&& !Judgement.isNullOrEmpty(jsonObject.get("title"))) {
+			if (Judgement.isValidJsonValue("title", jsonObject)) {
 				title = jsonObject.getString("title");
 			}
-			if (jsonObject.has("description")
-					&& !Judgement.isNullOrEmpty(jsonObject.get("description"))) {
+			if (Judgement.isValidJsonValue("description", jsonObject)) {
 				description = jsonObject.getString("description");
 			}
-			if (jsonObject.has("updatedAt")
-					&& !Judgement.isNullOrEmpty(jsonObject.get("updatedAt"))) {
+
+			if (Judgement.isValidJsonValue("updatedAt", jsonObject)) {
 				updatedAt = jsonObject.getLong("updatedAt");
-				updateTimeString = timeLongToString(updatedAt);
 			}
-			if (jsonObject.has("user")) {
-				Object tryObject = jsonObject.get("user");
-				if (!Judgement.isNullOrEmpty(tryObject)
-						&& !tryObject.equals("") && !tryObject.equals("null")) {
-					publisher = new Publisher(jsonObject.getJSONObject("user"));
-				}
+			if (Judgement.isValidJsonValue("user", jsonObject)) {
+				publisher = new Publisher(jsonObject.getJSONObject("user"));
 			}
-			if (jsonObject.has("userId")
-					&& !Judgement.isNullOrEmpty(jsonObject.get("userId"))) {
+			if (Judgement.isValidJsonValue("userId", jsonObject)) {
 				publisherId = jsonObject.getInt("userId");
 			} else {
 				publisherId = publisher.getId();
 			}
-			if (jsonObject.has("content")
-					&& !Judgement.isNullOrEmpty(jsonObject.get("content"))) {
+			if (Judgement.isValidJsonValue("content", jsonObject)) {
 				content = jsonObject.getString("content");
 			}
 		}
-	}
-
-	private String timeLongToString(long time) {
-		if (time > 0) {
-			Date date = new Date(time);
-			DateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.CHINA);
-			return df.format(date);
-		}
-		return "";
 	}
 
 	/**
@@ -162,13 +140,6 @@ public class Archive implements Serializable {
 	 */
 	public String getContent() {
 		return content;
-	}
-
-	/**
-	 * @return the dateTimeString
-	 */
-	public String getDateTimeString() {
-		return updateTimeString;
 	}
 
 }

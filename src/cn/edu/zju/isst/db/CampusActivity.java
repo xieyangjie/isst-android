@@ -34,9 +34,6 @@ public class CampusActivity implements Serializable {
 	private long updatedAt;
 	private long startTime;
 	private long expireTime;
-	private String updateTimeString;
-	private String startTimeString;
-	private String expireTimeString;
 
 	/**
 	 * 默认值初始化并更新
@@ -56,9 +53,6 @@ public class CampusActivity implements Serializable {
 		updatedAt = 0;
 		startTime = 0;
 		expireTime = 0;
-		updateTimeString = "";
-		startTimeString = "";
-		expireTimeString = "";
 		update(jsonObject);
 	}
 
@@ -72,56 +66,35 @@ public class CampusActivity implements Serializable {
 	 */
 	public void update(JSONObject jsonObject) throws JSONException {
 		if (!Judgement.isNullOrEmpty(jsonObject)) {
-			if (jsonObject.has("id")
-					&& !Judgement.isNullOrEmpty(jsonObject.get("id"))) {
+			if (Judgement.isValidJsonValue("id", jsonObject)) {
 				id = jsonObject.getInt("id");
 			}
-			if (jsonObject.has("title")
-					&& !Judgement.isNullOrEmpty(jsonObject.get("title"))) {
+			if (Judgement.isValidJsonValue("title", jsonObject)) {
 				title = jsonObject.getString("title");
 			}
-			if (jsonObject.has("picture")
-					&& !Judgement.isNullOrEmpty(jsonObject.get("picture"))) {
+			if (Judgement.isValidJsonValue("picture", jsonObject)) {
 				picture = jsonObject.getString("picture");
 			}
-			if (jsonObject.has("description")
-					&& !Judgement.isNullOrEmpty(jsonObject.get("description"))) {
+			if (Judgement.isValidJsonValue("description", jsonObject)) {
 				description = jsonObject.getString("description");
 			}
-			if (jsonObject.has("content")
-					&& !Judgement.isNullOrEmpty(jsonObject.get("content"))) {
+			if (Judgement.isValidJsonValue("content", jsonObject)) {
 				content = jsonObject.getString("content");
 			}
-			if (jsonObject.has("user")
-					&& !Judgement.isNullOrEmpty(jsonObject.get("user"))) {
+			if (Judgement.isValidJsonValue("user", jsonObject)) {
 				publisherName = jsonObject.getJSONObject("user").getString(
 						"name");
 			}
-			if (jsonObject.has("updatedAt")
-					&& !Judgement.isNullOrEmpty(jsonObject.get("updatedAt"))) {
+			if (Judgement.isValidJsonValue("updatedAt", jsonObject)) {
 				updatedAt = jsonObject.getLong("updatedAt");
-				updateTimeString = timeLongToString(updatedAt);
 			}
-			if (jsonObject.has("startTime")
-					&& !Judgement.isNullOrEmpty(jsonObject.get("startTime"))) {
+			if (Judgement.isValidJsonValue("startTime", jsonObject)) {
 				updatedAt = jsonObject.getLong("startTime");
-				startTimeString = timeLongToString(startTime);
 			}
-			if (jsonObject.has("expireTime")
-					&& !Judgement.isNullOrEmpty(jsonObject.get("expireTime"))) {
+			if (Judgement.isValidJsonValue("expireTime", jsonObject)) {
 				updatedAt = jsonObject.getLong("expireTime");
-				expireTimeString = timeLongToString(expireTime);
 			}
 		}
-	}
-
-	private String timeLongToString(long time) {
-		if (time > 0) {
-			Date date = new Date(time);
-			DateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.CHINA);
-			return df.format(date);
-		}
-		return "";
 	}
 
 	/**
@@ -185,26 +158,5 @@ public class CampusActivity implements Serializable {
 	 */
 	public long getExpireTime() {
 		return expireTime;
-	}
-
-	/**
-	 * @return the updateTimeString
-	 */
-	public String getUpdateTimeString() {
-		return updateTimeString;
-	}
-
-	/**
-	 * @return the startTimeString
-	 */
-	public String getStartTimeString() {
-		return startTimeString;
-	}
-
-	/**
-	 * @return the expireTimeString
-	 */
-	public String getExpireTimeString() {
-		return expireTimeString;
 	}
 }

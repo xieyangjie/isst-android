@@ -59,24 +59,19 @@ public class Publisher implements Serializable {
 	 */
 	public void update(JSONObject jsonObject) throws JSONException {
 		if (!Judgement.isNullOrEmpty(jsonObject)) {
-			if (jsonObject.has("id")
-					&& !Judgement.isNullOrEmpty(jsonObject.get("id"))) {
+			if (Judgement.isValidJsonValue("id", jsonObject)) {
 				id = jsonObject.getInt("id");
 			}
-			if (jsonObject.has("name")
-					&& !Judgement.isNullOrEmpty(jsonObject.get("name"))) {
+			if (Judgement.isValidJsonValue("name", jsonObject)) {
 				name = jsonObject.getString("name");
 			}
-			if (jsonObject.has("phone")
-					&& !Judgement.isNullOrEmpty(jsonObject.get("phone"))) {
+			if (Judgement.isValidJsonValue("phone", jsonObject)) {
 				phone = jsonObject.getString("phone");
 			}
-			if (jsonObject.has("qq")
-					&& !Judgement.isNullOrEmpty(jsonObject.get("qq"))) {
+			if (Judgement.isValidJsonValue("qq", jsonObject)) {
 				qq = jsonObject.getString("qq");
 			}
-			if (jsonObject.has("email")
-					&& !Judgement.isNullOrEmpty(jsonObject.get("email"))) {
+			if (Judgement.isValidJsonValue("email", jsonObject)) {
 				email = jsonObject.getString("email");
 			}
 		}

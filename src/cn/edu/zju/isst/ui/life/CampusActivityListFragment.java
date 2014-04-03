@@ -22,7 +22,9 @@ import cn.edu.zju.isst.exception.HttpErrorWeeder;
 import cn.edu.zju.isst.net.CSTResponse;
 import cn.edu.zju.isst.net.NetworkConnection;
 import cn.edu.zju.isst.net.RequestListener;
+import cn.edu.zju.isst.util.Judgement;
 import cn.edu.zju.isst.util.L;
+import cn.edu.zju.isst.util.TimeString;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -126,7 +128,8 @@ public class CampusActivityListFragment extends ListFragment implements
 
 		};
 
-		m_adapterCampusActivityList = new CampusActivityListAdapter(getActivity());
+		m_adapterCampusActivityList = new CampusActivityListAdapter(
+				getActivity());
 		setListAdapter(m_adapterCampusActivityList);
 
 		if (m_listCampusActivity.size() == 0) {
@@ -238,7 +241,11 @@ public class CampusActivityListFragment extends ListFragment implements
 			m_listCampusActivity.clear();
 		}
 		try {
+			if (Judgement.isValidJsonValue("body", jsonObject)) {
+				return;
+			}
 			JSONArray jsonArray = jsonObject.getJSONArray("body");
+
 			for (int i = 0; i < jsonArray.length(); i++) {
 				m_listCampusActivity.add(new CampusActivity(
 						(JSONObject) jsonArray.get(i)));
@@ -262,6 +269,9 @@ public class CampusActivityListFragment extends ListFragment implements
 	private void loadMore(JSONObject jsonObject) {
 		JSONArray jsonArray;
 		try {
+			if (Judgement.isValidJsonValue("body", jsonObject)) {
+				return;
+			}
 			jsonArray = jsonObject.getJSONArray("body");
 			for (int i = 0; i < jsonArray.length(); i++) {
 				m_listCampusActivity.add(new CampusActivity(
@@ -331,6 +341,9 @@ public class CampusActivityListFragment extends ListFragment implements
 		public void onComplete(Object result) {
 			Message msg = m_handlerCampusActivityList.obtainMessage();
 			try {
+				if (Judgement.isValidJsonValue("status", (JSONObject) result)) {
+					return;
+				}
 				msg.what = ((JSONObject) result).getInt("status");
 				if (msg.what == STATUS_REQUEST_SUCCESS) {
 					switch (type) {
@@ -443,12 +456,12 @@ public class CampusActivityListFragment extends ListFragment implements
 
 			holder.titleTxv.setText(m_listCampusActivity.get(position)
 					.getTitle());
-			holder.updateTimeTxv.setText(m_listCampusActivity.get(position)
-					.getUpdateTimeString());
-			holder.startTimeTxv.setText(m_listCampusActivity.get(position)
-					.getStartTimeString());
-			holder.expireTimeTxv.setText(m_listCampusActivity.get(position)
-					.getExpireTimeString());
+			holder.updateTimeTxv.setText(TimeString.toYMD(m_listCampusActivity.get(position)
+					.getUpdatedAt()));
+			holder.startTimeTxv.setText(TimeString.toHM(m_listCampusActivity.get(position)
+					.getStartTime()));
+			holder.expireTimeTxv.setText(TimeString.toHM(m_listCampusActivity.get(position)
+					.getExpireTime()));
 			holder.descriptionTxv.setText(m_listCampusActivity.get(position)
 					.getDescription());
 

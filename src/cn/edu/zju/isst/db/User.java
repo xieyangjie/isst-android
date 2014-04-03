@@ -91,91 +91,67 @@ public class User implements Serializable {
 	 */
 	public void update(JSONObject jsonObject) throws JSONException {
 		if (!Judgement.isNullOrEmpty(jsonObject)) {
-			if (jsonObject.has("id")
-					&& !Judgement.isNullOrEmpty(jsonObject.get("id"))) {
+			if (Judgement.isValidJsonValue("id", jsonObject)) {
 				id = jsonObject.getInt("id");
 			}
-			if (jsonObject.has("username")
-					&& !Judgement.isNullOrEmpty(jsonObject.get("id"))) {
+			if (Judgement.isValidJsonValue("username", jsonObject)) {
 				username = jsonObject.getString("username");
 			}
-			if (jsonObject.has("password")
-					&& !Judgement.isNullOrEmpty(jsonObject.get("password"))) {
+			if (Judgement.isValidJsonValue("password", jsonObject)) {
 				password = jsonObject.getString("password");
 			}
-			if (jsonObject.has("name")
-					&& !Judgement.isNullOrEmpty(jsonObject.get("name"))) {
+			if (Judgement.isValidJsonValue("name", jsonObject)) {
 				name = jsonObject.getString("name");
 			}
-			if (jsonObject.has("gender")
-					&& !Judgement.isNullOrEmpty(jsonObject.get("gender"))) {
+			if (Judgement.isValidJsonValue("gender", jsonObject)) {
 				gender = jsonObject.getInt("gender");
 			}
-			if (jsonObject.has("grade")
-					&& !Judgement.isNullOrEmpty(jsonObject.get("grade"))) {
+			if (Judgement.isValidJsonValue("grade", jsonObject)) {
 				grade = jsonObject.getInt("grade");
 			}
-			if (jsonObject.has("classId")
-					&& !Judgement.isNullOrEmpty(jsonObject.get("classId"))) {
+			if (Judgement.isValidJsonValue("classId", jsonObject)) {
 				classId = jsonObject.getInt("classId");
 			}
-			if (jsonObject.has("majorId")
-					&& !Judgement.isNullOrEmpty(jsonObject.get("majorId"))) {
+			if (Judgement.isValidJsonValue("majorId", jsonObject)) {
 				majorId = jsonObject.getInt("majorId");
 			}
-			if (jsonObject.has("cityId")
-					&& !Judgement.isNullOrEmpty(jsonObject.get("cityId"))) {
+			if (Judgement.isValidJsonValue("cityId", jsonObject)) {
 				cityId = jsonObject.getInt("cityId");
 			}
-			if (jsonObject.has("email")
-					&& !Judgement.isNullOrEmpty(jsonObject.get("email"))) {
+			if (Judgement.isValidJsonValue("email", jsonObject)) {
 				email = jsonObject.getString("email");
 			}
-			if (jsonObject.has("phone")
-					&& !Judgement.isNullOrEmpty(jsonObject.get("phone"))) {
+			if (Judgement.isValidJsonValue("phone", jsonObject)) {
 				phone = jsonObject.getString("phone");
 			}
-			if (jsonObject.has("qq")
-					&& !Judgement.isNullOrEmpty(jsonObject.get("qq"))) {
+			if (Judgement.isValidJsonValue("qq", jsonObject)) {
 				qq = jsonObject.getString("qq");
 			}
-			if (jsonObject.has("company")
-					&& !Judgement.isNullOrEmpty(jsonObject.get("company"))) {
+			if (Judgement.isValidJsonValue("company", jsonObject)) {
 				company = jsonObject.getString("company");
 			}
-			if (jsonObject.has("position")
-					&& !Judgement.isNullOrEmpty(jsonObject.get("position"))) {
+			if (Judgement.isValidJsonValue("position", jsonObject)) {
 				position = jsonObject.getString("position");
 			}
-			if (jsonObject.has("signature")
-					&& !Judgement.isNullOrEmpty(jsonObject.get("signature"))) {
+			if (Judgement.isValidJsonValue("signature", jsonObject)) {
 				signature = jsonObject.getString("signature");
 			}
-			if (jsonObject.has("cityPrincipal")
-					&& !Judgement
-							.isNullOrEmpty(jsonObject.get("cityPrincipal"))) {
+			if (Judgement.isValidJsonValue("cityPrincipal", jsonObject)) {
 				cityPrincipal = jsonObject.getBoolean("cityPrincipal");
 			}
-			if (jsonObject.has("privateQQ")
-					&& !Judgement.isNullOrEmpty(jsonObject.get("privateQQ"))) {
+			if (Judgement.isValidJsonValue("privateQQ", jsonObject)) {
 				privateQQ = jsonObject.getBoolean("privateQQ");
 			}
-			if (jsonObject.has("privateEmail")
-					&& !Judgement.isNullOrEmpty(jsonObject.get("privateEmail"))) {
+			if (Judgement.isValidJsonValue("privateEmail", jsonObject)) {
 				privateEmail = jsonObject.getBoolean("privateEmail");
 			}
-			if (jsonObject.has("privatePhone")
-					&& !Judgement.isNullOrEmpty(jsonObject.get("privatePhone"))) {
+			if (Judgement.isValidJsonValue("privatePhone", jsonObject)) {
 				privatePhone = jsonObject.getBoolean("privatePhone");
 			}
-			if (jsonObject.has("privateCompany")
-					&& !Judgement.isNullOrEmpty(jsonObject
-							.get("privateCompany"))) {
+			if (Judgement.isValidJsonValue("privateCompany", jsonObject)) {
 				privateCompany = jsonObject.getBoolean("privateCompany");
 			}
-			if (jsonObject.has("privatePosition")
-					&& !Judgement.isNullOrEmpty(jsonObject
-							.get("privatePosition"))) {
+			if (Judgement.isValidJsonValue("privatePosition", jsonObject)) {
 				privatePosition = jsonObject.getBoolean("privatePosition");
 			}
 		}

@@ -14,6 +14,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.ActionBarActivity;
 import android.view.View;
+import android.webkit.CookieSyncManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -29,6 +30,7 @@ import cn.edu.zju.isst.net.RequestListener;
 import cn.edu.zju.isst.settings.CSTSettings;
 import cn.edu.zju.isst.ui.main.MainActivity;
 import cn.edu.zju.isst.util.CM;
+import cn.edu.zju.isst.util.Judgement;
 import cn.edu.zju.isst.util.L;
 
 /**
@@ -60,6 +62,7 @@ public class LoginActivity extends ActionBarActivity {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.login_activity);
+		CookieSyncManager.createInstance(LoginActivity.this);
 
 		m_edtxUserName = (EditText) findViewById(R.id.login_activity_username_input);
 		m_edtxPassword = (EditText) findViewById(R.id.login_activity_password_input);
@@ -85,7 +88,7 @@ public class LoginActivity extends ActionBarActivity {
 
 				switch (msg.what) {
 				case STATUS_REQUEST_SUCCESS:
-					if(m_chbAutologin.isChecked()){
+					if (m_chbAutologin.isChecked()) {
 						CSTSettings.setAutoLogin(true, LoginActivity.this);
 					}
 					LoginActivity.this.startActivity(new Intent(
@@ -98,12 +101,11 @@ public class LoginActivity extends ActionBarActivity {
 					CM.showAlert(LoginActivity.this, (String) msg.obj);
 					break;
 				case STATUS_LOGIN_PASSWORD_ERROR:
+				case STATUS_LOGIN_AUTH_EXPIRED:
+				case STATUS_LOGIN_AUTH_FAILED:
 					m_edtxPassword.setText("");
 					CM.showAlert(LoginActivity.this, (String) msg.obj);
-					break;
-				case STATUS_LOGIN_AUTH_EXPIRED:
-					break;
-				case STATUS_LOGIN_AUTH_FAILED:
+				
 					break;
 				case NETWORK_NOT_CONNECTED:
 					CM.showAlert(LoginActivity.this,
@@ -148,6 +150,10 @@ public class LoginActivity extends ActionBarActivity {
 										switch (status) {
 										case STATUS_REQUEST_SUCCESS:
 											L.i("LOGIN SUCCESS!!!");
+											if (Judgement.isValidJsonValue(
+													"body", jsonObject)) {
+												break;
+											}
 											DataManager.syncLogin(
 													new User(
 															jsonObject
@@ -158,6 +164,11 @@ public class LoginActivity extends ActionBarActivity {
 										case STATUS_LOGIN_PASSWORD_ERROR:
 										case STATUS_LOGIN_AUTH_EXPIRED:
 										case STATUS_LOGIN_AUTH_FAILED:
+											if (Judgement.isValidJsonValue(
+													"message", jsonObject)) {
+												msg.obj = "test";
+												break;
+											}
 											msg.obj = jsonObject.get("message");
 											break;
 										default:

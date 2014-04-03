@@ -4,6 +4,7 @@
 package cn.edu.zju.isst.api;
 
 import cn.edu.zju.isst.net.RequestListener;
+import cn.edu.zju.isst.util.Judgement;
 import cn.edu.zju.isst.util.L;
 
 /**
@@ -22,13 +23,13 @@ public class RestaurantApi extends CSTApi {
 		StringBuilder sb = new StringBuilder();
 		sb.append(SUB_URL).append("?");
 
-		if (page != null) {
+		if (!Judgement.isNullOrEmpty(page)) {
 			sb.append("page=" + String.valueOf(page) + "&");
 		}
-		if (pageSize != null) {
+		if (!Judgement.isNullOrEmpty(pageSize)) {
 			sb.append("pageSize=" + String.valueOf(pageSize) + "&");
 		}
-		if (keywords != null) {
+		if (!Judgement.isNullOrEmpty(keywords)) {
 			sb.append("keywords" + keywords + "&");
 		}
 		sb.deleteCharAt(sb.toString().length() - 1);
