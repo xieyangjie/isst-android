@@ -25,6 +25,7 @@ import cn.edu.zju.isst.net.CSTResponse;
 import cn.edu.zju.isst.net.RequestListener;
 import cn.edu.zju.isst.util.Judgement;
 import cn.edu.zju.isst.util.L;
+import cn.edu.zju.isst.util.TimeString;
 
 /**
  * 归档详情页
@@ -197,7 +198,7 @@ public class ArchiveDetailActivity extends ActionBarActivity {
 			return;
 		}
 		m_txvTitle.setText(m_archiveCurrent.getTitle());
-		m_txvDate.setText(m_archiveCurrent.getDateTimeString());
+		m_txvDate.setText(TimeString.toFull(m_archiveCurrent.getUpdatedAt()));
 		m_txvPublisher.setText(m_archiveCurrent.getPublisher().getName());
 		m_webvContent.loadDataWithBaseURL(null, m_archiveCurrent.getContent(),
 				"text/html", "utf-8", null);

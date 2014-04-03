@@ -40,6 +40,7 @@ import cn.edu.zju.isst.net.NetworkConnection;
 import cn.edu.zju.isst.net.RequestListener;
 import cn.edu.zju.isst.util.Judgement;
 import cn.edu.zju.isst.util.L;
+import cn.edu.zju.isst.util.TimeString;
 
 /**
  * 新闻列表页
@@ -437,7 +438,7 @@ public class NewsListFragment extends ListFragment implements OnScrollListener {
 			}
 
 			holder.titleTxv.setText(m_listAchive.get(position).getTitle());
-			holder.dateTxv.setText(m_listAchive.get(position).getDateTimeString());
+			holder.dateTxv.setText(TimeString.toYMD(m_listAchive.get(position).getUpdatedAt()));
 			holder.publisherTxv.setText(m_listAchive.get(position)
 					.getPublisher().getName());
 			holder.descriptionTxv.setText(m_listAchive.get(position)

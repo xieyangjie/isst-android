@@ -24,6 +24,7 @@ import cn.edu.zju.isst.net.NetworkConnection;
 import cn.edu.zju.isst.net.RequestListener;
 import cn.edu.zju.isst.util.Judgement;
 import cn.edu.zju.isst.util.L;
+import cn.edu.zju.isst.util.TimeString;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -456,12 +457,12 @@ public class CampusActivityListFragment extends ListFragment implements
 
 			holder.titleTxv.setText(m_listCampusActivity.get(position)
 					.getTitle());
-			holder.updateTimeTxv.setText(m_listCampusActivity.get(position)
-					.getUpdateTimeString());
-			holder.startTimeTxv.setText(m_listCampusActivity.get(position)
-					.getStartTimeString());
-			holder.expireTimeTxv.setText(m_listCampusActivity.get(position)
-					.getExpireTimeString());
+			holder.updateTimeTxv.setText(TimeString.toYMD(m_listCampusActivity.get(position)
+					.getUpdatedAt()));
+			holder.startTimeTxv.setText(TimeString.toHM(m_listCampusActivity.get(position)
+					.getStartTime()));
+			holder.expireTimeTxv.setText(TimeString.toHM(m_listCampusActivity.get(position)
+					.getExpireTime()));
 			holder.descriptionTxv.setText(m_listCampusActivity.get(position)
 					.getDescription());
 

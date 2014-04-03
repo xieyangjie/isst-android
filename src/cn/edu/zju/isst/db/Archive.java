@@ -4,10 +4,6 @@
 package cn.edu.zju.isst.db;
 
 import java.io.Serializable;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -37,7 +33,6 @@ public class Archive implements Serializable {
 	private int publisherId;
 	private Publisher publisher;
 	private String content;
-	private String updateTimeString;
 
 	/**
 	 * 默认值初始化并更新
@@ -58,7 +53,6 @@ public class Archive implements Serializable {
 		}
 
 		content = "";
-		updateTimeString = "";
 		update(jsonObject);
 	}
 
@@ -84,7 +78,6 @@ public class Archive implements Serializable {
 
 			if (Judgement.isValidJsonValue("updatedAt", jsonObject)) {
 				updatedAt = jsonObject.getLong("updatedAt");
-				updateTimeString = timeLongToString(updatedAt);
 			}
 			if (Judgement.isValidJsonValue("user", jsonObject)) {
 				publisher = new Publisher(jsonObject.getJSONObject("user"));
@@ -98,15 +91,6 @@ public class Archive implements Serializable {
 				content = jsonObject.getString("content");
 			}
 		}
-	}
-
-	private String timeLongToString(long time) {
-		if (time > 0) {
-			Date date = new Date(time);
-			DateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.CHINA);
-			return df.format(date);
-		}
-		return "";
 	}
 
 	/**
@@ -156,13 +140,6 @@ public class Archive implements Serializable {
 	 */
 	public String getContent() {
 		return content;
-	}
-
-	/**
-	 * @return the dateTimeString
-	 */
-	public String getDateTimeString() {
-		return updateTimeString;
 	}
 
 }
