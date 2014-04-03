@@ -99,6 +99,7 @@ public class BetterAsyncWebServiceRunner {
 						listener.onHttpError(response);
 					}
 				} catch (Exception e) {
+					e.printStackTrace();
 					listener.onException(e);
 				}
 

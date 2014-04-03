@@ -187,10 +187,11 @@ public class LoginActivity extends ActionBarActivity {
 								@Override
 								public void onException(Exception e) {
 									L.e("Login Requestlistener onException!");
-									Message msg = m_handlerLogin
-											.obtainMessage();
-									ExceptionWeeder.fckException(e, msg);
-									m_handlerLogin.sendMessage(msg);
+									e.printStackTrace();
+//									Message msg = m_handlerLogin
+//											.obtainMessage();
+//									ExceptionWeeder.fckException(e, msg);
+//									m_handlerLogin.sendMessage(msg);
 								}
 
 							});

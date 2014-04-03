@@ -188,10 +188,9 @@ public class CampusActivityListFragment extends ListFragment implements
 	public void onListItemClick(ListView l, View v, int position, long id) {
 		L.i(this.getClass().getName() + " onListItemClick postion = "
 				+ position);
-		// Intent intent = new Intent(getActivity(),
-		// ArchiveDetailActivity.class);
-		// intent.putExtra("id", m_listCampusActivity.get(position).getId());
-		// getActivity().startActivity(intent);
+		 Intent intent = new Intent(getActivity(), CampusActivityDetailActivity.class);
+		 intent.putExtra("id", m_listCampusActivity.get(position).getId());
+		 getActivity().startActivity(intent);
 	}
 
 	@Override
