@@ -203,6 +203,9 @@ public class NewsListFragment extends ListFragment implements OnScrollListener {
 	public void onScroll(AbsListView view, int firstVisibleItem,
 			int visibleItemCount, int totalItemCount) {
 		m_nVisibleLastIndex = firstVisibleItem + visibleItemCount - 1;
+		L.i(this.getClass().getName()
+				+ " onScroll VisibleLastIndex = "
+				+ m_nVisibleLastIndex);
 	}
 
 	private void initComponent(View view) {
