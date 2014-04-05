@@ -203,8 +203,7 @@ public class NewsListFragment extends ListFragment implements OnScrollListener {
 	public void onScroll(AbsListView view, int firstVisibleItem,
 			int visibleItemCount, int totalItemCount) {
 		m_nVisibleLastIndex = firstVisibleItem + visibleItemCount - 1;
-		L.i(this.getClass().getName()
-				+ " onScroll VisibleLastIndex = "
+		L.i(this.getClass().getName() + " onScroll VisibleLastIndex = "
 				+ m_nVisibleLastIndex);
 	}
 
@@ -248,9 +247,9 @@ public class NewsListFragment extends ListFragment implements OnScrollListener {
 					}
 					m_adapterNewsList.notifyDataSetChanged();
 					break;
-				case STATUS_NOT_LOGIN://TODO
+				case STATUS_NOT_LOGIN:// TODO
 					((BaseActivity) getActivity()).updateLogin();
-					// requestData(m_loadType);
+					requestData(m_loadType);
 					break;
 				default:
 					((BaseActivity) getActivity()).dispose(msg);

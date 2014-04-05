@@ -155,6 +155,12 @@ public class LoginActivity extends BaseActivity {
 					} else {
 						CSTSettings.setAutoLogin(false, LoginActivity.this);
 					}
+					try {
+						DataManager.syncLogin(new User(((JSONObject)msg.obj).getJSONObject("body")), LoginActivity.this);
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 					if (!m_bIsLoginAgain) {
 						LoginActivity.this.startActivity(new Intent(
 								LoginActivity.this, MainActivity.class));
@@ -183,6 +189,7 @@ public class LoginActivity extends BaseActivity {
 					}
 				case STATUS_LOGIN_AUTH_EXPIRED:
 				case STATUS_LOGIN_AUTH_FAILED:
+					//TODO
 					break;
 				default:
 					dispose(msg);
