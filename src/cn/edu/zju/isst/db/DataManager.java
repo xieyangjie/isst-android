@@ -42,7 +42,6 @@ public class DataManager {
 	 *            用于加载DBHelper获取当前数据库
 	 */
 	public static void syncLogin(User user, Context context) {
-
 		if (user.getId() >= 0 && !user.getUsername().isEmpty()
 				&& !user.getPassword().isEmpty()) {// TODO 更好的判断user有效的方法
 			writeObjectToDB(USER_IN_DB, user, context);

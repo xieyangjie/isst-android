@@ -3,8 +3,10 @@
  */
 package cn.edu.zju.isst.net;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -65,36 +67,43 @@ public class BetterAsyncWebServiceRunner {
 			@Override
 			public void run() {
 				try {
+//					JSONObject result = null;
+//					String resultString = null;
+//					CSTResponse response = null;
+//					if (methodName.equalsIgnoreCase("GET")) {
+//						L.i("BetterAsyncWebServiceRunner_____get");
+//						response = BetterHttpInvoker.getInstance().get(
+//								new URL(url), getHeaders(url));
+//					} else if (methodName.equalsIgnoreCase("POST")) {
+//						L.i("BetterAsyncWebServiceRunner_____post");
+//						response = BetterHttpInvoker.getInstance().post(
+//								new URL(url), getHeaders(url),
+//								paramsToBytes(params));
+//					} else {
+//						L.i("BetterAsyncWebServiceRunner Unsupported Method: "
+//								+ (Judgement.isNullOrEmpty(methodName) ? "null"
+//										: methodName));
+//					}
+//
+//					if (!Judgement.isNullOrEmpty(response)
+//							&& response.getStatus() == HttpURLConnection.HTTP_OK) {
+//						refreshCookies(url, response.getHeaders());
+//						resultString = readByte(response.getBody());
+//						if (!Judgement.isNullOrEmpty(resultString)) {
+//							result = new JSONObject(resultString);
+//						}
+//					}
 					JSONObject result = null;
-					String resultString = null;
-					CSTResponse response = null;
-					if (methodName.equalsIgnoreCase("GET")) {
-						L.i("BetterAsyncWebServiceRunner_____get");
-						response = BetterHttpInvoker.getInstance().get(
-								new URL(url), getHeaders(url));
-					} else if (methodName.equalsIgnoreCase("POST")) {
-						L.i("BetterAsyncWebServiceRunner_____post");
-						response = BetterHttpInvoker.getInstance().post(
-								new URL(url), getHeaders(url),
-								paramsToBytes(params));
-					} else {
-						L.i("BetterAsyncWebServiceRunner Unsupported Method: "
-								+ (Judgement.isNullOrEmpty(methodName) ? "null"
-										: methodName));
-					}
-
+					CSTResponse response = responseOfRequest(methodName, url, params);
 					if (!Judgement.isNullOrEmpty(response)
 							&& response.getStatus() == HttpURLConnection.HTTP_OK) {
 						refreshCookies(url, response.getHeaders());
-						resultString = readByte(response.getBody());
-						if (!Judgement.isNullOrEmpty(resultString)) {
-							result = new JSONObject(resultString);
-						}
 					}
+					result = resultOfResponse(response);
 
 					if (!Judgement.isNullOrEmpty(result)
 							&& !Judgement.isNullOrEmpty(response)) {
-						L.i(resultString);
+						L.i(result.toString());
 						listener.onComplete(result);
 					} else if (!Judgement.isNullOrEmpty(response)) {
 						listener.onHttpError(response);
@@ -108,6 +117,38 @@ public class BetterAsyncWebServiceRunner {
 		}.start();
 	}
 
+	public CSTResponse responseOfRequest(final String methodName, final String url,
+			final Map<String, String> params) throws MalformedURLException, IOException{
+		CSTResponse response = null;
+		if (methodName.equalsIgnoreCase("GET")) {
+			L.i("BetterAsyncWebServiceRunner_____get");
+			response = BetterHttpInvoker.getInstance().get(
+					new URL(url), getHeaders(url));
+		} else if (methodName.equalsIgnoreCase("POST")) {
+			L.i("BetterAsyncWebServiceRunner_____post");
+			response = BetterHttpInvoker.getInstance().post(
+					new URL(url), getHeaders(url),
+					paramsToBytes(params));
+		} else {
+			L.i("BetterAsyncWebServiceRunner Unsupported Method: "
+					+ (Judgement.isNullOrEmpty(methodName) ? "null"
+							: methodName));
+		}
+		return response;
+	}
+	
+	public JSONObject resultOfResponse(final CSTResponse response) throws Exception{
+		JSONObject result = null;
+		if (!Judgement.isNullOrEmpty(response)
+				&& response.getStatus() == HttpURLConnection.HTTP_OK) {
+			String resultString = readByte(response.getBody());
+			if (!Judgement.isNullOrEmpty(resultString)) {
+				result = new JSONObject(resultString);
+			}
+		}
+		return result;
+	}
+	
 	/**
 	 * 获取Http Headers，此处的主要目的是获取cookie
 	 * 

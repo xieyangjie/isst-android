@@ -13,6 +13,7 @@ import cn.edu.zju.isst.api.CampusActivityApi;
 import cn.edu.zju.isst.db.CampusActivity;
 import cn.edu.zju.isst.net.CSTResponse;
 import cn.edu.zju.isst.net.RequestListener;
+import cn.edu.zju.isst.ui.main.BaseActivity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -27,7 +28,7 @@ import android.widget.TextView;
  * @author theasir
  *
  */
-public class CampusActivityDetailActivity extends ActionBarActivity {
+public class CampusActivityDetailActivity extends BaseActivity {
 
 	private int m_nId;
 	

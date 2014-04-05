@@ -21,6 +21,7 @@ import cn.edu.zju.isst.db.Restaurant;
 import cn.edu.zju.isst.db.RestaurantMenu;
 import cn.edu.zju.isst.net.CSTResponse;
 import cn.edu.zju.isst.net.RequestListener;
+import cn.edu.zju.isst.ui.main.BaseActivity;
 import cn.edu.zju.isst.util.Judgement;
 import cn.edu.zju.isst.util.L;
 import android.content.Intent;
@@ -43,7 +44,7 @@ import android.widget.TextView;
  * @author theasir
  * 
  */
-public class RestaurantDetailActivity extends ActionBarActivity {
+public class RestaurantDetailActivity extends BaseActivity {
 
 	private int m_nId;
 

@@ -4,6 +4,7 @@
 package cn.edu.zju.isst;
 
 import android.app.Application;
+import android.webkit.CookieSyncManager;
 import cn.edu.zju.isst.util.L;
 
 /**
@@ -24,6 +25,7 @@ public class MainApplication extends Application {
 		super.onCreate();
 		//设置调试状态
 		L.setDebuggable(true);
+		CookieSyncManager.createInstance(this);
 	}
 
 }

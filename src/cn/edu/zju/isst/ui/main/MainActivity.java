@@ -37,7 +37,7 @@ import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
  * 
  *         TODO WIP
  */
-public class MainActivity extends ActionBarActivity implements
+public class MainActivity extends BaseActivity implements
 		SlidingMenuFragment.OnGroupMenuItemClickListener {
 
 	private long m_lExitTime = -1;

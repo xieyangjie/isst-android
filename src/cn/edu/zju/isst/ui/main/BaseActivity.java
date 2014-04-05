@@ -1,0 +1,150 @@
+/**
+ * 
+ */
+package cn.edu.zju.isst.ui.main;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import cn.edu.zju.isst.R;
+import cn.edu.zju.isst.api.LoginApi;
+import cn.edu.zju.isst.db.DataManager;
+import cn.edu.zju.isst.db.User;
+import cn.edu.zju.isst.net.CSTResponse;
+import cn.edu.zju.isst.net.RequestListener;
+import cn.edu.zju.isst.ui.login.LoginActivity;
+import cn.edu.zju.isst.util.CM;
+import cn.edu.zju.isst.util.L;
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.support.v7.app.ActionBarActivity;
+import static cn.edu.zju.isst.constant.Constants.*;
+
+/**
+ * @author theasir
+ * 
+ */
+public class BaseActivity extends ActionBarActivity implements LoginSimulation,
+		MessageDisposition {
+
+	private Handler m_handlerUpdateLogin;
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.support.v7.app.ActionBarActivity#onCreate(android.os.Bundle)
+	 */
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+
+		initHandler();
+	}
+
+	@Override
+	public void updateLogin() {
+		User currentUser = DataManager.getCurrentUser(BaseActivity.this);
+		LoginApi.update(currentUser, 0.0, 0.0, new RequestListener() {
+
+			@Override
+			public void onComplete(Object result) {
+				Message msg = m_handlerUpdateLogin.obtainMessage();
+				try {
+					msg.what = ((JSONObject) result).getInt("status");
+					msg.obj = (JSONObject) result;
+				} catch (Exception e) {
+					L.i(this.getClass().getName() + " onComplete Exception!");
+					onException(e);
+				}
+				m_handlerUpdateLogin.sendMessage(msg);
+
+			}
+
+			@Override
+			public void onHttpError(CSTResponse response) {
+				L.i(this.getClass().getName() + " onHttpError!");
+
+			}
+
+			@Override
+			public void onException(Exception e) {
+				L.i(this.getClass().getName() + " onException!");
+				e.printStackTrace();
+
+			}
+		});
+
+	}
+
+	private void initHandler() {
+		m_handlerUpdateLogin = new Handler() {
+
+			/*
+			 * (non-Javadoc)
+			 * 
+			 * @see android.os.Handler#handleMessage(android.os.Message)
+			 */
+			@Override
+			public void handleMessage(Message msg) {
+				switch (msg.what) {
+				case STATUS_REQUEST_SUCCESS:
+					try {
+						DataManager.syncLogin(
+								new User(((JSONObject) msg.obj)
+										.getJSONObject("body")),
+								BaseActivity.this);
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					break;
+				case STATUS_LOGIN_USERNAME_NOT_EXIST:
+				case STATUS_LOGIN_AUTH_EXPIRED:
+				case STATUS_LOGIN_AUTH_FAILED:
+					Intent intent = new Intent(BaseActivity.this,
+							LoginActivity.class);
+					intent.putExtra("isLoginAgain", true);
+					BaseActivity.this.startActivity(intent);
+					L.i("TesT", "Login Again");
+					break;
+				default:
+					break;
+				}
+			}
+
+		};
+	}
+
+	@Override
+	public int dispose(Message msg) {
+		switch (msg.what) {
+		case NETWORK_NOT_CONNECTED:
+			CM.showAlert(BaseActivity.this, R.string.network_not_connected);
+			break;
+
+		case HTTPERROR_UNKNOWN:
+		case HTTPERROR_CLIENTERROR:
+		case HTTPERROR_SERVERERROR:
+			CM.showAlert(BaseActivity.this, R.string.http_error);
+			break;
+
+		case EXCEPTION_SOCKETTIMEOUT:
+			CM.showAlert(BaseActivity.this, R.string.exception_socket_timeout);
+			break;
+
+		case EXCEPTION_UNKNOWN:
+		case EXCEPTION_IO:
+		case EXCEPTION_JSON:
+		case EXCEPTION_CLASSCAST:
+			CM.showAlert(BaseActivity.this, R.string.exception);
+			break;
+
+		default:
+			break;
+		}
+		return 0;
+	}
+
+}
