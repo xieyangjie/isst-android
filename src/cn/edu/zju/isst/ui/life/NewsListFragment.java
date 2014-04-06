@@ -82,7 +82,6 @@ public class NewsListFragment extends ListFragment implements OnScrollListener {
 	 */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
 	}
@@ -149,7 +148,6 @@ public class NewsListFragment extends ListFragment implements OnScrollListener {
 	 */
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-		// TODO Auto-generated method stub
 		super.onCreateOptionsMenu(menu, inflater);
 		inflater.inflate(R.menu.news_list_fragment_ab_menu, menu);
 	}
@@ -280,7 +278,11 @@ public class NewsListFragment extends ListFragment implements OnScrollListener {
 			m_listAchive.clear();
 		}
 		try {
+			if (!Judgement.isValidJsonValue("body", jsonObject)) {
+				return;
+			}
 			JSONArray jsonArray = jsonObject.getJSONArray("body");
+
 			for (int i = 0; i < jsonArray.length(); i++) {
 				m_listAchive.add(new Archive((JSONObject) jsonArray.get(i)));
 			}
@@ -302,7 +304,11 @@ public class NewsListFragment extends ListFragment implements OnScrollListener {
 	private void loadMore(JSONObject jsonObject) {
 		JSONArray jsonArray;
 		try {
+			if (!Judgement.isValidJsonValue("body", jsonObject)) {
+				return;
+			}
 			jsonArray = jsonObject.getJSONArray("body");
+
 			for (int i = 0; i < jsonArray.length(); i++) {
 				m_listAchive.add(new Archive((JSONObject) jsonArray.get(i)));
 			}
@@ -326,12 +332,12 @@ public class NewsListFragment extends ListFragment implements OnScrollListener {
 			switch (type) {
 			case REFRESH:
 				ArchiveApi.getNewsList(1, 20, null,
-						new NewsListRequestListener(type));
+						new NewsListRequestListener());
 				m_nCurrentPage = 1;
 				break;
 			case LOADMORE:
 				ArchiveApi.getNewsList(++m_nCurrentPage, 20, null,
-						new NewsListRequestListener(type));
+						new NewsListRequestListener());
 				break;
 			default:
 				break;
@@ -361,16 +367,13 @@ public class NewsListFragment extends ListFragment implements OnScrollListener {
 	 */
 	private class NewsListRequestListener implements RequestListener {
 
-		private LoadType type;
-
-		public NewsListRequestListener(LoadType type) {
-			this.type = type;
-		}
-
 		@Override
 		public void onComplete(Object result) {
 			Message msg = m_handlerNewsList.obtainMessage();
 			try {
+				if (!Judgement.isValidJsonValue("status", (JSONObject) result)) {
+					return;
+				}
 				msg.what = ((JSONObject) result).getInt("status");
 				msg.obj = (JSONObject) result;
 			} catch (JSONException e) {
