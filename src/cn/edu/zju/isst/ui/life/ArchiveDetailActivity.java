@@ -23,6 +23,7 @@ import cn.edu.zju.isst.api.ArchiveApi;
 import cn.edu.zju.isst.db.Archive;
 import cn.edu.zju.isst.net.CSTResponse;
 import cn.edu.zju.isst.net.RequestListener;
+import cn.edu.zju.isst.ui.main.BaseActivity;
 import cn.edu.zju.isst.util.Judgement;
 import cn.edu.zju.isst.util.L;
 import cn.edu.zju.isst.util.TimeString;
@@ -34,7 +35,7 @@ import cn.edu.zju.isst.util.TimeString;
  * 
  *         TODO WIP
  */
-public class ArchiveDetailActivity extends ActionBarActivity {
+public class ArchiveDetailActivity extends BaseActivity {
 
 	/**
 	 * 归档id
@@ -64,7 +65,6 @@ public class ArchiveDetailActivity extends ActionBarActivity {
 	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.archive_detail_activity);
 		initComponent();

@@ -3,9 +3,12 @@
  */
 package cn.edu.zju.isst.api;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
 import java.util.Map;
 
 import cn.edu.zju.isst.net.BetterAsyncWebServiceRunner;
+import cn.edu.zju.isst.net.CSTResponse;
 import cn.edu.zju.isst.net.RequestListener;
 import cn.edu.zju.isst.util.L;
 
@@ -39,10 +42,14 @@ public class CSTApi {
 	protected static void request(final String methodName, final String subUrl,
 			final Map<String, String> params, RequestListener listener) {
 		String url = PREFIX + subUrl;
-		// 前人遗产，感谢，已被替代
-		// AsyncWebServiceRunner.request(methodName, url, params, listener);
 		BetterAsyncWebServiceRunner.getInstance().request(methodName, url,
 				params, listener);
 		L.i("CSTApi Request URL = " + url);
+	}
+	
+	protected static CSTResponse responseOfRequest(final String methodName, final String subUrl,
+			final Map<String, String> params) throws MalformedURLException, IOException {
+		String url = PREFIX + subUrl;
+		return BetterAsyncWebServiceRunner.getInstance().responseOfRequest(methodName, url, params);
 	}
 }

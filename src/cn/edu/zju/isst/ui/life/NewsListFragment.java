@@ -38,6 +38,8 @@ import cn.edu.zju.isst.exception.HttpErrorWeeder;
 import cn.edu.zju.isst.net.CSTResponse;
 import cn.edu.zju.isst.net.NetworkConnection;
 import cn.edu.zju.isst.net.RequestListener;
+import cn.edu.zju.isst.ui.main.BaseActivity;
+import cn.edu.zju.isst.ui.main.MainActivity;
 import cn.edu.zju.isst.util.Judgement;
 import cn.edu.zju.isst.util.L;
 import cn.edu.zju.isst.util.TimeString;
@@ -52,7 +54,10 @@ import cn.edu.zju.isst.util.TimeString;
 public class NewsListFragment extends ListFragment implements OnScrollListener {
 
 	private int m_nVisibleLastIndex;
+	private int m_nCurrentPage;
+	private boolean m_bIsFirstTime;
 
+	private LoadType m_loadType;
 	private final List<Archive> m_listAchive = new ArrayList<Archive>();
 	private Handler m_handlerNewsList;
 	private NewsListAdapter m_adapterNewsList;
@@ -62,6 +67,8 @@ public class NewsListFragment extends ListFragment implements OnScrollListener {
 	private static NewsListFragment INSTANCE = new NewsListFragment();
 
 	public NewsListFragment() {
+		m_nCurrentPage = 1;
+		m_bIsFirstTime = true;
 	}
 
 	public static NewsListFragment getInstance() {
@@ -75,7 +82,6 @@ public class NewsListFragment extends ListFragment implements OnScrollListener {
 	 */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
 	}
@@ -103,37 +109,21 @@ public class NewsListFragment extends ListFragment implements OnScrollListener {
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
-		m_lsvNewsList = (ListView) view.findViewById(android.R.id.list);
+		initComponent(view);
 
-		initNewsList();
+		if (m_bIsFirstTime) {
+			initNewsList();
+		}
 
-		m_handlerNewsList = new Handler() {
+		initHandler();
 
-			/*
-			 * (non-Javadoc)
-			 * 
-			 * @see android.os.Handler#handleMessage(android.os.Message)
-			 */
-			@Override
-			public void handleMessage(Message msg) {
-				switch (msg.what) {
-				case STATUS_REQUEST_SUCCESS:
-					m_adapterNewsList.notifyDataSetChanged();
-					break;
-				case STATUS_NOT_LOGIN:
-					break;
-				default:
-					break;
-				}
-			}
+		setUpAdapter();
 
-		};
+		setUpListener();
 
-		m_adapterNewsList = new NewsListAdapter(getActivity());
-		setListAdapter(m_adapterNewsList);
-
-		if (m_listAchive.size() == 0) {
+		if (m_bIsFirstTime) {
 			requestData(LoadType.REFRESH);
+			m_bIsFirstTime = false;
 		}
 	}
 
@@ -158,7 +148,6 @@ public class NewsListFragment extends ListFragment implements OnScrollListener {
 	 */
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-		// TODO Auto-generated method stub
 		super.onCreateOptionsMenu(menu, inflater);
 		inflater.inflate(R.menu.news_list_fragment_ab_menu, menu);
 	}
@@ -190,7 +179,8 @@ public class NewsListFragment extends ListFragment implements OnScrollListener {
 	 */
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
-		L.i(this.getClass().getName() + " onListItemClick postion = " + position);
+		L.i(this.getClass().getName() + " onListItemClick postion = "
+				+ position);
 		Intent intent = new Intent(getActivity(), ArchiveDetailActivity.class);
 		intent.putExtra("id", m_listAchive.get(position).getId());
 		getActivity().startActivity(intent);
@@ -211,22 +201,70 @@ public class NewsListFragment extends ListFragment implements OnScrollListener {
 	public void onScroll(AbsListView view, int firstVisibleItem,
 			int visibleItemCount, int totalItemCount) {
 		m_nVisibleLastIndex = firstVisibleItem + visibleItemCount - 1;
+		L.i(this.getClass().getName() + " onScroll VisibleLastIndex = "
+				+ m_nVisibleLastIndex);
+	}
+
+	private void initComponent(View view) {
+		m_lsvNewsList = (ListView) view.findViewById(android.R.id.list);
 	}
 
 	/**
 	 * 初始化新闻列表，若有缓存则读取缓存
 	 */
 	private void initNewsList() {
-		List<Archive> dbNewsList = DataManager
-				.getNewsList(getActivity());
-		if (!m_listAchive.isEmpty()) {
-			m_listAchive.clear();
-		}
+		List<Archive> dbNewsList = DataManager.getNewsList(getActivity());
 		if (!Judgement.isNullOrEmpty(dbNewsList)) {
 			for (Archive news : dbNewsList) {
 				m_listAchive.add(news);
 			}
 		}
+	}
+
+	private void initHandler() {
+		m_handlerNewsList = new Handler() {
+
+			/*
+			 * (non-Javadoc)
+			 * 
+			 * @see android.os.Handler#handleMessage(android.os.Message)
+			 */
+			@Override
+			public void handleMessage(Message msg) {
+				switch (msg.what) {
+				case STATUS_REQUEST_SUCCESS:
+					switch (m_loadType) {
+					case REFRESH:
+						refresh((JSONObject) msg.obj);
+						break;
+					case LOADMORE:
+						loadMore((JSONObject) msg.obj);
+						break;
+					default:
+						break;
+					}
+					m_adapterNewsList.notifyDataSetChanged();
+					break;
+				case STATUS_NOT_LOGIN:// TODO
+					((BaseActivity) getActivity()).updateLogin();
+					requestData(m_loadType);
+					break;
+				default:
+					((BaseActivity) getActivity()).dispose(msg);
+					break;
+				}
+			}
+
+		};
+	}
+
+	private void setUpAdapter() {
+		m_adapterNewsList = new NewsListAdapter(getActivity());
+		setListAdapter(m_adapterNewsList);
+	}
+
+	private void setUpListener() {
+		m_lsvNewsList.setOnScrollListener(this);
 	}
 
 	/**
@@ -240,7 +278,11 @@ public class NewsListFragment extends ListFragment implements OnScrollListener {
 			m_listAchive.clear();
 		}
 		try {
+			if (!Judgement.isValidJsonValue("body", jsonObject)) {
+				return;
+			}
 			JSONArray jsonArray = jsonObject.getJSONArray("body");
+
 			for (int i = 0; i < jsonArray.length(); i++) {
 				m_listAchive.add(new Archive((JSONObject) jsonArray.get(i)));
 			}
@@ -262,7 +304,11 @@ public class NewsListFragment extends ListFragment implements OnScrollListener {
 	private void loadMore(JSONObject jsonObject) {
 		JSONArray jsonArray;
 		try {
+			if (!Judgement.isValidJsonValue("body", jsonObject)) {
+				return;
+			}
 			jsonArray = jsonObject.getJSONArray("body");
+
 			for (int i = 0; i < jsonArray.length(); i++) {
 				m_listAchive.add(new Archive((JSONObject) jsonArray.get(i)));
 			}
@@ -282,15 +328,16 @@ public class NewsListFragment extends ListFragment implements OnScrollListener {
 	 */
 	private void requestData(LoadType type) {
 		if (NetworkConnection.isNetworkConnected(getActivity())) {
-			switch (type) {// TODO 刷新策略
+			m_loadType = type;
+			switch (type) {
 			case REFRESH:
-				// 设置刷新策略，一次性加载最新若干条
-				ArchiveApi.getNewsList(null, 20, null,
-						new NewsListRequestListener(type));
+				ArchiveApi.getNewsList(1, 20, null,
+						new NewsListRequestListener());
+				m_nCurrentPage = 1;
 				break;
 			case LOADMORE:
-				ArchiveApi.getNewsList(null, 5, null,
-						new NewsListRequestListener(type));
+				ArchiveApi.getNewsList(++m_nCurrentPage, 20, null,
+						new NewsListRequestListener());
 				break;
 			default:
 				break;
@@ -320,29 +367,15 @@ public class NewsListFragment extends ListFragment implements OnScrollListener {
 	 */
 	private class NewsListRequestListener implements RequestListener {
 
-		private LoadType type;
-
-		public NewsListRequestListener(LoadType type) {
-			this.type = type;
-		}
-
 		@Override
 		public void onComplete(Object result) {
 			Message msg = m_handlerNewsList.obtainMessage();
 			try {
-				msg.what = ((JSONObject) result).getInt("status");
-				if (msg.what == STATUS_REQUEST_SUCCESS) {
-					switch (type) {
-					case REFRESH:
-						refresh((JSONObject) result);
-						break;
-					case LOADMORE:
-						loadMore((JSONObject) result);
-						break;
-					default:
-						break;
-					}
+				if (!Judgement.isValidJsonValue("status", (JSONObject) result)) {
+					return;
 				}
+				msg.what = ((JSONObject) result).getInt("status");
+				msg.obj = (JSONObject) result;
 			} catch (JSONException e) {
 				L.i(this.getClass().getName() + " onComplete!");
 				e.printStackTrace();
@@ -438,7 +471,8 @@ public class NewsListFragment extends ListFragment implements OnScrollListener {
 			}
 
 			holder.titleTxv.setText(m_listAchive.get(position).getTitle());
-			holder.dateTxv.setText(TimeString.toYMD(m_listAchive.get(position).getUpdatedAt()));
+			holder.dateTxv.setText(TimeString.toYMD(m_listAchive.get(position)
+					.getUpdatedAt()));
 			holder.publisherTxv.setText(m_listAchive.get(position)
 					.getPublisher().getName());
 			holder.descriptionTxv.setText(m_listAchive.get(position)

@@ -1,10 +1,14 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <string name="app_name">ISST</string>
+    
     <string name="dummy_text">Dummy Text</string>
     <string name="dummy_item">Dummy Item</string>
+    
     <string name="autologin">自动登录</string>
     <string name="login">登录</string>
+    <string name="username_input_hint">用户名</string>
+    <string name="password_input_hint">密码</string>
     
     <string name="action_refresh">刷新</string>
     <string name="action_logout">注销</string>
@@ -14,6 +18,16 @@
     <string name="network_not_connected">网络错误，请检查您的网络连接。</string>
     <string name="loading">载入中……</string>
     <string name="please_wait">请稍候……</string>
+    
+    <string name="login_alertdialog_title">提示</string>
+    <string name="login_alertdialog_message">用户名和密码不能为空！</string>
+    <string name="OK">确定</string>
+    
+    <string name="http_error">HTTP请求错误，尝试重试</string>
+    
+    <string name="exception_socket_timeout">服务器故障</string>
+    
+    <string name="exception">程序发生异常</string>
     
     <string name="campus_activity_imageview_picture">活动图片</string>
     

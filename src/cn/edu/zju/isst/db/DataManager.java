@@ -32,6 +32,10 @@ public class DataManager {
 	private static final String STUD_LIST_IN_DB = "studlist";
 	private static final String SCAC_LIST_IN_DB = "scaclist";
 	private static final String RESTAURANT_LIST_IN_DB = "restaurantlist";
+	private static final String MAJOR_LIST_IN_DB = "majorlist";
+	private static final String CLASS_LIST_IN_DB = "classlist";
+	private static final String CITY_LIST_IN_DB = "citylist";
+	private static final String CLASSMATE_LIST_IN_DB = "classmatelist";
 
 	/**
 	 * 同步登录接口返回数据
@@ -42,7 +46,6 @@ public class DataManager {
 	 *            用于加载DBHelper获取当前数据库
 	 */
 	public static void syncLogin(User user, Context context) {
-
 		if (user.getId() >= 0 && !user.getUsername().isEmpty()
 				&& !user.getPassword().isEmpty()) {// TODO 更好的判断user有效的方法
 			writeObjectToDB(USER_IN_DB, user, context);
@@ -253,7 +256,111 @@ public class DataManager {
 		}
 		return null;
 	}
+	
+	public static void syncMajorList(List<Majors> majorList,
+			Context context) {
+		if (!Judgement.isNullOrEmpty(majorList)) {
+			writeObjectToDB(MAJOR_LIST_IN_DB,
+					(Serializable) majorList, context);
+			L.i("Write majorList to DB!");
+		}
+	}
 
+	@SuppressWarnings("unchecked")
+	public static List<Majors> getMajorList(Context context) {
+		Object object = objectFromDB(MAJOR_LIST_IN_DB, context);
+		if (!Judgement.isNullOrEmpty(object)) {
+			List<Majors> majorList = null;
+			try {
+				majorList = (List<Majors>) object;
+			} catch (ClassCastException e) {
+				// TODO: handle exception
+			}
+			if (!Judgement.isNullOrEmpty(majorList)) {
+				return majorList;
+			}
+		}
+		return null;
+	}
+	
+	public static void syncCityList(List<Majors> cityList,
+			Context context) {
+		if (!Judgement.isNullOrEmpty(cityList)) {
+			writeObjectToDB(CITY_LIST_IN_DB,
+					(Serializable) cityList, context);
+			L.i("Write majorList to DB!");
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	public static List<City> getCityList(Context context) {
+		Object object = objectFromDB(CITY_LIST_IN_DB, context);
+		if (!Judgement.isNullOrEmpty(object)) {
+			List<City> cityList = null;
+			try {
+				cityList = (List<City>) object;
+			} catch (ClassCastException e) {
+				// TODO: handle exception
+			}
+			if (!Judgement.isNullOrEmpty(cityList)) {
+				return cityList;
+			}
+		}
+		return null;
+	}
+
+	public static void syncClassList(List<Klass> classMateList,
+			Context context) {
+		if (!Judgement.isNullOrEmpty(classMateList)) {
+			writeObjectToDB(CLASS_LIST_IN_DB,
+					(Serializable) classMateList, context);
+			L.i("Write majorList to DB!");
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	public static List<Klass> getClassList(Context context) {
+		Object object = objectFromDB(CLASS_LIST_IN_DB, context);
+		if (!Judgement.isNullOrEmpty(object)) {
+			List<Klass> classMateList = null;
+			try {
+				classMateList = (List<Klass>) object;
+			} catch (ClassCastException e) {
+				// TODO: handle exception
+			}
+			if (!Judgement.isNullOrEmpty(classMateList)) {
+				return classMateList;
+			}
+		}
+		return null;
+	}
+	
+	public static void syncClassMateList(List<User> classList,
+			Context context) {
+		if (!Judgement.isNullOrEmpty(classList)) {
+			writeObjectToDB(CLASSMATE_LIST_IN_DB,
+					(Serializable) classList, context);
+			L.i("Write majorList to DB!");
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	public static List<User> getClassMateList(Context context) {
+		Object object = objectFromDB(CLASSMATE_LIST_IN_DB, context);
+		if (!Judgement.isNullOrEmpty(object)) {
+			List<User> classList = null;
+			try {
+				classList = (List<User>) object;
+			} catch (ClassCastException e) {
+				// TODO: handle exception
+			}
+			if (!Judgement.isNullOrEmpty(classList)) {
+				return classList;
+			}
+		}
+		return null;
+	}
+	
 	/**
 	 * 将目标对象序列化后写入当前数据库
 	 * 

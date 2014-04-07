@@ -4,13 +4,37 @@
     android:layout_height="match_parent" >
 
     <ImageView
-        android:id="@+id/campus_activity_detail"
+        android:id="@+id/campus_activity_detail_picture_imgv"
         android:layout_width="match_parent"
         android:layout_height="160dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:padding="10dp"
-        android:src="@android:drawable/toast_frame"
+        android:src="@android:color/darker_gray"
         android:contentDescription="@string/campus_activity_imageview_picture" />
+
+    <TextView
+        android:id="@+id/campus_activity_detail_duration_txv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:padding="10dp"
+        android:layout_below="@+id/campus_activity_detail_picture_imgv" />
+
+    <TextView
+        android:id="@+id/campus_activity_detail_loaction_txv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:padding="10dp"
+        android:layout_alignTop="@+id/campus_activity_detail_duration_txv" />
+
+    <WebView
+        android:id="@+id/campus_activity_detail_content_webv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/campus_activity_detail_duration_txv"
+        android:layout_centerHorizontal="true" />
     
 </RelativeLayout>
