@@ -20,5 +20,7 @@
     <string name="restaurant_imageview_icon">商家图标</string>
     <string name="restaurant_imagebutton_call">拨打外卖电话</string>
     <string name="restaurant_hotline">外卖电话：</string>
+    
+    <string name="sm_group_item_indicator">展开收起图标</string>
 
 </resources>

@@ -3,16 +3,24 @@
  */
 package cn.edu.zju.isst.ui.main;
 
+import java.sql.Struct;
 import java.util.List;
 import java.util.Map;
 
 import cn.edu.zju.isst.R;
+import cn.edu.zju.isst.util.L;
 
+import android.R.color;
+import android.R.integer;
+import android.R.raw;
 import android.app.Activity;
+import android.graphics.Color;
 import android.graphics.Typeface;
+import android.opengl.Visibility;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 /**
@@ -26,6 +34,7 @@ public class SlidingMenuExpListAdapter extends BaseExpandableListAdapter {
 	private Activity m_actiContext;
 	private List<String> m_listGroupNames;
 	private Map<String, List<String>> m_mapGroupCollection;
+	private SELECTED m_selectedIndex;
 
 	/**
 	 * 
@@ -35,6 +44,7 @@ public class SlidingMenuExpListAdapter extends BaseExpandableListAdapter {
 		this.m_actiContext = context;
 		this.m_listGroupNames = groupNames;
 		this.m_mapGroupCollection = groupCollection;
+		this.m_selectedIndex = new SELECTED();
 	}
 
 	/*
@@ -54,6 +64,9 @@ public class SlidingMenuExpListAdapter extends BaseExpandableListAdapter {
 	 */
 	@Override
 	public int getChildrenCount(int groupPosition) {
+		if (!m_mapGroupCollection.containsKey(m_listGroupNames
+				.get(groupPosition)))
+			return 0;
 		return m_mapGroupCollection.get(m_listGroupNames.get(groupPosition))
 				.size();
 	}
@@ -119,14 +132,37 @@ public class SlidingMenuExpListAdapter extends BaseExpandableListAdapter {
 	public View getGroupView(int groupPosition, boolean isExpanded,
 			View convertView, ViewGroup parent) {
 		String nav = (String) getGroup(groupPosition);
-		if (convertView == null) {
-			convertView = m_actiContext.getLayoutInflater().inflate(
-					R.layout.sm_group_item, null);
-		}
-		TextView mainNav = (TextView) convertView.findViewById(R.id.sm_group_item_nav);
+		
+		View tempView = m_actiContext.getLayoutInflater().inflate(
+				R.layout.sm_group_item, null);
+//		if (convertView == null) {
+//			convertView = m_actiContext.getLayoutInflater().inflate(
+//					R.layout.sm_group_item, null);
+//		 }
+		TextView mainNav = (TextView) tempView
+				.findViewById(R.id.sm_group_item_nav);
+		ImageView mainImage = (ImageView) tempView
+				.findViewById(R.id.sm_group_item_img);
 		mainNav.setTypeface(null, Typeface.BOLD);
 		mainNav.setText(nav);
-		return convertView;
+		if (getChildrenCount(groupPosition) > 0) {
+			if (isExpanded) {
+				mainImage.setImageResource(R.drawable.ic_expand);
+			} else {
+				mainImage.setImageResource(R.drawable.ic_not_expand);
+			}
+		} else {
+			mainImage.setVisibility(View.GONE);
+			if (m_selectedIndex.groupIndex == groupPosition) {
+				tempView.setBackgroundColor(Color.BLUE);
+			} 
+			else {
+				tempView.setBackgroundColor(Color.GRAY);
+			}
+			L.i("CarpeDiem","groupIndex ="+ m_selectedIndex.groupIndex);
+		}
+		// if()
+		return tempView;
 	}
 
 	/*
@@ -143,8 +179,15 @@ public class SlidingMenuExpListAdapter extends BaseExpandableListAdapter {
 			convertView = m_actiContext.getLayoutInflater().inflate(
 					R.layout.sm_child_item, null);
 		}
-		TextView subNav = (TextView) convertView.findViewById(R.id.sm_child_item_nav);
+		TextView subNav = (TextView) convertView
+				.findViewById(R.id.sm_child_item_nav);
 		subNav.setText(nav);
+		if (groupPosition == m_selectedIndex.groupIndex
+				&& childPosition == m_selectedIndex.childIndex) {
+			convertView.setBackgroundColor(Color.BLUE);
+		} else {
+			convertView.setBackgroundColor(Color.alpha(Color.BLUE));
+		}
 		return convertView;
 	}
 
@@ -157,5 +200,39 @@ public class SlidingMenuExpListAdapter extends BaseExpandableListAdapter {
 	public boolean isChildSelectable(int groupPosition, int childPosition) {
 		return true;
 	}
+
+	public void setGoupIndex(int groupIndex) {
+		this.m_selectedIndex.setGroupIndex(groupIndex);
+	}
+
+	public void setChildIndex(int childIndex) {
+		this.m_selectedIndex.setChildIndex(childIndex);
+	}
+
+	public class SELECTED {
+		private int groupIndex;
+		private int childIndex;
+
+		public SELECTED() {
+			setGroupIndex(0);
+			setChildIndex(-1);
+		}
+
+		public int getGroupIndex() {
+			return groupIndex;
+		}
+
+		public void setGroupIndex(int groupIndex) {
+			this.groupIndex = groupIndex;
+		}
+
+		public int getChildIndex() {
+			return childIndex;
+		}
+
+		public void setChildIndex(int childIndex) {
+			this.childIndex = childIndex;
+		}
+	};
 
 }

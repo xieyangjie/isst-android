@@ -11,7 +11,12 @@ import java.util.Map;
 import cn.edu.zju.isst.R;
 import cn.edu.zju.isst.constant.Nav;
 import cn.edu.zju.isst.constant.NavGroup;
+import cn.edu.zju.isst.ui.main.SlidingMenuExpListAdapter.SELECTED;
+import cn.edu.zju.isst.util.Judgement;
+import cn.edu.zju.isst.util.L;
+import android.R.integer;
 import android.app.Activity;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -29,16 +34,13 @@ import android.widget.ListView;
  */
 public class SlidingMenuFragment extends Fragment {
 
-	private List<String> m_listGroupNames = new ArrayList<String>();
-	private Map<String, List<String>> m_mapGroupCollection = new HashMap<String, List<String>>();
-	private String[] m_strFrom;
-	private int[] m_nTo;
-	private List<Map<String, Object>> m_listDataOfListItem = new ArrayList<Map<String, Object>>();
-
+	private List<String> m_listGroupNames = new ArrayList<String>();//存储所有组名
+	private Map<String, List<String>> m_mapGroupCollection = new HashMap<String, List<String>>();//存储可展开组的数据
+	
+	
 	private OnGroupMenuItemClickListener m_listenerOnMenuItemClick;
-
+	
 	private ExpandableListView m_explsvMenu;
-	private ListView m_lsvMenu;
 
 	private static SlidingMenuFragment INSTANCE = new SlidingMenuFragment();
 
@@ -91,8 +93,9 @@ public class SlidingMenuFragment extends Fragment {
 
 		m_explsvMenu = (ExpandableListView) rootView
 				.findViewById(R.id.sm_main_group);
-		m_lsvMenu = (ListView) rootView.findViewById(R.id.sm_main_list);
-
+		//setScrollViewHeightBasedOnChildren(m_explsvMenu, m_lsvMenu);
+		
+//		m_explsvMenu.setGroupIndicator(this.getResources().getDrawable(R.drawable.expandable_listview_selector));
 		return rootView;
 	}
 
@@ -107,37 +110,68 @@ public class SlidingMenuFragment extends Fragment {
 		final SlidingMenuExpListAdapter expListAdapter = new SlidingMenuExpListAdapter(
 				getActivity(), m_listGroupNames, m_mapGroupCollection);
 		m_explsvMenu.setAdapter(expListAdapter);
+		m_explsvMenu.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
+			
+			@Override
+			public boolean onGroupClick(ExpandableListView parent, View v,
+					int groupPosition, long id) {
+				// TODO Auto-generated method stub
+				L.i("CarpeDiem", String.valueOf(groupPosition));
+				if(m_mapGroupCollection.containsKey(
+						m_listGroupNames.get(groupPosition)))return false;
+				int navIndex = 0,tempSize = 0;
+				for (int i = 0; i < groupPosition; i++) {
+					if(m_mapGroupCollection.containsKey(//判断是否为一个可展开的组
+							m_listGroupNames.get(i)))
+					{
+						tempSize = m_mapGroupCollection.get(
+							m_listGroupNames.get(i)).size();
+						L.i("CarpeDiem", "tempSize="+String.valueOf(tempSize));
+						navIndex += tempSize;
+					}
+					else 
+						navIndex += 1;
+				}
+				L.i("CarpeDiem", "navIndex ="+String.valueOf(navIndex));
+				
+				expListAdapter.setGoupIndex(groupPosition);
+				expListAdapter.setChildIndex(-1);
+				expListAdapter.notifyDataSetChanged();
+				m_listenerOnMenuItemClick.onGroupMenuItemClick(Nav
+						.values()[navIndex]);
+			
+				return false;
+			}
+		});
 		m_explsvMenu
 				.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
 					@Override
 					public boolean onChildClick(
 							ExpandableListView expandableListView, View view,
 							int groupPosition, int childPosition, long l) {
-						int navIndex = 0;
+						int navIndex = 0,tempSize = 0;
 						for (int i = 0; i < groupPosition; i++) {
-							navIndex += m_mapGroupCollection.get(
+							if(m_mapGroupCollection.containsKey(
+									m_listGroupNames.get(i)))
+							{
+								tempSize = m_mapGroupCollection.get(
 									m_listGroupNames.get(i)).size();
+								navIndex += tempSize;
+							}
+							else 
+								navIndex += 1;
 						}
 						navIndex += childPosition;
+						
+						expListAdapter.setGoupIndex(groupPosition);
+						expListAdapter.setChildIndex(childPosition);
+						expListAdapter.notifyDataSetChanged();
 						m_listenerOnMenuItemClick.onGroupMenuItemClick(Nav
 								.values()[navIndex]);
+			
 						return true;
 					}
 				});
-
-		final SlidingMenuListAdapter listAdapter = new SlidingMenuListAdapter(
-				getActivity(), m_listDataOfListItem, R.layout.sm_list_item,
-				m_strFrom, m_nTo);
-		m_lsvMenu.setAdapter(listAdapter);
-		m_lsvMenu.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view,
-					int position, long id) {
-				// TODO Auto-generated method stub
-
-			}
-		});
 	}
 
 	/*
@@ -179,24 +213,10 @@ public class SlidingMenuFragment extends Fragment {
 					tempList.add(nav.getName());
 				}
 			}
-			m_mapGroupCollection.put(m_listGroupNames.get(i), tempList);
-		}
-
-		m_strFrom = new String[] { "menu_name" };
-		m_nTo = new int[] { R.id.sm_list_item_nav };
-		List<String> listMenu = new ArrayList<String>();
-
-		for (Nav nav : Nav.values()) {
-			if (nav.getIndex() >= m_listGroupNames.size()) {
-				listMenu.add(nav.getName());
-			}
-		}
-
-		for (int i = 0; i < listMenu.size(); i++) {
-			Map<String, Object> tempMap = new HashMap<String, Object>();
-			tempMap.put(m_strFrom[0], listMenu.get(i));
-			m_listDataOfListItem.add(tempMap);
+			if(tempList.size()>1)
+				m_mapGroupCollection.put(m_listGroupNames.get(i), tempList);
 		}
 
 	}
+	
 }
