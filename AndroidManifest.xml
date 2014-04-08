@@ -59,6 +59,11 @@
             android:label="@string/app_name" >
         </activity>
         
+        <activity
+            android:name=".ui.usercenter.UserInfoActivity"
+            android:label="@string/app_name" >
+        </activity>
+        
     </application>
     
     

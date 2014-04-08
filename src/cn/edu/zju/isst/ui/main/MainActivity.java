@@ -19,6 +19,7 @@ import cn.edu.zju.isst.dummy.DummyFragment;
 import cn.edu.zju.isst.net.CSTResponse;
 import cn.edu.zju.isst.net.RequestListener;
 import cn.edu.zju.isst.settings.CSTSettings;
+import cn.edu.zju.isst.ui.empolyment.ExperienceListFragment;
 import cn.edu.zju.isst.ui.life.CampusActivityListFragment;
 import cn.edu.zju.isst.ui.life.NewsListFragment;
 import cn.edu.zju.isst.ui.life.RestaurantListFragment;
@@ -26,6 +27,7 @@ import cn.edu.zju.isst.ui.login.LoginActivity;
 import cn.edu.zju.isst.util.L;
 import cn.edu.zju.isst.ui.life.StudyListFragment;
 import cn.edu.zju.isst.ui.life.WikGridFragment;
+import cn.edu.zju.isst.ui.usercenter.UserCenterFragment;
 import cn.edu.zju.isst.util.T;
 
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
@@ -162,10 +164,10 @@ public class MainActivity extends BaseActivity implements
 			switchContent(DummyFragment.newInstance(REFE.getName()));
 			break;
 		case EXPE:
-			switchContent(DummyFragment.newInstance(EXPE.getName()));
+			switchContent(ExperienceListFragment.getInstance());
 			break;
 		case CIMA:
-			switchContent(DummyFragment.newInstance(CIMA.getName()));
+			switchContent(UserCenterFragment.getInstance());
 			break;
 		case CIAC:
 			switchContent(DummyFragment.newInstance(CIAC.getName()));
@@ -217,7 +219,7 @@ public class MainActivity extends BaseActivity implements
 		m_smMainMenu.showContent();
 	}
 	
-	private void logout(){
+	public void logout(){
 		LogoutApi.logout(new RequestListener() {
 
 			@Override

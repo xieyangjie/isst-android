@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+    <string name="campus_activity_imageview_picture">活动图片</string>
+    
+    <string name="restaurant_imageview_icon">商家图标</string>
+    <string name="restaurant_imagebutton_call">拨打外卖电话</string>
+    <string name="restaurant_hotline">外卖电话：</string>
+    
+    <string name="usercenter_welcomeback">欢迎回来：</string>
+    <string name="user_avatar">用户头像</string>
+    
+    <string name="user_username">学号</string>
+    <string name="user_name">姓名</string>
+    <string name="user_gender">性别</string>
+    <string name="user_garde">年级</string>
+    <string name="user_class">班级</string>
+    <string name="user_major">专业</string>
+    <string name="user_city">城市</string>
+    <string name="user_email">电子邮件</string>
+    <string name="user_phone">移动电话</string>
+	<string name="user_qq">QQ</string>
+	<string name="user_company">公司</string>
+	<string name="user_position">职位</string>
+	<string name="user_signature">个性签名</string>
+	<string name="user_is_citymaster">是否城主</string>
+	<string name="user_is_public">公开</string>
+</resources>
