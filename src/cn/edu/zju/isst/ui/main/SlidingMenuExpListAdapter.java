@@ -3,20 +3,16 @@
  */
 package cn.edu.zju.isst.ui.main;
 
-import java.sql.Struct;
 import java.util.List;
 import java.util.Map;
 
 import cn.edu.zju.isst.R;
 import cn.edu.zju.isst.util.L;
 
-import android.R.color;
-import android.R.integer;
-import android.R.raw;
+
 import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.opengl.Visibility;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
