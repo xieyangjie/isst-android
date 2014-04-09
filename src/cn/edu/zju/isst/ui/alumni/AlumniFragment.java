@@ -6,6 +6,7 @@ package cn.edu.zju.isst.ui.alumni;
 import static cn.edu.zju.isst.constant.Constants.*;
 
 import java.io.Serializable;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -122,16 +123,6 @@ public class AlumniFragment extends Fragment {
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onViewCreated(view, savedInstanceState);
-		//初始化数据
-		initAlumniList();
-		
-		//控件
-		m_lvAlumni = (ListView) view.findViewById(R.id.alumni_list);
-		m_tvFilterCondition = (TextView) view.findViewById(R.id.alumni_filter_conditon_content);
-		
-		m_noteBookAdapter = new NoteBookadapter(getActivity(), m_noteBookList);
-		m_lvAlumni.setAdapter(m_noteBookAdapter);
-		m_lvAlumni.setOnItemClickListener(new onNotebookItemClickListener());
 		
 		m_handlerAlumniList = new Handler() {
 
@@ -139,6 +130,10 @@ public class AlumniFragment extends Fragment {
 			public void handleMessage(Message msg) {
 				switch (msg.what) {
 				case STATUS_REQUEST_SUCCESS:
+//					if(m_flag) {
+//					DataManager.syncClassMateList(m_listUser, getActivity());
+//					}
+					Collections.sort(m_listUser,new Pinyin4j.PinyinComparator());
 					getNoteBookData();
 					m_noteBookAdapter.notifyDataSetChanged();
 					break;
@@ -149,6 +144,17 @@ public class AlumniFragment extends Fragment {
 				}
 			}
 		};
+		
+		//初始化数据
+		initAlumniList();
+		
+		//控件
+		m_lvAlumni = (ListView) view.findViewById(R.id.alumni_list);
+		m_tvFilterCondition = (TextView) view.findViewById(R.id.alumni_filter_conditon_content);
+		
+		m_noteBookAdapter = new NoteBookadapter(getActivity(), m_noteBookList);
+		m_lvAlumni.setAdapter(m_noteBookAdapter);
+		m_lvAlumni.setOnItemClickListener(new onNotebookItemClickListener());
 		
 		showFilterConditon();
 	}
@@ -244,62 +250,6 @@ public class AlumniFragment extends Fragment {
 		
 	}
 	
-//	if(m_flag) {
-//	DataManager.syncClassMateList(m_listUser, getActivity());
-//}
-	/**
-	 * 将数据源写入m_listUser
-	 * 
-	 * @param jsonObject
-	 *            数据源
-	 */
-	private void refreshAlumniList(JSONObject jsonObject) {
-		try {
-			JSONArray jsonArray = jsonObject.getJSONArray("body");
-			for (int i = 0; i < jsonArray.length(); i++) {
-				m_listUser.add(new User((JSONObject) jsonArray.get(i)));
-			}
-			Collections.sort(m_listUser,new Pinyin4j.PinyinComparator());
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	/**
-	 * 将数据源写入m_listCity
-	 * 
-	 * @param jsonObject
-	 *            数据源
-	 */
-	private void refreshCityList(JSONObject jsonObject) {
-		try {
-			JSONArray jsonArray = jsonObject.getJSONArray("body");
-			for (int i = 0; i < jsonArray.length(); i++) {
-				m_listCity.add(new City((JSONObject) jsonArray.get(i)));
-			}
-			Collections.sort(m_listUser,new Pinyin4j.PinyinComparator());
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	/**
-	 * 将数据源写入m_listCity
-	 * 
-	 * @param jsonObject
-	 *            数据源
-	 */
-	private void refreshMajorList(JSONObject jsonObject) {
-		try {
-			JSONArray jsonArray = jsonObject.getJSONArray("body");
-			for (int i = 0; i < jsonArray.length(); i++) {
-				m_listMajors.add(new Majors((JSONObject) jsonArray.get(i)));
-			}
-			Collections.sort(m_listUser,new Pinyin4j.PinyinComparator());
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
-	}
 
 	/**
 	 * 请求数据
@@ -318,20 +268,43 @@ public class AlumniFragment extends Fragment {
 		}
 	}
 	
-	private class AlumniListRequestListener implements RequestListener {
+	private class BaseListRequestListener<T> implements RequestListener {
+		Handler handler;
+		List<T> list;
+		Class<T> clazz;
+		
+		public BaseListRequestListener(final Handler h,Class<T> c,List<T> l)
+		{
+			this.handler = h;
+			this.list = l;
+			this.clazz = c;
+		}
 		
 		@Override
 		public void onComplete(Object result) {
 			Message msg = m_handlerAlumniList.obtainMessage();
 			try {
 				msg.what = ((JSONObject) result).getInt("status");
-				refreshAlumniList((JSONObject) result);
+				try {
+					JSONArray jsonArray = ((JSONObject) result).getJSONArray("body");
+					for (int i = 0; i < jsonArray.length(); i++) {
+						//m_listMajors.add(new Majors((JSONObject) jsonArray.get(i)));
+						try {
+							list.add(clazz.getConstructor(JSONObject.class).newInstance((JSONObject) jsonArray.get(i)));
+						}
+						catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
 			} catch (JSONException e) {
 				L.i(this.getClass().getName() + " onComplete!");
 				e.printStackTrace();
 			}
 
-			m_handlerAlumniList.sendMessage(msg);
+			handler.sendMessage(msg);
 		}
 
 		@Override
@@ -339,7 +312,7 @@ public class AlumniFragment extends Fragment {
 			L.i(this.getClass().getName() + " onHttpError!");
 			Message msg = m_handlerAlumniList.obtainMessage();
 			HttpErrorWeeder.fckHttpError(response, msg);
-			m_handlerAlumniList.sendMessage(msg);
+			handler.sendMessage(msg);
 		}
 
 		@Override
@@ -349,77 +322,8 @@ public class AlumniFragment extends Fragment {
 			ExceptionWeeder.fckException(e, msg);
 			m_handlerAlumniList.sendMessage(msg);
 		}
-
 	}
-	
-	private class CityListRequestListener implements RequestListener {
 		
-		@Override
-		public void onComplete(Object result) {
-			Message msg = m_handlerCityList.obtainMessage();
-			try {
-				msg.what = ((JSONObject) result).getInt("status");
-				refreshCityList((JSONObject) result);
-			} catch (JSONException e) {
-				L.i(this.getClass().getName() + " onComplete!");
-				e.printStackTrace();
-			}
-
-			m_handlerCityList.sendMessage(msg);
-		}
-
-		@Override
-		public void onHttpError(CSTResponse response) {
-			L.i(this.getClass().getName() + " onHttpError!");
-			Message msg = m_handlerAlumniList.obtainMessage();
-			HttpErrorWeeder.fckHttpError(response, msg);
-			m_handlerAlumniList.sendMessage(msg);
-		}
-
-		@Override
-		public void onException(Exception e) {
-			L.i(this.getClass().getName() + " onException!");
-			Message msg = m_handlerAlumniList.obtainMessage();
-			ExceptionWeeder.fckException(e, msg);
-			m_handlerAlumniList.sendMessage(msg);
-		}
-
-	}
-
-	private class MajorsListRequestListener implements RequestListener {
-		
-		@Override
-		public void onComplete(Object result) {
-			Message msg = m_handlerMajorList.obtainMessage();
-			try {
-				msg.what = ((JSONObject) result).getInt("status");
-				refreshMajorList((JSONObject) result);
-			} catch (JSONException e) {
-				L.i(this.getClass().getName() + " onComplete!");
-				e.printStackTrace();
-			}
-
-			m_handlerMajorList.sendMessage(msg);
-		}
-
-		@Override
-		public void onHttpError(CSTResponse response) {
-			L.i(this.getClass().getName() + " onHttpError!");
-			Message msg = m_handlerAlumniList.obtainMessage();
-			HttpErrorWeeder.fckHttpError(response, msg);
-			m_handlerAlumniList.sendMessage(msg);
-		}
-
-		@Override
-		public void onException(Exception e) {
-			L.i(this.getClass().getName() + " onException!");
-			Message msg = m_handlerAlumniList.obtainMessage();
-			ExceptionWeeder.fckException(e, msg);
-			m_handlerAlumniList.sendMessage(msg);
-		}
-
-	}
-
 	/**
 	 *  填充m_noteBookList数据
 	 */
@@ -472,7 +376,7 @@ public class AlumniFragment extends Fragment {
 	 */
 	private void AlumniApi_getUserList(UserFilter uf) {
 		AlumniApi.getUserList(uf.id, uf.name, uf.gender, uf.grade, uf.classId,
-				uf.majorId, uf.cityId, uf.company, new AlumniListRequestListener());
+		uf.majorId, uf.cityId, uf.company, new BaseListRequestListener(m_handlerAlumniList, User.class, m_listUser));
 	}
 	
 	@Override
