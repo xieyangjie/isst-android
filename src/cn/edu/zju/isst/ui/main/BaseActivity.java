@@ -3,9 +3,28 @@
  */
 package cn.edu.zju.isst.ui.main;
 
+import static cn.edu.zju.isst.constant.Constants.EXCEPTION_CLASSCAST;
+import static cn.edu.zju.isst.constant.Constants.EXCEPTION_IO;
+import static cn.edu.zju.isst.constant.Constants.EXCEPTION_JSON;
+import static cn.edu.zju.isst.constant.Constants.EXCEPTION_SOCKETTIMEOUT;
+import static cn.edu.zju.isst.constant.Constants.EXCEPTION_UNKNOWN;
+import static cn.edu.zju.isst.constant.Constants.HTTPERROR_CLIENTERROR;
+import static cn.edu.zju.isst.constant.Constants.HTTPERROR_SERVERERROR;
+import static cn.edu.zju.isst.constant.Constants.HTTPERROR_UNKNOWN;
+import static cn.edu.zju.isst.constant.Constants.NETWORK_NOT_CONNECTED;
+import static cn.edu.zju.isst.constant.Constants.STATUS_LOGIN_AUTH_EXPIRED;
+import static cn.edu.zju.isst.constant.Constants.STATUS_LOGIN_AUTH_FAILED;
+import static cn.edu.zju.isst.constant.Constants.STATUS_LOGIN_USERNAME_NOT_EXIST;
+import static cn.edu.zju.isst.constant.Constants.STATUS_REQUEST_SUCCESS;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import cn.edu.zju.isst.R;
 import cn.edu.zju.isst.api.LoginApi;
 import cn.edu.zju.isst.db.DataManager;
@@ -15,18 +34,12 @@ import cn.edu.zju.isst.net.RequestListener;
 import cn.edu.zju.isst.ui.login.LoginActivity;
 import cn.edu.zju.isst.util.CM;
 import cn.edu.zju.isst.util.L;
-import android.content.Intent;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.support.v7.app.ActionBarActivity;
-import static cn.edu.zju.isst.constant.Constants.*;
 
 /**
  * @author theasir
  * 
  */
-public class BaseActivity extends ActionBarActivity implements LoginSimulation,
+public class BaseActivity extends Activity implements LoginSimulation,
 		MessageDisposition {
 
 	private Handler m_handlerUpdateLogin;

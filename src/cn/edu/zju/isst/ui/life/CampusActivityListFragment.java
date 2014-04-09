@@ -3,7 +3,9 @@
  */
 package cn.edu.zju.isst.ui.life;
 
-import static cn.edu.zju.isst.constant.Constants.*;
+import static cn.edu.zju.isst.constant.Constants.NETWORK_NOT_CONNECTED;
+import static cn.edu.zju.isst.constant.Constants.STATUS_NOT_LOGIN;
+import static cn.edu.zju.isst.constant.Constants.STATUS_REQUEST_SUCCESS;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,9 +14,25 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.ListFragment;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
+import android.widget.BaseAdapter;
+import android.widget.ListView;
+import android.widget.TextView;
 import cn.edu.zju.isst.R;
 import cn.edu.zju.isst.api.CampusActivityApi;
-import cn.edu.zju.isst.db.Archive;
 import cn.edu.zju.isst.db.CampusActivity;
 import cn.edu.zju.isst.db.DataManager;
 import cn.edu.zju.isst.exception.ExceptionWeeder;
@@ -26,23 +44,6 @@ import cn.edu.zju.isst.ui.main.BaseActivity;
 import cn.edu.zju.isst.util.Judgement;
 import cn.edu.zju.isst.util.L;
 import cn.edu.zju.isst.util.TimeString;
-import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.support.v4.app.ListFragment;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AbsListView;
-import android.widget.BaseAdapter;
-import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.AbsListView.OnScrollListener;
 
 /**
  * @author theasir
@@ -221,7 +222,7 @@ public class CampusActivityListFragment extends ListFragment implements
 
 	private void initHandler() {
 		m_handlerCampusActivityList = new Handler() {
-	
+
 			/*
 			 * (non-Javadoc)
 			 * 
@@ -252,7 +253,7 @@ public class CampusActivityListFragment extends ListFragment implements
 					break;
 				}
 			}
-	
+
 		};
 	}
 
@@ -260,12 +261,12 @@ public class CampusActivityListFragment extends ListFragment implements
 		m_adapterCampusActivityList = new CampusActivityListAdapter(
 				getActivity());
 		setListAdapter(m_adapterCampusActivityList);
-	
+
 	}
 
 	private void setUpListener() {
 		m_lsvCampusActivityList.setOnScrollListener(this);
-	
+
 	}
 
 	/**

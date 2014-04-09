@@ -15,13 +15,13 @@ import cn.edu.zju.isst.ui.main.BaseArchiveListFragment;
 public class StudyListFragment extends BaseArchiveListFragment {
 
 	private static StudyListFragment INSTANCE = new StudyListFragment();
-	
-	public StudyListFragment(){
+
+	public StudyListFragment() {
 		super();
 		super.setArchiveCategory(ArchiveCategory.STUDING);
 	}
-	
-	public static StudyListFragment getInstance(){
+
+	public static StudyListFragment getInstance() {
 		return INSTANCE;
 	}
 }

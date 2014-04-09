@@ -3,7 +3,9 @@
  */
 package cn.edu.zju.isst.ui.life;
 
-import static cn.edu.zju.isst.constant.Constants.*;
+import static cn.edu.zju.isst.constant.Constants.NETWORK_NOT_CONNECTED;
+import static cn.edu.zju.isst.constant.Constants.STATUS_NOT_LOGIN;
+import static cn.edu.zju.isst.constant.Constants.STATUS_REQUEST_SUCCESS;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,20 +14,18 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView.FindListener;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
@@ -81,8 +81,7 @@ public class WikGridFragment extends Fragment implements OnScrollListener {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
-		
-		
+
 	}
 
 	/*
@@ -137,14 +136,14 @@ public class WikGridFragment extends Fragment implements OnScrollListener {
 
 		m_adapterWikiList = new WikiListAdapter(getActivity());
 
-		//setListAdapter(m_adapterWikiList);
+		// setListAdapter(m_adapterWikiList);
 		m_gvWiki.setAdapter(m_adapterWikiList);
-		
+
 		if (m_listAchive.size() == 0) {
 			requestData(LoadType.REFRESH);
 		}
-		
-		//监听事件
+
+		// 监听事件
 		m_gvWiki.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
@@ -152,7 +151,8 @@ public class WikGridFragment extends Fragment implements OnScrollListener {
 					long arg3) {
 				// TODO Auto-generated method stub
 				L.i(this.getClass().getName() + " onListItemClick postion = ");
-				Intent intent = new Intent(getActivity(), ArchiveDetailActivity.class);
+				Intent intent = new Intent(getActivity(),
+						ArchiveDetailActivity.class);
 				intent.putExtra("id", m_listAchive.get(arg2).getId());
 				getActivity().startActivity(intent);
 			}
@@ -182,7 +182,6 @@ public class WikGridFragment extends Fragment implements OnScrollListener {
 	 */
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-		// TODO Auto-generated method stub
 		super.onCreateOptionsMenu(menu, inflater);
 		inflater.inflate(R.menu.wiki_list_fragment_ab_menu, menu);
 	}
@@ -204,22 +203,22 @@ public class WikGridFragment extends Fragment implements OnScrollListener {
 			return super.onOptionsItemSelected(item);
 		}
 	}
-	
+
 	@Override
 	public void onScrollStateChanged(AbsListView view, int scrollState) {
-//		L.i(this.getClass().getName()
-//				+ " onScrollStateChanged VisibleLastIndex = "
-//				+ m_nVisibleLastIndex);
-//		if (scrollState == SCROLL_STATE_IDLE
-//				&& m_nVisibleLastIndex == m_adapterWikiList.getCount() - 1) {
-//			requestData(LoadType.LOADMORE);
-//		}
+		// L.i(this.getClass().getName()
+		// + " onScrollStateChanged VisibleLastIndex = "
+		// + m_nVisibleLastIndex);
+		// if (scrollState == SCROLL_STATE_IDLE
+		// && m_nVisibleLastIndex == m_adapterWikiList.getCount() - 1) {
+		// requestData(LoadType.LOADMORE);
+		// }
 	}
 
 	@Override
 	public void onScroll(AbsListView view, int firstVisibleItem,
 			int visibleItemCount, int totalItemCount) {
-//		m_nVisibleLastIndex = firstVisibleItem + visibleItemCount - 1;
+		// m_nVisibleLastIndex = firstVisibleItem + visibleItemCount - 1;
 	}
 
 	/**
@@ -229,7 +228,7 @@ public class WikGridFragment extends Fragment implements OnScrollListener {
 
 		List<Archive> dbWikiList = DataManager
 				.getCurrentWikiList(getActivity());
-		if (!m_listAchive.isEmpty()){
+		if (!m_listAchive.isEmpty()) {
 			m_listAchive.clear();
 		}
 		if (!Judgement.isNullOrEmpty(dbWikiList)) {
@@ -428,10 +427,10 @@ public class WikGridFragment extends Fragment implements OnScrollListener {
 			ViewHolder holder = null;
 			if (convertView == null) {
 				holder = new ViewHolder();
-				
-				convertView = inflater
-						.inflate(R.layout.wiki_grid_item, null);
-				//convertView.setLayoutParams(new GridView.LayoutParams(85, 85));
+
+				convertView = inflater.inflate(R.layout.wiki_grid_item, null);
+				// convertView.setLayoutParams(new GridView.LayoutParams(85,
+				// 85));
 				holder.titleTxv = (TextView) convertView
 						.findViewById(R.id.wiki_grid_item_title_txv);
 				holder.dateTxv = (TextView) convertView

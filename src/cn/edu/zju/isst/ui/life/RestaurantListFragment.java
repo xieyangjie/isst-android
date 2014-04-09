@@ -3,6 +3,10 @@
  */
 package cn.edu.zju.isst.ui.life;
 
+import static cn.edu.zju.isst.constant.Constants.NETWORK_NOT_CONNECTED;
+import static cn.edu.zju.isst.constant.Constants.STATUS_NOT_LOGIN;
+import static cn.edu.zju.isst.constant.Constants.STATUS_REQUEST_SUCCESS;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,16 +14,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import cn.edu.zju.isst.R;
-import cn.edu.zju.isst.api.RestaurantApi;
-import cn.edu.zju.isst.db.Archive;
-import cn.edu.zju.isst.db.DataManager;
-import cn.edu.zju.isst.db.Restaurant;
-import cn.edu.zju.isst.net.CSTResponse;
-import cn.edu.zju.isst.net.NetworkConnection;
-import cn.edu.zju.isst.net.RequestListener;
-import cn.edu.zju.isst.util.Judgement;
-import cn.edu.zju.isst.util.L;
+import android.app.ListFragment;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -27,7 +22,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,7 +30,15 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import static cn.edu.zju.isst.constant.Constants.*;
+import cn.edu.zju.isst.R;
+import cn.edu.zju.isst.api.RestaurantApi;
+import cn.edu.zju.isst.db.DataManager;
+import cn.edu.zju.isst.db.Restaurant;
+import cn.edu.zju.isst.net.CSTResponse;
+import cn.edu.zju.isst.net.NetworkConnection;
+import cn.edu.zju.isst.net.RequestListener;
+import cn.edu.zju.isst.util.Judgement;
+import cn.edu.zju.isst.util.L;
 
 /**
  * @author theasir
@@ -94,10 +96,10 @@ public class RestaurantListFragment extends ListFragment {
 		super.onViewCreated(view, savedInstanceState);
 
 		m_lsvRestaurantList = (ListView) view.findViewById(android.R.id.list);
-		
+
 		initRestaurantList();
-		
-		if(Judgement.isNullOrEmpty(m_listRestaurant)){
+
+		if (Judgement.isNullOrEmpty(m_listRestaurant)) {
 			requestData();
 		}
 
@@ -148,12 +150,14 @@ public class RestaurantListFragment extends ListFragment {
 	 */
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
-		L.i(this.getClass().getName() + " onListItemClick postion = " + position);
-		Intent intent = new Intent(getActivity(), RestaurantDetailActivity.class);
+		L.i(this.getClass().getName() + " onListItemClick postion = "
+				+ position);
+		Intent intent = new Intent(getActivity(),
+				RestaurantDetailActivity.class);
 		intent.putExtra("id", m_listRestaurant.get(position).getId());
 		getActivity().startActivity(intent);
 	}
-	
+
 	private void initRestaurantList() {
 		List<Restaurant> dbRestaurantList = DataManager
 				.getRestaurantList(getActivity());
@@ -278,7 +282,7 @@ public class RestaurantListFragment extends ListFragment {
 						.findViewById(R.id.restaurant_list_item_hotline_txv);
 				holder.dialIbtn = (ImageButton) convertView
 						.findViewById(R.id.restaurant_list_item_dial_ibtn);
-				
+
 				convertView.setTag(holder);
 			} else {
 				holder = (ViewHolder) convertView.getTag();
@@ -286,7 +290,8 @@ public class RestaurantListFragment extends ListFragment {
 
 			holder.iconImgv.setBackgroundColor(Color.BLUE);
 			holder.nameTxv.setText(m_listRestaurant.get(position).getName());
-			holder.hotlineTxv.setText(m_listRestaurant.get(position).getHotline());
+			holder.hotlineTxv.setText(m_listRestaurant.get(position)
+					.getHotline());
 
 			final String dialNumber = m_listRestaurant.get(position)
 					.getHotline();

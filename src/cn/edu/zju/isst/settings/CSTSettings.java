@@ -3,10 +3,10 @@
  */
 package cn.edu.zju.isst.settings;
 
-import cn.edu.zju.isst.util.L;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import cn.edu.zju.isst.util.L;
 
 /**
  * 设置管理类
@@ -41,14 +41,14 @@ public class CSTSettings {
 				.getBoolean(IS_AUTO_LOGIN, false);
 	}
 
-	public static void cleanAllSettings(Activity activity){
+	public static void cleanAllSettings(Activity activity) {
 		SharedPreferences sp = activity.getSharedPreferences(SP_NAME,
 				Activity.MODE_PRIVATE);
 		Editor editor = sp.edit();
 		editor.clear();
 		editor.commit();
 	}
-	
+
 	private static void writeValueForKey(String key, Object value,
 			Activity activity) {
 		SharedPreferences sp = activity.getSharedPreferences(SP_NAME,

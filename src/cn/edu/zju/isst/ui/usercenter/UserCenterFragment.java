@@ -3,13 +3,9 @@
  */
 package cn.edu.zju.isst.ui.usercenter;
 
-import cn.edu.zju.isst.R;
-import cn.edu.zju.isst.db.DataManager;
-import cn.edu.zju.isst.db.User;
-import cn.edu.zju.isst.ui.main.MainActivity;
+import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -17,6 +13,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import cn.edu.zju.isst.R;
+import cn.edu.zju.isst.db.DataManager;
+import cn.edu.zju.isst.db.User;
+import cn.edu.zju.isst.dummy.TestFloatingActivity;
+import cn.edu.zju.isst.ui.main.MainActivity;
 
 /**
  * @author theasir
@@ -78,9 +79,9 @@ public class UserCenterFragment extends Fragment {
 		initComponent(view);
 
 		setUpListener();
-		
+
 		initUser();
-		
+
 		show();
 	}
 
@@ -101,9 +102,11 @@ public class UserCenterFragment extends Fragment {
 
 			@Override
 			public void onClick(View v) {
-				getActivity().startActivity(
-						new Intent(getActivity(), UserInfoActivity.class));
+				// getActivity().startActivity(
+				// new Intent(getActivity(), UserInfoActivity.class));
 
+				getActivity().startActivity(
+						new Intent(getActivity(), TestFloatingActivity.class));
 			}
 		});
 
@@ -115,12 +118,12 @@ public class UserCenterFragment extends Fragment {
 			}
 		});
 	}
-	
-	private void initUser(){
+
+	private void initUser() {
 		m_userCurrent = DataManager.getCurrentUser(getActivity());
 	}
-	
-	private void show(){
+
+	private void show() {
 		m_txvName.setText(m_userCurrent.getName());
 		m_txvSignature.setText(m_userCurrent.getSignature());
 	}

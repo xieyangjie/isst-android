@@ -3,11 +3,17 @@
  */
 package cn.edu.zju.isst.ui.main;
 
-import static cn.edu.zju.isst.constant.Nav.*;
+import static cn.edu.zju.isst.constant.Nav.CIAC;
+import static cn.edu.zju.isst.constant.Nav.CIAL;
+import static cn.edu.zju.isst.constant.Nav.CONT;
+import static cn.edu.zju.isst.constant.Nav.INTE;
+import static cn.edu.zju.isst.constant.Nav.JOBS;
+import static cn.edu.zju.isst.constant.Nav.REFE;
+import static cn.edu.zju.isst.constant.Nav.USCE;
+
+import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBarActivity;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,11 +29,11 @@ import cn.edu.zju.isst.ui.empolyment.ExperienceListFragment;
 import cn.edu.zju.isst.ui.life.CampusActivityListFragment;
 import cn.edu.zju.isst.ui.life.NewsListFragment;
 import cn.edu.zju.isst.ui.life.RestaurantListFragment;
-import cn.edu.zju.isst.ui.login.LoginActivity;
-import cn.edu.zju.isst.util.L;
 import cn.edu.zju.isst.ui.life.StudyListFragment;
 import cn.edu.zju.isst.ui.life.WikGridFragment;
+import cn.edu.zju.isst.ui.login.LoginActivity;
 import cn.edu.zju.isst.ui.usercenter.UserCenterFragment;
+import cn.edu.zju.isst.util.L;
 import cn.edu.zju.isst.util.T;
 
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
@@ -68,13 +74,13 @@ public class MainActivity extends BaseActivity implements
 
 		if (savedInstanceState == null) {
 			m_fragCurrentContent = NewsListFragment.getInstance();
-			getSupportFragmentManager().beginTransaction()
+			getFragmentManager().beginTransaction()
 					.add(R.id.content_frame, m_fragCurrentContent).commit();
 		}
 
 		setUpSlidingMenu();
 
-		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		getActionBar().setDisplayHomeAsUpEnabled(true);
 	}
 
 	/*
@@ -84,7 +90,7 @@ public class MainActivity extends BaseActivity implements
 	 */
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.main_activity_ab_menu, menu);
+//		getMenuInflater().inflate(R.menu.main_activity_ab_menu, menu);
 		return true;
 	}
 
@@ -199,7 +205,7 @@ public class MainActivity extends BaseActivity implements
 		m_smMainMenu.setFadeDegree(0.35f);
 		m_smMainMenu.attachToActivity(this, SlidingMenu.SLIDING_WINDOW);
 		m_smMainMenu.setMenu(R.layout.sm_frame);
-		getSupportFragmentManager().beginTransaction()
+		getFragmentManager().beginTransaction()
 				.replace(R.id.sm_frame, SlidingMenuFragment.getInstance())
 				.commit();
 	}
@@ -213,36 +219,37 @@ public class MainActivity extends BaseActivity implements
 		if (fragment != m_fragCurrentContent) {
 			m_fragCurrentContent = fragment;
 
-			getSupportFragmentManager().beginTransaction()
+			getFragmentManager().beginTransaction()
 					.replace(R.id.content_frame, m_fragCurrentContent).commit();
 		}
 		m_smMainMenu.showContent();
 	}
-	
-	public void logout(){
+
+	public void logout() {
 		LogoutApi.logout(new RequestListener() {
 
 			@Override
 			public void onComplete(Object result) {
 				// TODO Auto-generated method stub
-				
+
 			}
-			
+
 			@Override
 			public void onHttpError(CSTResponse response) {
 				L.i("logout onHttpError: " + response.getStatus());
-				
+
 			}
-			
+
 			@Override
 			public void onException(Exception e) {
 				// TODO Auto-generated method stub
-				
+
 			}
 		});
 		DataManager.deleteCurrentUser(MainActivity.this);
 		CSTSettings.setAutoLogin(false, MainActivity.this);
-		MainActivity.this.startActivity(new Intent(MainActivity.this, LoginActivity.class));
+		MainActivity.this.startActivity(new Intent(MainActivity.this,
+				LoginActivity.class));
 		MainActivity.this.finish();
 	}
 

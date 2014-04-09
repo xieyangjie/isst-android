@@ -20,7 +20,6 @@ import cn.edu.zju.isst.util.L;
  */
 public class CSTApi {
 
-	
 	/**
 	 * 服务器前缀地址
 	 */
@@ -46,10 +45,12 @@ public class CSTApi {
 				params, listener);
 		L.i("CSTApi Request URL = " + url);
 	}
-	
-	protected static CSTResponse responseOfRequest(final String methodName, final String subUrl,
-			final Map<String, String> params) throws MalformedURLException, IOException {
+
+	protected static CSTResponse responseOfRequest(final String methodName,
+			final String subUrl, final Map<String, String> params)
+			throws MalformedURLException, IOException {
 		String url = PREFIX + subUrl;
-		return BetterAsyncWebServiceRunner.getInstance().responseOfRequest(methodName, url, params);
+		return BetterAsyncWebServiceRunner.getInstance().responseOfRequest(
+				methodName, url, params);
 	}
 }

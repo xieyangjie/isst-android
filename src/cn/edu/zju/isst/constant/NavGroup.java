@@ -11,10 +11,8 @@ package cn.edu.zju.isst.constant;
  */
 public enum NavGroup {
 
-	LIFE("软院生活", 0),
-	WORK("职场信息", 1),
-	CITY("同城", 2);
-	
+	LIFE("软院生活", 0), WORK("职场信息", 1), CITY("同城", 2);
+
 	/**
 	 * 导航组名称
 	 */
@@ -23,16 +21,17 @@ public enum NavGroup {
 	 * index
 	 */
 	private int index;
-	private NavGroup(String name, int index){
+
+	private NavGroup(String name, int index) {
 		this.name = name;
 		this.index = index;
 	}
-	
-	public String getName(){
+
+	public String getName() {
 		return name;
 	}
-	
-	public int getIndex(){
+
+	public int getIndex() {
 		return index;
 	}
 }

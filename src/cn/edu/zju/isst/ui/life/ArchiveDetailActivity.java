@@ -3,19 +3,18 @@
  */
 package cn.edu.zju.isst.ui.life;
 
-import static cn.edu.zju.isst.constant.Constants.*;
+import static cn.edu.zju.isst.constant.Constants.STATUS_NOT_LOGIN;
+import static cn.edu.zju.isst.constant.Constants.STATUS_REQUEST_SUCCESS;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.ActionBar;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
 import android.view.MenuItem;
 import android.webkit.WebSettings;
-import android.webkit.WebSettings.LayoutAlgorithm;
 import android.webkit.WebView;
 import android.widget.TextView;
 import cn.edu.zju.isst.R;
@@ -69,7 +68,7 @@ public class ArchiveDetailActivity extends BaseActivity {
 		setContentView(R.layout.archive_detail_activity);
 		initComponent();
 
-		ActionBar actionBar = getSupportActionBar();
+		ActionBar actionBar = getActionBar();
 		actionBar.setHomeButtonEnabled(true);
 		actionBar.setDisplayHomeAsUpEnabled(true);
 

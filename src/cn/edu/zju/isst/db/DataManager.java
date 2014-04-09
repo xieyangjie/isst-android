@@ -82,14 +82,17 @@ public class DataManager {
 		new DBManager(context).delete(USER_IN_DB);
 	}
 
-	public static void syncArchiveList(ArchiveCategory archiveCategory, List<Archive> newsList, Context context){
+	public static void syncArchiveList(ArchiveCategory archiveCategory,
+			List<Archive> newsList, Context context) {
 		if (!Judgement.isNullOrEmpty(newsList)) {
-			writeObjectToDB(archiveCategory.getNameInDB(), (Serializable) newsList, context);
+			writeObjectToDB(archiveCategory.getNameInDB(),
+					(Serializable) newsList, context);
 		}
 	}
-	
+
 	@SuppressWarnings("unchecked")
-	public static List<Archive> getArchiveList(ArchiveCategory archiveCategory, Context context) {
+	public static List<Archive> getArchiveList(ArchiveCategory archiveCategory,
+			Context context) {
 		Object object = objectFromDB(archiveCategory.getNameInDB(), context);
 		if (!Judgement.isNullOrEmpty(object)) {
 			List<Archive> archiveList = null;
@@ -104,7 +107,7 @@ public class DataManager {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * 同步新闻列表接口返回数据
 	 * 
@@ -210,12 +213,10 @@ public class DataManager {
 		}
 		return null;
 	}
-	
-	public static void syncMajorList(List<Majors> majorList,
-			Context context) {
+
+	public static void syncMajorList(List<Majors> majorList, Context context) {
 		if (!Judgement.isNullOrEmpty(majorList)) {
-			writeObjectToDB(MAJOR_LIST_IN_DB,
-					(Serializable) majorList, context);
+			writeObjectToDB(MAJOR_LIST_IN_DB, (Serializable) majorList, context);
 			L.i("Write majorList to DB!");
 		}
 	}
@@ -236,12 +237,10 @@ public class DataManager {
 		}
 		return null;
 	}
-	
-	public static void syncCityList(List<Majors> cityList,
-			Context context) {
+
+	public static void syncCityList(List<Majors> cityList, Context context) {
 		if (!Judgement.isNullOrEmpty(cityList)) {
-			writeObjectToDB(CITY_LIST_IN_DB,
-					(Serializable) cityList, context);
+			writeObjectToDB(CITY_LIST_IN_DB, (Serializable) cityList, context);
 			L.i("Write majorList to DB!");
 		}
 	}
@@ -263,11 +262,10 @@ public class DataManager {
 		return null;
 	}
 
-	public static void syncClassList(List<Klass> classMateList,
-			Context context) {
+	public static void syncClassList(List<Klass> classMateList, Context context) {
 		if (!Judgement.isNullOrEmpty(classMateList)) {
-			writeObjectToDB(CLASS_LIST_IN_DB,
-					(Serializable) classMateList, context);
+			writeObjectToDB(CLASS_LIST_IN_DB, (Serializable) classMateList,
+					context);
 			L.i("Write majorList to DB!");
 		}
 	}
@@ -288,12 +286,11 @@ public class DataManager {
 		}
 		return null;
 	}
-	
-	public static void syncClassMateList(List<User> classList,
-			Context context) {
+
+	public static void syncClassMateList(List<User> classList, Context context) {
 		if (!Judgement.isNullOrEmpty(classList)) {
-			writeObjectToDB(CLASSMATE_LIST_IN_DB,
-					(Serializable) classList, context);
+			writeObjectToDB(CLASSMATE_LIST_IN_DB, (Serializable) classList,
+					context);
 			L.i("Write majorList to DB!");
 		}
 	}
@@ -314,7 +311,7 @@ public class DataManager {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * 将目标对象序列化后写入当前数据库
 	 * 

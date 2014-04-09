@@ -62,11 +62,12 @@ public class Judgement {
 			}
 			return isEmpty;
 		}
-		
+
 		return false;
 	}
-	
-	public static boolean isValidJsonValue(String key, JSONObject jsonObject) throws JSONException{
+
+	public static boolean isValidJsonValue(String key, JSONObject jsonObject)
+			throws JSONException {
 		return jsonObject.has(key) && !isNullOrEmpty(jsonObject.get(key));
 	}
 }

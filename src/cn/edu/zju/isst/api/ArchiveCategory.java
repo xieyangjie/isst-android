@@ -13,10 +13,10 @@ import cn.edu.zju.isst.db.DataManager;
  */
 public enum ArchiveCategory {
 
-	CAMPUS("campus", DataManager.NEWS_LIST_IN_DB),
-	ENCYCLOPEDIA("encyclopedia", DataManager.WIKI_LIST_IN_DB),
-	STUDING("studying", DataManager.STUD_LIST_IN_DB),
-	EXPERIENCE("experience", DataManager.EXPERIENCE_LIST_IN_DB);
+	CAMPUS("campus", DataManager.NEWS_LIST_IN_DB), ENCYCLOPEDIA("encyclopedia",
+			DataManager.WIKI_LIST_IN_DB), STUDING("studying",
+			DataManager.STUD_LIST_IN_DB), EXPERIENCE("experience",
+			DataManager.EXPERIENCE_LIST_IN_DB);
 
 	private String subUrl;
 	private String nameInDB;

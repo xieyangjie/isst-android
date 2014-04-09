@@ -32,9 +32,10 @@ public class ArchiveApi extends CSTApi {
 	 */
 	public static void getWikiList(Integer page, Integer pageSize,
 			String keywords, RequestListener listener) {
-		getArchiveList(ArchiveCategory.ENCYCLOPEDIA, page, pageSize, keywords, listener);
+		getArchiveList(ArchiveCategory.ENCYCLOPEDIA, page, pageSize, keywords,
+				listener);
 	}
-	
+
 	/**
 	 * 获取归档列表
 	 * 

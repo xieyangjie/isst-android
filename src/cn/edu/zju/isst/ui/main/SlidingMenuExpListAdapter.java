@@ -123,7 +123,8 @@ public class SlidingMenuExpListAdapter extends BaseExpandableListAdapter {
 			convertView = m_actiContext.getLayoutInflater().inflate(
 					R.layout.sm_group_item, null);
 		}
-		TextView mainNav = (TextView) convertView.findViewById(R.id.sm_group_item_nav);
+		TextView mainNav = (TextView) convertView
+				.findViewById(R.id.sm_group_item_nav);
 		mainNav.setTypeface(null, Typeface.BOLD);
 		mainNav.setText(nav);
 		return convertView;
@@ -143,7 +144,8 @@ public class SlidingMenuExpListAdapter extends BaseExpandableListAdapter {
 			convertView = m_actiContext.getLayoutInflater().inflate(
 					R.layout.sm_child_item, null);
 		}
-		TextView subNav = (TextView) convertView.findViewById(R.id.sm_child_item_nav);
+		TextView subNav = (TextView) convertView
+				.findViewById(R.id.sm_child_item_nav);
 		subNav.setText(nav);
 		return convertView;
 	}

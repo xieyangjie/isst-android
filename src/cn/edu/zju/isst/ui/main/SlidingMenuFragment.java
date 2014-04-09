@@ -8,18 +8,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import cn.edu.zju.isst.R;
-import cn.edu.zju.isst.constant.Nav;
-import cn.edu.zju.isst.constant.NavGroup;
 import android.app.Activity;
+import android.app.Fragment;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ExpandableListView;
 import android.widget.ListView;
+import cn.edu.zju.isst.R;
+import cn.edu.zju.isst.constant.Nav;
+import cn.edu.zju.isst.constant.NavGroup;
 
 /**
  * 侧拉菜单Fragment类

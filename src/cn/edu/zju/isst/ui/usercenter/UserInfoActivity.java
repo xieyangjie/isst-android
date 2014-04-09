@@ -3,15 +3,14 @@
  */
 package cn.edu.zju.isst.ui.usercenter;
 
+import android.app.ActionBar;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 import cn.edu.zju.isst.R;
 import cn.edu.zju.isst.db.DataManager;
 import cn.edu.zju.isst.db.User;
-import cn.edu.zju.isst.ui.life.RestaurantDetailActivity;
 import cn.edu.zju.isst.ui.main.BaseActivity;
 
 /**
@@ -33,7 +32,7 @@ public class UserInfoActivity extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.user_info_activity);
 
-		ActionBar actionBar = getSupportActionBar();
+		ActionBar actionBar = getActionBar();
 		actionBar.setHomeButtonEnabled(true);
 		actionBar.setDisplayHomeAsUpEnabled(true);
 

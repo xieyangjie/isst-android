@@ -3,12 +3,15 @@
  */
 package cn.edu.zju.isst.exception;
 
+import static cn.edu.zju.isst.constant.Constants.HTTPERROR_CLIENTERROR;
+import static cn.edu.zju.isst.constant.Constants.HTTPERROR_SERVERERROR;
+import static cn.edu.zju.isst.constant.Constants.HTTPERROR_UNKNOWN;
+
 import java.net.HttpURLConnection;
 
 import android.os.Message;
 import cn.edu.zju.isst.net.CSTResponse;
 import cn.edu.zju.isst.util.L;
-import static cn.edu.zju.isst.constant.Constants.*;
 
 /**
  * HTTP错误处理机

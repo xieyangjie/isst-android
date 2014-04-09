@@ -1,5 +1,9 @@
 package cn.edu.zju.isst.ui.main;
 
+import static cn.edu.zju.isst.constant.Constants.NETWORK_NOT_CONNECTED;
+import static cn.edu.zju.isst.constant.Constants.STATUS_NOT_LOGIN;
+import static cn.edu.zju.isst.constant.Constants.STATUS_REQUEST_SUCCESS;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,12 +11,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.ListFragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -38,7 +42,6 @@ import cn.edu.zju.isst.ui.life.ArchiveDetailActivity;
 import cn.edu.zju.isst.util.Judgement;
 import cn.edu.zju.isst.util.L;
 import cn.edu.zju.isst.util.TimeString;
-import static cn.edu.zju.isst.constant.Constants.*;
 
 /**
  * 归档列表基类
@@ -193,7 +196,7 @@ public class BaseArchiveListFragment extends ListFragment implements
 	public void setArchiveCategory(ArchiveCategory archiveCategory) {
 		m_archiveCategory = archiveCategory;
 	}
-	
+
 	protected void initComponent(View view) {
 		m_lsvArchiveList = (ListView) view.findViewById(android.R.id.list);
 	}

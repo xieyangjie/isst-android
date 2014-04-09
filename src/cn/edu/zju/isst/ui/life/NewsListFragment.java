@@ -13,15 +13,15 @@ import cn.edu.zju.isst.ui.main.BaseArchiveListFragment;
  * 
  */
 public class NewsListFragment extends BaseArchiveListFragment {
-	
+
 	private static NewsListFragment INSTANCE = new NewsListFragment();
-	
-	public NewsListFragment(){
+
+	public NewsListFragment() {
 		super();
 		super.setArchiveCategory(ArchiveCategory.CAMPUS);
 	}
-	
-	public static NewsListFragment getInstance(){
+
+	public static NewsListFragment getInstance() {
 		return INSTANCE;
 	}
 }
