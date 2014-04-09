@@ -3,8 +3,7 @@
  */
 package cn.edu.zju.isst.ui.life;
 
-import static cn.edu.zju.isst.constant.Constants.STATUS_NOT_LOGIN;
-import static cn.edu.zju.isst.constant.Constants.STATUS_REQUEST_SUCCESS;
+import static cn.edu.zju.isst.constant.Constants.*;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -15,6 +14,8 @@ import android.os.Handler;
 import android.os.Message;
 import android.view.MenuItem;
 import android.webkit.WebSettings;
+import android.webkit.WebSettings.LayoutAlgorithm;
+import android.webkit.WebSettings.TextSize;
 import android.webkit.WebView;
 import android.widget.TextView;
 import cn.edu.zju.isst.R;
@@ -187,6 +188,9 @@ public class ArchiveDetailActivity extends BaseActivity {
 		WebSettings settings = m_webvContent.getSettings();
 		settings.setUseWideViewPort(true);
 		settings.setLoadWithOverviewMode(true);
+		settings.setLayoutAlgorithm(LayoutAlgorithm.NARROW_COLUMNS);
+		settings.setDefaultFontSize(48);
+		// settings.setTextSize(TextSize.NORMAL);
 	}
 
 	/**

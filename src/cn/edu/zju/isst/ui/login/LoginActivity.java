@@ -3,12 +3,7 @@
  */
 package cn.edu.zju.isst.ui.login;
 
-import static cn.edu.zju.isst.constant.Constants.NETWORK_NOT_CONNECTED;
-import static cn.edu.zju.isst.constant.Constants.STATUS_LOGIN_AUTH_EXPIRED;
-import static cn.edu.zju.isst.constant.Constants.STATUS_LOGIN_AUTH_FAILED;
-import static cn.edu.zju.isst.constant.Constants.STATUS_LOGIN_PASSWORD_ERROR;
-import static cn.edu.zju.isst.constant.Constants.STATUS_LOGIN_USERNAME_NOT_EXIST;
-import static cn.edu.zju.isst.constant.Constants.STATUS_REQUEST_SUCCESS;
+import static cn.edu.zju.isst.constant.Constants.*;
 
 import org.json.JSONException;
 import org.json.JSONObject;

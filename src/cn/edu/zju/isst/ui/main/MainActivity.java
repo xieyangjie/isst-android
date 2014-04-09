@@ -3,13 +3,7 @@
  */
 package cn.edu.zju.isst.ui.main;
 
-import static cn.edu.zju.isst.constant.Nav.CIAC;
-import static cn.edu.zju.isst.constant.Nav.CIAL;
-import static cn.edu.zju.isst.constant.Nav.CONT;
-import static cn.edu.zju.isst.constant.Nav.INTE;
-import static cn.edu.zju.isst.constant.Nav.JOBS;
-import static cn.edu.zju.isst.constant.Nav.REFE;
-import static cn.edu.zju.isst.constant.Nav.USCE;
+import static cn.edu.zju.isst.constant.Nav.*;
 
 import android.app.Fragment;
 import android.content.Intent;
@@ -90,7 +84,7 @@ public class MainActivity extends BaseActivity implements
 	 */
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-//		getMenuInflater().inflate(R.menu.main_activity_ab_menu, menu);
+		getMenuInflater().inflate(R.menu.main_activity_ab_menu, menu);
 		return true;
 	}
 
