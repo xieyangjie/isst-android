@@ -3,15 +3,19 @@
  */
 package cn.edu.zju.isst.exception;
 
+import static cn.edu.zju.isst.constant.Constants.EXCEPTION_CLASSCAST;
+import static cn.edu.zju.isst.constant.Constants.EXCEPTION_IO;
+import static cn.edu.zju.isst.constant.Constants.EXCEPTION_JSON;
+import static cn.edu.zju.isst.constant.Constants.EXCEPTION_SOCKETTIMEOUT;
+import static cn.edu.zju.isst.constant.Constants.EXCEPTION_UNKNOWN;
+
 import java.io.IOException;
 import java.net.SocketTimeoutException;
 
 import org.json.JSONException;
 
-import cn.edu.zju.isst.util.L;
-import static cn.edu.zju.isst.constant.Constants.*;
-
 import android.os.Message;
+import cn.edu.zju.isst.util.L;
 
 /**
  * 异常清除机

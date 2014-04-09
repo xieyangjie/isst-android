@@ -8,14 +8,14 @@ import static cn.edu.zju.isst.constant.Constants.*;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.ActionBar;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
 import android.view.MenuItem;
 import android.webkit.WebSettings;
 import android.webkit.WebSettings.LayoutAlgorithm;
+import android.webkit.WebSettings.TextSize;
 import android.webkit.WebView;
 import android.widget.TextView;
 import cn.edu.zju.isst.R;
@@ -69,7 +69,7 @@ public class ArchiveDetailActivity extends BaseActivity {
 		setContentView(R.layout.archive_detail_activity);
 		initComponent();
 
-		ActionBar actionBar = getSupportActionBar();
+		ActionBar actionBar = getActionBar();
 		actionBar.setHomeButtonEnabled(true);
 		actionBar.setDisplayHomeAsUpEnabled(true);
 
@@ -188,6 +188,9 @@ public class ArchiveDetailActivity extends BaseActivity {
 		WebSettings settings = m_webvContent.getSettings();
 		settings.setUseWideViewPort(true);
 		settings.setLoadWithOverviewMode(true);
+		settings.setLayoutAlgorithm(LayoutAlgorithm.NARROW_COLUMNS);
+		settings.setDefaultFontSize(48);
+		// settings.setTextSize(TextSize.NORMAL);
 	}
 
 	/**

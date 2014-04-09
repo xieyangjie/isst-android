@@ -15,9 +15,11 @@ import cn.edu.zju.isst.util.L;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.View.OnClickListener;
+import android.view.WindowManager.LayoutParams;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
@@ -55,7 +57,7 @@ public class AlumniFilterActivity extends BaseActivity {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		L.i("yyy onCreate" );
-		setContentView(R.layout.alumni_filter_activity);
+		setUpActivity();
 		
 		m_btnOK = (Button)findViewById(R.id.alumni_filter_ok);
 		m_btnCancel = (Button)findViewById(R.id.alumni_filter_cancel);
@@ -89,6 +91,19 @@ public class AlumniFilterActivity extends BaseActivity {
 		
 		m_btnOK.setOnClickListener(new onBtnOkClickListener());
 		m_btnCancel.setOnClickListener(new onBtnCancelClickListener());
+	}
+	
+	private void setUpActivity() {
+		requestWindowFeature(Window.FEATURE_ACTION_BAR);
+		getWindow().setFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND,
+				WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+		LayoutParams params = getWindow().getAttributes();
+		params.height = 1200; // fixed height
+		params.width = LayoutParams.MATCH_PARENT; // fixed width
+		params.alpha = 1.0f;
+		params.dimAmount = 0.5f;
+		getWindow().setAttributes(params);
+		setContentView(R.layout.alumni_filter_activity);
 	}
 	
 	//使用数组形式操作  

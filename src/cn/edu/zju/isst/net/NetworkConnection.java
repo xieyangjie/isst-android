@@ -1,9 +1,9 @@
 package cn.edu.zju.isst.net;
 
-import cn.edu.zju.isst.util.Judgement;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import cn.edu.zju.isst.util.Judgement;
 
 /**
  * 判断网络是否链接正常

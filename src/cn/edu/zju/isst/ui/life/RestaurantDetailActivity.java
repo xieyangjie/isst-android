@@ -13,24 +13,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import cn.edu.zju.isst.R;
-import cn.edu.zju.isst.api.RestaurantApi;
-import cn.edu.zju.isst.db.Archive;
-import cn.edu.zju.isst.db.DataManager;
-import cn.edu.zju.isst.db.Restaurant;
-import cn.edu.zju.isst.db.RestaurantMenu;
-import cn.edu.zju.isst.net.CSTResponse;
-import cn.edu.zju.isst.net.RequestListener;
-import cn.edu.zju.isst.ui.main.BaseActivity;
-import cn.edu.zju.isst.util.Judgement;
-import cn.edu.zju.isst.util.L;
+import android.app.ActionBar;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -39,6 +27,15 @@ import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
+import cn.edu.zju.isst.R;
+import cn.edu.zju.isst.api.RestaurantApi;
+import cn.edu.zju.isst.db.Restaurant;
+import cn.edu.zju.isst.db.RestaurantMenu;
+import cn.edu.zju.isst.net.CSTResponse;
+import cn.edu.zju.isst.net.RequestListener;
+import cn.edu.zju.isst.ui.main.BaseActivity;
+import cn.edu.zju.isst.util.Judgement;
+import cn.edu.zju.isst.util.L;
 
 /**
  * @author theasir
@@ -69,7 +66,7 @@ public class RestaurantDetailActivity extends BaseActivity {
 		setContentView(R.layout.restaurant_detail_activity);
 		initComponent();
 
-		ActionBar actionBar = getSupportActionBar();
+		ActionBar actionBar = getActionBar();
 		actionBar.setHomeButtonEnabled(true);
 		actionBar.setDisplayHomeAsUpEnabled(true);
 
@@ -86,7 +83,7 @@ public class RestaurantDetailActivity extends BaseActivity {
 			public void handleMessage(Message msg) {
 				switch (msg.what) {
 				case STATUS_REQUEST_SUCCESS:
-					//TODO 优化策略
+					// TODO 优化策略
 					if (!Judgement.isNullOrEmpty(m_restaurantCurrent)) {
 						L.i("Handler Success Restaurant id = "
 								+ m_restaurantCurrent.getId());

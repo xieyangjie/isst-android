@@ -137,8 +137,9 @@ public class BetterHttpInvoker {
 				}
 			}
 
-			if ( Judgement.isNullOrEmpty(response)) {
-				//TODO handle httpError like 404: return nothing and response won't initialize
+			if (Judgement.isNullOrEmpty(response)) {
+				// TODO handle httpError like 404: return nothing and response
+				// won't initialize
 				L.i("BetterHttpInvoker Before getInputStream()");
 				BufferedInputStream in = new BufferedInputStream(
 						conn.getInputStream());
@@ -149,7 +150,7 @@ public class BetterHttpInvoker {
 						conn.getHeaderFields(), body);
 			}
 		} finally {
-			if ( !Judgement.isNullOrEmpty(conn)) {
+			if (!Judgement.isNullOrEmpty(conn)) {
 				conn.disconnect();
 			}
 		}

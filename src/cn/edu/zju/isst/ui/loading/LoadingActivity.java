@@ -3,15 +3,15 @@
  */
 package cn.edu.zju.isst.ui.loading;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.Handler;
 import cn.edu.zju.isst.R;
 import cn.edu.zju.isst.settings.CSTSettings;
 import cn.edu.zju.isst.ui.login.LoginActivity;
 import cn.edu.zju.isst.ui.main.MainActivity;
 import cn.edu.zju.isst.util.L;
-import android.app.Activity;
-import android.content.Intent;
-import android.os.Bundle;
-import android.os.Handler;
 
 /**
  * 加载页面

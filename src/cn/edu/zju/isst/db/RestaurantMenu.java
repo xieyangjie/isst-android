@@ -12,9 +12,9 @@ import cn.edu.zju.isst.util.Judgement;
 
 /**
  * @author theasir
- *
+ * 
  */
-public class RestaurantMenu implements Serializable{
+public class RestaurantMenu implements Serializable {
 
 	/**
 	 * 
@@ -28,7 +28,7 @@ public class RestaurantMenu implements Serializable{
 	private String picture;
 	private String description;
 	private float price;
-	
+
 	/**
 	 * 默认值初始化并更新
 	 * 
@@ -71,25 +71,28 @@ public class RestaurantMenu implements Serializable{
 			}
 		}
 	}
-	
+
 	/**
 	 * @return the name
 	 */
 	public String getName() {
 		return name;
 	}
+
 	/**
 	 * @return the picture
 	 */
 	public String getPicture() {
 		return picture;
 	}
+
 	/**
 	 * @return the description
 	 */
 	public String getDescription() {
 		return description;
 	}
+
 	/**
 	 * @return the price
 	 */

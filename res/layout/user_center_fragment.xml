@@ -2,6 +2,61 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
-    
+
+    <RelativeLayout
+        android:id="@+id/user_center_fragment_user"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" >
+
+        <ImageView
+            android:id="@+id/user_center_fragment_user_avatar_imgv"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_launcher"
+            android:contentDescription="@string/user_avatar" />
+
+        <TextView
+            android:id="@+id/user_center_fragment_final_welcomeback_txv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="20dp"
+            android:padding="10dp"
+            android:layout_toRightOf="@+id/user_center_fragment_user_avatar_imgv"
+            android:text="@string/usercenter_welcomeback" />
+
+        <TextView
+            android:id="@+id/user_center_fragment_name_txv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/user_center_fragment_final_welcomeback_txv"
+            android:layout_alignBottom="@+id/user_center_fragment_final_welcomeback_txv"
+            android:layout_marginLeft="20dp"
+            android:padding="10dp"
+            android:layout_toRightOf="@+id/user_center_fragment_final_welcomeback_txv" />
+
+        <TextView
+            android:id="@+id/user_center_fragment_signature_txv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/user_center_fragment_final_welcomeback_txv"
+            android:layout_alignParentBottom="true"
+            android:padding="10dp" />
+
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/user_center_fragment_logout_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:layout_margin="10dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:text="@string/action_logout" />
 
 </RelativeLayout>

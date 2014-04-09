@@ -12,7 +12,7 @@ import cn.edu.zju.isst.util.Judgement;
 
 /**
  * @author xyj
- *
+ * 
  */
 public class Majors implements Serializable {
 
@@ -23,12 +23,13 @@ public class Majors implements Serializable {
 
 	private int id;
 	private String name;
-	
+
 	public Majors(JSONObject jsonObject) throws JSONException {
 		id = -1;
 		name = "";
 		update(jsonObject);
 	}
+
 	/**
 	 * 更新数据，强制判断设计
 	 * 
@@ -54,6 +55,7 @@ public class Majors implements Serializable {
 	public int getId() {
 		return id;
 	}
+
 	/**
 	 * @return the name
 	 */

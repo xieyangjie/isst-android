@@ -8,6 +8,7 @@ import static cn.edu.zju.isst.constant.Constants.*;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.app.Dialog;
@@ -18,12 +19,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.webkit.CookieSyncManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -40,7 +38,6 @@ import cn.edu.zju.isst.settings.CSTSettings;
 import cn.edu.zju.isst.ui.main.BaseActivity;
 import cn.edu.zju.isst.ui.main.MainActivity;
 import cn.edu.zju.isst.util.CM;
-import cn.edu.zju.isst.util.Judgement;
 import cn.edu.zju.isst.util.L;
 
 /**
@@ -83,7 +80,7 @@ public class LoginActivity extends BaseActivity {
 		m_bIsLoginAgain = getIntent().getBooleanExtra("isLoginAgain", false);
 
 		if (m_bIsLoginAgain) {
-			ActionBar actionBar = getSupportActionBar();
+			ActionBar actionBar = getActionBar();
 			actionBar.setHomeButtonEnabled(true);
 			actionBar.setDisplayHomeAsUpEnabled(true);
 		}
@@ -156,7 +153,10 @@ public class LoginActivity extends BaseActivity {
 						CSTSettings.setAutoLogin(false, LoginActivity.this);
 					}
 					try {
-						DataManager.syncLogin(new User(((JSONObject)msg.obj).getJSONObject("body")), LoginActivity.this);
+						DataManager.syncLogin(
+								new User(((JSONObject) msg.obj)
+										.getJSONObject("body")),
+								LoginActivity.this);
 					} catch (JSONException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -172,7 +172,8 @@ public class LoginActivity extends BaseActivity {
 					m_edtxUserName.requestFocus();
 					m_edtxPassword.setText("");
 					try {
-						CM.showAlert(LoginActivity.this, ((JSONObject) msg.obj).getString("message"));
+						CM.showAlert(LoginActivity.this,
+								((JSONObject) msg.obj).getString("message"));
 					} catch (JSONException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -182,14 +183,15 @@ public class LoginActivity extends BaseActivity {
 					m_edtxPassword.setText("");
 					m_edtxPassword.requestFocus();
 					try {
-						CM.showAlert(LoginActivity.this, ((JSONObject) msg.obj).getString("message"));
+						CM.showAlert(LoginActivity.this,
+								((JSONObject) msg.obj).getString("message"));
 					} catch (JSONException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 				case STATUS_LOGIN_AUTH_EXPIRED:
 				case STATUS_LOGIN_AUTH_FAILED:
-					//TODO
+					// TODO
 					break;
 				default:
 					dispose(msg);
@@ -210,17 +212,20 @@ public class LoginActivity extends BaseActivity {
 						.toCharArray();
 				if (m_strUserName.trim().length() == 0
 						|| String.valueOf(m_strPassword).trim().length() == 0) {
-					AlertDialog.Builder builder = new Builder(LoginActivity.this);
+					AlertDialog.Builder builder = new Builder(
+							LoginActivity.this);
 					builder.setTitle(R.string.login_alertdialog_title);
 					builder.setMessage(R.string.login_alertdialog_message);
-					builder.setPositiveButton(R.string.OK, new OnClickListener() {
-						
-						@Override
-						public void onClick(DialogInterface dialog, int which) {
-							dialog.dismiss();
-							//TODO
-						}
-					});
+					builder.setPositiveButton(R.string.OK,
+							new OnClickListener() {
+
+								@Override
+								public void onClick(DialogInterface dialog,
+										int which) {
+									dialog.dismiss();
+									// TODO
+								}
+							});
 					Dialog dialog = builder.create();
 					dialog.setCancelable(true);
 					dialog.setCanceledOnTouchOutside(true);
@@ -231,8 +236,9 @@ public class LoginActivity extends BaseActivity {
 						getString(R.string.loading),
 						getString(R.string.please_wait), true, false);
 				if (NetworkConnection.isNetworkConnected(LoginActivity.this)) {
-					LoginApi.validate(m_strUserName, String.valueOf(m_strPassword),
-							0.0, 0.0, new RequestListener() {
+					LoginApi.validate(m_strUserName,
+							String.valueOf(m_strPassword), 0.0, 0.0,
+							new RequestListener() {
 
 								@Override
 								public void onComplete(Object result) {
@@ -240,7 +246,8 @@ public class LoginActivity extends BaseActivity {
 											.obtainMessage();
 
 									try {
-										msg.what = ((JSONObject) result).getInt("status");
+										msg.what = ((JSONObject) result)
+												.getInt("status");
 										msg.obj = (JSONObject) result;
 										L.i("Msg = " + msg.what);
 									} catch (Exception e) {

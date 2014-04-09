@@ -1,7 +1,4 @@
-/**
- * 
- */
-package cn.edu.zju.isst.ui.life;
+package cn.edu.zju.isst.ui.main;
 
 import static cn.edu.zju.isst.constant.Constants.NETWORK_NOT_CONNECTED;
 import static cn.edu.zju.isst.constant.Constants.STATUS_NOT_LOGIN;
@@ -32,46 +29,44 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import cn.edu.zju.isst.R;
-import cn.edu.zju.isst.api.CampusActivityApi;
-import cn.edu.zju.isst.db.CampusActivity;
+import cn.edu.zju.isst.api.ArchiveApi;
+import cn.edu.zju.isst.api.ArchiveCategory;
+import cn.edu.zju.isst.db.Archive;
 import cn.edu.zju.isst.db.DataManager;
 import cn.edu.zju.isst.exception.ExceptionWeeder;
 import cn.edu.zju.isst.exception.HttpErrorWeeder;
 import cn.edu.zju.isst.net.CSTResponse;
 import cn.edu.zju.isst.net.NetworkConnection;
 import cn.edu.zju.isst.net.RequestListener;
-import cn.edu.zju.isst.ui.main.BaseActivity;
+import cn.edu.zju.isst.ui.life.ArchiveDetailActivity;
 import cn.edu.zju.isst.util.Judgement;
 import cn.edu.zju.isst.util.L;
 import cn.edu.zju.isst.util.TimeString;
 
 /**
+ * 归档列表基类
+ * 
  * @author theasir
  * 
  */
-public class CampusActivityListFragment extends ListFragment implements
+public class BaseArchiveListFragment extends ListFragment implements
 		OnScrollListener {
 
 	private int m_nVisibleLastIndex;
 	private int m_nCurrentPage;
 	private boolean m_bIsFirstTime;
 
+	private ArchiveCategory m_archiveCategory;
 	private LoadType m_loadType;
-	private final List<CampusActivity> m_listCampusActivity = new ArrayList<CampusActivity>();
-	private Handler m_handlerCampusActivityList;
-	private CampusActivityListAdapter m_adapterCampusActivityList;
+	private final List<Archive> m_listAchive = new ArrayList<Archive>();
+	private Handler m_handlerArchiveList;
+	private ArchiveListAdapter m_adapterArchiveList;
 
-	private ListView m_lsvCampusActivityList;
+	private ListView m_lsvArchiveList;
 
-	private static CampusActivityListFragment INSTANCE = new CampusActivityListFragment();
-
-	public CampusActivityListFragment() {
+	public BaseArchiveListFragment() {
 		m_nCurrentPage = 1;
 		m_bIsFirstTime = true;
-	}
-
-	public static CampusActivityListFragment getInstance() {
-		return INSTANCE;
 	}
 
 	/*
@@ -95,7 +90,7 @@ public class CampusActivityListFragment extends ListFragment implements
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.campus_activity_list_fragment, null);
+		return inflater.inflate(R.layout.archive_list_fragment, null);
 	}
 
 	/*
@@ -111,7 +106,7 @@ public class CampusActivityListFragment extends ListFragment implements
 		initComponent(view);
 
 		if (m_bIsFirstTime) {
-			initCampusActivityList();
+			initArchiveList();
 		}
 
 		initHandler();
@@ -134,6 +129,7 @@ public class CampusActivityListFragment extends ListFragment implements
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
+
 	}
 
 	/*
@@ -178,20 +174,15 @@ public class CampusActivityListFragment extends ListFragment implements
 	public void onListItemClick(ListView l, View v, int position, long id) {
 		L.i(this.getClass().getName() + " onListItemClick postion = "
 				+ position);
-		Intent intent = new Intent(getActivity(),
-				CampusActivityDetailActivity.class);
-		intent.putExtra("id", m_listCampusActivity.get(position).getId());
+		Intent intent = new Intent(getActivity(), ArchiveDetailActivity.class);
+		intent.putExtra("id", m_listAchive.get(position).getId());
 		getActivity().startActivity(intent);
 	}
 
 	@Override
 	public void onScrollStateChanged(AbsListView view, int scrollState) {
-		L.i(this.getClass().getName()
-				+ " onScrollStateChanged VisibleLastIndex = "
-				+ m_nVisibleLastIndex);
 		if (scrollState == SCROLL_STATE_IDLE
-				&& m_nVisibleLastIndex == m_adapterCampusActivityList
-						.getCount() - 1) {
+				&& m_nVisibleLastIndex == m_adapterArchiveList.getCount() - 1) {
 			requestData(LoadType.LOADMORE);
 		}
 	}
@@ -202,26 +193,28 @@ public class CampusActivityListFragment extends ListFragment implements
 		m_nVisibleLastIndex = firstVisibleItem + visibleItemCount - 1;
 	}
 
-	private void initComponent(View view) {
-		m_lsvCampusActivityList = (ListView) view
-				.findViewById(android.R.id.list);
+	public void setArchiveCategory(ArchiveCategory archiveCategory) {
+		m_archiveCategory = archiveCategory;
+	}
+
+	protected void initComponent(View view) {
+		m_lsvArchiveList = (ListView) view.findViewById(android.R.id.list);
 	}
 
 	/**
-	 * 初始化在校活动列表，若有缓存则读取缓存
+	 * 初始化归档列表，若有缓存则读取缓存
 	 */
-	private void initCampusActivityList() {
-		List<CampusActivity> dbCampusActivityList = DataManager
-				.getCampusActivityList(getActivity());
-		if (!Judgement.isNullOrEmpty(dbCampusActivityList)) {
-			for (CampusActivity news : dbCampusActivityList) {
-				m_listCampusActivity.add(news);
+	protected void initArchiveList() {
+		List<Archive> dbArchiveList = getArchiveList();
+		if (!Judgement.isNullOrEmpty(dbArchiveList)) {
+			for (Archive archive : dbArchiveList) {
+				m_listAchive.add(archive);
 			}
 		}
 	}
 
-	private void initHandler() {
-		m_handlerCampusActivityList = new Handler() {
+	protected void initHandler() {
+		m_handlerArchiveList = new Handler() {
 
 			/*
 			 * (non-Javadoc)
@@ -242,7 +235,7 @@ public class CampusActivityListFragment extends ListFragment implements
 					default:
 						break;
 					}
-					m_adapterCampusActivityList.notifyDataSetChanged();
+					m_adapterArchiveList.notifyDataSetChanged();
 					break;
 				case STATUS_NOT_LOGIN:// TODO
 					((BaseActivity) getActivity()).updateLogin();
@@ -257,16 +250,13 @@ public class CampusActivityListFragment extends ListFragment implements
 		};
 	}
 
-	private void setUpAdapter() {
-		m_adapterCampusActivityList = new CampusActivityListAdapter(
-				getActivity());
-		setListAdapter(m_adapterCampusActivityList);
-
+	protected void setUpAdapter() {
+		m_adapterArchiveList = new ArchiveListAdapter(getActivity());
+		setListAdapter(m_adapterArchiveList);
 	}
 
-	private void setUpListener() {
-		m_lsvCampusActivityList.setOnScrollListener(this);
-
+	protected void setUpListener() {
+		m_lsvArchiveList.setOnScrollListener(this);
 	}
 
 	/**
@@ -275,9 +265,9 @@ public class CampusActivityListFragment extends ListFragment implements
 	 * @param jsonObject
 	 *            数据源
 	 */
-	private void refresh(JSONObject jsonObject) {
-		if (!m_listCampusActivity.isEmpty()) {
-			m_listCampusActivity.clear();
+	protected void refresh(JSONObject jsonObject) {
+		if (!m_listAchive.isEmpty()) {
+			m_listAchive.clear();
 		}
 		try {
 			if (!Judgement.isValidJsonValue("body", jsonObject)) {
@@ -286,15 +276,10 @@ public class CampusActivityListFragment extends ListFragment implements
 			JSONArray jsonArray = jsonObject.getJSONArray("body");
 
 			for (int i = 0; i < jsonArray.length(); i++) {
-				m_listCampusActivity.add(new CampusActivity(
-						(JSONObject) jsonArray.get(i)));
+				m_listAchive.add(new Archive((JSONObject) jsonArray.get(i)));
 			}
-			L.i(this.getClass().getName() + " refreshList: "
-					+ "Added campusActivity to newsList!");
-			DataManager.syncCampusActivityList(m_listCampusActivity,
-					getActivity());
+			syncArchiveList();
 		} catch (JSONException e) {
-			L.i(this.getClass().getName() + " refreshList!");
 			e.printStackTrace();
 		}
 	}
@@ -305,7 +290,7 @@ public class CampusActivityListFragment extends ListFragment implements
 	 * @param jsonObject
 	 *            数据源
 	 */
-	private void loadMore(JSONObject jsonObject) {
+	protected void loadMore(JSONObject jsonObject) {
 		JSONArray jsonArray;
 		try {
 			if (!Judgement.isValidJsonValue("body", jsonObject)) {
@@ -314,13 +299,9 @@ public class CampusActivityListFragment extends ListFragment implements
 			jsonArray = jsonObject.getJSONArray("body");
 
 			for (int i = 0; i < jsonArray.length(); i++) {
-				m_listCampusActivity.add(new CampusActivity(
-						(JSONObject) jsonArray.get(i)));
+				m_listAchive.add(new Archive((JSONObject) jsonArray.get(i)));
 			}
-			L.i(this.getClass().getName() + " loadMore: "
-					+ "Added campusActivity to newsList!");
 		} catch (JSONException e) {
-			L.i(this.getClass().getName() + " loadMore!");
 			e.printStackTrace();
 		}
 	}
@@ -331,27 +312,36 @@ public class CampusActivityListFragment extends ListFragment implements
 	 * @param type
 	 *            加载方式
 	 */
-	private void requestData(LoadType type) {
+	protected void requestData(LoadType type) {
 		if (NetworkConnection.isNetworkConnected(getActivity())) {
 			m_loadType = type;
 			switch (type) {
 			case REFRESH:
-				CampusActivityApi.getCampusActivityList(1, 20, null,
-						new NewsListRequestListener());
+				ArchiveApi.getArchiveList(m_archiveCategory, 1, 20, null,
+						new ArchiveListRequestListener());
 				m_nCurrentPage = 1;
 				break;
 			case LOADMORE:
-				CampusActivityApi.getCampusActivityList(++m_nCurrentPage, 20,
-						null, new NewsListRequestListener());
+				ArchiveApi.getArchiveList(m_archiveCategory, ++m_nCurrentPage,
+						20, null, new ArchiveListRequestListener());
 				break;
 			default:
 				break;
 			}
 		} else {
-			Message msg = m_handlerCampusActivityList.obtainMessage();
+			Message msg = m_handlerArchiveList.obtainMessage();
 			msg.what = NETWORK_NOT_CONNECTED;
-			m_handlerCampusActivityList.sendMessage(msg);
+			m_handlerArchiveList.sendMessage(msg);
 		}
+	}
+
+	protected List<Archive> getArchiveList() {
+		return DataManager.getArchiveList(m_archiveCategory, getActivity());
+	}
+
+	protected void syncArchiveList() {
+		DataManager.syncArchiveList(m_archiveCategory, m_listAchive,
+				getActivity());
 	}
 
 	/**
@@ -360,21 +350,21 @@ public class CampusActivityListFragment extends ListFragment implements
 	 * @author theasir
 	 * 
 	 */
-	private enum LoadType {
+	public enum LoadType {
 		REFRESH, LOADMORE;
 	}
 
 	/**
-	 * 新闻列表RequestListener类
+	 * 归档列表RequestListener类
 	 * 
 	 * @author theasir
 	 * 
 	 */
-	private class NewsListRequestListener implements RequestListener {
+	public class ArchiveListRequestListener implements RequestListener {
 
 		@Override
 		public void onComplete(Object result) {
-			Message msg = m_handlerCampusActivityList.obtainMessage();
+			Message msg = m_handlerArchiveList.obtainMessage();
 			try {
 				if (!Judgement.isValidJsonValue("status", (JSONObject) result)) {
 					return;
@@ -386,23 +376,23 @@ public class CampusActivityListFragment extends ListFragment implements
 				e.printStackTrace();
 			}
 
-			m_handlerCampusActivityList.sendMessage(msg);
+			m_handlerArchiveList.sendMessage(msg);
 		}
 
 		@Override
 		public void onHttpError(CSTResponse response) {
 			L.i(this.getClass().getName() + " onHttpError!");
-			Message msg = m_handlerCampusActivityList.obtainMessage();
+			Message msg = m_handlerArchiveList.obtainMessage();
 			HttpErrorWeeder.fckHttpError(response, msg);
-			m_handlerCampusActivityList.sendMessage(msg);
+			m_handlerArchiveList.sendMessage(msg);
 		}
 
 		@Override
 		public void onException(Exception e) {
 			L.i(this.getClass().getName() + " onException!");
-			Message msg = m_handlerCampusActivityList.obtainMessage();
+			Message msg = m_handlerArchiveList.obtainMessage();
 			ExceptionWeeder.fckException(e, msg);
-			m_handlerCampusActivityList.sendMessage(msg);
+			m_handlerArchiveList.sendMessage(msg);
 		}
 
 	}
@@ -413,32 +403,31 @@ public class CampusActivityListFragment extends ListFragment implements
 	 * @author theasir
 	 * 
 	 */
-	private final class ViewHolder {
+	protected final class ViewHolder {
 		public TextView titleTxv;
-		public TextView updateTimeTxv;
-		public TextView startTimeTxv;
-		public TextView expireTimeTxv;
+		public TextView dateTxv;
+		public TextView publisherTxv;
 		public TextView descriptionTxv;
 		public View indicatorView;
 	}
 
 	/**
-	 * 在校活动列表自定义适配器类
+	 * 归档列表自定义适配器类
 	 * 
 	 * @author theasir
 	 * 
 	 */
-	private class CampusActivityListAdapter extends BaseAdapter {
+	public class ArchiveListAdapter extends BaseAdapter {
 
 		private LayoutInflater inflater;
 
-		public CampusActivityListAdapter(Context context) {
+		public ArchiveListAdapter(Context context) {
 			this.inflater = LayoutInflater.from(context);
 		}
 
 		@Override
 		public int getCount() {
-			return m_listCampusActivity.size();
+			return m_listAchive.size();
 		}
 
 		@Override
@@ -458,39 +447,36 @@ public class CampusActivityListFragment extends ListFragment implements
 			if (convertView == null) {
 				holder = new ViewHolder();
 
-				convertView = inflater.inflate(
-						R.layout.campus_activity_list_item, null);
+				convertView = inflater
+						.inflate(R.layout.archive_list_item, null);
 				holder.titleTxv = (TextView) convertView
-						.findViewById(R.id.campus_activity_list_item_title_txv);
-				holder.updateTimeTxv = (TextView) convertView
-						.findViewById(R.id.campus_activity_list_item_updatetime_txv);
-				holder.startTimeTxv = (TextView) convertView
-						.findViewById(R.id.campus_activity_list_item_starttime_txv);
-				holder.expireTimeTxv = (TextView) convertView
-						.findViewById(R.id.campus_activity_list_item_expiretime_txv);
+						.findViewById(R.id.archive_list_item_title_txv);
+				holder.dateTxv = (TextView) convertView
+						.findViewById(R.id.archive_list_item_date_txv);
+				holder.publisherTxv = (TextView) convertView
+						.findViewById(R.id.archive_list_item_publisher_txv);
 				holder.descriptionTxv = (TextView) convertView
-						.findViewById(R.id.campus_activity_list_item_description_txv);
+						.findViewById(R.id.archive_list_item_description_txv);
 				holder.indicatorView = (View) convertView
-						.findViewById(R.id.campus_activity_list_item_indicator_view);
+						.findViewById(R.id.archive_list_item_indicator_view);
 
 				convertView.setTag(holder);
 			} else {
 				holder = (ViewHolder) convertView.getTag();
 			}
 
-			holder.titleTxv.setText(m_listCampusActivity.get(position)
-					.getTitle());
-			holder.updateTimeTxv.setText(TimeString.toYMD(m_listCampusActivity
-					.get(position).getUpdatedAt()));
-			holder.startTimeTxv.setText(TimeString.toHM(m_listCampusActivity
-					.get(position).getStartTime()));
-			holder.expireTimeTxv.setText(TimeString.toHM(m_listCampusActivity
-					.get(position).getExpireTime()));
-			holder.descriptionTxv.setText(m_listCampusActivity.get(position)
+			holder.titleTxv.setText(m_listAchive.get(position).getTitle());
+			holder.dateTxv.setText(TimeString.toYMD(m_listAchive.get(position)
+					.getUpdatedAt()));
+			holder.publisherTxv.setText(m_listAchive.get(position)
+					.getPublisher().getName());
+			holder.descriptionTxv.setText(m_listAchive.get(position)
 					.getDescription());
+			// holder.indicatorView.setBackgroundColor(Color.BLUE);
 
 			return convertView;
 		}
 
 	}
+
 }

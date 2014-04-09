@@ -12,6 +12,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import android.content.Context;
+import cn.edu.zju.isst.api.ArchiveCategory;
 import cn.edu.zju.isst.util.Judgement;
 import cn.edu.zju.isst.util.L;
 
@@ -26,16 +27,17 @@ public class DataManager {
 	/**
 	 * 以下字段为数据库表的记录
 	 */
-	private static final String USER_IN_DB = "user";
-	private static final String NEWS_LIST_IN_DB = "newslist";
-	private static final String WIKI_LIST_IN_DB = "wikilist";
-	private static final String STUD_LIST_IN_DB = "studlist";
-	private static final String SCAC_LIST_IN_DB = "scaclist";
-	private static final String RESTAURANT_LIST_IN_DB = "restaurantlist";
-	private static final String MAJOR_LIST_IN_DB = "majorlist";
-	private static final String CLASS_LIST_IN_DB = "classlist";
-	private static final String CITY_LIST_IN_DB = "citylist";
-	private static final String CLASSMATE_LIST_IN_DB = "classmatelist";
+	public static final String USER_IN_DB = "user";
+	public static final String NEWS_LIST_IN_DB = "newslist";
+	public static final String WIKI_LIST_IN_DB = "wikilist";
+	public static final String STUD_LIST_IN_DB = "studlist";
+	public static final String SCAC_LIST_IN_DB = "scaclist";
+	public static final String RESTAURANT_LIST_IN_DB = "restaurantlist";
+	public static final String EXPERIENCE_LIST_IN_DB = "expelist";
+	public static final String MAJOR_LIST_IN_DB = "majorlist";
+	public static final String CLASS_LIST_IN_DB = "classlist";
+	public static final String CITY_LIST_IN_DB = "citylist";
+	public static final String CLASSMATE_LIST_IN_DB = "classmatelist";
 
 	/**
 	 * 同步登录接口返回数据
@@ -80,19 +82,30 @@ public class DataManager {
 		new DBManager(context).delete(USER_IN_DB);
 	}
 
-	/**
-	 * 同步新闻列表接口返回数据
-	 * 
-	 * @param newsList
-	 *            新闻列表
-	 * @param context
-	 *            用于加载DBHelper获取当前数据库
-	 */
-	public static void syncNewsList(List<Archive> newsList, Context context) {
+	public static void syncArchiveList(ArchiveCategory archiveCategory,
+			List<Archive> newsList, Context context) {
 		if (!Judgement.isNullOrEmpty(newsList)) {
-			writeObjectToDB(NEWS_LIST_IN_DB, (Serializable) newsList, context);
-			L.i("Write newslist to DB!");
+			writeObjectToDB(archiveCategory.getNameInDB(),
+					(Serializable) newsList, context);
 		}
+	}
+
+	@SuppressWarnings("unchecked")
+	public static List<Archive> getArchiveList(ArchiveCategory archiveCategory,
+			Context context) {
+		Object object = objectFromDB(archiveCategory.getNameInDB(), context);
+		if (!Judgement.isNullOrEmpty(object)) {
+			List<Archive> archiveList = null;
+			try {
+				archiveList = (List<Archive>) object;
+			} catch (ClassCastException e) {
+				// TODO: handle exception
+			}
+			if (!Judgement.isNullOrEmpty(archiveList)) {
+				return archiveList;
+			}
+		}
+		return null;
 	}
 
 	/**
@@ -111,24 +124,24 @@ public class DataManager {
 	}
 
 	/**
-	 * 获取当前数据库中的新闻列表对象
+	 * 获取当前数据库中的百科列表对象
 	 * 
 	 * @param context
 	 *            用于加载DBHelper获取当前数据库
-	 * @return 当前数据库中的新闻列表对象
+	 * @return 当前数据库中的百科列表对象
 	 */
 	@SuppressWarnings("unchecked")
-	public static List<Archive> getNewsList(Context context) {
-		Object object = objectFromDB(NEWS_LIST_IN_DB, context);
+	public static List<Archive> getCurrentWikiList(Context context) {
+		Object object = objectFromDB(WIKI_LIST_IN_DB, context);
 		if (!Judgement.isNullOrEmpty(object)) {
-			List<Archive> newsList = null;
+			List<Archive> wikiList = null;
 			try {
-				newsList = (List<Archive>) object;
+				wikiList = (List<Archive>) object;
 			} catch (ClassCastException e) {
 				// TODO: handle exception
 			}
-			if (!Judgement.isNullOrEmpty(newsList)) {
-				return newsList;
+			if (!Judgement.isNullOrEmpty(wikiList)) {
+				return wikiList;
 			}
 		}
 		return null;
@@ -152,21 +165,6 @@ public class DataManager {
 	}
 
 	/**
-	 * 同步学习列表接口返回数据
-	 * 
-	 * @param studyList
-	 *            学习列表
-	 * @param context
-	 *            用于加载DBHelper获取当前数据库
-	 */
-	public static void syncStudysList(List<Archive> studyList, Context context) {
-		if (!Judgement.isNullOrEmpty(studyList)) {
-			writeObjectToDB(STUD_LIST_IN_DB, (Serializable) studyList, context);
-			L.i("Write studyList to DB!");
-		}
-	}
-
-	/**
 	 * 获取当前数据库中的在校活动列表对象
 	 * 
 	 * @param context
@@ -185,47 +183,6 @@ public class DataManager {
 			}
 			if (!Judgement.isNullOrEmpty(campusActivityList)) {
 				return campusActivityList;
-			}
-		}
-		return null;
-	}
-
-	@SuppressWarnings("unchecked")
-	public static List<Archive> getCurrentStudyList(Context context) {
-		Object object = objectFromDB(STUD_LIST_IN_DB, context);
-		if (!Judgement.isNullOrEmpty(object)) {
-			List<Archive> newsList = null;
-			try {
-				newsList = (List<Archive>) object;
-			} catch (ClassCastException e) {
-				// TODO: handle exception
-			}
-			if (!Judgement.isNullOrEmpty(newsList)) {
-				return newsList;
-			}
-		}
-		return null;
-	}
-
-	/**
-	 * 获取当前数据库中的百科列表对象
-	 * 
-	 * @param context
-	 *            用于加载DBHelper获取当前数据库
-	 * @return 当前数据库中的百科列表对象
-	 */
-	@SuppressWarnings("unchecked")
-	public static List<Archive> getCurrentWikiList(Context context) {
-		Object object = objectFromDB(WIKI_LIST_IN_DB, context);
-		if (!Judgement.isNullOrEmpty(object)) {
-			List<Archive> wikiList = null;
-			try {
-				wikiList = (List<Archive>) object;
-			} catch (ClassCastException e) {
-				// TODO: handle exception
-			}
-			if (!Judgement.isNullOrEmpty(wikiList)) {
-				return wikiList;
 			}
 		}
 		return null;
@@ -256,12 +213,10 @@ public class DataManager {
 		}
 		return null;
 	}
-	
-	public static void syncMajorList(List<Majors> majorList,
-			Context context) {
+
+	public static void syncMajorList(List<Majors> majorList, Context context) {
 		if (!Judgement.isNullOrEmpty(majorList)) {
-			writeObjectToDB(MAJOR_LIST_IN_DB,
-					(Serializable) majorList, context);
+			writeObjectToDB(MAJOR_LIST_IN_DB, (Serializable) majorList, context);
 			L.i("Write majorList to DB!");
 		}
 	}
@@ -282,12 +237,10 @@ public class DataManager {
 		}
 		return null;
 	}
-	
-	public static void syncCityList(List<Majors> cityList,
-			Context context) {
+
+	public static void syncCityList(List<Majors> cityList, Context context) {
 		if (!Judgement.isNullOrEmpty(cityList)) {
-			writeObjectToDB(CITY_LIST_IN_DB,
-					(Serializable) cityList, context);
+			writeObjectToDB(CITY_LIST_IN_DB, (Serializable) cityList, context);
 			L.i("Write majorList to DB!");
 		}
 	}
@@ -309,11 +262,10 @@ public class DataManager {
 		return null;
 	}
 
-	public static void syncClassList(List<Klass> classMateList,
-			Context context) {
+	public static void syncClassList(List<Klass> classMateList, Context context) {
 		if (!Judgement.isNullOrEmpty(classMateList)) {
-			writeObjectToDB(CLASS_LIST_IN_DB,
-					(Serializable) classMateList, context);
+			writeObjectToDB(CLASS_LIST_IN_DB, (Serializable) classMateList,
+					context);
 			L.i("Write majorList to DB!");
 		}
 	}
@@ -334,12 +286,11 @@ public class DataManager {
 		}
 		return null;
 	}
-	
-	public static void syncClassMateList(List<User> classList,
-			Context context) {
+
+	public static void syncClassMateList(List<User> classList, Context context) {
 		if (!Judgement.isNullOrEmpty(classList)) {
-			writeObjectToDB(CLASSMATE_LIST_IN_DB,
-					(Serializable) classList, context);
+			writeObjectToDB(CLASSMATE_LIST_IN_DB, (Serializable) classList,
+					context);
 			L.i("Write majorList to DB!");
 		}
 	}
@@ -360,7 +311,7 @@ public class DataManager {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * 将目标对象序列化后写入当前数据库
 	 * 

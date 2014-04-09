@@ -38,8 +38,8 @@ public class CampusActivityApi extends CSTApi {
 
 		request("GET", sb.toString(), null, listener);
 	}
-	
-	public static void getCampusActivityDetail(int id, RequestListener listener){
+
+	public static void getCampusActivityDetail(int id, RequestListener listener) {
 		request("GET", SUB_URL + "/" + id, null, listener);
 	}
 }

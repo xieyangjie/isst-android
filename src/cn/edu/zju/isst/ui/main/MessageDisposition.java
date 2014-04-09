@@ -7,7 +7,7 @@ import android.os.Message;
 
 /**
  * @author theasir
- *
+ * 
  */
 public interface MessageDisposition {
 
