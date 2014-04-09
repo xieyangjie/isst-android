@@ -17,13 +17,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.Fragment;
 import android.bluetooth.BluetoothClass.Device.Major;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager.OnActivityResultListener;
-import android.support.v4.app.Fragment;
 import android.widget.AdapterView.OnItemClickListener;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -130,9 +130,9 @@ public class AlumniFragment extends Fragment {
 			public void handleMessage(Message msg) {
 				switch (msg.what) {
 				case STATUS_REQUEST_SUCCESS:
-//					if(m_flag) {
-//					DataManager.syncClassMateList(m_listUser, getActivity());
-//					}
+					if(m_flag) {
+					DataManager.syncClassMateList(m_listUser, getActivity());
+					}
 					Collections.sort(m_listUser,new Pinyin4j.PinyinComparator());
 					getNoteBookData();
 					m_noteBookAdapter.notifyDataSetChanged();

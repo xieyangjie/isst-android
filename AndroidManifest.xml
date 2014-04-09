@@ -65,8 +65,9 @@
         <activity android:name=".dummy.TestFloatingActivity"
             android:label="@string/app_name"
             android:theme="@style/PopupTheme">
-            
         </activity>
+        
+        <activity
             android:name=".ui.alumni.AlumniDetailActivity"
             android:label="@string/app_name" >
         </activity>
