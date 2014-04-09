@@ -56,23 +56,36 @@ public class AlumniApi extends CSTApi {
 		request("GET", sb.toString(), null, listener);
 	}
 	
-	public static void getClassesList( Integer id,	String name, RequestListener listener)
+	public static void getClassesList(RequestListener listener)
 	{
 		StringBuilder sb = new StringBuilder();
-		sb.append(SUB_URL).append("/classes?");
-		
-		if (!Judgement.isNullOrEmpty(id)) {
-			sb.append("id=" + String.valueOf(id) + "&");
-		}
-		if (!Judgement.isNullOrEmpty(name)) {
-			sb.append("name=" + name + "&");
-		}
+		sb.append(SUB_URL).append("/classes");
 		
 		L.i("yyy --- getClassesList:" + sb.toString());
 		
 		request("GET", sb.toString(), null, listener);
 	}
 
+	public static void getMajorList( RequestListener listener)
+	{
+		StringBuilder sb = new StringBuilder();
+		sb.append(SUB_URL).append("/majors");
+		
+		L.i("yyy --- getMajorList:" + sb.toString());
+		
+		request("GET", sb.toString(), null, listener);
+	}
+	
+	public static void getCityList( RequestListener listener)
+	{
+		StringBuilder sb = new StringBuilder();
+		sb.append(SUB_URL).append("/cities");
+		
+		L.i("yyy --- getCityList:" + sb.toString());
+		
+		request("GET", sb.toString(), null, listener);
+	}
+	
 	public static void getUser( Integer id,	RequestListener listener) {
 		StringBuilder sb = new StringBuilder();
 		sb.append(SUB_URL).append("/alumni");

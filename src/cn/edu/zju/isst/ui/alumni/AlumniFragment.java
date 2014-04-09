@@ -16,6 +16,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.bluetooth.BluetoothClass.Device.Major;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -34,8 +35,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 import cn.edu.zju.isst.R;
 import cn.edu.zju.isst.api.AlumniApi;
+import cn.edu.zju.isst.db.City;
 import cn.edu.zju.isst.db.DataManager;
 import cn.edu.zju.isst.db.User;
+import cn.edu.zju.isst.db.Majors;
 import cn.edu.zju.isst.exception.ExceptionWeeder;
 import cn.edu.zju.isst.exception.HttpErrorWeeder;
 import cn.edu.zju.isst.net.CSTResponse;
@@ -57,7 +60,12 @@ public class AlumniFragment extends Fragment {
 	private int m_nVisibleLastIndex;
 
 	private final List<User> m_listUser = new ArrayList<User>();
+	private final List<City> m_listCity = new ArrayList<City>();
+	private final List<Majors> m_listMajors = new ArrayList<Majors>();
+	
 	private Handler m_handlerAlumniList;
+	private Handler m_handlerCityList;
+	private Handler m_handlerMajorList;
 
 	private ListView m_lvAlumni;
 	private TextView m_tvFilterCondition;
@@ -219,24 +227,75 @@ public class AlumniFragment extends Fragment {
 	}
 
 	/**
-	 * 将数据源写入m_listUser和数据库
+	 * 
+	 */
+	private void initMajor() {
+		List<City> dbCityList = DataManager
+				.getCityList(getActivity());
+		if (Judgement.isNullOrEmpty(dbCityList)) {
+			//AlumniApi.getCityList(new CityListRequestListener());
+		}
+	}
+	
+	/**
+	 * 
+	 */
+	private void initCity() {
+		
+	}
+	
+//	if(m_flag) {
+//	DataManager.syncClassMateList(m_listUser, getActivity());
+//}
+	/**
+	 * 将数据源写入m_listUser
 	 * 
 	 * @param jsonObject
 	 *            数据源
 	 */
-	private void refresh(JSONObject jsonObject) {
-		if (!m_listUser.isEmpty()) {
-			m_listUser.clear();
-		}
+	private void refreshAlumniList(JSONObject jsonObject) {
 		try {
 			JSONArray jsonArray = jsonObject.getJSONArray("body");
 			for (int i = 0; i < jsonArray.length(); i++) {
 				m_listUser.add(new User((JSONObject) jsonArray.get(i)));
 			}
 			Collections.sort(m_listUser,new Pinyin4j.PinyinComparator());
-			if(m_flag) {
-				DataManager.syncClassMateList(m_listUser, getActivity());
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * 将数据源写入m_listCity
+	 * 
+	 * @param jsonObject
+	 *            数据源
+	 */
+	private void refreshCityList(JSONObject jsonObject) {
+		try {
+			JSONArray jsonArray = jsonObject.getJSONArray("body");
+			for (int i = 0; i < jsonArray.length(); i++) {
+				m_listCity.add(new City((JSONObject) jsonArray.get(i)));
 			}
+			Collections.sort(m_listUser,new Pinyin4j.PinyinComparator());
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * 将数据源写入m_listCity
+	 * 
+	 * @param jsonObject
+	 *            数据源
+	 */
+	private void refreshMajorList(JSONObject jsonObject) {
+		try {
+			JSONArray jsonArray = jsonObject.getJSONArray("body");
+			for (int i = 0; i < jsonArray.length(); i++) {
+				m_listMajors.add(new Majors((JSONObject) jsonArray.get(i)));
+			}
+			Collections.sort(m_listUser,new Pinyin4j.PinyinComparator());
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
@@ -258,22 +317,15 @@ public class AlumniFragment extends Fragment {
 			m_handlerAlumniList.sendMessage(msg);
 		}
 	}
-
-
-	/**
-	 * 通讯录列表RequestListener类
-	 * 
-	 * @author yyy
-	 * 
-	 */
+	
 	private class AlumniListRequestListener implements RequestListener {
-
+		
 		@Override
 		public void onComplete(Object result) {
 			Message msg = m_handlerAlumniList.obtainMessage();
 			try {
 				msg.what = ((JSONObject) result).getInt("status");
-				refresh((JSONObject) result);
+				refreshAlumniList((JSONObject) result);
 			} catch (JSONException e) {
 				L.i(this.getClass().getName() + " onComplete!");
 				e.printStackTrace();
@@ -299,12 +351,79 @@ public class AlumniFragment extends Fragment {
 		}
 
 	}
+	
+	private class CityListRequestListener implements RequestListener {
+		
+		@Override
+		public void onComplete(Object result) {
+			Message msg = m_handlerCityList.obtainMessage();
+			try {
+				msg.what = ((JSONObject) result).getInt("status");
+				refreshCityList((JSONObject) result);
+			} catch (JSONException e) {
+				L.i(this.getClass().getName() + " onComplete!");
+				e.printStackTrace();
+			}
 
+			m_handlerCityList.sendMessage(msg);
+		}
+
+		@Override
+		public void onHttpError(CSTResponse response) {
+			L.i(this.getClass().getName() + " onHttpError!");
+			Message msg = m_handlerAlumniList.obtainMessage();
+			HttpErrorWeeder.fckHttpError(response, msg);
+			m_handlerAlumniList.sendMessage(msg);
+		}
+
+		@Override
+		public void onException(Exception e) {
+			L.i(this.getClass().getName() + " onException!");
+			Message msg = m_handlerAlumniList.obtainMessage();
+			ExceptionWeeder.fckException(e, msg);
+			m_handlerAlumniList.sendMessage(msg);
+		}
+
+	}
+
+	private class MajorsListRequestListener implements RequestListener {
+		
+		@Override
+		public void onComplete(Object result) {
+			Message msg = m_handlerMajorList.obtainMessage();
+			try {
+				msg.what = ((JSONObject) result).getInt("status");
+				refreshMajorList((JSONObject) result);
+			} catch (JSONException e) {
+				L.i(this.getClass().getName() + " onComplete!");
+				e.printStackTrace();
+			}
+
+			m_handlerMajorList.sendMessage(msg);
+		}
+
+		@Override
+		public void onHttpError(CSTResponse response) {
+			L.i(this.getClass().getName() + " onHttpError!");
+			Message msg = m_handlerAlumniList.obtainMessage();
+			HttpErrorWeeder.fckHttpError(response, msg);
+			m_handlerAlumniList.sendMessage(msg);
+		}
+
+		@Override
+		public void onException(Exception e) {
+			L.i(this.getClass().getName() + " onException!");
+			Message msg = m_handlerAlumniList.obtainMessage();
+			ExceptionWeeder.fckException(e, msg);
+			m_handlerAlumniList.sendMessage(msg);
+		}
+
+	}
 
 	/**
 	 *  填充m_noteBookList数据
 	 */
-	public void getNoteBookData() {
+	private void getNoteBookData() {
 		if (m_noteBookList.size()!=0) {
 			m_noteBookList.clear();
 		}
@@ -339,6 +458,12 @@ public class AlumniFragment extends Fragment {
 		if (m_userFilter.gender!=null){
 			sb.append(" 性别："+ m_userFilter.gender);
 		}
+		if (m_userFilter.grade!=null){
+			sb.append(" 年级："+ m_userFilter.grade);
+		}
+		if (m_userFilter.majorId!=null){
+			sb.append(" 专业："+ m_userFilter.majorId);
+		}
 		m_tvFilterCondition.setText(sb.toString());
 	}
 	
@@ -354,26 +479,16 @@ public class AlumniFragment extends Fragment {
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		L.i("yyy --- onActivityResult resultCode" + resultCode);
 		if (resultCode == 20) {
-			Serializable dataMap = new ConcurrentHashMap<String, Object>();
-			dataMap = data.getExtras().getSerializable("data");
+			Map<String, Object> dataMap = new ConcurrentHashMap<String, Object>();
+			dataMap = (Map<String, Object>) data.getExtras().getSerializable("data");
 			
-//			m_userFilter.clear();
-//			m_userFilter.name = data.getExtras().getString("name");
-//			m_userFilter.gender = data.getExtras().getInt("gender",-1);
-//			m_userFilter.grade = data.getExtras().getInt("grade",-1);
-//			m_userFilter.majorId = data.getExtras().getInt("majorId",-1);
-//			if (m_userFilter.gender == -1 ) {
-//				m_userFilter.gender = null;
-//			}
-//			if (m_userFilter.grade == -1 ) {
-//				m_userFilter.gender = null;
-//			}
-//			if (m_userFilter.majorId == -1 ) {
-//				m_userFilter.gender = null;
-//			}
-//			L.i("yyy --- onActivityResult grade" + dataMap)
-			L.i("yyy --- onActivityResult grade" + m_userFilter.grade);
-			AlumniApi_getUserList(m_userFilter);		
+			m_userFilter.clear();
+			m_userFilter.name = (String) dataMap.get("name");
+			m_userFilter.grade = (Integer) dataMap.get("grade");
+			m_userFilter.majorId = (Integer) dataMap.get("majorId");
+			AlumniApi_getUserList(m_userFilter);
+			m_flag = false;
+			showFilterConditon();
 		}
 		super.onActivityResult(requestCode, resultCode, data);
 	}

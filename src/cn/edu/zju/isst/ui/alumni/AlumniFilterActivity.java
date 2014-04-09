@@ -31,9 +31,6 @@ import android.widget.AdapterView.OnItemSelectedListener;
  */
 public class AlumniFilterActivity extends BaseActivity {
 	
-//	private String[] m_gradeList = {"12","13"};
-//	private String[] tmp = {};
-//	ArrayList<String> tmp2;
 	private String[][] m_AllClassList = {{"1201","1202"},{"1301","1302","1309"}};
 	ArrayList<String> m_gradeList;
 	ArrayList<String> m_classList;
@@ -57,6 +54,7 @@ public class AlumniFilterActivity extends BaseActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
+		L.i("yyy onCreate" );
 		setContentView(R.layout.alumni_filter_activity);
 		
 		m_btnOK = (Button)findViewById(R.id.alumni_filter_ok);
@@ -125,13 +123,17 @@ public class AlumniFilterActivity extends BaseActivity {
     	@Override
     	public void onClick(View v) {
     		L.i("yyy" + "onBtnOkClickListener");
+    		Integer grade = 2012;
+    		
             Map<String, Object> dataMap = new ConcurrentHashMap<String, Object>();
+            dataMap.put("grade", grade);
 //            dataMap.put(, );
             //判断空，我就不判断了。。。。  
+         
             Intent data=new Intent();  
             //data.putExtra("name", str_bookname);  
             //data.putExtra("gender", str_booksale);  
-            data.putExtra("grade", 12);  
+//            data.putExtra("grade", 12);  
             data.putExtra("data", (Serializable)dataMap);
             //data.putExtra("majorId", str_booksale);  
             //请求代码可以自己设置，这里设置成20  
