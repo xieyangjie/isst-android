@@ -60,6 +60,8 @@ public class LoginApi extends CSTApi {
 		paramsMap.put("longitude", String.valueOf(longitude));
 		paramsMap.put("latitude", String.valueOf(latitude));
 
+		L.i("yyy:" + "username=" + paramsMap.get("username") + "&password=" + paramsMap.get("password") + "&" + "token=" + paramsMap.get("token") + "&"
+				+ "timestamp=" + paramsMap.get("timestamp"));
 		L.i("LoginToken", "token=" + paramsMap.get("token") + "&"
 				+ "timestamp=" + paramsMap.get("timestamp"));
 

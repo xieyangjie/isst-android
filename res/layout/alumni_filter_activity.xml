@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="320dp"
+    android:layout_height="320dp" >
+    
+    <TextView
+        android:id="@+id/alumni_filter_name_txv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:text="@string/filter_name"
+         />
+
+    <TextView
+        android:id="@+id/alumni_filter_gender_txv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/alumni_filter_name_txv"
+        android:text="@string/filter_gender"
+        />
+
+    <TextView
+        android:id="@+id/alumni_filter_grade_txv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/alumni_filter_gender_txv"
+        android:text="@string/filter_grade"
+        />
+    
+    <TextView
+        android:id="@+id/alumni_filter_class_txv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/alumni_filter_grade_txv"
+        android:text="@string/filter_major"
+        />
+    
+	<EditText
+        android:id="@+id/alumni_filter_name_edt"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/alumni_filter_name_txv"
+        android:inputType="text"
+        />
+	<EditText
+        android:id="@+id/alumni_filter_gender_edt"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/alumni_filter_gender_txv"
+        android:layout_below="@id/alumni_filter_name_edt"
+        android:inputType="text"
+        />
+	<Spinner
+        android:id="@+id/alumni_filter_grade_spn"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/alumni_filter_grade_txv"
+        android:layout_below="@id/alumni_filter_gender_edt"
+        />
+	<Spinner
+        android:id="@+id/alumni_filter_class_spn"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/alumni_filter_class_txv"
+        android:layout_below="@id/alumni_filter_grade_spn"
+        />
+	<Button
+	    android:id="@+id/alumni_filter_ok"
+	    android:layout_width="160dp"
+	    android:layout_alignParentBottom="true"
+        android:layout_height="wrap_content"
+        android:text="@string/OK">
+	</Button>
+	<Button
+	    android:id="@+id/alumni_filter_cancel"
+	    android:layout_width="200dp"
+	    android:layout_alignParentBottom="true"
+	    android:layout_toRightOf="@id/alumni_filter_ok"
+        android:layout_height="wrap_content"
+        android:text="@string/cancel">
+	</Button>
+</RelativeLayout>

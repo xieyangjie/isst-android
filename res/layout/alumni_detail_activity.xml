@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp" >
+
+    <TextView
+        android:id="@+id/alumni_detail_activity_name_txv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+       <TextView
+        android:id="@+id/alumni_detail_activity_gender_txv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+       
+       <TextView
+        android:id="@+id/alumni_detail_activity_grade_txv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+       
+       <TextView
+        android:id="@+id/alumni_detail_activity_major_txv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+       
+       <TextView
+        android:id="@+id/alumni_detail_activity_mobile_txv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+       
+        <TextView
+        android:id="@+id/alumni_detail_activity_email_txv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+        
+        <TextView
+        android:id="@+id/alumni_detail_activity_city_txv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+        
+        <TextView
+        android:id="@+id/alumni_detail_activity_company_txv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+        
+        <TextView
+        android:id="@+id/alumni_detail_activity_location_txv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</RelativeLayout>
