@@ -13,6 +13,20 @@
     <string name="action_refresh">刷新</string>
     <string name="action_logout">注销</string>
     
+    <string name="action_filter">筛选</string>
+    <string name="filter_name">姓名</string>
+    <string name="filter_gender">性别</string>
+    <string name="filter_grade">年级</string>
+    <string name="filter_male">男</string>
+    <string name="filter_female">女</string>
+    <string name="filter_gender_default">不限</string>
+    <string name="filter_major">方向</string>
+    <string name="filter_class">班级</string>
+    <string name="filter_city">城市</string>
+    <string name="filter_company">公司</string>
+    <string name="filter_filter_conditon">筛选条件: </string>
+    <string name="cancel">取消</string>
+    
     <string name="back_twice_to_exit">再按一次返回退出</string>
     
     <string name="network_not_connected">网络错误，请检查您的网络连接。</string>

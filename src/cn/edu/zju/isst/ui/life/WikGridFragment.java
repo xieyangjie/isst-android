@@ -46,7 +46,7 @@ import cn.edu.zju.isst.util.Judgement;
 import cn.edu.zju.isst.util.L;
 
 /**
- * 新闻列表页
+ * 百科列表页
  * 
  * @author yyy
  * 

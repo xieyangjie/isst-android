@@ -20,6 +20,7 @@ import cn.edu.zju.isst.net.CSTResponse;
 import cn.edu.zju.isst.net.RequestListener;
 import cn.edu.zju.isst.settings.CSTSettings;
 import cn.edu.zju.isst.ui.empolyment.ExperienceListFragment;
+import cn.edu.zju.isst.ui.alumni.AlumniFragment;
 import cn.edu.zju.isst.ui.life.CampusActivityListFragment;
 import cn.edu.zju.isst.ui.life.NewsListFragment;
 import cn.edu.zju.isst.ui.life.RestaurantListFragment;
@@ -155,7 +156,7 @@ public class MainActivity extends BaseActivity implements
 			switchContent(StudyListFragment.getInstance());
 			break;
 		case INTE:
-			switchContent(DummyFragment.newInstance(INTE.getName()));
+			switchContent(AlumniFragment.getInstance());
 			break;
 		case JOBS:
 			switchContent(DummyFragment.newInstance(JOBS.getName()));
@@ -176,7 +177,7 @@ public class MainActivity extends BaseActivity implements
 			switchContent(DummyFragment.newInstance(CIAL.getName()));
 			break;
 		case CONT:
-			switchContent(DummyFragment.newInstance(CONT.getName()));
+			//switchContent();
 			break;
 		case USCE:
 			switchContent(DummyFragment.newInstance(USCE.getName()));

@@ -67,7 +67,14 @@
             android:theme="@style/PopupTheme">
             
         </activity>
+            android:name=".ui.alumni.AlumniDetailActivity"
+            android:label="@string/app_name" >
+        </activity>
         
+        <activity
+            android:name=".ui.alumni.AlumniFilterActivity"
+            android:label="@string/app_name" >
+        </activity>
     </application>
     
     
