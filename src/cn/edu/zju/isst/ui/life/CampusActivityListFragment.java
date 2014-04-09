@@ -457,12 +457,12 @@ public class CampusActivityListFragment extends ListFragment implements
 
 			holder.titleTxv.setText(m_listCampusActivity.get(position)
 					.getTitle());
-			holder.updateTimeTxv.setText(TimeString.toYMD(m_listCampusActivity.get(position)
-					.getUpdatedAt()));
-			holder.startTimeTxv.setText(TimeString.toHM(m_listCampusActivity.get(position)
-					.getStartTime()));
-			holder.expireTimeTxv.setText(TimeString.toHM(m_listCampusActivity.get(position)
-					.getExpireTime()));
+			holder.updateTimeTxv.setText(TimeString.toYMD(m_listCampusActivity
+					.get(position).getUpdatedAt()));
+			holder.startTimeTxv.setText(TimeString.toHM(m_listCampusActivity
+					.get(position).getStartTime()));
+			holder.expireTimeTxv.setText(TimeString.toHM(m_listCampusActivity
+					.get(position).getExpireTime()));
 			holder.descriptionTxv.setText(m_listCampusActivity.get(position)
 					.getDescription());
 

@@ -132,13 +132,13 @@ public class SlidingMenuExpListAdapter extends BaseExpandableListAdapter {
 	public View getGroupView(int groupPosition, boolean isExpanded,
 			View convertView, ViewGroup parent) {
 		String nav = (String) getGroup(groupPosition);
-		
+
 		View tempView = m_actiContext.getLayoutInflater().inflate(
 				R.layout.sm_group_item, null);
-//		if (convertView == null) {
-//			convertView = m_actiContext.getLayoutInflater().inflate(
-//					R.layout.sm_group_item, null);
-//		 }
+		// if (convertView == null) {
+		// convertView = m_actiContext.getLayoutInflater().inflate(
+		// R.layout.sm_group_item, null);
+		// }
 		TextView mainNav = (TextView) tempView
 				.findViewById(R.id.sm_group_item_nav);
 		ImageView mainImage = (ImageView) tempView
@@ -155,11 +155,10 @@ public class SlidingMenuExpListAdapter extends BaseExpandableListAdapter {
 			mainImage.setVisibility(View.GONE);
 			if (m_selectedIndex.groupIndex == groupPosition) {
 				tempView.setBackgroundColor(Color.BLUE);
-			} 
-			else {
+			} else {
 				tempView.setBackgroundColor(Color.GRAY);
 			}
-			L.i("CarpeDiem","groupIndex ="+ m_selectedIndex.groupIndex);
+			L.i("CarpeDiem", "groupIndex =" + m_selectedIndex.groupIndex);
 		}
 		// if()
 		return tempView;

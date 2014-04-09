@@ -34,7 +34,7 @@ public class ArchiveApi extends CSTApi {
 			String keywords, RequestListener listener) {
 		getArchiveList(Category.CAMPUS, page, pageSize, keywords, listener);
 	}
-	
+
 	/**
 	 * 获取百科列表
 	 * 
@@ -49,10 +49,10 @@ public class ArchiveApi extends CSTApi {
 	 */
 	public static void getWikiList(Integer page, Integer pageSize,
 			String keywords, RequestListener listener) {
-		getArchiveList(Category.ENCYCLOPEDIA, page, pageSize, keywords, listener);
+		getArchiveList(Category.ENCYCLOPEDIA, page, pageSize, keywords,
+				listener);
 	}
 
-	
 	/**
 	 * 获取学习列表
 	 * 
@@ -69,6 +69,7 @@ public class ArchiveApi extends CSTApi {
 			String keywords, RequestListener listener) {
 		getArchiveList(Category.STUDING, page, pageSize, keywords, listener);
 	}
+
 	/**
 	 * 获取归档列表
 	 * 

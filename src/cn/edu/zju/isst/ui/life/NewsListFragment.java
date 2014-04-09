@@ -191,7 +191,8 @@ public class NewsListFragment extends ListFragment implements OnScrollListener {
 	 */
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
-		L.i(this.getClass().getName() + " onListItemClick postion = " + position);
+		L.i(this.getClass().getName() + " onListItemClick postion = "
+				+ position);
 		Intent intent = new Intent(getActivity(), ArchiveDetailActivity.class);
 		intent.putExtra("id", m_listAchive.get(position).getId());
 		getActivity().startActivity(intent);
@@ -212,8 +213,7 @@ public class NewsListFragment extends ListFragment implements OnScrollListener {
 	public void onScroll(AbsListView view, int firstVisibleItem,
 			int visibleItemCount, int totalItemCount) {
 		m_nVisibleLastIndex = firstVisibleItem + visibleItemCount - 1;
-		L.i(this.getClass().getName()
-				+ " onScroll VisibleLastIndex = "
+		L.i(this.getClass().getName() + " onScroll VisibleLastIndex = "
 				+ m_nVisibleLastIndex);
 	}
 
@@ -221,8 +221,7 @@ public class NewsListFragment extends ListFragment implements OnScrollListener {
 	 * 初始化新闻列表，若有缓存则读取缓存
 	 */
 	private void initNewsList() {
-		List<Archive> dbNewsList = DataManager
-				.getNewsList(getActivity());
+		List<Archive> dbNewsList = DataManager.getNewsList(getActivity());
 		if (!m_listAchive.isEmpty()) {
 			m_listAchive.clear();
 		}
@@ -442,7 +441,8 @@ public class NewsListFragment extends ListFragment implements OnScrollListener {
 			}
 
 			holder.titleTxv.setText(m_listAchive.get(position).getTitle());
-			holder.dateTxv.setText(TimeString.toYMD(m_listAchive.get(position).getUpdatedAt()));
+			holder.dateTxv.setText(TimeString.toYMD(m_listAchive.get(position)
+					.getUpdatedAt()));
 			holder.publisherTxv.setText(m_listAchive.get(position)
 					.getPublisher().getName());
 			holder.descriptionTxv.setText(m_listAchive.get(position)

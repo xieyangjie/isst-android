@@ -17,7 +17,6 @@ import cn.edu.zju.isst.util.L;
  */
 public class CSTApi {
 
-	
 	/**
 	 * 服务器前缀地址
 	 */

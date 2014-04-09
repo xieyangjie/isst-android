@@ -85,7 +85,7 @@ public class RestaurantDetailActivity extends ActionBarActivity {
 			public void handleMessage(Message msg) {
 				switch (msg.what) {
 				case STATUS_REQUEST_SUCCESS:
-					//TODO 优化策略
+					// TODO 优化策略
 					if (!Judgement.isNullOrEmpty(m_restaurantCurrent)) {
 						L.i("Handler Success Restaurant id = "
 								+ m_restaurantCurrent.getId());

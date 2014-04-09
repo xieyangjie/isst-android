@@ -10,7 +10,7 @@ import java.util.Locale;
 
 /**
  * @author yyy
- *
+ * 
  */
 public class TimeString {
 
@@ -29,16 +29,17 @@ public class TimeString {
 		}
 		return "";
 	}
-	
+
 	public static String toFull(long time) {
 		if (time > 0) {
 			Date date = new Date(time);
-			DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.CHINA);
+			DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm",
+					Locale.CHINA);
 			return df.format(date);
 		}
 		return "";
 	}
-	
+
 	public static String toMD(long time) {
 		if (time > 0) {
 			Date date = new Date(time);
@@ -47,7 +48,7 @@ public class TimeString {
 		}
 		return "";
 	}
-	
+
 	public static String toHM(long time) {
 		if (time > 0) {
 			Date date = new Date(time);
@@ -56,5 +57,5 @@ public class TimeString {
 		}
 		return "";
 	}
-	
+
 }

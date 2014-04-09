@@ -24,8 +24,8 @@ public class LoginSimulation {
 	/**
 	 * 自定义状态，在空闲状态下的status，区别于服务器返回的status code
 	 */
-	private static final int STATUS_IDLE = -1; 
-	
+	private static final int STATUS_IDLE = -1;
+
 	private static int status = STATUS_IDLE;
 
 	/**

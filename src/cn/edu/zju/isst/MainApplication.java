@@ -22,7 +22,7 @@ public class MainApplication extends Application {
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		//设置调试状态
+		// 设置调试状态
 		L.setDebuggable(true);
 	}
 

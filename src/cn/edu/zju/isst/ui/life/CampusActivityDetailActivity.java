@@ -9,12 +9,12 @@ import android.support.v7.app.ActionBarActivity;
 
 /**
  * @author theasir
- *
+ * 
  */
 public class CampusActivityDetailActivity extends ActionBarActivity {
 
 	private int m_nId;
-	
+
 	private CampusActivity m_campusActivityCurrent;
 	private Handler m_handlerCampusActivityDetail;
 }

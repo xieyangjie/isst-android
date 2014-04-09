@@ -105,7 +105,7 @@ public class LoginActivity extends ActionBarActivity {
 				case STATUS_LOGIN_AUTH_FAILED:
 					m_edtxPassword.setText("");
 					CM.showAlert(LoginActivity.this, (String) msg.obj);
-				
+
 					break;
 				case NETWORK_NOT_CONNECTED:
 					CM.showAlert(LoginActivity.this,

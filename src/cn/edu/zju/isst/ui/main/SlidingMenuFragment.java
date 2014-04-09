@@ -34,12 +34,11 @@ import android.widget.ListView;
  */
 public class SlidingMenuFragment extends Fragment {
 
-	private List<String> m_listGroupNames = new ArrayList<String>();//存储所有组名
-	private Map<String, List<String>> m_mapGroupCollection = new HashMap<String, List<String>>();//存储可展开组的数据
-	
-	
+	private List<String> m_listGroupNames = new ArrayList<String>();// 存储所有组名
+	private Map<String, List<String>> m_mapGroupCollection = new HashMap<String, List<String>>();// 存储可展开组的数据
+
 	private OnGroupMenuItemClickListener m_listenerOnMenuItemClick;
-	
+
 	private ExpandableListView m_explsvMenu;
 
 	private static SlidingMenuFragment INSTANCE = new SlidingMenuFragment();
@@ -93,9 +92,9 @@ public class SlidingMenuFragment extends Fragment {
 
 		m_explsvMenu = (ExpandableListView) rootView
 				.findViewById(R.id.sm_main_group);
-		//setScrollViewHeightBasedOnChildren(m_explsvMenu, m_lsvMenu);
-		
-//		m_explsvMenu.setGroupIndicator(this.getResources().getDrawable(R.drawable.expandable_listview_selector));
+		// setScrollViewHeightBasedOnChildren(m_explsvMenu, m_lsvMenu);
+
+		// m_explsvMenu.setGroupIndicator(this.getResources().getDrawable(R.drawable.expandable_listview_selector));
 		return rootView;
 	}
 
@@ -110,65 +109,65 @@ public class SlidingMenuFragment extends Fragment {
 		final SlidingMenuExpListAdapter expListAdapter = new SlidingMenuExpListAdapter(
 				getActivity(), m_listGroupNames, m_mapGroupCollection);
 		m_explsvMenu.setAdapter(expListAdapter);
-		m_explsvMenu.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
-			
-			@Override
-			public boolean onGroupClick(ExpandableListView parent, View v,
-					int groupPosition, long id) {
-				// TODO Auto-generated method stub
-				L.i("CarpeDiem", String.valueOf(groupPosition));
-				if(m_mapGroupCollection.containsKey(
-						m_listGroupNames.get(groupPosition)))return false;
-				int navIndex = 0,tempSize = 0;
-				for (int i = 0; i < groupPosition; i++) {
-					if(m_mapGroupCollection.containsKey(//判断是否为一个可展开的组
-							m_listGroupNames.get(i)))
-					{
-						tempSize = m_mapGroupCollection.get(
-							m_listGroupNames.get(i)).size();
-						L.i("CarpeDiem", "tempSize="+String.valueOf(tempSize));
-						navIndex += tempSize;
+		m_explsvMenu
+				.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
+
+					@Override
+					public boolean onGroupClick(ExpandableListView parent,
+							View v, int groupPosition, long id) {
+						// TODO Auto-generated method stub
+						L.i("CarpeDiem", String.valueOf(groupPosition));
+						if (m_mapGroupCollection.containsKey(m_listGroupNames
+								.get(groupPosition)))
+							return false;
+						int navIndex = 0, tempSize = 0;
+						for (int i = 0; i < groupPosition; i++) {
+							if (m_mapGroupCollection.containsKey(// 判断是否为一个可展开的组
+									m_listGroupNames.get(i))) {
+								tempSize = m_mapGroupCollection.get(
+										m_listGroupNames.get(i)).size();
+								L.i("CarpeDiem",
+										"tempSize=" + String.valueOf(tempSize));
+								navIndex += tempSize;
+							} else
+								navIndex += 1;
+						}
+						L.i("CarpeDiem",
+								"navIndex =" + String.valueOf(navIndex));
+
+						expListAdapter.setGoupIndex(groupPosition);
+						expListAdapter.setChildIndex(-1);
+						expListAdapter.notifyDataSetChanged();
+						m_listenerOnMenuItemClick.onGroupMenuItemClick(Nav
+								.values()[navIndex]);
+
+						return false;
 					}
-					else 
-						navIndex += 1;
-				}
-				L.i("CarpeDiem", "navIndex ="+String.valueOf(navIndex));
-				
-				expListAdapter.setGoupIndex(groupPosition);
-				expListAdapter.setChildIndex(-1);
-				expListAdapter.notifyDataSetChanged();
-				m_listenerOnMenuItemClick.onGroupMenuItemClick(Nav
-						.values()[navIndex]);
-			
-				return false;
-			}
-		});
+				});
 		m_explsvMenu
 				.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
 					@Override
 					public boolean onChildClick(
 							ExpandableListView expandableListView, View view,
 							int groupPosition, int childPosition, long l) {
-						int navIndex = 0,tempSize = 0;
+						int navIndex = 0, tempSize = 0;
 						for (int i = 0; i < groupPosition; i++) {
-							if(m_mapGroupCollection.containsKey(
-									m_listGroupNames.get(i)))
-							{
+							if (m_mapGroupCollection
+									.containsKey(m_listGroupNames.get(i))) {
 								tempSize = m_mapGroupCollection.get(
-									m_listGroupNames.get(i)).size();
+										m_listGroupNames.get(i)).size();
 								navIndex += tempSize;
-							}
-							else 
+							} else
 								navIndex += 1;
 						}
 						navIndex += childPosition;
-						
+
 						expListAdapter.setGoupIndex(groupPosition);
 						expListAdapter.setChildIndex(childPosition);
 						expListAdapter.notifyDataSetChanged();
 						m_listenerOnMenuItemClick.onGroupMenuItemClick(Nav
 								.values()[navIndex]);
-			
+
 						return true;
 					}
 				});
@@ -213,10 +212,10 @@ public class SlidingMenuFragment extends Fragment {
 					tempList.add(nav.getName());
 				}
 			}
-			if(tempList.size()>1)
+			if (tempList.size() > 1)
 				m_mapGroupCollection.put(m_listGroupNames.get(i), tempList);
 		}
 
 	}
-	
+
 }

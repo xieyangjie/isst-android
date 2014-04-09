@@ -81,8 +81,7 @@ public class WikGridFragment extends Fragment implements OnScrollListener {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
-		
-		
+
 	}
 
 	/*
@@ -137,14 +136,14 @@ public class WikGridFragment extends Fragment implements OnScrollListener {
 
 		m_adapterWikiList = new WikiListAdapter(getActivity());
 
-		//setListAdapter(m_adapterWikiList);
+		// setListAdapter(m_adapterWikiList);
 		m_gvWiki.setAdapter(m_adapterWikiList);
-		
+
 		if (m_listAchive.size() == 0) {
 			requestData(LoadType.REFRESH);
 		}
-		
-		//监听事件
+
+		// 监听事件
 		m_gvWiki.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
@@ -152,7 +151,8 @@ public class WikGridFragment extends Fragment implements OnScrollListener {
 					long arg3) {
 				// TODO Auto-generated method stub
 				L.i(this.getClass().getName() + " onListItemClick postion = ");
-				Intent intent = new Intent(getActivity(), ArchiveDetailActivity.class);
+				Intent intent = new Intent(getActivity(),
+						ArchiveDetailActivity.class);
 				intent.putExtra("id", m_listAchive.get(arg2).getId());
 				getActivity().startActivity(intent);
 			}
@@ -204,22 +204,22 @@ public class WikGridFragment extends Fragment implements OnScrollListener {
 			return super.onOptionsItemSelected(item);
 		}
 	}
-	
+
 	@Override
 	public void onScrollStateChanged(AbsListView view, int scrollState) {
-//		L.i(this.getClass().getName()
-//				+ " onScrollStateChanged VisibleLastIndex = "
-//				+ m_nVisibleLastIndex);
-//		if (scrollState == SCROLL_STATE_IDLE
-//				&& m_nVisibleLastIndex == m_adapterWikiList.getCount() - 1) {
-//			requestData(LoadType.LOADMORE);
-//		}
+		// L.i(this.getClass().getName()
+		// + " onScrollStateChanged VisibleLastIndex = "
+		// + m_nVisibleLastIndex);
+		// if (scrollState == SCROLL_STATE_IDLE
+		// && m_nVisibleLastIndex == m_adapterWikiList.getCount() - 1) {
+		// requestData(LoadType.LOADMORE);
+		// }
 	}
 
 	@Override
 	public void onScroll(AbsListView view, int firstVisibleItem,
 			int visibleItemCount, int totalItemCount) {
-//		m_nVisibleLastIndex = firstVisibleItem + visibleItemCount - 1;
+		// m_nVisibleLastIndex = firstVisibleItem + visibleItemCount - 1;
 	}
 
 	/**
@@ -229,7 +229,7 @@ public class WikGridFragment extends Fragment implements OnScrollListener {
 
 		List<Archive> dbWikiList = DataManager
 				.getCurrentWikiList(getActivity());
-		if (!m_listAchive.isEmpty()){
+		if (!m_listAchive.isEmpty()) {
 			m_listAchive.clear();
 		}
 		if (!Judgement.isNullOrEmpty(dbWikiList)) {
@@ -428,10 +428,10 @@ public class WikGridFragment extends Fragment implements OnScrollListener {
 			ViewHolder holder = null;
 			if (convertView == null) {
 				holder = new ViewHolder();
-				
-				convertView = inflater
-						.inflate(R.layout.wiki_grid_item, null);
-				//convertView.setLayoutParams(new GridView.LayoutParams(85, 85));
+
+				convertView = inflater.inflate(R.layout.wiki_grid_item, null);
+				// convertView.setLayoutParams(new GridView.LayoutParams(85,
+				// 85));
 				holder.titleTxv = (TextView) convertView
 						.findViewById(R.id.wiki_grid_item_title_txv);
 				holder.dateTxv = (TextView) convertView

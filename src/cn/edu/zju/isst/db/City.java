@@ -12,7 +12,7 @@ import cn.edu.zju.isst.util.Judgement;
 
 /**
  * @author xyj
- *
+ * 
  */
 public class City implements Serializable {
 
@@ -24,14 +24,14 @@ public class City implements Serializable {
 	private int id;
 	private String name;
 	private User cityMaster;
-	
+
 	public City(JSONObject jsonObject) throws JSONException {
 		id = -1;
 		name = "";
 		cityMaster = new User(new JSONObject("{}"));// TODO 怎样初始化比较好？
 		update(jsonObject);
 	}
-	
+
 	/**
 	 * 更新数据，强制判断设计
 	 * 
@@ -67,6 +67,7 @@ public class City implements Serializable {
 	public String getName() {
 		return name;
 	}
+
 	/**
 	 * @return the cityMaster
 	 */

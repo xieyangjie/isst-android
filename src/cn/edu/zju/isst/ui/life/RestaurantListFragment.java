@@ -94,10 +94,10 @@ public class RestaurantListFragment extends ListFragment {
 		super.onViewCreated(view, savedInstanceState);
 
 		m_lsvRestaurantList = (ListView) view.findViewById(android.R.id.list);
-		
+
 		initRestaurantList();
-		
-		if(Judgement.isNullOrEmpty(m_listRestaurant)){
+
+		if (Judgement.isNullOrEmpty(m_listRestaurant)) {
 			requestData();
 		}
 
@@ -148,12 +148,14 @@ public class RestaurantListFragment extends ListFragment {
 	 */
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
-		L.i(this.getClass().getName() + " onListItemClick postion = " + position);
-		Intent intent = new Intent(getActivity(), RestaurantDetailActivity.class);
+		L.i(this.getClass().getName() + " onListItemClick postion = "
+				+ position);
+		Intent intent = new Intent(getActivity(),
+				RestaurantDetailActivity.class);
 		intent.putExtra("id", m_listRestaurant.get(position).getId());
 		getActivity().startActivity(intent);
 	}
-	
+
 	private void initRestaurantList() {
 		List<Restaurant> dbRestaurantList = DataManager
 				.getRestaurantList(getActivity());
@@ -278,7 +280,7 @@ public class RestaurantListFragment extends ListFragment {
 						.findViewById(R.id.restaurant_list_item_hotline_txv);
 				holder.dialIbtn = (ImageButton) convertView
 						.findViewById(R.id.restaurant_list_item_dial_ibtn);
-				
+
 				convertView.setTag(holder);
 			} else {
 				holder = (ViewHolder) convertView.getTag();
@@ -286,7 +288,8 @@ public class RestaurantListFragment extends ListFragment {
 
 			holder.iconImgv.setBackgroundColor(Color.BLUE);
 			holder.nameTxv.setText(m_listRestaurant.get(position).getName());
-			holder.hotlineTxv.setText(m_listRestaurant.get(position).getHotline());
+			holder.hotlineTxv.setText(m_listRestaurant.get(position)
+					.getHotline());
 
 			final String dialNumber = m_listRestaurant.get(position)
 					.getHotline();

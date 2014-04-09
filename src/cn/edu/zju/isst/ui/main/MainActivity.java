@@ -216,31 +216,32 @@ public class MainActivity extends ActionBarActivity implements
 		}
 		m_smMainMenu.showContent();
 	}
-	
-	private void logout(){
+
+	private void logout() {
 		LogoutApi.logout(new RequestListener() {
 
 			@Override
 			public void onComplete(Object result) {
 				// TODO Auto-generated method stub
-				
+
 			}
-			
+
 			@Override
 			public void onHttpError(CSTResponse response) {
 				L.i("logout onHttpError: " + response.getStatus());
-				
+
 			}
-			
+
 			@Override
 			public void onException(Exception e) {
 				// TODO Auto-generated method stub
-				
+
 			}
 		});
 		DataManager.deleteCurrentUser(MainActivity.this);
 		CSTSettings.setAutoLogin(false, MainActivity.this);
-		MainActivity.this.startActivity(new Intent(MainActivity.this, LoginActivity.class));
+		MainActivity.this.startActivity(new Intent(MainActivity.this,
+				LoginActivity.class));
 		MainActivity.this.finish();
 	}
 
