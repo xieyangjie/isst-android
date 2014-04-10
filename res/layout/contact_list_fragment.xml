@@ -4,22 +4,21 @@
     android:layout_height="match_parent" >
 
     <TextView
-        android:id="@+id/alumni_filter_conditon"
+        android:id="@+id/contact_list_fragment_conditon_txv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/filter_filter_conditon"
         android:paddingRight="20dp"/>
     <TextView
-        android:id="@+id/alumni_filter_conditon_content"
+        android:id="@+id/contact_list_fragment_conditon_content_txv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/alumni_filter_conditon"
-        android:text="筛选内容" />
+        android:layout_toRightOf="@+id/contact_list_fragment_conditon_txv" />
     <ListView
-        android:id="@+id/alumni_list"
+        android:id="@+id/contact_list_fragment_contacts_lsv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/alumni_filter_conditon" >
+        android:layout_below="@+id/contact_list_fragment_conditon_txv" >
     </ListView>
 
 </RelativeLayout>

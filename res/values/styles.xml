@@ -17,7 +17,7 @@
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
 
-    <style name="PopupTheme" parent="@android:style/Theme.Holo.Light.Dialog">
+    <style name="PopupTheme" parent="android:Theme.Holo.Light.Dialog">
         <item name="android:windowIsFloating">false</item>
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:windowSoftInputMode">stateAlwaysHidden</item>

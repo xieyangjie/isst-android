@@ -1,4 +1,4 @@
-package cn.edu.zju.isst.ui.alumni;
+package cn.edu.zju.isst.ui.contact;
 
 import java.util.Comparator;
 import java.util.HashSet;

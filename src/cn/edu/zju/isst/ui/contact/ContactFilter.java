@@ -1,8 +1,8 @@
-package cn.edu.zju.isst.ui.alumni;
+package cn.edu.zju.isst.ui.contact;
 
 import java.io.Serializable;
 
-public class UserFilter  implements Serializable{
+public class ContactFilter  implements Serializable{
 
 	/**
 	 * 
@@ -22,7 +22,7 @@ public class UserFilter  implements Serializable{
 	public String genderString;
 	public String majorString;
 	public String cityString;
-	public UserFilter() {
+	public ContactFilter() {
 		clear();
 	}
 	//清空条件
