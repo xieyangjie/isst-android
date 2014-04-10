@@ -214,7 +214,7 @@ public class DataManager {
 		return null;
 	}
 
-	public static void syncMajorList(List<Majors> majorList, Context context) {
+	public static void syncMajorList(List<Major> majorList, Context context) {
 		if (!Judgement.isNullOrEmpty(majorList)) {
 			writeObjectToDB(MAJOR_LIST_IN_DB, (Serializable) majorList, context);
 			L.i("Write majorList to DB!");
@@ -222,12 +222,12 @@ public class DataManager {
 	}
 
 	@SuppressWarnings("unchecked")
-	public static List<Majors> getMajorList(Context context) {
+	public static List<Major> getMajorList(Context context) {
 		Object object = objectFromDB(MAJOR_LIST_IN_DB, context);
 		if (!Judgement.isNullOrEmpty(object)) {
-			List<Majors> majorList = null;
+			List<Major> majorList = null;
 			try {
-				majorList = (List<Majors>) object;
+				majorList = (List<Major>) object;
 			} catch (ClassCastException e) {
 				// TODO: handle exception
 			}

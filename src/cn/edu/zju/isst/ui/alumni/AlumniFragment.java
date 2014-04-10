@@ -5,26 +5,19 @@ package cn.edu.zju.isst.ui.alumni;
 
 import static cn.edu.zju.isst.constant.Constants.*;
 
-import java.io.Serializable;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Fragment;
-import android.bluetooth.BluetoothClass.Device.Major;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.preference.PreferenceManager.OnActivityResultListener;
-import android.widget.AdapterView.OnItemClickListener;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -32,20 +25,20 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
 import cn.edu.zju.isst.R;
 import cn.edu.zju.isst.api.AlumniApi;
 import cn.edu.zju.isst.db.City;
 import cn.edu.zju.isst.db.DataManager;
+import cn.edu.zju.isst.db.Major;
 import cn.edu.zju.isst.db.User;
-import cn.edu.zju.isst.db.Majors;
 import cn.edu.zju.isst.exception.ExceptionWeeder;
 import cn.edu.zju.isst.exception.HttpErrorWeeder;
 import cn.edu.zju.isst.net.CSTResponse;
 import cn.edu.zju.isst.net.NetworkConnection;
 import cn.edu.zju.isst.net.RequestListener;
-import cn.edu.zju.isst.ui.life.ArchiveDetailActivity;
 import cn.edu.zju.isst.util.Judgement;
 import cn.edu.zju.isst.util.L;
 
@@ -62,7 +55,7 @@ public class AlumniFragment extends Fragment {
 
 	private final List<User> m_listUser = new ArrayList<User>();
 	private final List<City> m_listCity = new ArrayList<City>();
-	private final List<Majors> m_listMajors = new ArrayList<Majors>();
+	private final List<Major> m_listMajors = new ArrayList<Major>();
 	
 	private Handler m_handlerAlumniList;
 	private Handler m_handlerCityList;
@@ -276,7 +269,7 @@ public class AlumniFragment extends Fragment {
 		if (NetworkConnection.isNetworkConnected(getActivity())) {
 			AlumniApi_getUserList(m_userFilter);
 			AlumniApi.getCityList(new BaseListRequestListener(m_handlerCityList, City.class, m_listCity));
-			AlumniApi.getMajorList(new BaseListRequestListener(m_handlerMajorList, Majors.class, m_listMajors));
+			AlumniApi.getMajorList(new BaseListRequestListener(m_handlerMajorList, Major.class, m_listMajors));
 			;
 		} else {
 			Message msg = m_handlerAlumniList.obtainMessage();

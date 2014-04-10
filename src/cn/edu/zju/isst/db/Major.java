@@ -14,7 +14,7 @@ import cn.edu.zju.isst.util.Judgement;
  * @author xyj
  * 
  */
-public class Majors implements Serializable {
+public class Major implements Serializable {
 
 	/**
 	 * 
@@ -24,7 +24,7 @@ public class Majors implements Serializable {
 	private int id;
 	private String name;
 
-	public Majors(JSONObject jsonObject) throws JSONException {
+	public Major(JSONObject jsonObject) throws JSONException {
 		id = -1;
 		name = "";
 		update(jsonObject);

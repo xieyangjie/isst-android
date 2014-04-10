@@ -10,7 +10,7 @@ import java.util.List;
 import cn.edu.zju.isst.R;
 import cn.edu.zju.isst.db.City;
 import cn.edu.zju.isst.db.DataManager;
-import cn.edu.zju.isst.db.Majors;
+import cn.edu.zju.isst.db.Major;
 import cn.edu.zju.isst.ui.main.BaseActivity;
 import cn.edu.zju.isst.util.Judgement;
 import cn.edu.zju.isst.util.L;
@@ -38,7 +38,7 @@ public class AlumniFilterActivity extends BaseActivity {
 	
 //	private ArrayList<String> m_gradeList;
 	private final List<City> m_listCity = new ArrayList<City>();
-	private final List<Majors> m_listMajor = new ArrayList<Majors>();
+	private final List<Major> m_listMajor = new ArrayList<Major>();
 	private ArrayList<String> m_arrayListCity = new ArrayList<String>();
 	private ArrayList<String> m_arrayListMajor = new ArrayList<String>();
 
@@ -112,11 +112,11 @@ public class AlumniFilterActivity extends BaseActivity {
 	private void getMajorList() {
 		L.i(" yyy getMajorList") ;
 		//初始化专业列表
-		List<Majors> dbList = DataManager
+		List<Major> dbList = DataManager
 				.getMajorList(this);
 		if (!Judgement.isNullOrEmpty(dbList)) {
 			m_arrayListMajor.add("不限");
-			for (Majors major : dbList) {
+			for (Major major : dbList) {
 				L.i(" yyy getMajorList add size" + dbList.size()) ;
 				m_listMajor.add(major);
 				m_arrayListMajor.add(major.getName());
@@ -130,7 +130,7 @@ public class AlumniFilterActivity extends BaseActivity {
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND,
 				WindowManager.LayoutParams.FLAG_DIM_BEHIND);
 		LayoutParams params = getWindow().getAttributes();
-		params.height = 600; // fixed height
+		params.height = 1200; // fixed height
 		params.width = LayoutParams.MATCH_PARENT; // fixed width
 		params.alpha = 1.0f;
 		params.dimAmount = 0.5f;
