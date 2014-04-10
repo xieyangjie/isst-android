@@ -238,10 +238,10 @@ public class DataManager {
 		return null;
 	}
 
-	public static void syncCityList(List<Majors> cityList, Context context) {
+	public static void syncCityList(List<City> cityList, Context context) {
 		if (!Judgement.isNullOrEmpty(cityList)) {
 			writeObjectToDB(CITY_LIST_IN_DB, (Serializable) cityList, context);
-			L.i("Write majorList to DB!");
+			L.i("Write CityList to DB!");
 		}
 	}
 
@@ -266,7 +266,7 @@ public class DataManager {
 		if (!Judgement.isNullOrEmpty(classMateList)) {
 			writeObjectToDB(CLASS_LIST_IN_DB, (Serializable) classMateList,
 					context);
-			L.i("Write majorList to DB!");
+			L.i("Write class List to DB!");
 		}
 	}
 
@@ -291,7 +291,7 @@ public class DataManager {
 		if (!Judgement.isNullOrEmpty(classList)) {
 			writeObjectToDB(CLASSMATE_LIST_IN_DB, (Serializable) classList,
 					context);
-			L.i("Write majorList to DB!");
+			L.i("Write class List to DB!");
 		}
 	}
 

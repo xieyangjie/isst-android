@@ -130,10 +130,11 @@ public class AlumniFragment extends Fragment {
 			public void handleMessage(Message msg) {
 				switch (msg.what) {
 				case STATUS_REQUEST_SUCCESS:
-					if(m_flag) {
-					DataManager.syncClassMateList(m_listUser, getActivity());
-					}
+					L.i("yyy  m_handlerAlumniList STATUS_REQUEST_SUCCESS");
 					Collections.sort(m_listUser,new Pinyin4j.PinyinComparator());
+					if(m_flag) {
+						DataManager.syncClassMateList(m_listUser, getActivity());
+					}
 					getNoteBookData();
 					m_noteBookAdapter.notifyDataSetChanged();
 					break;
@@ -145,8 +146,44 @@ public class AlumniFragment extends Fragment {
 			}
 		};
 		
+		m_handlerCityList = new Handler() {
+
+			@Override
+			public void handleMessage(Message msg) {
+				switch (msg.what) {
+				case STATUS_REQUEST_SUCCESS:
+					if(m_flag) {
+						DataManager.syncCityList(m_listCity, getActivity());
+					}
+					break;
+				case STATUS_NOT_LOGIN:
+					break;
+				default:
+					break;
+				}
+			}
+		};
+		
+		m_handlerMajorList = new Handler() {
+
+			@Override
+			public void handleMessage(Message msg) {
+				switch (msg.what) {
+				case STATUS_REQUEST_SUCCESS:
+					if(m_flag) {
+						L.i("yyy m_handlerMajorList STATUS_REQUEST_SUCCESS");
+						DataManager.syncMajorList(m_listMajors, getActivity());
+					}
+					break;
+				case STATUS_NOT_LOGIN:
+					break;
+				default:
+					break;
+				}
+			}
+		};
 		//初始化数据
-		initAlumniList();
+		initDate();
 		
 		//控件
 		m_lvAlumni = (ListView) view.findViewById(R.id.alumni_list);
@@ -168,7 +205,6 @@ public class AlumniFragment extends Fragment {
 	public void onActivityCreated(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onActivityCreated(savedInstanceState);
-		// requestData(LoadType.REFRESH);
 
 	}
 
@@ -208,12 +244,12 @@ public class AlumniFragment extends Fragment {
 	/**
 	 * 初始化本班通讯录列表，若有缓存则读取缓存，无缓存请求数据
 	 */
-	private void initAlumniList() {
-		L.i("initAlumniList");
+	private void initDate() {
 		//获取用户班级ID
 		User user  = DataManager.getCurrentUser(getActivity());
 		m_userFilter.classId = user.getClassId();
 
+		//初始化通讯录列表
 		List<User> dbAlumniList = DataManager
 				.getClassMateList(getActivity());
 		if (!m_listUser.isEmpty()){
@@ -226,30 +262,9 @@ public class AlumniFragment extends Fragment {
 			getNoteBookData();
 		}
 		else {
-			//请求数据
-			L.i("requestData");
 			requestData();
 		}
 	}
-
-	/**
-	 * 
-	 */
-	private void initMajor() {
-		List<City> dbCityList = DataManager
-				.getCityList(getActivity());
-		if (Judgement.isNullOrEmpty(dbCityList)) {
-			//AlumniApi.getCityList(new CityListRequestListener());
-		}
-	}
-	
-	/**
-	 * 
-	 */
-	private void initCity() {
-		
-	}
-	
 
 	/**
 	 * 请求数据
@@ -260,6 +275,8 @@ public class AlumniFragment extends Fragment {
 	private void requestData() {
 		if (NetworkConnection.isNetworkConnected(getActivity())) {
 			AlumniApi_getUserList(m_userFilter);
+			AlumniApi.getCityList(new BaseListRequestListener(m_handlerCityList, City.class, m_listCity));
+			AlumniApi.getMajorList(new BaseListRequestListener(m_handlerMajorList, Majors.class, m_listMajors));
 			;
 		} else {
 			Message msg = m_handlerAlumniList.obtainMessage();
@@ -282,22 +299,19 @@ public class AlumniFragment extends Fragment {
 		
 		@Override
 		public void onComplete(Object result) {
-			Message msg = m_handlerAlumniList.obtainMessage();
+			L.i("yyy BaseListRequestListener onComplete");
+			Message msg = handler.obtainMessage();
 			try {
 				msg.what = ((JSONObject) result).getInt("status");
-				try {
-					JSONArray jsonArray = ((JSONObject) result).getJSONArray("body");
-					for (int i = 0; i < jsonArray.length(); i++) {
-						//m_listMajors.add(new Majors((JSONObject) jsonArray.get(i)));
-						try {
-							list.add(clazz.getConstructor(JSONObject.class).newInstance((JSONObject) jsonArray.get(i)));
-						}
-						catch (Exception e) {
-							e.printStackTrace();
-						}
+				JSONArray jsonArray = ((JSONObject) result).getJSONArray("body");
+				list.clear();
+				for (int i = 0; i < jsonArray.length(); i++) {
+					try {
+						list.add(clazz.getConstructor(JSONObject.class).newInstance((JSONObject) jsonArray.get(i)));
 					}
-				} catch (JSONException e) {
-					e.printStackTrace();
+					catch (Exception e) {
+						e.printStackTrace();
+					}
 				}
 			} catch (JSONException e) {
 				L.i(this.getClass().getName() + " onComplete!");
@@ -310,7 +324,7 @@ public class AlumniFragment extends Fragment {
 		@Override
 		public void onHttpError(CSTResponse response) {
 			L.i(this.getClass().getName() + " onHttpError!");
-			Message msg = m_handlerAlumniList.obtainMessage();
+			Message msg = handler.obtainMessage();
 			HttpErrorWeeder.fckHttpError(response, msg);
 			handler.sendMessage(msg);
 		}
@@ -318,9 +332,9 @@ public class AlumniFragment extends Fragment {
 		@Override
 		public void onException(Exception e) {
 			L.i(this.getClass().getName() + " onException!");
-			Message msg = m_handlerAlumniList.obtainMessage();
+			Message msg = handler.obtainMessage();
 			ExceptionWeeder.fckException(e, msg);
-			m_handlerAlumniList.sendMessage(msg);
+			handler.sendMessage(msg);
 		}
 	}
 		
@@ -356,17 +370,26 @@ public class AlumniFragment extends Fragment {
 	private void showFilterConditon(){
 		StringBuilder sb = new StringBuilder();
 		
-		if (m_userFilter.classId!=null){
-			sb.append(" 班级："+ m_userFilter.classId);
+		if (m_flag){
+			sb.append(" 班级："+ "本班");
+		}
+		if (m_userFilter.name!=null){
+			sb.append(" 姓名："+ m_userFilter.name);
 		}
 		if (m_userFilter.gender!=null){
-			sb.append(" 性别："+ m_userFilter.gender);
+			sb.append(" 性别："+ m_userFilter.genderString);
 		}
 		if (m_userFilter.grade!=null){
 			sb.append(" 年级："+ m_userFilter.grade);
 		}
 		if (m_userFilter.majorId!=null){
-			sb.append(" 专业："+ m_userFilter.majorId);
+			sb.append(" 专业："+ m_userFilter.majorString);
+		}
+		if (m_userFilter.company!=null){
+			sb.append(" 公司："+ m_userFilter.company);
+		}
+		if (m_userFilter.cityId!=null){
+			sb.append(" 城市："+ m_userFilter.cityString);
 		}
 		m_tvFilterCondition.setText(sb.toString());
 	}
@@ -383,15 +406,10 @@ public class AlumniFragment extends Fragment {
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		L.i("yyy --- onActivityResult resultCode" + resultCode);
 		if (resultCode == 20) {
-			Map<String, Object> dataMap = new ConcurrentHashMap<String, Object>();
-			dataMap = (Map<String, Object>) data.getExtras().getSerializable("data");
-			
 			m_userFilter.clear();
-			m_userFilter.name = (String) dataMap.get("name");
-			m_userFilter.grade = (Integer) dataMap.get("grade");
-			m_userFilter.majorId = (Integer) dataMap.get("majorId");
-			AlumniApi_getUserList(m_userFilter);
+			m_userFilter = (UserFilter)data.getExtras().getSerializable("data");
 			m_flag = false;
+			AlumniApi_getUserList(m_userFilter);
 			showFilterConditon();
 		}
 		super.onActivityResult(requestCode, resultCode, data);

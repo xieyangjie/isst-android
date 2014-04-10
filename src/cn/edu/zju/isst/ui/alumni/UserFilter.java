@@ -1,7 +1,14 @@
 package cn.edu.zju.isst.ui.alumni;
 
-public class UserFilter {
+import java.io.Serializable;
 
+public class UserFilter  implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 890650792358672364L;
+	
 	public Integer id;
 	public String username;
 	public String name;
@@ -11,6 +18,10 @@ public class UserFilter {
 	public Integer majorId;
 	public Integer cityId;
 	public String company;
+	//以下是现实的字符串
+	public String genderString;
+	public String majorString;
+	public String cityString;
 	public UserFilter() {
 		clear();
 	}
