@@ -151,12 +151,9 @@ public class SlidingMenuExpListAdapter extends BaseExpandableListAdapter {
 			mainImage.setVisibility(View.GONE);
 			if (m_selectedIndex.groupIndex == groupPosition) {
 				tempView.setBackgroundColor(Color.BLUE);
-			} else {
-				tempView.setBackgroundColor(Color.GRAY);
-			}
+			} 
 			L.i("CarpeDiem", "groupIndex =" + m_selectedIndex.groupIndex);
 		}
-		// if()
 		return tempView;
 	}
 
@@ -180,9 +177,7 @@ public class SlidingMenuExpListAdapter extends BaseExpandableListAdapter {
 		if (groupPosition == m_selectedIndex.groupIndex
 				&& childPosition == m_selectedIndex.childIndex) {
 			convertView.setBackgroundColor(Color.BLUE);
-		} else {
-			convertView.setBackgroundColor(Color.alpha(Color.BLUE));
-		}
+		} 
 		return convertView;
 	}
 
