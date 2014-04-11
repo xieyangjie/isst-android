@@ -1,4 +1,4 @@
-package cn.edu.zju.isst.ui.alumni;
+package cn.edu.zju.isst.ui.contact;
 
 import java.util.HashMap;
 import java.util.List;
@@ -62,10 +62,10 @@ public class NoteBookadapter extends BaseAdapter {
 			if (convertView == null) {
 				holder = new ViewHolder();
 				convertView = LayoutInflater.from(ctx).inflate(
-						R.layout.alumni_note_list_item, null);
-				holder.tv1 = (TextView) convertView.findViewById(R.id.tv1);
+						R.layout.contact_note_list_item, null);
+				holder.tv1 = (TextView) convertView.findViewById(R.id.contact_note_list_item_name_txv);
 				holder.index = (TextView) convertView
-						.findViewById(R.id.tv_index);
+						.findViewById(R.id.contact_note_list_item_index_txv);
 				convertView.setTag(holder);
 			} else {
 				holder = (ViewHolder) convertView.getTag();

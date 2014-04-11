@@ -11,29 +11,29 @@ import org.json.JSONObject;
 import cn.edu.zju.isst.util.Judgement;
 
 /**
- * 归档解析类
- * 
  * @author theasir
- * 
+ *
  */
-public class Archive implements Serializable {
+public class Job implements Serializable {
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 3086117832107474161L;
+	private static final long serialVersionUID = -4484228163762265990L;
 
 	/**
 	 * 以下字段详见服务器接口文档
 	 */
 	private int id;
 	private String title;
+	private String company;
+	private String position;
 	private String description;
 	private long updatedAt;
 	private int publisherId;
 	private Publisher publisher;
 	private String content;
-
+	
 	/**
 	 * 默认值初始化并更新
 	 * 
@@ -42,9 +42,11 @@ public class Archive implements Serializable {
 	 * @throws JSONException
 	 *             未处理异常
 	 */
-	public Archive(JSONObject jsonObject) throws JSONException {
+	public Job(JSONObject jsonObject) throws JSONException {
 		id = -1;
 		title = "";
+		company = "";
+		position = "";
 		description = "";
 		updatedAt = 0;
 		publisher = new Publisher(new JSONObject("{}"));// TODO 怎样初始化比较好？
@@ -69,8 +71,14 @@ public class Archive implements Serializable {
 			if (Judgement.isValidJsonValue("title", jsonObject)) {
 				title = jsonObject.getString("title");
 			}
-			if (Judgement.isValidJsonValue("description", jsonObject)) {
-				description = jsonObject.getString("description");
+			if (Judgement.isValidJsonValue("title", jsonObject)) {
+				title = jsonObject.getString("title");
+			}
+			if (Judgement.isValidJsonValue("company", jsonObject)) {
+				company = jsonObject.getString("company");
+			}
+			if (Judgement.isValidJsonValue("position", jsonObject)) {
+				position = jsonObject.getString("position");
 			}
 			if (Judgement.isValidJsonValue("updatedAt", jsonObject)) {
 				updatedAt = jsonObject.getLong("updatedAt");
@@ -104,6 +112,20 @@ public class Archive implements Serializable {
 	}
 
 	/**
+	 * @return the company
+	 */
+	public String getCompany() {
+		return company;
+	}
+
+	/**
+	 * @return the position
+	 */
+	public String getPosition() {
+		return position;
+	}
+
+	/**
 	 * @return the description
 	 */
 	public String getDescription() {
@@ -111,7 +133,7 @@ public class Archive implements Serializable {
 	}
 
 	/**
-	 * @return the updateAt
+	 * @return the updatedAt
 	 */
 	public long getUpdatedAt() {
 		return updatedAt;
@@ -137,5 +159,4 @@ public class Archive implements Serializable {
 	public String getContent() {
 		return content;
 	}
-
 }

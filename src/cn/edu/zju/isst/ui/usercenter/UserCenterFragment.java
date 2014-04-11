@@ -102,11 +102,11 @@ public class UserCenterFragment extends Fragment {
 
 			@Override
 			public void onClick(View v) {
-				// getActivity().startActivity(
-				// new Intent(getActivity(), UserInfoActivity.class));
-
 				getActivity().startActivity(
-						new Intent(getActivity(), TestFloatingActivity.class));
+						new Intent(getActivity(), UserInfoActivity.class));
+
+				// getActivity().startActivity(
+				// new Intent(getActivity(), TestFloatingActivity.class));
 			}
 		});
 

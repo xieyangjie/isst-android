@@ -1,9 +1,8 @@
-package cn.edu.zju.isst.ui.alumni;
+package cn.edu.zju.isst.ui.contact;
 
 import static cn.edu.zju.isst.constant.Constants.STATUS_NOT_LOGIN;
 import static cn.edu.zju.isst.constant.Constants.STATUS_REQUEST_SUCCESS;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -18,11 +17,10 @@ import cn.edu.zju.isst.api.AlumniApi;
 import cn.edu.zju.isst.db.User;
 import cn.edu.zju.isst.net.CSTResponse;
 import cn.edu.zju.isst.net.RequestListener;
-import cn.edu.zju.isst.ui.life.ArchiveDetailActivity;
 import cn.edu.zju.isst.ui.main.BaseActivity;
 import cn.edu.zju.isst.util.L;
 
-public class AlumniDetailActivity extends BaseActivity {
+public class ContactDetailActivity extends BaseActivity {
 
 	//用户
 	private int m_Id;
@@ -41,14 +39,14 @@ public class AlumniDetailActivity extends BaseActivity {
 	private TextView m_tvCompany;
 	private TextView m_tvLocation;	
 	
-	public AlumniDetailActivity() {
+	public ContactDetailActivity() {
 		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.alumni_detail_activity);
+		setContentView(R.layout.contact_detail_activity);
 		
 		m_handlerAlumniDetail = new Handler() {
 
@@ -81,14 +79,14 @@ public class AlumniDetailActivity extends BaseActivity {
 		AlumniApi.getUser(m_Id, new AlumniDetailRequestListener());
 		
 		//控件
-		m_tvName = (TextView)findViewById(R.id.alumni_detail_activity_name_txv);
-		m_tvGender = (TextView)findViewById(R.id.alumni_detail_activity_gender_txv);
-		m_tvGrade = (TextView)findViewById(R.id.alumni_detail_activity_grade_txv);
-		m_tvMajor = (TextView)findViewById(R.id.alumni_detail_activity_major_txv);
-		m_tvMobile = (TextView)findViewById(R.id.alumni_detail_activity_mobile_txv);
-		m_tvCity = (TextView)findViewById(R.id.alumni_detail_activity_city_txv);
-		m_tvCompany = (TextView)findViewById(R.id.alumni_detail_activity_company_txv);
-		m_tvLocation = (TextView)findViewById(R.id.alumni_detail_activity_location_txv);
+		m_tvName = (TextView)findViewById(R.id.contact_detail_activity_name_txv);
+		m_tvGender = (TextView)findViewById(R.id.contact_detail_activity_gender_txv);
+		m_tvGrade = (TextView)findViewById(R.id.contact_detail_activity_grade_txv);
+		m_tvMajor = (TextView)findViewById(R.id.contact_detail_activity_major_txv);
+		m_tvMobile = (TextView)findViewById(R.id.contact_detail_activity_mobile_txv);
+		m_tvCity = (TextView)findViewById(R.id.contact_detail_activity_city_txv);
+		m_tvCompany = (TextView)findViewById(R.id.contact_detail_activity_company_txv);
+		m_tvLocation = (TextView)findViewById(R.id.contact_detail_activity_location_txv);
 
 	}
 	
@@ -96,7 +94,7 @@ public class AlumniDetailActivity extends BaseActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case android.R.id.home: {
-			AlumniDetailActivity.this.finish();
+			ContactDetailActivity.this.finish();
 			return true;
 			}
 		default:

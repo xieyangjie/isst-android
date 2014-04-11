@@ -1,6 +1,4 @@
-package cn.edu.zju.isst.ui.alumni;
-
-import java.io.Serializable;
+package cn.edu.zju.isst.ui.contact;
 
 /** 电话本 */
 public class NoteBookItem {

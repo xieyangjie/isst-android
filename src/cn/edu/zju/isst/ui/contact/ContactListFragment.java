@@ -1,30 +1,23 @@
 /**
  * 
  */
-package cn.edu.zju.isst.ui.alumni;
+package cn.edu.zju.isst.ui.contact;
 
 import static cn.edu.zju.isst.constant.Constants.*;
 
-import java.io.Serializable;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Fragment;
-import android.bluetooth.BluetoothClass.Device.Major;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.preference.PreferenceManager.OnActivityResultListener;
-import android.widget.AdapterView.OnItemClickListener;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -32,20 +25,20 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
 import cn.edu.zju.isst.R;
 import cn.edu.zju.isst.api.AlumniApi;
 import cn.edu.zju.isst.db.City;
 import cn.edu.zju.isst.db.DataManager;
+import cn.edu.zju.isst.db.Major;
 import cn.edu.zju.isst.db.User;
-import cn.edu.zju.isst.db.Majors;
 import cn.edu.zju.isst.exception.ExceptionWeeder;
 import cn.edu.zju.isst.exception.HttpErrorWeeder;
 import cn.edu.zju.isst.net.CSTResponse;
 import cn.edu.zju.isst.net.NetworkConnection;
 import cn.edu.zju.isst.net.RequestListener;
-import cn.edu.zju.isst.ui.life.ArchiveDetailActivity;
 import cn.edu.zju.isst.util.Judgement;
 import cn.edu.zju.isst.util.L;
 
@@ -56,13 +49,11 @@ import cn.edu.zju.isst.util.L;
  * 
  *         TODO WIP
  */
-public class AlumniFragment extends Fragment {
-
-	private int m_nVisibleLastIndex;
+public class ContactListFragment extends Fragment {
 
 	private final List<User> m_listUser = new ArrayList<User>();
 	private final List<City> m_listCity = new ArrayList<City>();
-	private final List<Majors> m_listMajors = new ArrayList<Majors>();
+	private final List<Major> m_listMajors = new ArrayList<Major>();
 	
 	private Handler m_handlerAlumniList;
 	private Handler m_handlerCityList;
@@ -71,7 +62,7 @@ public class AlumniFragment extends Fragment {
 	private ListView m_lvAlumni;
 	private TextView m_tvFilterCondition;
 	
-	private UserFilter m_userFilter = new UserFilter();
+	private ContactFilter m_userFilter = new ContactFilter();
 	
 	List<NoteBookItem> m_noteBookList = new ArrayList<NoteBookItem>();
 	NoteBookadapter m_noteBookAdapter;
@@ -79,12 +70,12 @@ public class AlumniFragment extends Fragment {
 	//是否需要将获得用户列表写入数据库
 	boolean m_flag = true;
 	
-	private static AlumniFragment INSTANCE = new AlumniFragment();
+	private static ContactListFragment INSTANCE = new ContactListFragment();
 
-	public AlumniFragment() {
+	public ContactListFragment() {
 	}
 
-	public static AlumniFragment getInstance() {
+	public static ContactListFragment getInstance() {
 		return INSTANCE;
 	}
 
@@ -110,7 +101,7 @@ public class AlumniFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.alumni_list_fragment, null);
+		return inflater.inflate(R.layout.contact_list_fragment, null);
 	}
 
 	/*
@@ -186,8 +177,8 @@ public class AlumniFragment extends Fragment {
 		initDate();
 		
 		//控件
-		m_lvAlumni = (ListView) view.findViewById(R.id.alumni_list);
-		m_tvFilterCondition = (TextView) view.findViewById(R.id.alumni_filter_conditon_content);
+		m_lvAlumni = (ListView) view.findViewById(R.id.contact_list_fragment_contacts_lsv);
+		m_tvFilterCondition = (TextView) view.findViewById(R.id.contact_list_fragment_conditon_content_txv);
 		
 		m_noteBookAdapter = new NoteBookadapter(getActivity(), m_noteBookList);
 		m_lvAlumni.setAdapter(m_noteBookAdapter);
@@ -233,7 +224,7 @@ public class AlumniFragment extends Fragment {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.action_alumni_filter:
-			Intent intent = new Intent(getActivity(), AlumniFilterActivity.class);
+			Intent intent = new Intent(getActivity(), ContactFilterActivity.class);
 			startActivityForResult(intent, 20);
 			return true;
 		default:
@@ -276,8 +267,7 @@ public class AlumniFragment extends Fragment {
 		if (NetworkConnection.isNetworkConnected(getActivity())) {
 			AlumniApi_getUserList(m_userFilter);
 			AlumniApi.getCityList(new BaseListRequestListener(m_handlerCityList, City.class, m_listCity));
-			AlumniApi.getMajorList(new BaseListRequestListener(m_handlerMajorList, Majors.class, m_listMajors));
-			;
+			AlumniApi.getMajorList(new BaseListRequestListener(m_handlerMajorList, Major.class, m_listMajors));
 		} else {
 			Message msg = m_handlerAlumniList.obtainMessage();
 			msg.what = NETWORK_NOT_CONNECTED;
@@ -358,7 +348,7 @@ public class AlumniFragment extends Fragment {
 		@Override
 		public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 			// TODO Auto-generated method stub
-			Intent intent = new Intent(getActivity(), AlumniDetailActivity.class);
+			Intent intent = new Intent(getActivity(), ContactDetailActivity.class);
 			intent.putExtra("id", m_listUser.get(arg2).getId());
 			getActivity().startActivity(intent);
 		}
@@ -397,7 +387,7 @@ public class AlumniFragment extends Fragment {
 	/**
 	 * 调用AlumniApi.getUserList
 	 */
-	private void AlumniApi_getUserList(UserFilter uf) {
+	private void AlumniApi_getUserList(ContactFilter uf) {
 		AlumniApi.getUserList(uf.id, uf.name, uf.gender, uf.grade, uf.classId,
 		uf.majorId, uf.cityId, uf.company, new BaseListRequestListener(m_handlerAlumniList, User.class, m_listUser));
 	}
@@ -407,7 +397,7 @@ public class AlumniFragment extends Fragment {
 		L.i("yyy --- onActivityResult resultCode" + resultCode);
 		if (resultCode == 20) {
 			m_userFilter.clear();
-			m_userFilter = (UserFilter)data.getExtras().getSerializable("data");
+			m_userFilter = (ContactFilter)data.getExtras().getSerializable("data");
 			m_flag = false;
 			AlumniApi_getUserList(m_userFilter);
 			showFilterConditon();

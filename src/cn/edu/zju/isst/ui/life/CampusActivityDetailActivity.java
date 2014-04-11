@@ -139,10 +139,10 @@ public class CampusActivityDetailActivity extends BaseActivity {
 	}
 
 	private void initComponent() {
-		m_imgvPicture = (ImageView) findViewById(R.id.campus_activity_detail_picture_imgv);
-		m_txvDuration = (TextView) findViewById(R.id.campus_activity_detail_duration_txv);
-		m_txvLocation = (TextView) findViewById(R.id.campus_activity_detail_loaction_txv);
-		m_webvContent = (WebView) findViewById(R.id.campus_activity_detail_content_webv);
+		m_imgvPicture = (ImageView) findViewById(R.id.campus_activity_detail_activity_picture_imgv);
+		m_txvDuration = (TextView) findViewById(R.id.campus_activity_detail_activity_duration_txv);
+		m_txvLocation = (TextView) findViewById(R.id.campus_activity_detail_activity_loaction_txv);
+		m_webvContent = (WebView) findViewById(R.id.campus_activity_detail_activity_content_webv);
 	}
 
 	private void showCampusActivityDetatil() {
