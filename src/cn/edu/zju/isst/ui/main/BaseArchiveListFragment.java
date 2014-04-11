@@ -238,11 +238,11 @@ public class BaseArchiveListFragment extends ListFragment implements
 					m_adapterArchiveList.notifyDataSetChanged();
 					break;
 				case STATUS_NOT_LOGIN:// TODO
-					((BaseActivity) getActivity()).updateLogin();
+					((MainActivity) getActivity()).updateLogin();
 					requestData(m_loadType);
 					break;
 				default:
-					((BaseActivity) getActivity()).dispose(msg);
+					((MainActivity) getActivity()).dispose(msg);
 					break;
 				}
 			}

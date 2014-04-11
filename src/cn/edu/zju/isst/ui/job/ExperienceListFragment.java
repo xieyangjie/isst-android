@@ -1,7 +1,7 @@
 /**
  * 
  */
-package cn.edu.zju.isst.ui.empolyment;
+package cn.edu.zju.isst.ui.job;
 
 import cn.edu.zju.isst.api.ArchiveCategory;
 import cn.edu.zju.isst.ui.main.BaseArchiveListFragment;

@@ -19,7 +19,8 @@ import cn.edu.zju.isst.dummy.DummyFragment;
 import cn.edu.zju.isst.net.CSTResponse;
 import cn.edu.zju.isst.net.RequestListener;
 import cn.edu.zju.isst.settings.CSTSettings;
-import cn.edu.zju.isst.ui.empolyment.ExperienceListFragment;
+import cn.edu.zju.isst.ui.contact.ContactListFragment;
+import cn.edu.zju.isst.ui.job.ExperienceListFragment;
 import cn.edu.zju.isst.ui.life.CampusActivityListFragment;
 import cn.edu.zju.isst.ui.life.NewsListFragment;
 import cn.edu.zju.isst.ui.life.RestaurantListFragment;
@@ -167,7 +168,7 @@ public class MainActivity extends BaseActivity implements
 			switchContent(ExperienceListFragment.getInstance());
 			break;
 		case CIMA:
-			switchContent(UserCenterFragment.getInstance());
+			switchContent(DummyFragment.newInstance(CIMA.getName()));
 			break;
 		case CIAC:
 			switchContent(DummyFragment.newInstance(CIAC.getName()));
@@ -176,10 +177,10 @@ public class MainActivity extends BaseActivity implements
 			switchContent(DummyFragment.newInstance(CIAL.getName()));
 			break;
 		case CONT:
-			switchContent(DummyFragment.newInstance(CONT.getName()));
+			switchContent(ContactListFragment.getInstance());
 			break;
 		case USCE:
-			switchContent(DummyFragment.newInstance(USCE.getName()));
+			switchContent(UserCenterFragment.getInstance());
 			break;
 		default:
 			break;

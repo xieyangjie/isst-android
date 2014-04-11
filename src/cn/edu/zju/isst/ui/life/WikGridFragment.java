@@ -46,7 +46,7 @@ import cn.edu.zju.isst.util.Judgement;
 import cn.edu.zju.isst.util.L;
 
 /**
- * 新闻列表页
+ * 百科列表页
  * 
  * @author yyy
  * 
@@ -108,7 +108,7 @@ public class WikGridFragment extends Fragment implements OnScrollListener {
 		// TODO Auto-generated method stub
 		super.onViewCreated(view, savedInstanceState);
 
-		m_gvWiki = (GridView) view.findViewById(R.id.wiki_gridview);
+		m_gvWiki = (GridView) view.findViewById(R.id.wiki_grid_fragment_wiki_gridv);
 
 		initWikiList();
 

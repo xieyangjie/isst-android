@@ -214,7 +214,7 @@ public class DataManager {
 		return null;
 	}
 
-	public static void syncMajorList(List<Majors> majorList, Context context) {
+	public static void syncMajorList(List<Major> majorList, Context context) {
 		if (!Judgement.isNullOrEmpty(majorList)) {
 			writeObjectToDB(MAJOR_LIST_IN_DB, (Serializable) majorList, context);
 			L.i("Write majorList to DB!");
@@ -222,12 +222,12 @@ public class DataManager {
 	}
 
 	@SuppressWarnings("unchecked")
-	public static List<Majors> getMajorList(Context context) {
+	public static List<Major> getMajorList(Context context) {
 		Object object = objectFromDB(MAJOR_LIST_IN_DB, context);
 		if (!Judgement.isNullOrEmpty(object)) {
-			List<Majors> majorList = null;
+			List<Major> majorList = null;
 			try {
-				majorList = (List<Majors>) object;
+				majorList = (List<Major>) object;
 			} catch (ClassCastException e) {
 				// TODO: handle exception
 			}
@@ -238,10 +238,10 @@ public class DataManager {
 		return null;
 	}
 
-	public static void syncCityList(List<Majors> cityList, Context context) {
+	public static void syncCityList(List<City> cityList, Context context) {
 		if (!Judgement.isNullOrEmpty(cityList)) {
 			writeObjectToDB(CITY_LIST_IN_DB, (Serializable) cityList, context);
-			L.i("Write majorList to DB!");
+			L.i("Write CityList to DB!");
 		}
 	}
 
@@ -266,7 +266,7 @@ public class DataManager {
 		if (!Judgement.isNullOrEmpty(classMateList)) {
 			writeObjectToDB(CLASS_LIST_IN_DB, (Serializable) classMateList,
 					context);
-			L.i("Write majorList to DB!");
+			L.i("Write class List to DB!");
 		}
 	}
 
@@ -291,7 +291,7 @@ public class DataManager {
 		if (!Judgement.isNullOrEmpty(classList)) {
 			writeObjectToDB(CLASSMATE_LIST_IN_DB, (Serializable) classList,
 					context);
-			L.i("Write majorList to DB!");
+			L.i("Write class List to DB!");
 		}
 	}
 
