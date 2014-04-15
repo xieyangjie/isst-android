@@ -3,22 +3,29 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <TextView
-        android:id="@+id/contact_list_fragment_conditon_txv"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/filter_filter_conditon"
-        android:paddingRight="20dp"/>
-    <TextView
-        android:id="@+id/contact_list_fragment_conditon_content_txv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/contact_list_fragment_conditon_txv" />
+        android:id="@+id/contact_filter_activity_filter_area"
+        android:padding="@dimen/padding_small" >
+        <TextView
+	        android:id="@+id/contact_list_fragment_conditon_txv"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="@string/filter_filter_conditon"
+	        android:paddingRight="20dp"/>
+	    <TextView
+	        android:id="@+id/contact_list_fragment_conditon_content_txv"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_toRightOf="@+id/contact_list_fragment_conditon_txv" />
+    </RelativeLayout>
+    
     <ListView
         android:id="@+id/contact_list_fragment_contacts_lsv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/contact_list_fragment_conditon_txv" >
+        android:layout_below="@id/contact_filter_activity_filter_area" >
     </ListView>
 
 </RelativeLayout>

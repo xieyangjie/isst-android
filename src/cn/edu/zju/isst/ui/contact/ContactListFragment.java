@@ -55,17 +55,17 @@ public class ContactListFragment extends Fragment {
 	private final List<City> m_listCity = new ArrayList<City>();
 	private final List<Major> m_listMajors = new ArrayList<Major>();
 	
-	private Handler m_handlerAlumniList;
-	private Handler m_handlerCityList;
-	private Handler m_handlerMajorList;
+	private HandlerAlumniList m_handlerAlumniList;
+	private HandlerCityList m_handlerCityList;
+	private HandlerMajorList m_handlerMajorList;
 
 	private ListView m_lvAlumni;
 	private TextView m_tvFilterCondition;
 	
 	private ContactFilter m_userFilter = new ContactFilter();
 	
-	List<NoteBookItem> m_noteBookList = new ArrayList<NoteBookItem>();
-	NoteBookadapter m_noteBookAdapter;
+	private List<NoteBookItem> m_noteBookList = new ArrayList<NoteBookItem>();
+	private NoteBookadapter m_noteBookAdapter;
 	
 	//是否需要将获得用户列表写入数据库
 	boolean m_flag = true;
@@ -112,76 +112,22 @@ public class ContactListFragment extends Fragment {
 	 */
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onViewCreated(view, savedInstanceState);
 		
-		m_handlerAlumniList = new Handler() {
-
-			@Override
-			public void handleMessage(Message msg) {
-				switch (msg.what) {
-				case STATUS_REQUEST_SUCCESS:
-					L.i("yyy  m_handlerAlumniList STATUS_REQUEST_SUCCESS");
-					Collections.sort(m_listUser,new Pinyin4j.PinyinComparator());
-					if(m_flag) {
-						DataManager.syncClassMateList(m_listUser, getActivity());
-					}
-					getNoteBookData();
-					m_noteBookAdapter.notifyDataSetChanged();
-					break;
-				case STATUS_NOT_LOGIN:
-					break;
-				default:
-					break;
-				}
-			}
-		};
+		m_handlerAlumniList = new HandlerAlumniList();
+		m_handlerCityList = new HandlerCityList();
+		m_handlerMajorList = new HandlerMajorList();
 		
-		m_handlerCityList = new Handler() {
-
-			@Override
-			public void handleMessage(Message msg) {
-				switch (msg.what) {
-				case STATUS_REQUEST_SUCCESS:
-					if(m_flag) {
-						DataManager.syncCityList(m_listCity, getActivity());
-					}
-					break;
-				case STATUS_NOT_LOGIN:
-					break;
-				default:
-					break;
-				}
-			}
-		};
-		
-		m_handlerMajorList = new Handler() {
-
-			@Override
-			public void handleMessage(Message msg) {
-				switch (msg.what) {
-				case STATUS_REQUEST_SUCCESS:
-					if(m_flag) {
-						L.i("yyy m_handlerMajorList STATUS_REQUEST_SUCCESS");
-						DataManager.syncMajorList(m_listMajors, getActivity());
-					}
-					break;
-				case STATUS_NOT_LOGIN:
-					break;
-				default:
-					break;
-				}
-			}
-		};
 		//初始化数据
 		initDate();
 		
 		//控件
 		m_lvAlumni = (ListView) view.findViewById(R.id.contact_list_fragment_contacts_lsv);
 		m_tvFilterCondition = (TextView) view.findViewById(R.id.contact_list_fragment_conditon_content_txv);
-		
+
 		m_noteBookAdapter = new NoteBookadapter(getActivity(), m_noteBookList);
 		m_lvAlumni.setAdapter(m_noteBookAdapter);
+		
 		m_lvAlumni.setOnItemClickListener(new onNotebookItemClickListener());
 		
 		showFilterConditon();
@@ -289,7 +235,6 @@ public class ContactListFragment extends Fragment {
 		
 		@Override
 		public void onComplete(Object result) {
-			L.i("yyy BaseListRequestListener onComplete");
 			Message msg = handler.obtainMessage();
 			try {
 				msg.what = ((JSONObject) result).getInt("status");
@@ -347,7 +292,6 @@ public class ContactListFragment extends Fragment {
 	public class onNotebookItemClickListener implements OnItemClickListener{
 		@Override
 		public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-			// TODO Auto-generated method stub
 			Intent intent = new Intent(getActivity(), ContactDetailActivity.class);
 			intent.putExtra("id", m_listUser.get(arg2).getId());
 			getActivity().startActivity(intent);
@@ -394,7 +338,6 @@ public class ContactListFragment extends Fragment {
 	
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		L.i("yyy --- onActivityResult resultCode" + resultCode);
 		if (resultCode == 20) {
 			m_userFilter.clear();
 			m_userFilter = (ContactFilter)data.getExtras().getSerializable("data");
@@ -403,5 +346,61 @@ public class ContactListFragment extends Fragment {
 			showFilterConditon();
 		}
 		super.onActivityResult(requestCode, resultCode, data);
+	}
+	
+	private class HandlerAlumniList extends Handler {
+		@Override
+		public void handleMessage(Message msg) {
+			switch (msg.what) {
+			case STATUS_REQUEST_SUCCESS:
+				Collections.sort(m_listUser,new Pinyin4j.PinyinComparator());
+				if(m_flag) {
+					DataManager.syncClassMateList(m_listUser, getActivity());
+				}
+				getNoteBookData();
+				m_noteBookAdapter.notifyDataSetChanged();
+				break;
+			case STATUS_NOT_LOGIN:
+				break;
+			default:
+				break;
+			}
+		}
+	}
+	
+	private class HandlerCityList extends Handler {
+		
+		@Override
+		public void handleMessage(Message msg) {
+			switch (msg.what) {
+			case STATUS_REQUEST_SUCCESS:
+				if(m_flag) {
+					DataManager.syncCityList(m_listCity, getActivity());
+				}
+				break;
+			case STATUS_NOT_LOGIN:
+				break;
+			default:
+				break;
+			}
+		}
+	}
+	
+	private class HandlerMajorList extends Handler {
+		
+		@Override
+		public void handleMessage(Message msg) {
+			switch (msg.what) {
+			case STATUS_REQUEST_SUCCESS:
+				if(m_flag) {
+					DataManager.syncMajorList(m_listMajors, getActivity());
+				}
+				break;
+			case STATUS_NOT_LOGIN:
+				break;
+			default:
+				break;
+			}
+		}
 	}
 }

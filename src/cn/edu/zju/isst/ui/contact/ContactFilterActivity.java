@@ -95,9 +95,10 @@ public class ContactFilterActivity extends BaseActivity {
 		spanner.setAdapter(adapter);
 	}
 
+	/**
+	 * 初始化城市列表
+	 */
 	private void getCityList() {
-		L.i(" yyy getCityList");
-		// 初始化城市列表
 		List<City> dbList = DataManager.getCityList(this);
 		if (!Judgement.isNullOrEmpty(dbList)) {
 			m_arrayListCity.add("不限");
@@ -106,16 +107,17 @@ public class ContactFilterActivity extends BaseActivity {
 				m_arrayListCity.add(city.getName());
 			}
 		}
+		L.i(" yyy getCityList");
 	}
 
+	/**
+	 * 初始化专业列表
+	 */
 	private void getMajorList() {
-		L.i(" yyy getMajorList");
-		// 初始化专业列表
 		List<Major> dbList = DataManager.getMajorList(this);
 		if (!Judgement.isNullOrEmpty(dbList)) {
 			m_arrayListMajor.add("不限");
 			for (Major major : dbList) {
-				L.i(" yyy getMajorList add size" + dbList.size());
 				m_listMajor.add(major);
 				m_arrayListMajor.add(major.getName());
 			}

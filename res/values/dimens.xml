@@ -13,4 +13,6 @@
     <dimen name="padding_small">5dp</dimen>
     <dimen name="padding_middle">10dp</dimen>
     <dimen name="padding_big">20dp</dimen>
+    
+    <dimen name="margin_small">5dp</dimen>
 </resources>
