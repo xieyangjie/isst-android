@@ -17,10 +17,7 @@ import cn.edu.zju.isst.util.L;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.view.View.OnClickListener;
-import android.view.WindowManager.LayoutParams;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -33,7 +30,6 @@ import android.widget.Spinner;
  */
 public class ContactFilterActivity extends BaseActivity {
 
-	// private ArrayList<String> m_gradeList;
 	private final List<City> m_listCity = new ArrayList<City>();
 	private final List<Major> m_listMajor = new ArrayList<Major>();
 	private ArrayList<String> m_arrayListCity = new ArrayList<String>();
@@ -43,6 +39,7 @@ public class ContactFilterActivity extends BaseActivity {
 	private EditText m_edtName;
 	private RadioGroup m_rdgGender;
 	private EditText m_edtGrade;
+	private EditText m_edtCompany;
 	private Spinner m_spnMajor;
 	private Spinner m_spnCity;
 	private Button m_btnOK;
@@ -59,7 +56,6 @@ public class ContactFilterActivity extends BaseActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-		L.i("yyy onCreate");
 		setUpActivity();
 
 		// 获取控件
@@ -70,7 +66,9 @@ public class ContactFilterActivity extends BaseActivity {
 		m_btnCancel = (Button) findViewById(R.id.contact_filter_activity_cancel_btn);
 		m_spnMajor = (Spinner) findViewById(R.id.contact_filter_activity_major_spn);
 		m_spnCity = (Spinner) findViewById(R.id.contact_filter_activity_city_spn);
+		m_edtCompany = (EditText) findViewById(R.id.contact_filter_activity_company_edtx);
 
+		//按钮监听
 		m_btnOK.setOnClickListener(new onBtnOkClickListener());
 		m_btnCancel.setOnClickListener(new onBtnCancelClickListener());
 
@@ -82,7 +80,12 @@ public class ContactFilterActivity extends BaseActivity {
 		initSpanner(m_spnCity, m_arrayListCity);
 		initSpanner(m_spnMajor, m_arrayListMajor);
 	}
-
+	
+	/**
+	 * 自定义函数，初始化下拉框
+	 * @param spanner 下拉框控件
+	 * @param list 绑定字符串数组
+	 */
 	private void initSpanner(Spinner spanner, ArrayList<String> list) {
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
 				android.R.layout.simple_spinner_item, list);
@@ -96,7 +99,6 @@ public class ContactFilterActivity extends BaseActivity {
 		L.i(" yyy getCityList");
 		// 初始化城市列表
 		List<City> dbList = DataManager.getCityList(this);
-		L.i("yyy citysize" + dbList.size());
 		if (!Judgement.isNullOrEmpty(dbList)) {
 			m_arrayListCity.add("不限");
 			for (City city : dbList) {
@@ -138,21 +140,21 @@ public class ContactFilterActivity extends BaseActivity {
 	class onBtnOkClickListener implements OnClickListener {
 		@Override
 		public void onClick(View v) {
-			L.i("yyy" + "onBtnOkClickListener");
 
 			Intent data = new Intent();
 			ContactFilter uf = new ContactFilter();
 
 			// 姓名
-			String name = m_edtName.getText().toString();
+			String name = m_edtName.getText().toString().trim();
+			if (name.length()<=0) {
+				name = null;
+			}
 			// 获取性别ID的方法可能有其他的，现在不好
 			Integer genderId = null;
 			String genderString = null;
 			int radioBtnId = m_rdgGender.getCheckedRadioButtonId();
 			switch (radioBtnId) {
 			case R.id.contact_filter_activity_gender_unset_rdbtn:
-				genderId = 0;
-				genderString = "不限";
 				break;
 			case R.id.contact_filter_activity_gender_male_rdbtn:
 				genderId = 1;
@@ -169,7 +171,7 @@ public class ContactFilterActivity extends BaseActivity {
 			Integer cityId = null;
 			String cityString = null;
 			int selectedCityPosition = m_spnCity.getSelectedItemPosition() - 1;
-			if (selectedCityPosition > 0) {
+			if (selectedCityPosition >= 0) {
 				cityId = (m_listCity.get(selectedCityPosition)).getId();
 				cityString = (m_listCity.get(selectedCityPosition)).getName();
 			}
@@ -177,26 +179,35 @@ public class ContactFilterActivity extends BaseActivity {
 			Integer majorId = null;
 			String majorString = null;
 			int selectedmajorPosition = m_spnMajor.getSelectedItemPosition() - 1;
-			if (selectedmajorPosition > 0) {
+			if (selectedmajorPosition >= 0) {
 				majorId = (m_listMajor.get(selectedmajorPosition)).getId();
 				majorString = (m_listMajor.get(selectedmajorPosition))
 						.getName();
 			}
 
 			// 年级Id
-			Integer grade;
-			grade = Integer.getInteger((m_edtGrade.getText().toString()));
-
-			L.i("yyy name " + name);
-			// uf.name = name!=""?name:null;
+			Integer grade = null;
+			try {
+				grade = Integer.valueOf((m_edtGrade.getText().toString()));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			//公司
+			String company = m_edtCompany.getText().toString().trim();
+			if (company.length()<=0) {
+				company = null;
+			}
+			
+			uf.name = name;
 			uf.gender = genderId;
 			uf.cityId = cityId;
 			uf.grade = grade;
 			uf.majorId = majorId;
+			uf.company = company;
 			uf.cityString = cityString;
 			uf.genderString = genderString;
 			uf.majorString = majorString;
-			//
+			
 			data.putExtra("data", (Serializable) uf);
 			setResult(20, data);
 

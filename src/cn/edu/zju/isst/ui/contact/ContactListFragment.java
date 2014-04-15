@@ -373,7 +373,7 @@ public class ContactListFragment extends Fragment {
 			sb.append(" 年级："+ m_userFilter.grade);
 		}
 		if (m_userFilter.majorId!=null){
-			sb.append(" 专业："+ m_userFilter.majorString);
+			sb.append(" 方向："+ m_userFilter.majorString);
 		}
 		if (m_userFilter.company!=null){
 			sb.append(" 公司："+ m_userFilter.company);
