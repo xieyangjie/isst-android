@@ -42,7 +42,7 @@ import cn.edu.zju.isst.exception.HttpErrorWeeder;
 import cn.edu.zju.isst.net.CSTResponse;
 import cn.edu.zju.isst.net.NetworkConnection;
 import cn.edu.zju.isst.net.RequestListener;
-import cn.edu.zju.isst.util.Judgement;
+import cn.edu.zju.isst.util.J;
 import cn.edu.zju.isst.util.L;
 
 /**
@@ -231,7 +231,7 @@ public class WikGridFragment extends Fragment implements OnScrollListener {
 		if (!m_listAchive.isEmpty()) {
 			m_listAchive.clear();
 		}
-		if (!Judgement.isNullOrEmpty(dbWikiList)) {
+		if (!J.isNullOrEmpty(dbWikiList)) {
 			for (Archive wiki : dbWikiList) {
 				m_listAchive.add(wiki);
 			}

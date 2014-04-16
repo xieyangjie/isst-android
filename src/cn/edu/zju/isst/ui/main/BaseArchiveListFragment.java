@@ -39,7 +39,7 @@ import cn.edu.zju.isst.net.CSTResponse;
 import cn.edu.zju.isst.net.NetworkConnection;
 import cn.edu.zju.isst.net.RequestListener;
 import cn.edu.zju.isst.ui.life.ArchiveDetailActivity;
-import cn.edu.zju.isst.util.Judgement;
+import cn.edu.zju.isst.util.J;
 import cn.edu.zju.isst.util.L;
 import cn.edu.zju.isst.util.TimeString;
 
@@ -206,7 +206,7 @@ public class BaseArchiveListFragment extends ListFragment implements
 	 */
 	protected void initArchiveList() {
 		List<Archive> dbArchiveList = getArchiveList();
-		if (!Judgement.isNullOrEmpty(dbArchiveList)) {
+		if (!J.isNullOrEmpty(dbArchiveList)) {
 			for (Archive archive : dbArchiveList) {
 				m_listAchive.add(archive);
 			}
@@ -270,7 +270,7 @@ public class BaseArchiveListFragment extends ListFragment implements
 			m_listAchive.clear();
 		}
 		try {
-			if (!Judgement.isValidJsonValue("body", jsonObject)) {
+			if (!J.isValidJsonValue("body", jsonObject)) {
 				return;
 			}
 			JSONArray jsonArray = jsonObject.getJSONArray("body");
@@ -293,7 +293,7 @@ public class BaseArchiveListFragment extends ListFragment implements
 	protected void loadMore(JSONObject jsonObject) {
 		JSONArray jsonArray;
 		try {
-			if (!Judgement.isValidJsonValue("body", jsonObject)) {
+			if (!J.isValidJsonValue("body", jsonObject)) {
 				return;
 			}
 			jsonArray = jsonObject.getJSONArray("body");
@@ -317,13 +317,13 @@ public class BaseArchiveListFragment extends ListFragment implements
 			m_loadType = type;
 			switch (type) {
 			case REFRESH:
-				ArchiveApi.getArchiveList(m_archiveCategory, 1, 20, null,
+				ArchiveApi.getArchiveList(m_archiveCategory, 1, 20, "",
 						new ArchiveListRequestListener());
 				m_nCurrentPage = 1;
 				break;
 			case LOADMORE:
 				ArchiveApi.getArchiveList(m_archiveCategory, ++m_nCurrentPage,
-						20, null, new ArchiveListRequestListener());
+						20, "", new ArchiveListRequestListener());
 				break;
 			default:
 				break;
@@ -366,7 +366,7 @@ public class BaseArchiveListFragment extends ListFragment implements
 		public void onComplete(Object result) {
 			Message msg = m_handlerArchiveList.obtainMessage();
 			try {
-				if (!Judgement.isValidJsonValue("status", (JSONObject) result)) {
+				if (!J.isValidJsonValue("status", (JSONObject) result)) {
 					return;
 				}
 				msg.what = ((JSONObject) result).getInt("status");

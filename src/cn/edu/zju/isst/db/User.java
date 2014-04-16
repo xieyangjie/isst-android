@@ -8,7 +8,7 @@ import java.io.Serializable;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import cn.edu.zju.isst.util.Judgement;
+import cn.edu.zju.isst.util.J;
 
 /**
  * 用户解析类
@@ -90,68 +90,68 @@ public class User implements Serializable {
 	 *             未处理异常
 	 */
 	public void update(JSONObject jsonObject) throws JSONException {
-		if (!Judgement.isNullOrEmpty(jsonObject)) {
-			if (Judgement.isValidJsonValue("id", jsonObject)) {
+		if (!J.isNullOrEmpty(jsonObject)) {
+			if (J.isValidJsonValue("id", jsonObject)) {
 				id = jsonObject.getInt("id");
 			}
-			if (Judgement.isValidJsonValue("username", jsonObject)) {
+			if (J.isValidJsonValue("username", jsonObject)) {
 				username = jsonObject.getString("username");
 			}
-			if (Judgement.isValidJsonValue("password", jsonObject)) {
+			if (J.isValidJsonValue("password", jsonObject)) {
 				password = jsonObject.getString("password");
 			}
-			if (Judgement.isValidJsonValue("name", jsonObject)) {
+			if (J.isValidJsonValue("name", jsonObject)) {
 				name = jsonObject.getString("name");
 			}
-			if (Judgement.isValidJsonValue("gender", jsonObject)) {
+			if (J.isValidJsonValue("gender", jsonObject)) {
 				gender = jsonObject.getInt("gender");
 			}
-			if (Judgement.isValidJsonValue("grade", jsonObject)) {
+			if (J.isValidJsonValue("grade", jsonObject)) {
 				grade = jsonObject.getInt("grade");
 			}
-			if (Judgement.isValidJsonValue("classId", jsonObject)) {
+			if (J.isValidJsonValue("classId", jsonObject)) {
 				classId = jsonObject.getInt("classId");
 			}
-			if (Judgement.isValidJsonValue("majorId", jsonObject)) {
+			if (J.isValidJsonValue("majorId", jsonObject)) {
 				majorId = jsonObject.getInt("majorId");
 			}
-			if (Judgement.isValidJsonValue("cityId", jsonObject)) {
+			if (J.isValidJsonValue("cityId", jsonObject)) {
 				cityId = jsonObject.getInt("cityId");
 			}
-			if (Judgement.isValidJsonValue("email", jsonObject)) {
+			if (J.isValidJsonValue("email", jsonObject)) {
 				email = jsonObject.getString("email");
 			}
-			if (Judgement.isValidJsonValue("phone", jsonObject)) {
+			if (J.isValidJsonValue("phone", jsonObject)) {
 				phone = jsonObject.getString("phone");
 			}
-			if (Judgement.isValidJsonValue("qq", jsonObject)) {
+			if (J.isValidJsonValue("qq", jsonObject)) {
 				qq = jsonObject.getString("qq");
 			}
-			if (Judgement.isValidJsonValue("company", jsonObject)) {
+			if (J.isValidJsonValue("company", jsonObject)) {
 				company = jsonObject.getString("company");
 			}
-			if (Judgement.isValidJsonValue("position", jsonObject)) {
+			if (J.isValidJsonValue("position", jsonObject)) {
 				position = jsonObject.getString("position");
 			}
-			if (Judgement.isValidJsonValue("signature", jsonObject)) {
+			if (J.isValidJsonValue("signature", jsonObject)) {
 				signature = jsonObject.getString("signature");
 			}
-			if (Judgement.isValidJsonValue("cityPrincipal", jsonObject)) {
+			if (J.isValidJsonValue("cityPrincipal", jsonObject)) {
 				cityPrincipal = jsonObject.getBoolean("cityPrincipal");
 			}
-			if (Judgement.isValidJsonValue("privateQQ", jsonObject)) {
+			if (J.isValidJsonValue("privateQQ", jsonObject)) {
 				privateQQ = jsonObject.getBoolean("privateQQ");
 			}
-			if (Judgement.isValidJsonValue("privateEmail", jsonObject)) {
+			if (J.isValidJsonValue("privateEmail", jsonObject)) {
 				privateEmail = jsonObject.getBoolean("privateEmail");
 			}
-			if (Judgement.isValidJsonValue("privatePhone", jsonObject)) {
+			if (J.isValidJsonValue("privatePhone", jsonObject)) {
 				privatePhone = jsonObject.getBoolean("privatePhone");
 			}
-			if (Judgement.isValidJsonValue("privateCompany", jsonObject)) {
+			if (J.isValidJsonValue("privateCompany", jsonObject)) {
 				privateCompany = jsonObject.getBoolean("privateCompany");
 			}
-			if (Judgement.isValidJsonValue("privatePosition", jsonObject)) {
+			if (J.isValidJsonValue("privatePosition", jsonObject)) {
 				privatePosition = jsonObject.getBoolean("privatePosition");
 			}
 		}

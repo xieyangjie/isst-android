@@ -29,7 +29,7 @@ import cn.edu.zju.isst.db.User;
 import cn.edu.zju.isst.net.CSTResponse;
 import cn.edu.zju.isst.net.RequestListener;
 import cn.edu.zju.isst.ui.main.BaseActivity;
-import cn.edu.zju.isst.util.Judgement;
+import cn.edu.zju.isst.util.J;
 import cn.edu.zju.isst.util.L;
 
 public class ContactDetailActivity extends BaseActivity {
@@ -145,7 +145,7 @@ public class ContactDetailActivity extends BaseActivity {
 	 */
 	private void getCityList() {
 		List<City> dbList = DataManager.getCityList(this);
-		if (!Judgement.isNullOrEmpty(dbList)) {
+		if (!J.isNullOrEmpty(dbList)) {
 			for (City city : dbList) {
 				m_listCity.add(city);
 			}
@@ -158,7 +158,7 @@ public class ContactDetailActivity extends BaseActivity {
 	 */
 	private void getMajorList() {
 		List<Major> dbList = DataManager.getMajorList(this);
-		if (!Judgement.isNullOrEmpty(dbList)) {
+		if (!J.isNullOrEmpty(dbList)) {
 			for (Major major : dbList) {
 				m_listMajor.add(major);
 			}

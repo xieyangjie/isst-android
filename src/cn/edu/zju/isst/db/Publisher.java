@@ -8,7 +8,7 @@ import java.io.Serializable;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import cn.edu.zju.isst.util.Judgement;
+import cn.edu.zju.isst.util.J;
 
 /**
  * 发布者解析类
@@ -58,20 +58,20 @@ public class Publisher implements Serializable {
 	 *             未处理异常
 	 */
 	public void update(JSONObject jsonObject) throws JSONException {
-		if (!Judgement.isNullOrEmpty(jsonObject)) {
-			if (Judgement.isValidJsonValue("id", jsonObject)) {
+		if (!J.isNullOrEmpty(jsonObject)) {
+			if (J.isValidJsonValue("id", jsonObject)) {
 				id = jsonObject.getInt("id");
 			}
-			if (Judgement.isValidJsonValue("name", jsonObject)) {
+			if (J.isValidJsonValue("name", jsonObject)) {
 				name = jsonObject.getString("name");
 			}
-			if (Judgement.isValidJsonValue("phone", jsonObject)) {
+			if (J.isValidJsonValue("phone", jsonObject)) {
 				phone = jsonObject.getString("phone");
 			}
-			if (Judgement.isValidJsonValue("qq", jsonObject)) {
+			if (J.isValidJsonValue("qq", jsonObject)) {
 				qq = jsonObject.getString("qq");
 			}
-			if (Judgement.isValidJsonValue("email", jsonObject)) {
+			if (J.isValidJsonValue("email", jsonObject)) {
 				email = jsonObject.getString("email");
 			}
 		}

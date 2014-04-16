@@ -3,8 +3,11 @@
  */
 package cn.edu.zju.isst.api;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 import cn.edu.zju.isst.net.RequestListener;
-import cn.edu.zju.isst.util.Judgement;
+import cn.edu.zju.isst.util.J;
 import cn.edu.zju.isst.util.L;
 
 /**
@@ -18,85 +21,58 @@ public class AlumniApi extends CSTApi {
 
 	private static final String SUB_URL = "/api";
 
-	public static void getUserList( Integer id,	String name,
-			Integer gender,Integer grade,Integer classId,
-			Integer majorId,Integer cityId,String company,
+	public static void getUserList(int id, String name, int gender, int grade,
+			int classId, int majorId, int cityId, String company,
 			RequestListener listener) {
 		StringBuilder sb = new StringBuilder();
-		sb.append(SUB_URL).append("/alumni?");
+		sb.append(SUB_URL).append("/alumni");
 
-		if (!Judgement.isNullOrEmpty(id)) {
-			sb.append("id=" + id + "&");
-		}
-		if (!Judgement.isNullOrEmpty(name)) {
-			sb.append("name=" + name + "&");
-		}
-		if (!Judgement.isNullOrEmpty(gender)) {
-			sb.append("gender=" + gender + "&");
-		}
-		if (!Judgement.isNullOrEmpty(grade)) {
-			sb.append("grade=" + grade + "&");
-		}
-		if (!Judgement.isNullOrEmpty(classId)) {
-			sb.append("classId=" + classId + "&");
-		}
-		if (!Judgement.isNullOrEmpty(majorId)) {
-			sb.append("majorId=" + majorId + "&");
-		}
-		if (!Judgement.isNullOrEmpty(cityId)) {
-			sb.append("cityId=" + cityId + "&");
-		}
-		if (!Judgement.isNullOrEmpty(company)) {
-			sb.append("company=" + company + "&");
-		}
-		sb.deleteCharAt(sb.toString().length() - 1);
+		Map<String, String> paramsMap = new ConcurrentHashMap<String, String>();
+		paramsMap.put("id", "" + id);
+		paramsMap.put("name", name);
+		paramsMap.put("gender", "" + gender);
+		paramsMap.put("grade", "" + grade);
+		paramsMap.put("classId", "" + classId);
+		paramsMap.put("majorId", "" + majorId);
+		paramsMap.put("cityId", "" + cityId);
+		paramsMap.put("company", company);
 
-		L.i("yyy -- getUserList:" + sb.toString());
-
-		request("GET", sb.toString(), null, listener);
+		request("GET", sb.toString(), paramsMap, listener);
 	}
-	
-	public static void getClassesList(RequestListener listener)
-	{
+
+	public static void getClassesList(RequestListener listener) {
 		StringBuilder sb = new StringBuilder();
 		sb.append(SUB_URL).append("/classes");
-		
+
 		L.i("yyy --- getClassesList:" + sb.toString());
-		
+
 		request("GET", sb.toString(), null, listener);
 	}
 
-	public static void getMajorList( RequestListener listener)
-	{
+	public static void getMajorList(RequestListener listener) {
 		StringBuilder sb = new StringBuilder();
 		sb.append(SUB_URL).append("/majors");
-		
+
 		L.i("yyy --- getMajorList:" + sb.toString());
-		
+
 		request("GET", sb.toString(), null, listener);
 	}
-	
-	public static void getCityList( RequestListener listener)
-	{
+
+	public static void getCityList(RequestListener listener) {
 		StringBuilder sb = new StringBuilder();
 		sb.append(SUB_URL).append("/cities");
-		
+
 		L.i("yyy --- getCityList:" + sb.toString());
-		
+
 		request("GET", sb.toString(), null, listener);
 	}
-	
-	public static void getUser( Integer id,	RequestListener listener) {
+
+	public static void getUser(int id, RequestListener listener) {
 		StringBuilder sb = new StringBuilder();
-		sb.append(SUB_URL).append("/alumni");
+		sb.append(SUB_URL).append("/alumni").append("/" + id);
+
+		L.i("yyy --- getUser:" + sb.toString());
 		
-		if (!Judgement.isNullOrEmpty(id))
-		{
-			sb.append("/" + id + "");
-		}
-		L.i("yyy --- getUser:" +sb.toString());
 		request("GET", sb.toString(), null, listener);
 	}
 }
-	
-	

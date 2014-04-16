@@ -39,7 +39,7 @@ import cn.edu.zju.isst.exception.HttpErrorWeeder;
 import cn.edu.zju.isst.net.CSTResponse;
 import cn.edu.zju.isst.net.NetworkConnection;
 import cn.edu.zju.isst.net.RequestListener;
-import cn.edu.zju.isst.util.Judgement;
+import cn.edu.zju.isst.util.J;
 import cn.edu.zju.isst.util.L;
 
 /**
@@ -54,22 +54,22 @@ public class ContactListFragment extends Fragment {
 	private final List<User> m_listUser = new ArrayList<User>();
 	private final List<City> m_listCity = new ArrayList<City>();
 	private final List<Major> m_listMajors = new ArrayList<Major>();
-	
+
 	private HandlerAlumniList m_handlerAlumniList;
 	private HandlerCityList m_handlerCityList;
 	private HandlerMajorList m_handlerMajorList;
 
 	private ListView m_lvAlumni;
 	private TextView m_tvFilterCondition;
-	
+
 	private ContactFilter m_userFilter = new ContactFilter();
-	
+
 	private List<NoteBookItem> m_noteBookList = new ArrayList<NoteBookItem>();
 	private NoteBookadapter m_noteBookAdapter;
-	
-	//是否需要将获得用户列表写入数据库
+
+	// 是否需要将获得用户列表写入数据库
 	boolean m_flag = true;
-	
+
 	private static ContactListFragment INSTANCE = new ContactListFragment();
 
 	public ContactListFragment() {
@@ -113,23 +113,25 @@ public class ContactListFragment extends Fragment {
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-		
+
 		m_handlerAlumniList = new HandlerAlumniList();
 		m_handlerCityList = new HandlerCityList();
 		m_handlerMajorList = new HandlerMajorList();
-		
-		//初始化数据
+
+		// 初始化数据
 		initDate();
-		
-		//控件
-		m_lvAlumni = (ListView) view.findViewById(R.id.contact_list_fragment_contacts_lsv);
-		m_tvFilterCondition = (TextView) view.findViewById(R.id.contact_list_fragment_conditon_content_txv);
+
+		// 控件
+		m_lvAlumni = (ListView) view
+				.findViewById(R.id.contact_list_fragment_contacts_lsv);
+		m_tvFilterCondition = (TextView) view
+				.findViewById(R.id.contact_list_fragment_conditon_content_txv);
 
 		m_noteBookAdapter = new NoteBookadapter(getActivity(), m_noteBookList);
 		m_lvAlumni.setAdapter(m_noteBookAdapter);
-		
+
 		m_lvAlumni.setOnItemClickListener(new onNotebookItemClickListener());
-		
+
 		showFilterConditon();
 	}
 
@@ -170,7 +172,8 @@ public class ContactListFragment extends Fragment {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.action_alumni_filter:
-			Intent intent = new Intent(getActivity(), ContactFilterActivity.class);
+			Intent intent = new Intent(getActivity(),
+					ContactFilterActivity.class);
 			startActivityForResult(intent, 20);
 			return true;
 		default:
@@ -182,23 +185,21 @@ public class ContactListFragment extends Fragment {
 	 * 初始化本班通讯录列表，若有缓存则读取缓存，无缓存请求数据
 	 */
 	private void initDate() {
-		//获取用户班级ID
-		User user  = DataManager.getCurrentUser(getActivity());
+		// 获取用户班级ID
+		User user = DataManager.getCurrentUser(getActivity());
 		m_userFilter.classId = user.getClassId();
 
-		//初始化通讯录列表
-		List<User> dbAlumniList = DataManager
-				.getClassMateList(getActivity());
-		if (!m_listUser.isEmpty()){
+		// 初始化通讯录列表
+		List<User> dbAlumniList = DataManager.getClassMateList(getActivity());
+		if (!m_listUser.isEmpty()) {
 			m_listUser.clear();
 		}
-		if (!Judgement.isNullOrEmpty(dbAlumniList)) {
+		if (!J.isNullOrEmpty(dbAlumniList)) {
 			for (User Alumni : dbAlumniList) {
 				m_listUser.add(Alumni);
 			}
 			getNoteBookData();
-		}
-		else {
+		} else {
 			requestData();
 		}
 	}
@@ -212,39 +213,41 @@ public class ContactListFragment extends Fragment {
 	private void requestData() {
 		if (NetworkConnection.isNetworkConnected(getActivity())) {
 			AlumniApi_getUserList(m_userFilter);
-			AlumniApi.getCityList(new BaseListRequestListener(m_handlerCityList, City.class, m_listCity));
-			AlumniApi.getMajorList(new BaseListRequestListener(m_handlerMajorList, Major.class, m_listMajors));
+			AlumniApi.getCityList(new BaseListRequestListener(
+					m_handlerCityList, City.class, m_listCity));
+			AlumniApi.getMajorList(new BaseListRequestListener(
+					m_handlerMajorList, Major.class, m_listMajors));
 		} else {
 			Message msg = m_handlerAlumniList.obtainMessage();
 			msg.what = NETWORK_NOT_CONNECTED;
 			m_handlerAlumniList.sendMessage(msg);
 		}
 	}
-	
+
 	private class BaseListRequestListener<T> implements RequestListener {
 		Handler handler;
 		List<T> list;
 		Class<T> clazz;
-		
-		public BaseListRequestListener(final Handler h,Class<T> c,List<T> l)
-		{
+
+		public BaseListRequestListener(final Handler h, Class<T> c, List<T> l) {
 			this.handler = h;
 			this.list = l;
 			this.clazz = c;
 		}
-		
+
 		@Override
 		public void onComplete(Object result) {
 			Message msg = handler.obtainMessage();
 			try {
 				msg.what = ((JSONObject) result).getInt("status");
-				JSONArray jsonArray = ((JSONObject) result).getJSONArray("body");
+				JSONArray jsonArray = ((JSONObject) result)
+						.getJSONArray("body");
 				list.clear();
 				for (int i = 0; i < jsonArray.length(); i++) {
 					try {
-						list.add(clazz.getConstructor(JSONObject.class).newInstance((JSONObject) jsonArray.get(i)));
-					}
-					catch (Exception e) {
+						list.add(clazz.getConstructor(JSONObject.class)
+								.newInstance((JSONObject) jsonArray.get(i)));
+					} catch (Exception e) {
 						e.printStackTrace();
 					}
 				}
@@ -272,12 +275,12 @@ public class ContactListFragment extends Fragment {
 			handler.sendMessage(msg);
 		}
 	}
-		
+
 	/**
-	 *  填充m_noteBookList数据
+	 * 填充m_noteBookList数据
 	 */
 	private void getNoteBookData() {
-		if (m_noteBookList.size()!=0) {
+		if (m_noteBookList.size() != 0) {
 			m_noteBookList.clear();
 		}
 		for (int i = 0; i < m_listUser.size(); i++) {
@@ -288,73 +291,77 @@ public class ContactListFragment extends Fragment {
 		}
 
 	}
-	
-	public class onNotebookItemClickListener implements OnItemClickListener{
+
+	public class onNotebookItemClickListener implements OnItemClickListener {
 		@Override
-		public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-			Intent intent = new Intent(getActivity(), ContactDetailActivity.class);
+		public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+				long arg3) {
+			Intent intent = new Intent(getActivity(),
+					ContactDetailActivity.class);
 			intent.putExtra("id", m_listUser.get(arg2).getId());
 			getActivity().startActivity(intent);
 		}
 	}
-	
+
 	/**
 	 * 显示筛选条件
 	 */
-	private void showFilterConditon(){
+	private void showFilterConditon() {
 		StringBuilder sb = new StringBuilder();
-		
-		if (m_flag){
-			sb.append(" 班级："+ "本班");
+
+		if (m_flag) {
+			sb.append(" 班级：" + "本班");
 		}
-		if (m_userFilter.name!=null){
-			sb.append(" 姓名："+ m_userFilter.name);
+		if (!J.isNullOrEmpty(m_userFilter.name)) {
+			sb.append(" 姓名：" + m_userFilter.name);
 		}
-		if (m_userFilter.gender!=null){
-			sb.append(" 性别："+ m_userFilter.genderString);
+		if (m_userFilter.gender != 0) {
+			sb.append(" 性别：" + m_userFilter.genderString);
 		}
-		if (m_userFilter.grade!=null){
-			sb.append(" 年级："+ m_userFilter.grade);
+		if (m_userFilter.grade != 0) {
+			sb.append(" 年级：" + m_userFilter.grade);
 		}
-		if (m_userFilter.majorId!=null){
-			sb.append(" 方向："+ m_userFilter.majorString);
+		if (m_userFilter.majorId != 0) {
+			sb.append(" 方向：" + m_userFilter.majorString);
 		}
-		if (m_userFilter.company!=null){
-			sb.append(" 公司："+ m_userFilter.company);
+		if (!J.isNullOrEmpty(m_userFilter.company)) {
+			sb.append(" 公司：" + m_userFilter.company);
 		}
-		if (m_userFilter.cityId!=null){
-			sb.append(" 城市："+ m_userFilter.cityString);
+		if (m_userFilter.cityId != 0) {
+			sb.append(" 城市：" + m_userFilter.cityString);
 		}
 		m_tvFilterCondition.setText(sb.toString());
 	}
-	
+
 	/**
 	 * 调用AlumniApi.getUserList
 	 */
 	private void AlumniApi_getUserList(ContactFilter uf) {
 		AlumniApi.getUserList(uf.id, uf.name, uf.gender, uf.grade, uf.classId,
-		uf.majorId, uf.cityId, uf.company, new BaseListRequestListener(m_handlerAlumniList, User.class, m_listUser));
+				uf.majorId, uf.cityId, uf.company, new BaseListRequestListener(
+						m_handlerAlumniList, User.class, m_listUser));
 	}
-	
+
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (resultCode == 20) {
 			m_userFilter.clear();
-			m_userFilter = (ContactFilter)data.getExtras().getSerializable("data");
+			m_userFilter = (ContactFilter) data.getExtras().getSerializable(
+					"data");
 			m_flag = false;
 			AlumniApi_getUserList(m_userFilter);
 			showFilterConditon();
 		}
 		super.onActivityResult(requestCode, resultCode, data);
 	}
-	
+
 	private class HandlerAlumniList extends Handler {
 		@Override
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
 			case STATUS_REQUEST_SUCCESS:
-				Collections.sort(m_listUser,new Pinyin4j.PinyinComparator());
-				if(m_flag) {
+				Collections.sort(m_listUser, new Pinyin4j.PinyinComparator());
+				if (m_flag) {
 					DataManager.syncClassMateList(m_listUser, getActivity());
 				}
 				getNoteBookData();
@@ -367,14 +374,14 @@ public class ContactListFragment extends Fragment {
 			}
 		}
 	}
-	
+
 	private class HandlerCityList extends Handler {
-		
+
 		@Override
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
 			case STATUS_REQUEST_SUCCESS:
-				if(m_flag) {
+				if (m_flag) {
 					DataManager.syncCityList(m_listCity, getActivity());
 				}
 				break;
@@ -385,14 +392,14 @@ public class ContactListFragment extends Fragment {
 			}
 		}
 	}
-	
+
 	private class HandlerMajorList extends Handler {
-		
+
 		@Override
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
 			case STATUS_REQUEST_SUCCESS:
-				if(m_flag) {
+				if (m_flag) {
 					DataManager.syncMajorList(m_listMajors, getActivity());
 				}
 				break;

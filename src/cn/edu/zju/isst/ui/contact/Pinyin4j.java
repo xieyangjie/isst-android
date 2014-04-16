@@ -2,6 +2,7 @@ package cn.edu.zju.isst.ui.contact;
 
 import java.util.Comparator;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Set;
 
 import cn.edu.zju.isst.db.User;
@@ -33,7 +34,7 @@ public class Pinyin4j {
 			}
 			i++;
 		}
-		return str.toString().toLowerCase();
+		return str.toString().toLowerCase(Locale.ENGLISH);
 	}
 
 	/**
@@ -156,16 +157,5 @@ public class Pinyin4j {
 			return pinyinSbf.toString();
 		}
 	}
-
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		String str = "单田芳";
-		String str2 = "afdfdfe3";
-		System.out.println(makeStringByStringSet(getPinyin(str)));//dantianfang,shantianfang,chantianfang
-		System.out.println(getHanyuPinyin(str2));//afdfdfe
-	}
-
 }
 

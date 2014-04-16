@@ -15,7 +15,6 @@ import android.os.Message;
 import android.view.MenuItem;
 import android.webkit.WebSettings;
 import android.webkit.WebSettings.LayoutAlgorithm;
-import android.webkit.WebSettings.TextSize;
 import android.webkit.WebView;
 import android.widget.TextView;
 import cn.edu.zju.isst.R;
@@ -24,7 +23,7 @@ import cn.edu.zju.isst.db.Archive;
 import cn.edu.zju.isst.net.CSTResponse;
 import cn.edu.zju.isst.net.RequestListener;
 import cn.edu.zju.isst.ui.main.BaseActivity;
-import cn.edu.zju.isst.util.Judgement;
+import cn.edu.zju.isst.util.J;
 import cn.edu.zju.isst.util.L;
 import cn.edu.zju.isst.util.TimeString;
 
@@ -108,13 +107,13 @@ public class JobDetailActivity extends BaseActivity {
 
 				try {
 					JSONObject jsonObject = (JSONObject) result;
-					if (!Judgement.isValidJsonValue("status", jsonObject)) {
+					if (!J.isValidJsonValue("status", jsonObject)) {
 						return;
 					}
 					final int status = jsonObject.getInt("status");
 					switch (status) {
 					case STATUS_REQUEST_SUCCESS:
-						if (!Judgement.isValidJsonValue("status", jsonObject)) {
+						if (!J.isValidJsonValue("status", jsonObject)) {
 							break;
 						}
 						m_archiveCurrent = new Archive(jsonObject
@@ -197,7 +196,7 @@ public class JobDetailActivity extends BaseActivity {
 	 * 绑定数据并显示
 	 */
 	private void showArchiveDetail() {
-		if (Judgement.isNullOrEmpty(m_archiveCurrent)) {
+		if (J.isNullOrEmpty(m_archiveCurrent)) {
 			return;
 		}
 		m_txvTitle.setText(m_archiveCurrent.getTitle());

@@ -47,7 +47,7 @@ public class LoginApi extends CSTApi {
 	 *            回调对象
 	 */
 	public static void validate(String userName, String password,
-			Double longitude, Double latitude, RequestListener listener) {
+			double longitude, double latitude, RequestListener listener) {
 		Map<String, String> paramsMap = new ConcurrentHashMap<String, String>();
 		paramsMap.put("username", userName);
 		paramsMap.put("password", password);
@@ -80,8 +80,8 @@ public class LoginApi extends CSTApi {
 	 * @param listener
 	 *            回调对象
 	 */
-	public static void update(User currentUser, Double longitude,
-			Double latitude, RequestListener listener) {
+	public static void update(User currentUser, double longitude,
+			double latitude, RequestListener listener) {
 		Map<String, String> paramsMap = new ConcurrentHashMap<String, String>();
 		paramsMap.put("userId", String.valueOf(currentUser.getId()));
 		paramsMap.put(

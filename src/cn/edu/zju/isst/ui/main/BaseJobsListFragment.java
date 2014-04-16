@@ -39,7 +39,7 @@ import cn.edu.zju.isst.net.CSTResponse;
 import cn.edu.zju.isst.net.NetworkConnection;
 import cn.edu.zju.isst.net.RequestListener;
 import cn.edu.zju.isst.ui.job.JobDetailActivity;
-import cn.edu.zju.isst.util.Judgement;
+import cn.edu.zju.isst.util.J;
 import cn.edu.zju.isst.util.L;
 import cn.edu.zju.isst.util.TimeString;
 
@@ -206,7 +206,7 @@ public class BaseJobsListFragment extends ListFragment implements
 	 */
 	protected void initJobList() {
 		List<Job> dbJobList = getJobList();
-		if (!Judgement.isNullOrEmpty(dbJobList)) {
+		if (!J.isNullOrEmpty(dbJobList)) {
 			for (Job job : dbJobList) {
 				m_listAchive.add(job);
 			}
@@ -270,7 +270,7 @@ public class BaseJobsListFragment extends ListFragment implements
 			m_listAchive.clear();
 		}
 		try {
-			if (!Judgement.isValidJsonValue("body", jsonObject)) {
+			if (!J.isValidJsonValue("body", jsonObject)) {
 				return;
 			}
 			JSONArray jsonArray = jsonObject.getJSONArray("body");
@@ -293,7 +293,7 @@ public class BaseJobsListFragment extends ListFragment implements
 	protected void loadMore(JSONObject jsonObject) {
 		JSONArray jsonArray;
 		try {
-			if (!Judgement.isValidJsonValue("body", jsonObject)) {
+			if (!J.isValidJsonValue("body", jsonObject)) {
 				return;
 			}
 			jsonArray = jsonObject.getJSONArray("body");
@@ -366,7 +366,7 @@ public class BaseJobsListFragment extends ListFragment implements
 		public void onComplete(Object result) {
 			Message msg = m_handlerJobList.obtainMessage();
 			try {
-				if (!Judgement.isValidJsonValue("status", (JSONObject) result)) {
+				if (!J.isValidJsonValue("status", (JSONObject) result)) {
 					return;
 				}
 				msg.what = ((JSONObject) result).getInt("status");

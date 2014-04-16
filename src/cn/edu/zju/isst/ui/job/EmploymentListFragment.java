@@ -4,7 +4,6 @@
 package cn.edu.zju.isst.ui.job;
 
 import cn.edu.zju.isst.api.JobCategory;
-import cn.edu.zju.isst.db.Job;
 import cn.edu.zju.isst.ui.main.BaseJobsListFragment;
 
 /**

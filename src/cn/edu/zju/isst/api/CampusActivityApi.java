@@ -3,8 +3,11 @@
  */
 package cn.edu.zju.isst.api;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 import cn.edu.zju.isst.net.RequestListener;
-import cn.edu.zju.isst.util.Judgement;
+import cn.edu.zju.isst.util.J;
 import cn.edu.zju.isst.util.L;
 
 /**
@@ -18,25 +21,14 @@ public class CampusActivityApi extends CSTApi {
 	 */
 	private static final String SUB_URL = "/api/campus/activities";
 
-	public static void getCampusActivityList(Integer page, Integer pageSize,
+	public static void getCampusActivityList(int page, int pageSize,
 			String keywords, RequestListener listener) {
-		StringBuilder sb = new StringBuilder();
-		sb.append(SUB_URL).append("?");
+		Map<String, String> paramsMap = new ConcurrentHashMap<String, String>();
+		paramsMap.put("page", "" + page);
+		paramsMap.put("pageSize", "" + pageSize);
+		paramsMap.put("keywords", keywords);
 
-		if (!Judgement.isNullOrEmpty(page)) {
-			sb.append("page=" + String.valueOf(page) + "&");
-		}
-		if (!Judgement.isNullOrEmpty(pageSize)) {
-			sb.append("pageSize=" + String.valueOf(pageSize) + "&");
-		}
-		if (!Judgement.isNullOrEmpty(keywords)) {
-			sb.append("keywords" + keywords + "&");
-		}
-		sb.deleteCharAt(sb.toString().length() - 1);
-
-		L.i("getCampusActivityList:" + sb.toString());
-
-		request("GET", sb.toString(), null, listener);
+		request("GET", SUB_URL, paramsMap, listener);
 	}
 
 	public static void getCampusActivityDetail(int id, RequestListener listener) {

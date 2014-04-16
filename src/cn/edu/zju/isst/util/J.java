@@ -16,12 +16,12 @@ import org.json.JSONObject;
  * 
  *         TODO WIP
  */
-public class Judgement {
+public class J {
 
 	/**
 	 * 私有构造器，防止对象实例化
 	 */
-	private Judgement() {
+	private J() {
 	}
 
 	/**
@@ -38,6 +38,9 @@ public class Judgement {
 
 		if (obj.equals(null))
 			return true;
+
+		if (obj instanceof String)
+			return ((String) obj).trim().length() == 0;
 
 		if (obj instanceof CharSequence)
 			return ((CharSequence) obj).length() == 0;

@@ -3,8 +3,11 @@
  */
 package cn.edu.zju.isst.api;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 import cn.edu.zju.isst.net.RequestListener;
-import cn.edu.zju.isst.util.Judgement;
+import cn.edu.zju.isst.util.J;
 import cn.edu.zju.isst.util.L;
 
 /**
@@ -50,26 +53,17 @@ public class ArchiveApi extends CSTApi {
 	 * @param listener
 	 *            回调对象
 	 */
-	public static void getArchiveList(ArchiveCategory category, Integer page,
-			Integer pageSize, String keywords, RequestListener listener) {
+	public static void getArchiveList(ArchiveCategory category, int page,
+			int pageSize, String keywords, RequestListener listener) {
 		StringBuilder sb = new StringBuilder();
-		sb.append(SUB_URL).append("categories/").append(category.getSubUrl())
-				.append("?");
+		sb.append(SUB_URL).append("categories/").append(category.getSubUrl());
+		
+		Map<String, String> paramsMap = new ConcurrentHashMap<String, String>();
+		paramsMap.put("page", "" + page);
+		paramsMap.put("pageSize", "" + pageSize);
+		paramsMap.put("keywords", keywords);
 
-		if (!Judgement.isNullOrEmpty(page)) {
-			sb.append("page=" + String.valueOf(page) + "&");
-		}
-		if (!Judgement.isNullOrEmpty(pageSize)) {
-			sb.append("pageSize=" + String.valueOf(pageSize) + "&");
-		}
-		if (!Judgement.isNullOrEmpty(keywords)) {
-			sb.append("keywords" + keywords + "&");
-		}
-		sb.deleteCharAt(sb.toString().length() - 1);
-
-		L.i("getArchiveList:" + sb.toString());
-
-		request("GET", sb.toString(), null, listener);
+		request("GET", sb.toString(), paramsMap, listener);
 	}
 
 	/**
