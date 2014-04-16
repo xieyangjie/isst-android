@@ -36,7 +36,8 @@ proguard/
 *.old
 *.*~
 *~
- 
+*.orig
+
 # private files
 #private/
  
