@@ -13,6 +13,7 @@ import java.util.List;
 
 import android.content.Context;
 import cn.edu.zju.isst.api.ArchiveCategory;
+import cn.edu.zju.isst.api.JobCategory;
 import cn.edu.zju.isst.util.Judgement;
 import cn.edu.zju.isst.util.L;
 
@@ -38,6 +39,9 @@ public class DataManager {
 	public static final String CLASS_LIST_IN_DB = "classlist";
 	public static final String CITY_LIST_IN_DB = "citylist";
 	public static final String CLASSMATE_LIST_IN_DB = "classmatelist";
+	public static final String EMPLOYMENT_LIST__IN_DB = "employmentlist";
+	public static final String INTERNSHIP_LIST_IN_DB = "internship";
+	public static final String RECOMMEND_LIST_IN_DB =  "recommend";
 
 	/**
 	 * 同步登录接口返回数据
@@ -311,6 +315,33 @@ public class DataManager {
 		}
 		return null;
 	}
+	
+	public static void syncJobList(JobCategory jobCategory,
+			List<Job> jobList, Context context) {
+		if (!Judgement.isNullOrEmpty(jobList)) {
+			writeObjectToDB(jobCategory.getNameInDB(),
+					(Serializable) jobList, context);
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	public static List<Job> getJobList(JobCategory jobCategory,
+			Context context) {
+		Object object = objectFromDB(jobCategory.getNameInDB(), context);
+		if (!Judgement.isNullOrEmpty(object)) {
+			List<Job> jobList = null;
+			try {
+				jobList = (List<Job>) object;
+			} catch (ClassCastException e) {
+				// TODO: handle exception
+			}
+			if (!Judgement.isNullOrEmpty(jobList)) {
+				return jobList;
+			}
+		}
+		return null;
+	}
+
 
 	/**
 	 * 将目标对象序列化后写入当前数据库
