@@ -3,12 +3,10 @@
  */
 package cn.edu.zju.isst.api;
 
+import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 import cn.edu.zju.isst.net.RequestListener;
-import cn.edu.zju.isst.util.J;
-import cn.edu.zju.isst.util.L;
 
 /**
  * @author theasir
@@ -23,7 +21,7 @@ public class CampusActivityApi extends CSTApi {
 
 	public static void getCampusActivityList(int page, int pageSize,
 			String keywords, RequestListener listener) {
-		Map<String, String> paramsMap = new ConcurrentHashMap<String, String>();
+		Map<String, String> paramsMap = new HashMap<String, String>();
 		paramsMap.put("page", "" + page);
 		paramsMap.put("pageSize", "" + pageSize);
 		paramsMap.put("keywords", keywords);

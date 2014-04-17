@@ -10,9 +10,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 import org.json.JSONObject;
 
@@ -186,7 +186,7 @@ public class BetterAsyncWebServiceRunner {
 	private Map<String, List<String>> getHeaders(String url) {
 		if (J.isNullOrEmpty(url))
 			return null;
-		Map<String, List<String>> headers = new ConcurrentHashMap<String, List<String>>();
+		Map<String, List<String>> headers = new HashMap<String, List<String>>();
 		List<String> cookieList = new ArrayList<String>();
 		String cookieString = CookieManager.getInstance().getCookie(url);
 		if (!J.isNullOrEmpty(cookieString)) {

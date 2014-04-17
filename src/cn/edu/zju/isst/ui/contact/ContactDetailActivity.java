@@ -235,7 +235,7 @@ public class ContactDetailActivity extends BaseActivity {
 		public void onClick(View v) {
 			String number = m_tvMobile.getText().toString();
 			Intent intent = new Intent();
-	        intent.setAction("android.intent.action.CALL");
+	        intent.setAction(Intent.ACTION_CALL);
 	        intent.setData(Uri.parse("tel:"+number));
 	        startActivity(intent);
 		}

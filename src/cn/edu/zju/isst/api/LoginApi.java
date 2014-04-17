@@ -5,9 +5,9 @@ package cn.edu.zju.isst.api;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 import cn.edu.zju.isst.db.User;
 import cn.edu.zju.isst.net.RequestListener;
@@ -48,7 +48,7 @@ public class LoginApi extends CSTApi {
 	 */
 	public static void validate(String userName, String password,
 			double longitude, double latitude, RequestListener listener) {
-		Map<String, String> paramsMap = new ConcurrentHashMap<String, String>();
+		Map<String, String> paramsMap = new HashMap<String, String>();
 		paramsMap.put("username", userName);
 		paramsMap.put("password", password);
 		paramsMap.put(
@@ -82,7 +82,7 @@ public class LoginApi extends CSTApi {
 	 */
 	public static void update(User currentUser, double longitude,
 			double latitude, RequestListener listener) {
-		Map<String, String> paramsMap = new ConcurrentHashMap<String, String>();
+		Map<String, String> paramsMap = new HashMap<String, String>();
 		paramsMap.put("userId", String.valueOf(currentUser.getId()));
 		paramsMap.put(
 				"token",

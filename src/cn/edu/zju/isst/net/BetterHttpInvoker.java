@@ -11,9 +11,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 import cn.edu.zju.isst.util.J;
 import cn.edu.zju.isst.util.L;
@@ -132,7 +132,7 @@ public class BetterHttpInvoker {
 						+ conn.getResponseCode());
 				if (conn.getResponseCode() != HttpURLConnection.HTTP_OK) {
 					response = new CSTResponse(conn.getResponseCode(),
-							new ConcurrentHashMap<String, List<String>>(), conn
+							new HashMap<String, List<String>>(), conn
 									.getResponseMessage().getBytes());
 				}
 			}
