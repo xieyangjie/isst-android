@@ -41,7 +41,7 @@ import cn.edu.zju.isst.net.CSTResponse;
 import cn.edu.zju.isst.net.NetworkConnection;
 import cn.edu.zju.isst.net.RequestListener;
 import cn.edu.zju.isst.ui.main.BaseActivity;
-import cn.edu.zju.isst.util.Judgement;
+import cn.edu.zju.isst.util.J;
 import cn.edu.zju.isst.util.L;
 import cn.edu.zju.isst.util.TimeString;
 
@@ -213,7 +213,7 @@ public class CampusActivityListFragment extends ListFragment implements
 	private void initCampusActivityList() {
 		List<CampusActivity> dbCampusActivityList = DataManager
 				.getCampusActivityList(getActivity());
-		if (!Judgement.isNullOrEmpty(dbCampusActivityList)) {
+		if (!J.isNullOrEmpty(dbCampusActivityList)) {
 			for (CampusActivity news : dbCampusActivityList) {
 				m_listCampusActivity.add(news);
 			}
@@ -280,7 +280,7 @@ public class CampusActivityListFragment extends ListFragment implements
 			m_listCampusActivity.clear();
 		}
 		try {
-			if (!Judgement.isValidJsonValue("body", jsonObject)) {
+			if (!J.isValidJsonValue("body", jsonObject)) {
 				return;
 			}
 			JSONArray jsonArray = jsonObject.getJSONArray("body");
@@ -308,7 +308,7 @@ public class CampusActivityListFragment extends ListFragment implements
 	private void loadMore(JSONObject jsonObject) {
 		JSONArray jsonArray;
 		try {
-			if (!Judgement.isValidJsonValue("body", jsonObject)) {
+			if (!J.isValidJsonValue("body", jsonObject)) {
 				return;
 			}
 			jsonArray = jsonObject.getJSONArray("body");
@@ -376,7 +376,7 @@ public class CampusActivityListFragment extends ListFragment implements
 		public void onComplete(Object result) {
 			Message msg = m_handlerCampusActivityList.obtainMessage();
 			try {
-				if (!Judgement.isValidJsonValue("status", (JSONObject) result)) {
+				if (!J.isValidJsonValue("status", (JSONObject) result)) {
 					return;
 				}
 				msg.what = ((JSONObject) result).getInt("status");

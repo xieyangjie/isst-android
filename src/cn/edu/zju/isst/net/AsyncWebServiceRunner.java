@@ -4,7 +4,7 @@ import java.util.Map;
 
 import org.json.JSONObject;
 
-import cn.edu.zju.isst.util.Judgement;
+import cn.edu.zju.isst.util.J;
 import cn.edu.zju.isst.util.L;
 
 /**
@@ -45,7 +45,7 @@ public class AsyncWebServiceRunner {
 					} else {
 						result = null;
 					}
-					if (!Judgement.isNullOrEmpty(result))// ?有问题
+					if (!J.isNullOrEmpty(result))// ?有问题
 					{
 						L.i("listener.onCompete");
 						listener.onComplete(result);

@@ -14,7 +14,7 @@ import cn.edu.zju.isst.R;
 import cn.edu.zju.isst.constant.Nav;
 import cn.edu.zju.isst.constant.NavGroup;
 import cn.edu.zju.isst.ui.main.SlidingMenuExpListAdapter.SELECTED;
-import cn.edu.zju.isst.util.Judgement;
+import cn.edu.zju.isst.util.J;
 import cn.edu.zju.isst.util.L;
 import android.R.integer;
 import android.app.Activity;

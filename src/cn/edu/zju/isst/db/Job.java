@@ -8,7 +8,7 @@ import java.io.Serializable;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import cn.edu.zju.isst.util.Judgement;
+import cn.edu.zju.isst.util.J;
 
 /**
  * @author theasir
@@ -64,34 +64,34 @@ public class Job implements Serializable {
 	 *             未处理异常
 	 */
 	public void update(JSONObject jsonObject) throws JSONException {
-		if (!Judgement.isNullOrEmpty(jsonObject)) {
-			if (Judgement.isValidJsonValue("id", jsonObject)) {
+		if (!J.isNullOrEmpty(jsonObject)) {
+			if (J.isValidJsonValue("id", jsonObject)) {
 				id = jsonObject.getInt("id");
 			}
-			if (Judgement.isValidJsonValue("title", jsonObject)) {
+			if (J.isValidJsonValue("title", jsonObject)) {
 				title = jsonObject.getString("title");
 			}
-			if (Judgement.isValidJsonValue("title", jsonObject)) {
+			if (J.isValidJsonValue("title", jsonObject)) {
 				title = jsonObject.getString("title");
 			}
-			if (Judgement.isValidJsonValue("company", jsonObject)) {
+			if (J.isValidJsonValue("company", jsonObject)) {
 				company = jsonObject.getString("company");
 			}
-			if (Judgement.isValidJsonValue("position", jsonObject)) {
+			if (J.isValidJsonValue("position", jsonObject)) {
 				position = jsonObject.getString("position");
 			}
-			if (Judgement.isValidJsonValue("updatedAt", jsonObject)) {
+			if (J.isValidJsonValue("updatedAt", jsonObject)) {
 				updatedAt = jsonObject.getLong("updatedAt");
 			}
-			if (Judgement.isValidJsonValue("user", jsonObject)) {
+			if (J.isValidJsonValue("user", jsonObject)) {
 				publisher = new Publisher(jsonObject.getJSONObject("user"));
 			}
-			if (Judgement.isValidJsonValue("userId", jsonObject)) {
+			if (J.isValidJsonValue("userId", jsonObject)) {
 				publisherId = jsonObject.getInt("userId");
 			} else {
 				publisherId = publisher.getId();
 			}
-			if (Judgement.isValidJsonValue("content", jsonObject)) {
+			if (J.isValidJsonValue("content", jsonObject)) {
 				content = jsonObject.getString("content");
 			}
 		}

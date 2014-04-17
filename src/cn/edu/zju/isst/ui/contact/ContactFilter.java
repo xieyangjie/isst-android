@@ -9,14 +9,14 @@ public class ContactFilter  implements Serializable{
 	 */
 	private static final long serialVersionUID = 890650792358672364L;
 	
-	public Integer id;
+	public int id;
 	public String username;
 	public String name;
-	public Integer gender;
-	public Integer grade;
-	public Integer classId;
-	public Integer majorId;
-	public Integer cityId;
+	public int gender;
+	public int grade;
+	public int classId;
+	public int majorId;
+	public int cityId;
 	public String company;
 	//以下是现实的字符串
 	public String genderString;
@@ -27,14 +27,14 @@ public class ContactFilter  implements Serializable{
 	}
 	//清空条件
 	public void clear() {
-		id = null;
-		username = null;
-		name = null;
-		gender = null;
-		grade = null;
-		classId = null;
-		majorId = null;
-		cityId = null;
-		company = null;
+		id = 0;
+		username = "";
+		name = "";
+		gender = 0;
+		grade = 0;
+		classId = 0;
+		majorId = 0;
+		cityId = 0;
+		company = "";
 	}
 }

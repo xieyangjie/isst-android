@@ -15,27 +15,9 @@ import cn.edu.zju.isst.net.RequestListener;
  * 
  *         TODO WIP
  */
-public class ArchiveApi extends CSTApi {
+public class JobApi extends CSTApi {
 
-	private static final String SUB_URL = "/api/archives/";
-
-	/**
-	 * 获取百科列表
-	 * 
-	 * @param page
-	 *            页数
-	 * @param pageSize
-	 *            页面大小
-	 * @param keywords
-	 *            关键字
-	 * @param listener
-	 *            回调对象
-	 */
-	public static void getWikiList(Integer page, Integer pageSize,
-			String keywords, RequestListener listener) {
-		getArchiveList(ArchiveCategory.ENCYCLOPEDIA, page, pageSize, keywords,
-				listener);
-	}
+	private static final String SUB_URL = "/api/jobs/";
 
 	/**
 	 * 获取归档列表
@@ -51,11 +33,11 @@ public class ArchiveApi extends CSTApi {
 	 * @param listener
 	 *            回调对象
 	 */
-	public static void getArchiveList(ArchiveCategory category, int page,
-			int pageSize, String keywords, RequestListener listener) {
+	public static void getJobList(JobCategory category, int page, int pageSize,
+			String keywords, RequestListener listener) {
 		StringBuilder sb = new StringBuilder();
 		sb.append(SUB_URL).append("categories/").append(category.getSubUrl());
-		
+
 		Map<String, String> paramsMap = new HashMap<String, String>();
 		paramsMap.put("page", "" + page);
 		paramsMap.put("pageSize", "" + pageSize);
@@ -72,7 +54,7 @@ public class ArchiveApi extends CSTApi {
 	 * @param listener
 	 *            回调对象
 	 */
-	public static void getArchiveDetail(int id, RequestListener listener) {
+	public static void getJobDetail(int id, RequestListener listener) {
 		request("GET", SUB_URL + id, null, listener);
 	}
 }

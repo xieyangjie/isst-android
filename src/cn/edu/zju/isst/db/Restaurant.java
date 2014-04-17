@@ -8,7 +8,7 @@ import java.io.Serializable;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import cn.edu.zju.isst.util.Judgement;
+import cn.edu.zju.isst.util.J;
 
 /**
  * 商家解析类
@@ -64,29 +64,29 @@ public class Restaurant implements Serializable {
 	 *             未处理异常
 	 */
 	public void update(JSONObject jsonObject) throws JSONException {
-		if (!Judgement.isNullOrEmpty(jsonObject)) {
-			if (Judgement.isValidJsonValue("id", jsonObject)) {
+		if (!J.isNullOrEmpty(jsonObject)) {
+			if (J.isValidJsonValue("id", jsonObject)) {
 				id = jsonObject.getInt("id");
 			}
-			if (Judgement.isValidJsonValue("name", jsonObject)) {
+			if (J.isValidJsonValue("name", jsonObject)) {
 				name = jsonObject.getString("name");
 			}
-			if (Judgement.isValidJsonValue("picture", jsonObject)) {
+			if (J.isValidJsonValue("picture", jsonObject)) {
 				picture = jsonObject.getString("picture");
 			}
-			if (Judgement.isValidJsonValue("address", jsonObject)) {
+			if (J.isValidJsonValue("address", jsonObject)) {
 				address = jsonObject.getString("address");
 			}
-			if (Judgement.isValidJsonValue("hotline", jsonObject)) {
+			if (J.isValidJsonValue("hotline", jsonObject)) {
 				hotline = jsonObject.getString("hotline");
 			}
-			if (Judgement.isValidJsonValue("businessHours", jsonObject)) {
+			if (J.isValidJsonValue("businessHours", jsonObject)) {
 				businessHours = jsonObject.getString("businessHours");
 			}
-			if (Judgement.isValidJsonValue("description", jsonObject)) {
+			if (J.isValidJsonValue("description", jsonObject)) {
 				description = jsonObject.getString("description");
 			}
-			if (Judgement.isValidJsonValue("content", jsonObject)) {
+			if (J.isValidJsonValue("content", jsonObject)) {
 				content = jsonObject.getString("content");
 			}
 		}

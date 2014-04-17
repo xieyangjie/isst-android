@@ -4,6 +4,7 @@
 package cn.edu.zju.isst.api;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.util.Map;
 
@@ -40,10 +41,21 @@ public class CSTApi {
 	 */
 	protected static void request(final String methodName, final String subUrl,
 			final Map<String, String> params, RequestListener listener) {
-		String url = PREFIX + subUrl;
-		BetterAsyncWebServiceRunner.getInstance().request(methodName, url,
-				params, listener);
-		L.i("CSTApi Request URL = " + url);
+		String requestUrl = PREFIX + subUrl;
+		if (methodName.equalsIgnoreCase("POST")) {
+			BetterAsyncWebServiceRunner.getInstance().request(methodName, requestUrl,
+					params, listener);
+		}else {
+			try {
+				requestUrl = requestUrl + "?" + BetterAsyncWebServiceRunner.getInstance().paramsToString(params);
+			} catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			BetterAsyncWebServiceRunner.getInstance().request(methodName, requestUrl,
+					null, listener);
+		}
+		L.i("CSTApi Request URL = " + requestUrl);
 	}
 
 	protected static CSTResponse responseOfRequest(final String methodName,
@@ -53,4 +65,5 @@ public class CSTApi {
 		return BetterAsyncWebServiceRunner.getInstance().responseOfRequest(
 				methodName, url, params);
 	}
+	
 }

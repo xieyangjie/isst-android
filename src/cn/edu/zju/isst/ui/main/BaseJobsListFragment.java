@@ -29,16 +29,16 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import cn.edu.zju.isst.R;
-import cn.edu.zju.isst.api.ArchiveApi;
-import cn.edu.zju.isst.api.ArchiveCategory;
-import cn.edu.zju.isst.db.Archive;
+import cn.edu.zju.isst.api.JobApi;
+import cn.edu.zju.isst.api.JobCategory;
+import cn.edu.zju.isst.db.Job;
 import cn.edu.zju.isst.db.DataManager;
 import cn.edu.zju.isst.exception.ExceptionWeeder;
 import cn.edu.zju.isst.exception.HttpErrorWeeder;
 import cn.edu.zju.isst.net.CSTResponse;
 import cn.edu.zju.isst.net.NetworkConnection;
 import cn.edu.zju.isst.net.RequestListener;
-import cn.edu.zju.isst.ui.life.ArchiveDetailActivity;
+import cn.edu.zju.isst.ui.job.JobDetailActivity;
 import cn.edu.zju.isst.util.J;
 import cn.edu.zju.isst.util.L;
 import cn.edu.zju.isst.util.TimeString;
@@ -49,22 +49,22 @@ import cn.edu.zju.isst.util.TimeString;
  * @author theasir
  * 
  */
-public class BaseArchiveListFragment extends ListFragment implements
+public class BaseJobsListFragment extends ListFragment implements
 		OnScrollListener {
 
 	private int m_nVisibleLastIndex;
 	private int m_nCurrentPage;
 	private boolean m_bIsFirstTime;
 
-	private ArchiveCategory m_archiveCategory;
+	private JobCategory m_jobCategory;
 	private LoadType m_loadType;
-	private final List<Archive> m_listAchive = new ArrayList<Archive>();
-	private Handler m_handlerArchiveList;
-	private ArchiveListAdapter m_adapterArchiveList;
+	private final List<Job> m_listAchive = new ArrayList<Job>();
+	private Handler m_handlerJobList;
+	private JobListAdapter m_adapterJobList;
 
-	private ListView m_lsvArchiveList;
+	private ListView m_lsvJobList;
 
-	public BaseArchiveListFragment() {
+	public BaseJobsListFragment() {
 		m_nCurrentPage = 1;
 		m_bIsFirstTime = true;
 	}
@@ -90,7 +90,7 @@ public class BaseArchiveListFragment extends ListFragment implements
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.archive_list_fragment, null);
+		return inflater.inflate(R.layout.job_list_fragment, null);
 	}
 
 	/*
@@ -106,7 +106,7 @@ public class BaseArchiveListFragment extends ListFragment implements
 		initComponent(view);
 
 		if (m_bIsFirstTime) {
-			initArchiveList();
+			initJobList();
 		}
 
 		initHandler();
@@ -174,7 +174,7 @@ public class BaseArchiveListFragment extends ListFragment implements
 	public void onListItemClick(ListView l, View v, int position, long id) {
 		L.i(this.getClass().getName() + " onListItemClick postion = "
 				+ position);
-		Intent intent = new Intent(getActivity(), ArchiveDetailActivity.class);
+		Intent intent = new Intent(getActivity(), JobDetailActivity.class);
 		intent.putExtra("id", m_listAchive.get(position).getId());
 		getActivity().startActivity(intent);
 	}
@@ -182,7 +182,7 @@ public class BaseArchiveListFragment extends ListFragment implements
 	@Override
 	public void onScrollStateChanged(AbsListView view, int scrollState) {
 		if (scrollState == SCROLL_STATE_IDLE
-				&& m_nVisibleLastIndex == m_adapterArchiveList.getCount() - 1) {
+				&& m_nVisibleLastIndex == m_adapterJobList.getCount() - 1) {
 			requestData(LoadType.LOADMORE);
 		}
 	}
@@ -193,28 +193,28 @@ public class BaseArchiveListFragment extends ListFragment implements
 		m_nVisibleLastIndex = firstVisibleItem + visibleItemCount - 1;
 	}
 
-	public void setArchiveCategory(ArchiveCategory archiveCategory) {
-		m_archiveCategory = archiveCategory;
+	public void setJobCategory(JobCategory jobCategory) {
+		m_jobCategory = jobCategory;
 	}
 
 	protected void initComponent(View view) {
-		m_lsvArchiveList = (ListView) view.findViewById(android.R.id.list);
+		m_lsvJobList = (ListView) view.findViewById(android.R.id.list);
 	}
 
 	/**
 	 * 初始化归档列表，若有缓存则读取缓存
 	 */
-	protected void initArchiveList() {
-		List<Archive> dbArchiveList = getArchiveList();
-		if (!J.isNullOrEmpty(dbArchiveList)) {
-			for (Archive archive : dbArchiveList) {
-				m_listAchive.add(archive);
+	protected void initJobList() {
+		List<Job> dbJobList = getJobList();
+		if (!J.isNullOrEmpty(dbJobList)) {
+			for (Job job : dbJobList) {
+				m_listAchive.add(job);
 			}
 		}
 	}
 
 	protected void initHandler() {
-		m_handlerArchiveList = new Handler() {
+		m_handlerJobList = new Handler() {
 
 			/*
 			 * (non-Javadoc)
@@ -235,7 +235,7 @@ public class BaseArchiveListFragment extends ListFragment implements
 					default:
 						break;
 					}
-					m_adapterArchiveList.notifyDataSetChanged();
+					m_adapterJobList.notifyDataSetChanged();
 					break;
 				case STATUS_NOT_LOGIN:// TODO
 					((MainActivity) getActivity()).updateLogin();
@@ -251,12 +251,12 @@ public class BaseArchiveListFragment extends ListFragment implements
 	}
 
 	protected void setUpAdapter() {
-		m_adapterArchiveList = new ArchiveListAdapter(getActivity());
-		setListAdapter(m_adapterArchiveList);
+		m_adapterJobList = new JobListAdapter(getActivity());
+		setListAdapter(m_adapterJobList);
 	}
 
 	protected void setUpListener() {
-		m_lsvArchiveList.setOnScrollListener(this);
+		m_lsvJobList.setOnScrollListener(this);
 	}
 
 	/**
@@ -276,9 +276,9 @@ public class BaseArchiveListFragment extends ListFragment implements
 			JSONArray jsonArray = jsonObject.getJSONArray("body");
 
 			for (int i = 0; i < jsonArray.length(); i++) {
-				m_listAchive.add(new Archive((JSONObject) jsonArray.get(i)));
+				m_listAchive.add(new Job((JSONObject) jsonArray.get(i)));
 			}
-			syncArchiveList();
+			syncJobList();
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
@@ -299,7 +299,7 @@ public class BaseArchiveListFragment extends ListFragment implements
 			jsonArray = jsonObject.getJSONArray("body");
 
 			for (int i = 0; i < jsonArray.length(); i++) {
-				m_listAchive.add(new Archive((JSONObject) jsonArray.get(i)));
+				m_listAchive.add(new Job((JSONObject) jsonArray.get(i)));
 			}
 		} catch (JSONException e) {
 			e.printStackTrace();
@@ -317,30 +317,30 @@ public class BaseArchiveListFragment extends ListFragment implements
 			m_loadType = type;
 			switch (type) {
 			case REFRESH:
-				ArchiveApi.getArchiveList(m_archiveCategory, 1, 20, "",
-						new ArchiveListRequestListener());
+				JobApi.getJobList(m_jobCategory, 1, 20, null,
+						new JobListRequestListener());
 				m_nCurrentPage = 1;
 				break;
 			case LOADMORE:
-				ArchiveApi.getArchiveList(m_archiveCategory, ++m_nCurrentPage,
-						20, "", new ArchiveListRequestListener());
+				JobApi.getJobList(m_jobCategory, ++m_nCurrentPage,
+						20, null, new JobListRequestListener());
 				break;
 			default:
 				break;
 			}
 		} else {
-			Message msg = m_handlerArchiveList.obtainMessage();
+			Message msg = m_handlerJobList.obtainMessage();
 			msg.what = NETWORK_NOT_CONNECTED;
-			m_handlerArchiveList.sendMessage(msg);
+			m_handlerJobList.sendMessage(msg);
 		}
 	}
 
-	protected List<Archive> getArchiveList() {
-		return DataManager.getArchiveList(m_archiveCategory, getActivity());
+	protected List<Job> getJobList() {
+		return DataManager.getJobList(m_jobCategory, getActivity());
 	}
 
-	protected void syncArchiveList() {
-		DataManager.syncArchiveList(m_archiveCategory, m_listAchive,
+	protected void syncJobList() {
+		DataManager.syncJobList(m_jobCategory, m_listAchive,
 				getActivity());
 	}
 
@@ -360,11 +360,11 @@ public class BaseArchiveListFragment extends ListFragment implements
 	 * @author theasir
 	 * 
 	 */
-	public class ArchiveListRequestListener implements RequestListener {
+	public class JobListRequestListener implements RequestListener {
 
 		@Override
 		public void onComplete(Object result) {
-			Message msg = m_handlerArchiveList.obtainMessage();
+			Message msg = m_handlerJobList.obtainMessage();
 			try {
 				if (!J.isValidJsonValue("status", (JSONObject) result)) {
 					return;
@@ -376,23 +376,23 @@ public class BaseArchiveListFragment extends ListFragment implements
 				e.printStackTrace();
 			}
 
-			m_handlerArchiveList.sendMessage(msg);
+			m_handlerJobList.sendMessage(msg);
 		}
 
 		@Override
 		public void onHttpError(CSTResponse response) {
 			L.i(this.getClass().getName() + " onHttpError!");
-			Message msg = m_handlerArchiveList.obtainMessage();
+			Message msg = m_handlerJobList.obtainMessage();
 			HttpErrorWeeder.fckHttpError(response, msg);
-			m_handlerArchiveList.sendMessage(msg);
+			m_handlerJobList.sendMessage(msg);
 		}
 
 		@Override
 		public void onException(Exception e) {
 			L.i(this.getClass().getName() + " onException!");
-			Message msg = m_handlerArchiveList.obtainMessage();
+			Message msg = m_handlerJobList.obtainMessage();
 			ExceptionWeeder.fckException(e, msg);
-			m_handlerArchiveList.sendMessage(msg);
+			m_handlerJobList.sendMessage(msg);
 		}
 
 	}
@@ -417,11 +417,11 @@ public class BaseArchiveListFragment extends ListFragment implements
 	 * @author theasir
 	 * 
 	 */
-	public class ArchiveListAdapter extends BaseAdapter {
+	public class JobListAdapter extends BaseAdapter {
 
 		private LayoutInflater inflater;
 
-		public ArchiveListAdapter(Context context) {
+		public JobListAdapter(Context context) {
 			this.inflater = LayoutInflater.from(context);
 		}
 
@@ -448,17 +448,17 @@ public class BaseArchiveListFragment extends ListFragment implements
 				holder = new ViewHolder();
 
 				convertView = inflater
-						.inflate(R.layout.archive_list_item, null);
+						.inflate(R.layout.job_list_item, null);
 				holder.titleTxv = (TextView) convertView
-						.findViewById(R.id.archive_list_item_title_txv);
+						.findViewById(R.id.job_list_item_title_txv);
 				holder.dateTxv = (TextView) convertView
-						.findViewById(R.id.archive_list_item_date_txv);
+						.findViewById(R.id.job_list_item_date_txv);
 				holder.publisherTxv = (TextView) convertView
-						.findViewById(R.id.archive_list_item_publisher_txv);
+						.findViewById(R.id.job_list_item_publisher_txv);
 				holder.descriptionTxv = (TextView) convertView
-						.findViewById(R.id.archive_list_item_description_txv);
+						.findViewById(R.id.job_list_item_description_txv);
 				holder.indicatorView = (View) convertView
-						.findViewById(R.id.archive_list_item_indicator_view);
+						.findViewById(R.id.job_list_item_indicator_view);
 
 				convertView.setTag(holder);
 			} else {

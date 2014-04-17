@@ -37,7 +37,7 @@ import cn.edu.zju.isst.db.Restaurant;
 import cn.edu.zju.isst.net.CSTResponse;
 import cn.edu.zju.isst.net.NetworkConnection;
 import cn.edu.zju.isst.net.RequestListener;
-import cn.edu.zju.isst.util.Judgement;
+import cn.edu.zju.isst.util.J;
 import cn.edu.zju.isst.util.L;
 
 /**
@@ -99,7 +99,7 @@ public class RestaurantListFragment extends ListFragment {
 
 		initRestaurantList();
 
-		if (Judgement.isNullOrEmpty(m_listRestaurant)) {
+		if (J.isNullOrEmpty(m_listRestaurant)) {
 			requestData();
 		}
 
@@ -164,7 +164,7 @@ public class RestaurantListFragment extends ListFragment {
 		if (!m_listRestaurant.isEmpty()) {
 			m_listRestaurant.clear();
 		}
-		if (!Judgement.isNullOrEmpty(dbRestaurantList)) {
+		if (!J.isNullOrEmpty(dbRestaurantList)) {
 			for (Restaurant restaurant : dbRestaurantList) {
 				m_listRestaurant.add(restaurant);
 			}
@@ -192,7 +192,7 @@ public class RestaurantListFragment extends ListFragment {
 
 	private void requestData() {
 		if (NetworkConnection.isNetworkConnected(getActivity())) {
-			RestaurantApi.getRestaurantList(null, null, null,
+			RestaurantApi.getRestaurantList(1, 100, null,
 					new RestaurantListRequestListener());
 		} else {
 			Message msg = m_handlerRestaurantList.obtainMessage();
@@ -300,7 +300,7 @@ public class RestaurantListFragment extends ListFragment {
 
 				@Override
 				public void onClick(View v) {
-					if (!Judgement.isNullOrEmpty(dialNumber)) {
+					if (!J.isNullOrEmpty(dialNumber)) {
 						Intent intent = new Intent(Intent.ACTION_DIAL, Uri
 								.parse("tel://" + dialNumber));
 						RestaurantListFragment.this.getActivity()

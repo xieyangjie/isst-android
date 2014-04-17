@@ -19,11 +19,11 @@ public class NoteBookadapter extends BaseAdapter {
 	private Context ctx;
 	private ViewHolder holder;
 	List<NoteBookItem> list;
-	Map<String, Integer> selector;//键值是索引表的字母，值为对应在listview中的位置
+	Map<String, Integer> selector;// 键值是索引表的字母，值为对应在listview中的位置
 	/** 字母表 */
-	String index[] = { "#", "A", "B", "C", "D", "E", "F", "G", "H", "I",
-			"J", "K", "L", "M", "N", "O", "P", "Q", "U", "V", "W", "X", "Y",
-			"Z" };
+	String index[] = { "#", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J",
+			"K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W",
+			"X", "Y", "Z" };
 
 	public NoteBookadapter(Context context, List<NoteBookItem> list) {
 		this.ctx = context;
@@ -63,7 +63,8 @@ public class NoteBookadapter extends BaseAdapter {
 				holder = new ViewHolder();
 				convertView = LayoutInflater.from(ctx).inflate(
 						R.layout.contact_note_list_item, null);
-				holder.tv1 = (TextView) convertView.findViewById(R.id.contact_note_list_item_name_txv);
+				holder.tv1 = (TextView) convertView
+						.findViewById(R.id.contact_note_list_item_name_txv);
 				holder.index = (TextView) convertView
 						.findViewById(R.id.contact_note_list_item_index_txv);
 				convertView.setTag(holder);
@@ -84,7 +85,7 @@ public class NoteBookadapter extends BaseAdapter {
 			 */
 			if (!previewStr.equals(currentStr)) {
 				holder.index.setVisibility(View.VISIBLE);
-				holder.index.setText(currentStr);//中奖提示的文本显示当前滑动的字母
+				holder.index.setText(currentStr);// 中奖提示的文本显示当前滑动的字母
 			} else {
 				holder.index.setVisibility(View.GONE);
 			}
@@ -123,4 +124,3 @@ public class NoteBookadapter extends BaseAdapter {
 		this.index = index;
 	}
 }
-

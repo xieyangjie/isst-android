@@ -20,7 +20,10 @@ import cn.edu.zju.isst.net.CSTResponse;
 import cn.edu.zju.isst.net.RequestListener;
 import cn.edu.zju.isst.settings.CSTSettings;
 import cn.edu.zju.isst.ui.contact.ContactListFragment;
+import cn.edu.zju.isst.ui.job.EmploymentListFragment;
 import cn.edu.zju.isst.ui.job.ExperienceListFragment;
+import cn.edu.zju.isst.ui.job.InternshipListFragment;
+import cn.edu.zju.isst.ui.job.RecommentListFragment;
 import cn.edu.zju.isst.ui.life.CampusActivityListFragment;
 import cn.edu.zju.isst.ui.life.NewsListFragment;
 import cn.edu.zju.isst.ui.life.RestaurantListFragment;
@@ -156,13 +159,13 @@ public class MainActivity extends BaseActivity implements
 			switchContent(StudyListFragment.getInstance());
 			break;
 		case INTE:
-			switchContent(DummyFragment.newInstance(INTE.getName()));
+			switchContent(InternshipListFragment.getInstance());
 			break;
 		case JOBS:
-			switchContent(DummyFragment.newInstance(JOBS.getName()));
+			switchContent(EmploymentListFragment.getInstance());
 			break;
 		case REFE:
-			switchContent(DummyFragment.newInstance(REFE.getName()));
+			switchContent(RecommentListFragment.getInstance());
 			break;
 		case EXPE:
 			switchContent(ExperienceListFragment.getInstance());

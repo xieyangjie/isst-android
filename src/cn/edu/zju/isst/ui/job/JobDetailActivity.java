@@ -1,7 +1,7 @@
 /**
  * 
  */
-package cn.edu.zju.isst.ui.life;
+package cn.edu.zju.isst.ui.job;
 
 import static cn.edu.zju.isst.constant.Constants.*;
 
@@ -15,7 +15,6 @@ import android.os.Message;
 import android.view.MenuItem;
 import android.webkit.WebSettings;
 import android.webkit.WebSettings.LayoutAlgorithm;
-import android.webkit.WebSettings.TextSize;
 import android.webkit.WebView;
 import android.widget.TextView;
 import cn.edu.zju.isst.R;
@@ -35,7 +34,7 @@ import cn.edu.zju.isst.util.TimeString;
  * 
  *         TODO WIP
  */
-public class ArchiveDetailActivity extends BaseActivity {
+public class JobDetailActivity extends BaseActivity {
 
 	/**
 	 * 归档id
@@ -168,7 +167,7 @@ public class ArchiveDetailActivity extends BaseActivity {
 			// MainActivity.class);
 			// intentParent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			// ArchiveDetailActivity.this.startActivity(intentParent);
-			ArchiveDetailActivity.this.finish();
+			JobDetailActivity.this.finish();
 			return true;
 		}
 

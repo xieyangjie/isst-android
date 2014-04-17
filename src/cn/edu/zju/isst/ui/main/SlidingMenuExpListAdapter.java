@@ -131,10 +131,7 @@ public class SlidingMenuExpListAdapter extends BaseExpandableListAdapter {
 
 		View tempView = m_actiContext.getLayoutInflater().inflate(
 				R.layout.sm_group_item, null);
-		// if (convertView == null) {
-		// convertView = m_actiContext.getLayoutInflater().inflate(
-		// R.layout.sm_group_item, null);
-		// }
+
 		TextView mainNav = (TextView) tempView
 				.findViewById(R.id.sm_group_item_nav);
 		ImageView mainImage = (ImageView) tempView
@@ -151,12 +148,9 @@ public class SlidingMenuExpListAdapter extends BaseExpandableListAdapter {
 			mainImage.setVisibility(View.GONE);
 			if (m_selectedIndex.groupIndex == groupPosition) {
 				tempView.setBackgroundColor(Color.BLUE);
-			} else {
-//				tempView.setBackgroundColor(Color.GRAY);
-			}
+			} 
 			L.i("CarpeDiem", "groupIndex =" + m_selectedIndex.groupIndex);
 		}
-		// if()
 		return tempView;
 	}
 
@@ -170,6 +164,7 @@ public class SlidingMenuExpListAdapter extends BaseExpandableListAdapter {
 	public View getChildView(int groupPosition, int childPosition,
 			boolean isLastChild, View convertView, ViewGroup parent) {
 		String nav = (String) getChild(groupPosition, childPosition);
+		
 		if (convertView == null) {
 			convertView = m_actiContext.getLayoutInflater().inflate(
 					R.layout.sm_child_item, null);
@@ -180,7 +175,8 @@ public class SlidingMenuExpListAdapter extends BaseExpandableListAdapter {
 		if (groupPosition == m_selectedIndex.groupIndex
 				&& childPosition == m_selectedIndex.childIndex) {
 			convertView.setBackgroundColor(Color.BLUE);
-		} else {
+		} 
+		else {
 			convertView.setBackgroundColor(Color.alpha(Color.BLUE));
 		}
 		return convertView;

@@ -8,7 +8,7 @@ import java.io.Serializable;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import cn.edu.zju.isst.util.Judgement;
+import cn.edu.zju.isst.util.J;
 
 /**
  * @author theasir
@@ -52,19 +52,19 @@ public class RestaurantMenu implements Serializable {
 	 *             未处理异常
 	 */
 	public void update(JSONObject jsonObject) throws JSONException {
-		if (!Judgement.isNullOrEmpty(jsonObject)) {
-			if (Judgement.isValidJsonValue("name", jsonObject)) {
+		if (!J.isNullOrEmpty(jsonObject)) {
+			if (J.isValidJsonValue("name", jsonObject)) {
 				name = jsonObject.getString("name");
 			}
-			if (Judgement.isValidJsonValue("price", jsonObject)) {
+			if (J.isValidJsonValue("price", jsonObject)) {
 				price = (float) jsonObject.getDouble("price");
 			}
-			if (Judgement.isValidJsonValue("picture", jsonObject)) {
+			if (J.isValidJsonValue("picture", jsonObject)) {
 				picture = jsonObject.getString("picture");
 			} else {
 				description = "";
 			}
-			if (Judgement.isValidJsonValue("description", jsonObject)) {
+			if (J.isValidJsonValue("description", jsonObject)) {
 				description = jsonObject.getString("description");
 			} else {
 				description = "";
