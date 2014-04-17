@@ -15,6 +15,7 @@ import cn.edu.zju.isst.util.L;
  */
 public class MainApplication extends Application {
 
+	
 	/*
 	 * (non-Javadoc)
 	 * 
