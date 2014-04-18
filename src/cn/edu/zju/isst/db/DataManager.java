@@ -11,7 +11,6 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.List;
 
-import android.content.Context;
 import cn.edu.zju.isst.api.ArchiveCategory;
 import cn.edu.zju.isst.api.JobCategory;
 import cn.edu.zju.isst.util.J;
@@ -41,7 +40,7 @@ public class DataManager {
 	public static final String CLASSMATE_LIST_IN_DB = "classmatelist";
 	public static final String EMPLOYMENT_LIST__IN_DB = "employmentlist";
 	public static final String INTERNSHIP_LIST_IN_DB = "internship";
-	public static final String RECOMMEND_LIST_IN_DB =  "recommend";
+	public static final String RECOMMEND_LIST_IN_DB = "recommend";
 
 	/**
 	 * 同步登录接口返回数据
@@ -51,10 +50,10 @@ public class DataManager {
 	 * @param context
 	 *            用于加载DBHelper获取当前数据库
 	 */
-	public static void syncLogin(User user, Context context) {
+	public static void syncLogin(User user) {
 		if (user.getId() >= 0 && !user.getUsername().isEmpty()
 				&& !user.getPassword().isEmpty()) {// TODO 更好的判断user有效的方法
-			writeObjectToDB(USER_IN_DB, user, context);
+			writeObjectToDB(USER_IN_DB, user);
 			L.i("Write user to DB!");
 		}
 	}
@@ -66,8 +65,8 @@ public class DataManager {
 	 *            用于加载DBHelper获取当前数据库
 	 * @return 当前数据库中的用户对象
 	 */
-	public static User getCurrentUser(Context context) {
-		Object object = objectFromDB(USER_IN_DB, context);
+	public static User getCurrentUser() {
+		Object object = objectFromDB(USER_IN_DB);
 		if (!J.isNullOrEmpty(object)) {// TODO better class cast method?
 			User user = null;
 			try {
@@ -82,22 +81,21 @@ public class DataManager {
 		return null;
 	}
 
-	public static void deleteCurrentUser(Context context) {
-		new DBManager(context).delete(USER_IN_DB);
+	public static void deleteCurrentUser() {
+		DBManager.getInstance().delete(USER_IN_DB);
 	}
 
 	public static void syncArchiveList(ArchiveCategory archiveCategory,
-			List<Archive> newsList, Context context) {
+			List<Archive> newsList) {
 		if (!J.isNullOrEmpty(newsList)) {
 			writeObjectToDB(archiveCategory.getNameInDB(),
-					(Serializable) newsList, context);
+					(Serializable) newsList);
 		}
 	}
 
 	@SuppressWarnings("unchecked")
-	public static List<Archive> getArchiveList(ArchiveCategory archiveCategory,
-			Context context) {
-		Object object = objectFromDB(archiveCategory.getNameInDB(), context);
+	public static List<Archive> getArchiveList(ArchiveCategory archiveCategory) {
+		Object object = objectFromDB(archiveCategory.getNameInDB());
 		if (!J.isNullOrEmpty(object)) {
 			List<Archive> archiveList = null;
 			try {
@@ -120,9 +118,9 @@ public class DataManager {
 	 * @param context
 	 *            用于加载DBHelper获取当前数据库
 	 */
-	public static void syncWikiList(List<Archive> wikiList, Context context) {
+	public static void syncWikiList(List<Archive> wikiList) {
 		if (!J.isNullOrEmpty(wikiList)) {
-			writeObjectToDB(WIKI_LIST_IN_DB, (Serializable) wikiList, context);
+			writeObjectToDB(WIKI_LIST_IN_DB, (Serializable) wikiList);
 			L.i("Write wikilist to DB!");
 		}
 	}
@@ -135,8 +133,8 @@ public class DataManager {
 	 * @return 当前数据库中的百科列表对象
 	 */
 	@SuppressWarnings("unchecked")
-	public static List<Archive> getCurrentWikiList(Context context) {
-		Object object = objectFromDB(WIKI_LIST_IN_DB, context);
+	public static List<Archive> getCurrentWikiList() {
+		Object object = objectFromDB(WIKI_LIST_IN_DB);
 		if (!J.isNullOrEmpty(object)) {
 			List<Archive> wikiList = null;
 			try {
@@ -160,10 +158,9 @@ public class DataManager {
 	 *            用于加载DBHelper获取当前数据库
 	 */
 	public static void syncCampusActivityList(
-			List<CampusActivity> campusActivityList, Context context) {
+			List<CampusActivity> campusActivityList) {
 		if (!J.isNullOrEmpty(campusActivityList)) {
-			writeObjectToDB(SCAC_LIST_IN_DB, (Serializable) campusActivityList,
-					context);
+			writeObjectToDB(SCAC_LIST_IN_DB, (Serializable) campusActivityList);
 			L.i("Write campusActivityList to DB!");
 		}
 	}
@@ -176,8 +173,8 @@ public class DataManager {
 	 * @return 当前数据库中的新闻列表对象
 	 */
 	@SuppressWarnings("unchecked")
-	public static List<CampusActivity> getCampusActivityList(Context context) {
-		Object object = objectFromDB(SCAC_LIST_IN_DB, context);
+	public static List<CampusActivity> getCampusActivityList() {
+		Object object = objectFromDB(SCAC_LIST_IN_DB);
 		if (!J.isNullOrEmpty(object)) {
 			List<CampusActivity> campusActivityList = null;
 			try {
@@ -192,18 +189,17 @@ public class DataManager {
 		return null;
 	}
 
-	public static void syncRestaurantList(List<Restaurant> restaurantList,
-			Context context) {
+	public static void syncRestaurantList(List<Restaurant> restaurantList) {
 		if (!J.isNullOrEmpty(restaurantList)) {
 			writeObjectToDB(RESTAURANT_LIST_IN_DB,
-					(Serializable) restaurantList, context);
+					(Serializable) restaurantList);
 			L.i("Write restaurantlist to DB!");
 		}
 	}
 
 	@SuppressWarnings("unchecked")
-	public static List<Restaurant> getRestaurantList(Context context) {
-		Object object = objectFromDB(RESTAURANT_LIST_IN_DB, context);
+	public static List<Restaurant> getRestaurantList() {
+		Object object = objectFromDB(RESTAURANT_LIST_IN_DB);
 		if (!J.isNullOrEmpty(object)) {
 			List<Restaurant> restaurantList = null;
 			try {
@@ -218,16 +214,16 @@ public class DataManager {
 		return null;
 	}
 
-	public static void syncMajorList(List<Major> majorList, Context context) {
+	public static void syncMajorList(List<Major> majorList) {
 		if (!J.isNullOrEmpty(majorList)) {
-			writeObjectToDB(MAJOR_LIST_IN_DB, (Serializable) majorList, context);
+			writeObjectToDB(MAJOR_LIST_IN_DB, (Serializable) majorList);
 			L.i("Write majorList to DB!");
 		}
 	}
 
 	@SuppressWarnings("unchecked")
-	public static List<Major> getMajorList(Context context) {
-		Object object = objectFromDB(MAJOR_LIST_IN_DB, context);
+	public static List<Major> getMajorList() {
+		Object object = objectFromDB(MAJOR_LIST_IN_DB);
 		if (!J.isNullOrEmpty(object)) {
 			List<Major> majorList = null;
 			try {
@@ -242,16 +238,16 @@ public class DataManager {
 		return null;
 	}
 
-	public static void syncCityList(List<City> cityList, Context context) {
+	public static void syncCityList(List<City> cityList) {
 		if (!J.isNullOrEmpty(cityList)) {
-			writeObjectToDB(CITY_LIST_IN_DB, (Serializable) cityList, context);
+			writeObjectToDB(CITY_LIST_IN_DB, (Serializable) cityList);
 			L.i("Write CityList to DB!");
 		}
 	}
 
 	@SuppressWarnings("unchecked")
-	public static List<City> getCityList(Context context) {
-		Object object = objectFromDB(CITY_LIST_IN_DB, context);
+	public static List<City> getCityList() {
+		Object object = objectFromDB(CITY_LIST_IN_DB);
 		if (!J.isNullOrEmpty(object)) {
 			List<City> cityList = null;
 			try {
@@ -266,17 +262,16 @@ public class DataManager {
 		return null;
 	}
 
-	public static void syncClassList(List<Klass> classMateList, Context context) {
+	public static void syncClassList(List<Klass> classMateList) {
 		if (!J.isNullOrEmpty(classMateList)) {
-			writeObjectToDB(CLASS_LIST_IN_DB, (Serializable) classMateList,
-					context);
+			writeObjectToDB(CLASS_LIST_IN_DB, (Serializable) classMateList);
 			L.i("Write class List to DB!");
 		}
 	}
 
 	@SuppressWarnings("unchecked")
-	public static List<Klass> getClassList(Context context) {
-		Object object = objectFromDB(CLASS_LIST_IN_DB, context);
+	public static List<Klass> getClassList() {
+		Object object = objectFromDB(CLASS_LIST_IN_DB);
 		if (!J.isNullOrEmpty(object)) {
 			List<Klass> classMateList = null;
 			try {
@@ -291,17 +286,16 @@ public class DataManager {
 		return null;
 	}
 
-	public static void syncClassMateList(List<User> classList, Context context) {
+	public static void syncClassMateList(List<User> classList) {
 		if (!J.isNullOrEmpty(classList)) {
-			writeObjectToDB(CLASSMATE_LIST_IN_DB, (Serializable) classList,
-					context);
+			writeObjectToDB(CLASSMATE_LIST_IN_DB, (Serializable) classList);
 			L.i("Write class List to DB!");
 		}
 	}
 
 	@SuppressWarnings("unchecked")
-	public static List<User> getClassMateList(Context context) {
-		Object object = objectFromDB(CLASSMATE_LIST_IN_DB, context);
+	public static List<User> getClassMateList() {
+		Object object = objectFromDB(CLASSMATE_LIST_IN_DB);
 		if (!J.isNullOrEmpty(object)) {
 			List<User> classList = null;
 			try {
@@ -315,19 +309,16 @@ public class DataManager {
 		}
 		return null;
 	}
-	
-	public static void syncJobList(JobCategory jobCategory,
-			List<Job> jobList, Context context) {
+
+	public static void syncJobList(JobCategory jobCategory, List<Job> jobList) {
 		if (!J.isNullOrEmpty(jobList)) {
-			writeObjectToDB(jobCategory.getNameInDB(),
-					(Serializable) jobList, context);
+			writeObjectToDB(jobCategory.getNameInDB(), (Serializable) jobList);
 		}
 	}
 
 	@SuppressWarnings("unchecked")
-	public static List<Job> getJobList(JobCategory jobCategory,
-			Context context) {
-		Object object = objectFromDB(jobCategory.getNameInDB(), context);
+	public static List<Job> getJobList(JobCategory jobCategory) {
+		Object object = objectFromDB(jobCategory.getNameInDB());
 		if (!J.isNullOrEmpty(object)) {
 			List<Job> jobList = null;
 			try {
@@ -342,7 +333,6 @@ public class DataManager {
 		return null;
 	}
 
-
 	/**
 	 * 将目标对象序列化后写入当前数据库
 	 * 
@@ -353,8 +343,7 @@ public class DataManager {
 	 * @param context
 	 *            用于加载DBHelper获取当前数据库
 	 */
-	public static void writeObjectToDB(String name, Serializable object,
-			Context context) {
+	public static void writeObjectToDB(String name, Serializable object) {
 		if (J.isNullOrEmpty(name) || J.isNullOrEmpty(object)) {
 			return;
 		}
@@ -363,7 +352,7 @@ public class DataManager {
 			ObjectOutputStream oos = new ObjectOutputStream(bos);
 			oos.writeObject(object);
 			L.i("Write object!!!");
-			new DBManager(context).insertOrUpdate(name, bos.toByteArray());
+			DBManager.getInstance().insertOrUpdate(name, bos.toByteArray());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -375,14 +364,12 @@ public class DataManager {
 	 * 
 	 * @param name
 	 *            数据库表记录
-	 * @param context
-	 *            用于加载DBHelper获取当前数据库
 	 * @return 目标对象
 	 */
-	public static Serializable objectFromDB(String name, Context context) {
+	public static Serializable objectFromDB(String name) {
 		Serializable object = null;
 		try {
-			byte[] data = new DBManager(context).get(name);
+			byte[] data = DBManager.getInstance().get(name);
 			if (!J.isNullOrEmpty(data)) {
 				ByteArrayInputStream bis = new ByteArrayInputStream(data);
 				ObjectInputStream ois = new ObjectInputStream(bis);

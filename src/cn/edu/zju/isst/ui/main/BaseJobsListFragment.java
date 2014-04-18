@@ -340,12 +340,11 @@ public class BaseJobsListFragment extends ListFragment implements
 	}
 
 	protected List<Job> getJobList() {
-		return DataManager.getJobList(m_jobCategory, getActivity());
+		return DataManager.getJobList(m_jobCategory);
 	}
 
 	protected void syncJobList() {
-		DataManager.syncJobList(m_jobCategory, m_listAchive,
-				getActivity());
+		DataManager.syncJobList(m_jobCategory, m_listAchive);
 	}
 
 	/**

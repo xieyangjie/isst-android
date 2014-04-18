@@ -160,7 +160,7 @@ public class RestaurantListFragment extends ListFragment {
 
 	private void initRestaurantList() {
 		List<Restaurant> dbRestaurantList = DataManager
-				.getRestaurantList(getActivity());
+				.getRestaurantList();
 		if (!m_listRestaurant.isEmpty()) {
 			m_listRestaurant.clear();
 		}
@@ -183,7 +183,7 @@ public class RestaurantListFragment extends ListFragment {
 			}
 			L.i(this.getClass().getName() + " updateList: "
 					+ "Added restautants!");
-			DataManager.syncRestaurantList(m_listRestaurant, getActivity());
+			DataManager.syncRestaurantList(m_listRestaurant);
 		} catch (JSONException e) {
 			L.i(this.getClass().getName() + " updateList!");
 			e.printStackTrace();

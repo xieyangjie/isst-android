@@ -2,6 +2,7 @@ package cn.edu.zju.isst.ui.contact;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import cn.edu.zju.isst.R;
@@ -31,7 +32,7 @@ public class NoteBookadapter extends BaseAdapter {
 		selector = new HashMap<String, Integer>();
 		for (int j = 0; j < index.length; j++) {// 循环字母表，找出list中对应字母的位置
 			for (int i = 0; i < list.size(); i++) {
-				if (list.get(i).index.equals(index[j].toLowerCase()))
+				if (list.get(i).index.equals(index[j].toLowerCase(Locale.ENGLISH)))
 					selector.put(index[j], i);
 			}
 

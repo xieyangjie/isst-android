@@ -212,7 +212,7 @@ public class CampusActivityListFragment extends ListFragment implements
 	 */
 	private void initCampusActivityList() {
 		List<CampusActivity> dbCampusActivityList = DataManager
-				.getCampusActivityList(getActivity());
+				.getCampusActivityList();
 		if (!J.isNullOrEmpty(dbCampusActivityList)) {
 			for (CampusActivity news : dbCampusActivityList) {
 				m_listCampusActivity.add(news);
@@ -291,8 +291,7 @@ public class CampusActivityListFragment extends ListFragment implements
 			}
 			L.i(this.getClass().getName() + " refreshList: "
 					+ "Added campusActivity to newsList!");
-			DataManager.syncCampusActivityList(m_listCampusActivity,
-					getActivity());
+			DataManager.syncCampusActivityList(m_listCampusActivity);
 		} catch (JSONException e) {
 			L.i(this.getClass().getName() + " refreshList!");
 			e.printStackTrace();

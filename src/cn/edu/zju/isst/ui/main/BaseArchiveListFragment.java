@@ -42,6 +42,8 @@ import cn.edu.zju.isst.ui.life.ArchiveDetailActivity;
 import cn.edu.zju.isst.util.J;
 import cn.edu.zju.isst.util.L;
 import cn.edu.zju.isst.util.TimeString;
+import cn.edu.zju.isst.widget.PullToRefeshView;
+import cn.edu.zju.isst.widget.PullToRefeshView.PullToRefreshListener;
 
 /**
  * 归档列表基类
@@ -62,6 +64,7 @@ public class BaseArchiveListFragment extends ListFragment implements
 	private Handler m_handlerArchiveList;
 	private ArchiveListAdapter m_adapterArchiveList;
 
+	private PullToRefeshView m_ptrView;
 	private ListView m_lsvArchiveList;
 
 	public BaseArchiveListFragment() {
@@ -115,6 +118,14 @@ public class BaseArchiveListFragment extends ListFragment implements
 
 		setUpListener();
 
+		m_ptrView.setOnRefreshListener(new PullToRefreshListener() {
+
+			@Override
+			public void onRefresh() {
+				requestData(LoadType.REFRESH);
+			}
+		}, 0);
+		
 		if (m_bIsFirstTime) {
 			requestData(LoadType.REFRESH);
 			m_bIsFirstTime = false;
@@ -198,6 +209,8 @@ public class BaseArchiveListFragment extends ListFragment implements
 	}
 
 	protected void initComponent(View view) {
+		m_ptrView = (PullToRefeshView) view
+				.findViewById(R.id.archive_list_fragment_ptr_view);
 		m_lsvArchiveList = (ListView) view.findViewById(android.R.id.list);
 	}
 
@@ -223,6 +236,7 @@ public class BaseArchiveListFragment extends ListFragment implements
 			 */
 			@Override
 			public void handleMessage(Message msg) {
+				m_ptrView.finishRefreshing();
 				switch (msg.what) {
 				case STATUS_REQUEST_SUCCESS:
 					switch (m_loadType) {
@@ -336,12 +350,11 @@ public class BaseArchiveListFragment extends ListFragment implements
 	}
 
 	protected List<Archive> getArchiveList() {
-		return DataManager.getArchiveList(m_archiveCategory, getActivity());
+		return DataManager.getArchiveList(m_archiveCategory);
 	}
 
 	protected void syncArchiveList() {
-		DataManager.syncArchiveList(m_archiveCategory, m_listAchive,
-				getActivity());
+		DataManager.syncArchiveList(m_archiveCategory, m_listAchive);
 	}
 
 	/**
