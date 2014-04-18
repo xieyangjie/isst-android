@@ -55,5 +55,8 @@
     <string name="restaurant_hotline">外卖电话：</string>
     
     <string name="sm_group_item_indicator">展开收起图标</string>
+    <string name="sm_child_item_icon">侧拉栏图标</string>
+    
+    <string name="job_detail_activity_publisher_btn">发布者联系人</string>
 
 </resources>

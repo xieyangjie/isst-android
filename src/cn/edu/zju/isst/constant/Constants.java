@@ -91,5 +91,10 @@ public final class Constants {
 	 * 包名
 	 */
 	public static final String PACKAGE_NAME = "cn.edu.zju.isst";
+	
+	/**
+	 * 发布者
+	 */
+	public static final String PUBLISHER_NAME = "发布者：";
 
 }

@@ -41,7 +41,7 @@ import cn.edu.zju.isst.util.TimeString;
  * 
  *         TODO WIP
  */
-public class JobDetailActivity extends BaseActivity {
+public class RecommendDetailActivity extends BaseActivity {
 
 	/**
 	 * 归档id
@@ -57,14 +57,6 @@ public class JobDetailActivity extends BaseActivity {
 	private WebView m_webvContent;
 	private ImageView m_imgBtnPublisher;
 
-	// Activity需要工厂方法吗？
-	// public JobDetailActivity(){
-	// }
-	//
-	// public static JobDetailActivity newInstance(){
-	// return new JobDetailActivity();
-	// }
-
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -73,7 +65,7 @@ public class JobDetailActivity extends BaseActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.job_detail_activity);
+		setContentView(R.layout.job_recommend_detail_activity);
 		initComponent();
 
 		ActionBar actionBar = getActionBar();
@@ -173,7 +165,7 @@ public class JobDetailActivity extends BaseActivity {
 			// MainActivity.class);
 			// intentParent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			// JobDetailActivity.this.startActivity(intentParent);
-			JobDetailActivity.this.finish();
+			RecommendDetailActivity.this.finish();
 			return true;
 		}
 
@@ -197,7 +189,7 @@ public class JobDetailActivity extends BaseActivity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				Intent intent = new Intent(JobDetailActivity.this,
+				Intent intent = new Intent(RecommendDetailActivity.this,
 						ContactDetailActivity.class);
 				int id = -1;
 				if (!J.isNullOrEmpty(m_jobCurrent)) {

@@ -199,6 +199,10 @@ public class ContactDetailActivity extends BaseActivity {
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
 			case STATUS_REQUEST_SUCCESS:
+				if(J.isNullOrEmpty(m_user))
+				{
+					break;
+				}
 				//姓名
 				m_tvName.setText(m_user.getName());
 				//性别
