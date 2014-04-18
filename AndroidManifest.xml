@@ -63,6 +63,8 @@
             android:label="@string/app_name" >
         </activity>
         
+        <activity android:name=".ui.usercenter.UserInfoEditActivity" />
+        
         <activity
             android:name=".ui.contact.ContactDetailActivity"
             android:label="@string/app_name" >

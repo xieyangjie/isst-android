@@ -253,11 +253,5 @@ public class MainActivity extends BaseActivity implements
 		}
 		m_smMainMenu.showContent();
 	}
-	
-	private void requestGlobalData(){
-		GlobalDataCache.cacheCityList(null);
-		GlobalDataCache.cacheClassList(null);
-		GlobalDataCache.cacheMajorList(null);
-	}
 
 }

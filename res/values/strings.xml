@@ -12,6 +12,7 @@
     
     <string name="action_refresh">刷新</string>
     <string name="action_logout">注销</string>
+    <string name="action_edit">修改</string>
     
     <string name="action_filter">筛选</string>
     <string name="filter_name">姓名</string>
@@ -64,4 +65,8 @@
     <string name="updated_at">上次更新于%1$s前</string>  
     <string name="updated_just_now">刚刚更新</string>  
     <string name="time_error">时间有问题</string>
+    
+    <string name="done">完成</string>
+    
+    <string name="publik">公开</string>
 </resources>

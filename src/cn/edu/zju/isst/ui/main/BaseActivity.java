@@ -28,6 +28,7 @@ import android.os.Message;
 import cn.edu.zju.isst.R;
 import cn.edu.zju.isst.api.LoginApi;
 import cn.edu.zju.isst.db.DataManager;
+import cn.edu.zju.isst.db.GlobalDataCache;
 import cn.edu.zju.isst.db.User;
 import cn.edu.zju.isst.net.CSTResponse;
 import cn.edu.zju.isst.net.RequestListener;
@@ -104,9 +105,10 @@ public class BaseActivity extends Activity implements LoginSimulation,
 				switch (msg.what) {
 				case STATUS_REQUEST_SUCCESS:
 					try {
-						DataManager.syncLogin(
+						DataManager.syncCurrentUser(
 								new User(((JSONObject) msg.obj)
 										.getJSONObject("body")));
+						requestGlobalData();
 					} catch (JSONException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -157,6 +159,12 @@ public class BaseActivity extends Activity implements LoginSimulation,
 			break;
 		}
 		return 0;
+	}
+	
+	protected void requestGlobalData(){
+		GlobalDataCache.cacheCityList(null);
+		GlobalDataCache.cacheClassList(null);
+		GlobalDataCache.cacheMajorList(null);
 	}
 
 }

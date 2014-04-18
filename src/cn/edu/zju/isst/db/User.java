@@ -33,7 +33,7 @@ public class User implements Serializable {
 	private int gender;
 	private int grade;
 	private int classId;
-	private String major;
+	private int majorId;
 	private int cityId;
 	private String email;
 	private String phone;
@@ -64,7 +64,7 @@ public class User implements Serializable {
 		gender = -1;
 		grade = -1;
 		classId = -1;
-		major = "";
+		majorId = -1;
 		cityId = -1;
 		email = "";
 		phone = "";
@@ -112,8 +112,8 @@ public class User implements Serializable {
 			if (J.isValidJsonValue("classId", jsonObject)) {
 				classId = jsonObject.getInt("classId");
 			}
-			if (J.isValidJsonValue("major", jsonObject)) {
-				major = jsonObject.getString("major");
+			if (J.isValidJsonValue("majorId", jsonObject)) {
+				majorId = jsonObject.getInt("majorId");
 			}
 			if (J.isValidJsonValue("cityId", jsonObject)) {
 				cityId = jsonObject.getInt("cityId");
@@ -209,8 +209,8 @@ public class User implements Serializable {
 	/**
 	 * @return the majotId
 	 */
-	public String getMajor() {
-		return major;
+	public int getMajotId() {
+		return majorId;
 	}
 
 	/**
@@ -302,6 +302,83 @@ public class User implements Serializable {
 	 */
 	public boolean isPrivatePosition() {
 		return privatePosition;
+	}
+
+	/**
+	 * @param email the email to set
+	 */
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	/**
+	 * @param phone the phone to set
+	 */
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
+	/**
+	 * @param qq the qq to set
+	 */
+	public void setQq(String qq) {
+		this.qq = qq;
+	}
+
+	/**
+	 * @param company the company to set
+	 */
+	public void setCompany(String company) {
+		this.company = company;
+	}
+
+	/**
+	 * @param position the position to set
+	 */
+	public void setPosition(String position) {
+		this.position = position;
+	}
+
+	/**
+	 * @param signature the signature to set
+	 */
+	public void setSignature(String signature) {
+		this.signature = signature;
+	}
+
+	/**
+	 * @param privateQQ the privateQQ to set
+	 */
+	public void setPrivateQQ(boolean privateQQ) {
+		this.privateQQ = privateQQ;
+	}
+
+	/**
+	 * @param privateEmail the privateEmail to set
+	 */
+	public void setPrivateEmail(boolean privateEmail) {
+		this.privateEmail = privateEmail;
+	}
+
+	/**
+	 * @param privatePhone the privatePhone to set
+	 */
+	public void setPrivatePhone(boolean privatePhone) {
+		this.privatePhone = privatePhone;
+	}
+
+	/**
+	 * @param privateCompany the privateCompany to set
+	 */
+	public void setPrivateCompany(boolean privateCompany) {
+		this.privateCompany = privateCompany;
+	}
+
+	/**
+	 * @param privatePosition the privatePosition to set
+	 */
+	public void setPrivatePosition(boolean privatePosition) {
+		this.privatePosition = privatePosition;
 	}
 
 }

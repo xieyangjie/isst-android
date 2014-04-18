@@ -48,15 +48,15 @@ public class DataManager {
 	/**
 	 * 同步登录接口返回数据
 	 * 
-	 * @param user
+	 * @param currentUser
 	 *            用户
 	 * @param context
 	 *            用于加载DBHelper获取当前数据库
 	 */
-	public static void syncLogin(User user) {
-		if (user.getId() >= 0 && !user.getUsername().isEmpty()
-				&& !user.getPassword().isEmpty()) {// TODO 更好的判断user有效的方法
-			writeObjectToDB(USER_IN_DB, user);
+	public static void syncCurrentUser(User currentUser) {
+		if (currentUser.getId() >= 0 && !currentUser.getUsername().isEmpty()
+				&& !currentUser.getPassword().isEmpty()) {// TODO 更好的判断user有效的方法
+			writeObjectToDB(USER_IN_DB, currentUser);
 			L.i("Write user to DB!");
 		}
 	}

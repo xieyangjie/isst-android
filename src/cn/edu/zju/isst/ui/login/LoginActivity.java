@@ -153,7 +153,7 @@ public class LoginActivity extends BaseActivity {
 						CSTSettings.setAutoLogin(false, LoginActivity.this);
 					}
 					try {
-						DataManager.syncLogin(
+						DataManager.syncCurrentUser(
 								new User(((JSONObject) msg.obj)
 										.getJSONObject("body")));
 					} catch (JSONException e) {

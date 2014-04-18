@@ -173,6 +173,9 @@ public class BetterAsyncWebServiceRunner {
 			}
 			sbParams.deleteCharAt(sbParams.length() - 1);
 		}
+		
+		L.i("Params", sbParams.toString());
+		
 		return sbParams.toString();
 	}
 
