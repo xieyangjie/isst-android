@@ -9,7 +9,6 @@ import java.util.Map;
 import cn.edu.zju.isst.R;
 import cn.edu.zju.isst.util.L;
 
-
 import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -148,8 +147,8 @@ public class SlidingMenuExpListAdapter extends BaseExpandableListAdapter {
 			mainImage.setVisibility(View.GONE);
 			if (m_selectedIndex.groupIndex == groupPosition) {
 				tempView.setBackgroundColor(Color.BLUE);
-			} 
-			L.i("CarpeDiem", "groupIndex =" + m_selectedIndex.groupIndex);
+			}
+			// L.i("CarpeDiem", "groupIndex =" + m_selectedIndex.groupIndex);
 		}
 		return tempView;
 	}
@@ -164,7 +163,7 @@ public class SlidingMenuExpListAdapter extends BaseExpandableListAdapter {
 	public View getChildView(int groupPosition, int childPosition,
 			boolean isLastChild, View convertView, ViewGroup parent) {
 		String nav = (String) getChild(groupPosition, childPosition);
-		
+
 		if (convertView == null) {
 			convertView = m_actiContext.getLayoutInflater().inflate(
 					R.layout.sm_child_item, null);
@@ -175,8 +174,7 @@ public class SlidingMenuExpListAdapter extends BaseExpandableListAdapter {
 		if (groupPosition == m_selectedIndex.groupIndex
 				&& childPosition == m_selectedIndex.childIndex) {
 			convertView.setBackgroundColor(Color.BLUE);
-		} 
-		else {
+		} else {
 			convertView.setBackgroundColor(Color.alpha(Color.BLUE));
 		}
 		return convertView;

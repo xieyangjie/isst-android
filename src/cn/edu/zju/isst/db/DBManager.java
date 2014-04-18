@@ -4,10 +4,8 @@
 package cn.edu.zju.isst.db;
 
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import cn.edu.zju.isst.MainApplication;
 import cn.edu.zju.isst.util.L;
 
 /**
@@ -39,7 +37,7 @@ public class DBManager {
 	 * @param data
 	 *            记录数据
 	 */
-	public void insertOrUpdate(String name, byte[] data) {
+	public synchronized void insertOrUpdate(String name, byte[] data) {
 		db = DBHelper.getInstance().getWritableDatabase();
 		db.beginTransaction(); // 开始事务
 		try {
@@ -90,7 +88,7 @@ public class DBManager {
 		}
 	}
 
-	public void delete(String name) {
+	public synchronized void delete(String name) {
 		db = DBHelper.getInstance().getWritableDatabase();
 		db.beginTransaction(); // 开始事务
 		try {
@@ -117,7 +115,7 @@ public class DBManager {
 	 *            记录名
 	 * @return 记录数据
 	 */
-	public byte[] get(String name) {
+	public synchronized byte[] get(String name) {
 		db = DBHelper.getInstance().getWritableDatabase();
 		byte[] data = null;
 		db.beginTransaction(); // 开始事务
