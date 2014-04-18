@@ -181,7 +181,7 @@ public class MainActivity extends BaseActivity implements
 			switchContent(DummyFragment.newInstance(CIAC.getName()));
 			break;
 		case CIAL:
-			switchContent(DummyFragment.newInstance(CIAL.getName()));
+			switchContent(ContactListFragment.getInstance(FilterType.MY_CITY));
 			break;
 		case CONT:
 			switchContent(ContactListFragment.getInstance(FilterType.MY_CLASS));

@@ -9,13 +9,20 @@ import cn.edu.zju.isst.constant.Constants;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Fragment;
+import android.content.Context;
 import android.content.Intent;
+import android.location.Address;
+import android.location.Criteria;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -24,13 +31,16 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import cn.edu.zju.isst.R;
 import cn.edu.zju.isst.api.AlumniApi;
+import cn.edu.zju.isst.db.City;
 import cn.edu.zju.isst.db.DataManager;
 import cn.edu.zju.isst.db.User;
 import cn.edu.zju.isst.exception.ExceptionWeeder;
@@ -51,11 +61,13 @@ import cn.edu.zju.isst.util.L;
 public class ContactListFragment extends Fragment {
 
 	private final List<User> m_listUser = new ArrayList<User>();
-
+	private final List<City> m_listCity = new ArrayList<City>();
+	
 	private HandlerAlumniList m_handlerAlumniList;
 
 	private ListView m_lvAlumni;
 	private TextView m_tvFilterCondition;
+	private Button m_btnClearFilter;
 
 	private ContactFilter m_userFilter = new ContactFilter();
 
@@ -66,16 +78,26 @@ public class ContactListFragment extends Fragment {
 		 MY_CLASS,MY_CITY,MY_FILTER
 	}
 	//表示实例的调用类型，显示本班还是本城市
-	private static FilterType m_ft;
+	//private static FilterType m_flag;
+	private FilterType m_ft;
 	
-	private static ContactListFragment INSTANCE = new ContactListFragment();
+	private static ContactListFragment INSTANCE_MYCLASS = new ContactListFragment();
+	private static ContactListFragment INSTANCE_MYCITY = new ContactListFragment();
 
 	public ContactListFragment() {
 	}
 
 	public static ContactListFragment getInstance(FilterType ft) {
-		m_ft = ft;
-		return INSTANCE;
+	if (ft == FilterType.MY_CLASS) {
+		INSTANCE_MYCLASS.setM_ft(FilterType.MY_CLASS);
+		return INSTANCE_MYCLASS;
+	}
+	INSTANCE_MYCITY.setM_ft(FilterType.MY_CITY);
+	return INSTANCE_MYCITY;
+}
+
+	public void setM_ft(FilterType m_ft) {
+		this.m_ft = m_ft;
 	}
 
 	/*
@@ -115,26 +137,36 @@ public class ContactListFragment extends Fragment {
 
 		m_handlerAlumniList = new HandlerAlumniList();
 
-		//如果是筛选本班
-		if (m_ft == FilterType.MY_CLASS) {
-			// 初始化数据
-			initDate();
-		}
-		
-		//清空筛选条件
-		m_userFilter.clear();
-
 		// 控件
 		m_lvAlumni = (ListView) view
 				.findViewById(R.id.contact_list_fragment_contacts_lsv);
 		m_tvFilterCondition = (TextView) view
 				.findViewById(R.id.contact_list_fragment_conditon_content_txv);
-
+		m_btnClearFilter = (Button) view.findViewById(R.id.contact_list_fragment_clear_condition_btn);
+		
+		//清空筛选条件
+		m_userFilter.clear();
+		//如果是筛选本班
+		if (m_ft == FilterType.MY_CLASS) {
+			// 初始化数据
+			initDate();
+		}
+		//筛选同城
+		else if (m_ft == FilterType.MY_CITY) {
+			String cityNameString = getCityName(getActivity());
+			L.i("yyy city" + cityNameString );
+			m_userFilter.cityString = cityNameString;
+			m_userFilter.cityId = getCityId(cityNameString);
+			getUserListFromApi(m_userFilter);
+		}
+		
 		m_noteBookAdapter = new NoteBookadapter(getActivity(), m_noteBookList);
 		m_lvAlumni.setAdapter(m_noteBookAdapter);
 
 		m_lvAlumni.setOnItemClickListener(new onNotebookItemClickListener());
+		m_btnClearFilter.setOnClickListener(new onClearFilterClickListner());
 
+		HideClearFilterButtonOrNot();
 		showFilterConditon();
 	}
 
@@ -337,12 +369,13 @@ public class ContactListFragment extends Fragment {
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (resultCode == Constants.RESULT_CODE_BETWEEN_CONTACT) {
-			m_userFilter.clear();
+			m_noteBookList.clear();
+			m_noteBookAdapter.notifyDataSetChanged();
 			m_userFilter = (ContactFilter) data.getExtras().getSerializable(
 					"data");
 			m_ft = FilterType.MY_FILTER;
 			getUserListFromApi(m_userFilter);
-
+			HideClearFilterButtonOrNot();
 			showFilterConditon();
 		}
 		super.onActivityResult(requestCode, resultCode, data);
@@ -367,5 +400,98 @@ public class ContactListFragment extends Fragment {
 			}
 		}
 	}
+	
+	private class onClearFilterClickListner implements OnClickListener {
 
+		@Override
+		public void onClick(View v) {
+			//清空筛选条件
+			m_userFilter.clear();
+			m_ft = FilterType.MY_CLASS;
+			initDate();
+			m_noteBookAdapter.notifyDataSetChanged();
+			showFilterConditon();
+			HideClearFilterButtonOrNot();
+		}
+		
+	}
+	
+	private void HideClearFilterButtonOrNot()
+	{
+		if (m_ft != FilterType.MY_FILTER) {
+			m_btnClearFilter.setVisibility(View.GONE);
+		}
+		else {
+			m_btnClearFilter.setVisibility(View.VISIBLE);
+		}
+	}
+
+	/**
+	 * 获取当前城市的名字
+	 * @param context
+	 * @return
+	 */
+	private static String getCityName(Context context) { 
+        LocationManager locationManager; 
+        String contextString = Context.LOCATION_SERVICE; 
+        locationManager = (LocationManager) context.getSystemService(contextString); 
+        Criteria criteria = new Criteria(); 
+        criteria.setAccuracy(Criteria.ACCURACY_LOW); 
+        criteria.setAltitudeRequired(false); 
+        criteria.setBearingRequired(false); 
+        criteria.setCostAllowed(false); 
+        criteria.setPowerRequirement(Criteria.POWER_LOW); 
+        String cityName = null; 
+        // 
+        String provider = locationManager.getBestProvider(criteria, true); 
+        if (provider == null) { 
+            return null; 
+        } 
+        // 得到坐标相关的信息 
+        Location location = locationManager.getLastKnownLocation(provider); 
+        if (location == null) { 
+            return null; 
+        } 
+ 
+        if (location != null) { 
+            double latitude = location.getLatitude(); 
+            double longitude = location.getLongitude(); 
+            // 更具地理环境来确定编码 
+            Geocoder gc = new Geocoder(context, Locale.CHINA); 
+            try { 
+                // 取得地址相关的一些信息\经度、纬度 
+                List<Address> addresses = gc.getFromLocation(latitude, longitude, 1); 
+                StringBuilder sb = new StringBuilder(); 
+                if (addresses.size() > 0) { 
+                    Address address = addresses.get(0); 
+                    sb.append(address.getLocality()).append("\n"); 
+                    cityName = sb.toString(); 
+                    int index = cityName.indexOf("市");
+                    cityName = (String) cityName.subSequence(0, index);
+                } 
+            } catch (Exception e) { 
+            	e.printStackTrace();
+            } 
+        } 
+        return cityName; 
+    } 
+	
+	private void getCityList() {
+		List<City> dbList = DataManager.getCityList();
+		if (!J.isNullOrEmpty(dbList)) {
+			for (City city : dbList) {
+				m_listCity.add(city);
+			}
+		}
+	}
+	
+	private int getCityId(String cityName) {
+		getCityList();
+		for (City city : m_listCity) {
+			if (city.getName().compareTo(cityName) == 0) {
+				return m_userFilter.cityId = city.getId();
+			}
+		}
+		return 0;
+	}
 }

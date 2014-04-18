@@ -16,7 +16,6 @@ import cn.edu.zju.isst.ui.main.BaseActivity;
 import cn.edu.zju.isst.util.J;
 import cn.edu.zju.isst.util.L;
 import cn.edu.zju.isst.constant.Constants;
-import android.R.string;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
