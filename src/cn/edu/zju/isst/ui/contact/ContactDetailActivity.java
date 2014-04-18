@@ -1,33 +1,21 @@
 package cn.edu.zju.isst.ui.contact;
 
-import static cn.edu.zju.isst.constant.Constants.STATUS_NOT_LOGIN;
-import static cn.edu.zju.isst.constant.Constants.STATUS_REQUEST_SUCCESS;
-
 import java.util.ArrayList;
 import java.util.List;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import android.app.ActionBar;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import cn.edu.zju.isst.R;
-import cn.edu.zju.isst.api.AlumniApi;
 import cn.edu.zju.isst.db.City;
 import cn.edu.zju.isst.db.DataManager;
-import cn.edu.zju.isst.db.Major;
 import cn.edu.zju.isst.db.User;
-import cn.edu.zju.isst.net.CSTResponse;
-import cn.edu.zju.isst.net.RequestListener;
 import cn.edu.zju.isst.ui.main.BaseActivity;
 import cn.edu.zju.isst.util.J;
 import cn.edu.zju.isst.util.L;
@@ -35,13 +23,9 @@ import cn.edu.zju.isst.util.L;
 public class ContactDetailActivity extends BaseActivity {
 
 	//用户
-	private int m_Id;
 	private User m_user;
 	
 	private final List<City> m_listCity = new ArrayList<City>();
-	private final List<Major> m_listMajor = new ArrayList<Major>();
-
-	private getUserDetailHandler m_handlerAlumniDetail;	
 	
 	//控件
 	private TextView m_tvName;
@@ -69,15 +53,11 @@ public class ContactDetailActivity extends BaseActivity {
 		actionBar.setHomeButtonEnabled(true);
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		
-		//初始化两个列表
+		//初始化城市列表
 		getCityList();
-		getMajorList();
-		
-		m_handlerAlumniDetail = new getUserDetailHandler();
-		
-		m_Id = getIntent().getIntExtra("id", -1);
-		//请求数据
-		AlumniApi.getUser(m_Id, new AlumniDetailRequestListener());
+
+		//用户
+		m_user = (User)getIntent().getExtras().getSerializable("user");
 		
 		//控件
 		m_tvName = (TextView)findViewById(R.id.contact_detail_activity_name_txv);
@@ -94,6 +74,9 @@ public class ContactDetailActivity extends BaseActivity {
 
 		m_ibtnMobileCall.setOnClickListener(new onMobileCallClickListner());
 		m_ibtnMessage.setOnClickListener(new onMessageClickListner());
+		
+		//显示
+		showUserDetail();
 	}
 	
 	@Override
@@ -107,38 +90,7 @@ public class ContactDetailActivity extends BaseActivity {
 			return super.onOptionsItemSelected(item);
 		}
 	}
-	
-	private class AlumniDetailRequestListener implements RequestListener {
 
-		@Override
-		public void onComplete(Object result) {
-			// TODO Auto-generated method stub
-			Message msg = m_handlerAlumniDetail.obtainMessage();
-			try {
-				msg.what = ((JSONObject) result).getInt("status");
-				JSONObject jsonObject = (JSONObject) result;
-				m_user =new User(jsonObject.getJSONObject("body"));
-				L.i("success get user" + m_user.getName());
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}
-			m_handlerAlumniDetail.sendMessage(msg);
-		}
-
-		@Override
-		public void onHttpError(CSTResponse response) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void onException(Exception e) {
-			// TODO Auto-generated method stub
-			
-		}
-		
-	}
-	
 	/**
 	 * 初始化城市列表
 	 */
@@ -150,19 +102,6 @@ public class ContactDetailActivity extends BaseActivity {
 			}
 		}
 		L.i(" yyy getCityList");
-	}
-
-	/**
-	 * 初始化专业列表
-	 */
-	private void getMajorList() {
-		List<Major> dbList = DataManager.getMajorList();
-		if (!J.isNullOrEmpty(dbList)) {
-			for (Major major : dbList) {
-				m_listMajor.add(major);
-			}
-		}
-		L.i(" yyy getMajorList");
 	}
 	
 	/**
@@ -179,26 +118,6 @@ public class ContactDetailActivity extends BaseActivity {
 			}
 		}
 		return res;
-	}
-	
-	private class getUserDetailHandler extends Handler
-	{
-		public void handleMessage(Message msg) {
-			switch (msg.what) {
-			case STATUS_REQUEST_SUCCESS:
-				try {
-					showUserDetail();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-				break;
-			case STATUS_NOT_LOGIN:
-				break;
-			default:
-				break;
-			}
-		}
-
 	}
 
 	/**

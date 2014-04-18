@@ -291,7 +291,7 @@ public class ContactListFragment extends Fragment {
 				long arg3) {
 			Intent intent = new Intent(getActivity(),
 					ContactDetailActivity.class);
-			intent.putExtra("id", m_listUser.get(arg2).getId());
+			intent.putExtra("user", m_listUser.get(arg2));
 			ContactListFragment.this.getActivity().startActivity(intent);
 		}
 	}
