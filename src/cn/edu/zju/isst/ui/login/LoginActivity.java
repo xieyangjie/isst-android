@@ -155,8 +155,7 @@ public class LoginActivity extends BaseActivity {
 					try {
 						DataManager.syncLogin(
 								new User(((JSONObject) msg.obj)
-										.getJSONObject("body")),
-								LoginActivity.this);
+										.getJSONObject("body")));
 					} catch (JSONException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();

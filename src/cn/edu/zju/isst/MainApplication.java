@@ -5,6 +5,7 @@ package cn.edu.zju.isst;
 
 import android.app.Application;
 import android.webkit.CookieSyncManager;
+import cn.edu.zju.isst.db.DBHelper;
 import cn.edu.zju.isst.util.L;
 
 /**
@@ -14,7 +15,7 @@ import cn.edu.zju.isst.util.L;
  * 
  */
 public class MainApplication extends Application {
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -26,6 +27,7 @@ public class MainApplication extends Application {
 		// 设置调试状态
 		L.setDebuggable(true);
 		CookieSyncManager.createInstance(this);
+		DBHelper.createInstance(this);
 	}
 
 }

@@ -179,11 +179,11 @@ public class ContactListFragment extends Fragment {
 	 */
 	private void initDate() {
 		// 获取用户班级ID
-		User user = DataManager.getCurrentUser(getActivity());
+		User user = DataManager.getCurrentUser();
 		m_userFilter.classId = user.getClassId();
 
 		// 初始化通讯录列表
-		List<User> dbAlumniList = DataManager.getClassMateList(getActivity());
+		List<User> dbAlumniList = DataManager.getClassMateList();
 		if (!m_listUser.isEmpty()) {
 			m_listUser.clear();
 		}
@@ -206,6 +206,7 @@ public class ContactListFragment extends Fragment {
 	private void requestData() {
 		if (NetworkConnection.isNetworkConnected(getActivity())) {
 			getUserListFromApi(m_userFilter);
+
 		} else {
 			Message msg = m_handlerAlumniList.obtainMessage();
 			msg.what = NETWORK_NOT_CONNECTED;
@@ -279,7 +280,7 @@ public class ContactListFragment extends Fragment {
 			Intent intent = new Intent(getActivity(),
 					ContactDetailActivity.class);
 			intent.putExtra("id", m_listUser.get(arg2).getId());
-			getActivity().startActivity(intent);
+			ContactListFragment.this.getActivity().startActivity(intent);
 		}
 	}
 
@@ -329,6 +330,7 @@ public class ContactListFragment extends Fragment {
 					"data");
 			m_flag = false;
 			getUserListFromApi(m_userFilter);
+
 			showFilterConditon();
 		}
 		super.onActivityResult(requestCode, resultCode, data);
@@ -341,7 +343,7 @@ public class ContactListFragment extends Fragment {
 			case STATUS_REQUEST_SUCCESS:
 				Collections.sort(m_listUser, new Pinyin4j.PinyinComparator());
 				if (m_flag) {
-					DataManager.syncClassMateList(m_listUser, getActivity());
+					DataManager.syncClassMateList(m_listUser);
 				}
 				getNoteBookData();
 				m_noteBookAdapter.notifyDataSetChanged();
@@ -353,4 +355,5 @@ public class ContactListFragment extends Fragment {
 			}
 		}
 	}
+
 }

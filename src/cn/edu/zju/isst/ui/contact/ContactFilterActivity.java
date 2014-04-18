@@ -108,8 +108,9 @@ public class ContactFilterActivity extends BaseActivity {
 	 * 初始化城市列表
 	 */
 	private void getCityList() {
-		List<City> dbList = DataManager.getCityList(this);
+		List<City> dbList = DataManager.getCityList();
 		m_arrayListCity.add("不限");
+
 		if (!J.isNullOrEmpty(dbList)) {
 			for (City city : dbList) {
 				m_listCity.add(city);
@@ -123,7 +124,7 @@ public class ContactFilterActivity extends BaseActivity {
 	 * 初始化专业列表
 	 */
 	private void getMajorList() {
-		List<Major> dbList = DataManager.getMajorList(this);
+		List<Major> dbList = DataManager.getMajorList();
 		m_arrayListMajor.add("不限");
 		if (!J.isNullOrEmpty(dbList)) {
 			for (Major major : dbList) {
