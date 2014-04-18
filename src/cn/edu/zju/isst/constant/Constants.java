@@ -86,5 +86,11 @@ public final class Constants {
 	 * HTTP请求超时
 	 */
 	public static final int HTTP_CONNECT_TIMEOUT = 10000;
+	
+	/**
+	 * the result code to propagate to the original activity,
+	 * this is the code between ContactFilter and ContactListFragment
+	 */
+	public static final int RESULT_CODE_BETWEEN_CONTACT = 20;
 
 }

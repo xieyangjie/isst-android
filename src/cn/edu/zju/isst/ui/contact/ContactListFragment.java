@@ -4,6 +4,7 @@
 package cn.edu.zju.isst.ui.contact;
 
 import static cn.edu.zju.isst.constant.Constants.*;
+import cn.edu.zju.isst.constant.Constants;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -30,9 +31,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import cn.edu.zju.isst.R;
 import cn.edu.zju.isst.api.AlumniApi;
-import cn.edu.zju.isst.db.City;
 import cn.edu.zju.isst.db.DataManager;
-import cn.edu.zju.isst.db.Major;
 import cn.edu.zju.isst.db.User;
 import cn.edu.zju.isst.exception.ExceptionWeeder;
 import cn.edu.zju.isst.exception.HttpErrorWeeder;
@@ -52,12 +51,8 @@ import cn.edu.zju.isst.util.L;
 public class ContactListFragment extends Fragment {
 
 	private final List<User> m_listUser = new ArrayList<User>();
-	private final List<City> m_listCity = new ArrayList<City>();
-	private final List<Major> m_listMajors = new ArrayList<Major>();
 
 	private HandlerAlumniList m_handlerAlumniList;
-	private HandlerCityList m_handlerCityList;
-	private HandlerMajorList m_handlerMajorList;
 
 	private ListView m_lvAlumni;
 	private TextView m_tvFilterCondition;
@@ -115,8 +110,6 @@ public class ContactListFragment extends Fragment {
 		super.onViewCreated(view, savedInstanceState);
 
 		m_handlerAlumniList = new HandlerAlumniList();
-		m_handlerCityList = new HandlerCityList();
-		m_handlerMajorList = new HandlerMajorList();
 
 		// 初始化数据
 		initDate();
@@ -212,11 +205,7 @@ public class ContactListFragment extends Fragment {
 	 */
 	private void requestData() {
 		if (NetworkConnection.isNetworkConnected(getActivity())) {
-			AlumniApi_getUserList(m_userFilter);
-			AlumniApi.getCityList(new BaseListRequestListener(
-					m_handlerCityList, City.class, m_listCity));
-			AlumniApi.getMajorList(new BaseListRequestListener(
-					m_handlerMajorList, Major.class, m_listMajors));
+			getUserListFromApi(m_userFilter);
 		} else {
 			Message msg = m_handlerAlumniList.obtainMessage();
 			msg.what = NETWORK_NOT_CONNECTED;
@@ -224,29 +213,19 @@ public class ContactListFragment extends Fragment {
 		}
 	}
 
-	private class BaseListRequestListener<T> implements RequestListener {
-		Handler handler;
-		List<T> list;
-		Class<T> clazz;
-
-		public BaseListRequestListener(final Handler h, Class<T> c, List<T> l) {
-			this.handler = h;
-			this.list = l;
-			this.clazz = c;
-		}
+	private class BaseListRequestListener implements RequestListener {
 
 		@Override
 		public void onComplete(Object result) {
-			Message msg = handler.obtainMessage();
+			Message msg = m_handlerAlumniList.obtainMessage();
 			try {
 				msg.what = ((JSONObject) result).getInt("status");
 				JSONArray jsonArray = ((JSONObject) result)
 						.getJSONArray("body");
-				list.clear();
+				m_listUser.clear();
 				for (int i = 0; i < jsonArray.length(); i++) {
 					try {
-						list.add(clazz.getConstructor(JSONObject.class)
-								.newInstance((JSONObject) jsonArray.get(i)));
+						m_listUser.add(new User((JSONObject) jsonArray.get(i)) );
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
@@ -256,23 +235,23 @@ public class ContactListFragment extends Fragment {
 				e.printStackTrace();
 			}
 
-			handler.sendMessage(msg);
+			m_handlerAlumniList.sendMessage(msg);
 		}
 
 		@Override
 		public void onHttpError(CSTResponse response) {
 			L.i(this.getClass().getName() + " onHttpError!");
-			Message msg = handler.obtainMessage();
+			Message msg = m_handlerAlumniList.obtainMessage();
 			HttpErrorWeeder.fckHttpError(response, msg);
-			handler.sendMessage(msg);
+			m_handlerAlumniList.sendMessage(msg);
 		}
 
 		@Override
 		public void onException(Exception e) {
 			L.i(this.getClass().getName() + " onException!");
-			Message msg = handler.obtainMessage();
+			Message msg = m_handlerAlumniList.obtainMessage();
 			ExceptionWeeder.fckException(e, msg);
-			handler.sendMessage(msg);
+			m_handlerAlumniList.sendMessage(msg);
 		}
 	}
 
@@ -285,14 +264,15 @@ public class ContactListFragment extends Fragment {
 		}
 		for (int i = 0; i < m_listUser.size(); i++) {
 			NoteBookItem n = new NoteBookItem();
-			n.name = m_listUser.get(i).getName();
-			n.index = String.valueOf(Pinyin4j.getHanyuPinyin(n.name).charAt(0));
-			m_noteBookList.add(n);
+			if (m_listUser.get(i).getName()!=null) {
+				n.name = m_listUser.get(i).getName();
+				n.index = Pinyin4j.getHanyuPinyi(n.name.charAt(0));
+				m_noteBookList.add(n);
+			}
 		}
-
 	}
 
-	public class onNotebookItemClickListener implements OnItemClickListener {
+	private class onNotebookItemClickListener implements OnItemClickListener {
 		@Override
 		public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 				long arg3) {
@@ -336,20 +316,19 @@ public class ContactListFragment extends Fragment {
 	/**
 	 * 调用AlumniApi.getUserList
 	 */
-	private void AlumniApi_getUserList(ContactFilter uf) {
+	private void getUserListFromApi(ContactFilter uf) {
 		AlumniApi.getUserList(uf.id, uf.name, uf.gender, uf.grade, uf.classId,
-				uf.majorId, uf.cityId, uf.company, new BaseListRequestListener(
-						m_handlerAlumniList, User.class, m_listUser));
+				uf.majorId, uf.cityId, uf.company, new BaseListRequestListener());
 	}
 
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (resultCode == 20) {
+		if (resultCode == Constants.RESULT_CODE_BETWEEN_CONTACT) {
 			m_userFilter.clear();
 			m_userFilter = (ContactFilter) data.getExtras().getSerializable(
 					"data");
 			m_flag = false;
-			AlumniApi_getUserList(m_userFilter);
+			getUserListFromApi(m_userFilter);
 			showFilterConditon();
 		}
 		super.onActivityResult(requestCode, resultCode, data);
@@ -366,42 +345,6 @@ public class ContactListFragment extends Fragment {
 				}
 				getNoteBookData();
 				m_noteBookAdapter.notifyDataSetChanged();
-				break;
-			case STATUS_NOT_LOGIN:
-				break;
-			default:
-				break;
-			}
-		}
-	}
-
-	private class HandlerCityList extends Handler {
-
-		@Override
-		public void handleMessage(Message msg) {
-			switch (msg.what) {
-			case STATUS_REQUEST_SUCCESS:
-				if (m_flag) {
-					DataManager.syncCityList(m_listCity, getActivity());
-				}
-				break;
-			case STATUS_NOT_LOGIN:
-				break;
-			default:
-				break;
-			}
-		}
-	}
-
-	private class HandlerMajorList extends Handler {
-
-		@Override
-		public void handleMessage(Message msg) {
-			switch (msg.what) {
-			case STATUS_REQUEST_SUCCESS:
-				if (m_flag) {
-					DataManager.syncMajorList(m_listMajors, getActivity());
-				}
 				break;
 			case STATUS_NOT_LOGIN:
 				break;

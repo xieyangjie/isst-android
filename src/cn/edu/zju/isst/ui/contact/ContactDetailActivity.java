@@ -41,7 +41,7 @@ public class ContactDetailActivity extends BaseActivity {
 	private final List<City> m_listCity = new ArrayList<City>();
 	private final List<Major> m_listMajor = new ArrayList<Major>();
 
-	private Handler m_handlerAlumniDetail;	
+	private getUserDetailHandler m_handlerAlumniDetail;	
 	
 	//控件
 	private TextView m_tvName;
@@ -65,15 +65,15 @@ public class ContactDetailActivity extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.contact_detail_activity);
 		
+		ActionBar actionBar = getActionBar();
+		actionBar.setHomeButtonEnabled(true);
+		actionBar.setDisplayHomeAsUpEnabled(true);
+		
 		//初始化两个列表
 		getCityList();
 		getMajorList();
 		
 		m_handlerAlumniDetail = new getUserDetailHandler();
-		
-		ActionBar actionBar = getActionBar();
-		actionBar.setHomeButtonEnabled(true);
-		actionBar.setDisplayHomeAsUpEnabled(true);
 		
 		m_Id = getIntent().getIntExtra("id", -1);
 		//请求数据
@@ -113,13 +113,12 @@ public class ContactDetailActivity extends BaseActivity {
 		@Override
 		public void onComplete(Object result) {
 			// TODO Auto-generated method stub
-			L.i("yyy --- onComplete");
 			Message msg = m_handlerAlumniDetail.obtainMessage();
 			try {
 				msg.what = ((JSONObject) result).getInt("status");
 				JSONObject jsonObject = (JSONObject) result;
 				m_user =new User(jsonObject.getJSONObject("body"));
-				L.i("yyy --- onComplete  get user " + m_user.getName());
+				L.i("success get user" + m_user.getName());
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
@@ -166,6 +165,11 @@ public class ContactDetailActivity extends BaseActivity {
 		L.i(" yyy getMajorList");
 	}
 	
+	/**
+	 * 按cityID获取cityName
+	 * @param cityID
+	 * @return
+	 */
 	private String getCityName(int cityID) {
 		String res = null;
 		for (int i=0;i<m_listCity.size();i++) {
@@ -199,26 +203,11 @@ public class ContactDetailActivity extends BaseActivity {
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
 			case STATUS_REQUEST_SUCCESS:
-				//姓名
-				m_tvName.setText(m_user.getName());
-				//性别
-				if (m_user.getGender()>0) {
-					m_tvGender.setText(m_user.getGender()==1?"男":"女");
+				try {
+					showUserDetail();
+				} catch (Exception e) {
+					e.printStackTrace();
 				}
-				//年级
-				m_tvGrade.setText("" + m_user.getGrade() + "级");
-				//专业
-				int majorID = m_user.getMajotId();
-				m_tvMajor.setText(getMajorName(majorID));
-				//电话
-				m_tvMobile.setText(m_user.getPhone());
-				//Email
-				m_tvEmail.setText(m_user.getEmail());
-				//城市
-				int cityID = m_user.getMajotId();
-				m_tvCity.setText(getCityName(cityID));
-				//公司
-				m_tvCompany.setText(m_user.getCompany());
 				break;
 			case STATUS_NOT_LOGIN:
 				break;
@@ -229,6 +218,11 @@ public class ContactDetailActivity extends BaseActivity {
 
 	}
 
+	/**
+	 * 拨打电话Listner
+	 * @author yyy
+	 *
+	 */
 	private class onMobileCallClickListner implements OnClickListener {
 
 		@Override
@@ -241,7 +235,11 @@ public class ContactDetailActivity extends BaseActivity {
 		}
 		
 	}
-	
+	/**
+	 * 发送短信Listner
+	 * @author yyy
+	 *
+	 */
 	private class onMessageClickListner implements OnClickListener {
 
 		@Override
@@ -253,5 +251,31 @@ public class ContactDetailActivity extends BaseActivity {
 	        startActivity(intent);
 		}
 		
+	}
+	
+	/**
+	 * 显示用户详情
+	 */
+	private void showUserDetail() {
+		//姓名
+		m_tvName.setText(m_user.getName());
+		//性别
+		if (m_user.getGender()>0) {
+			m_tvGender.setText(m_user.getGender()==1?"男":"女");
+		}
+		//年级
+		m_tvGrade.setText("" + m_user.getGrade() + "级");
+		//专业
+		int majorID = m_user.getMajotId();
+		m_tvMajor.setText(getMajorName(majorID));
+		//电话
+		m_tvMobile.setText(m_user.getPhone());
+		//Email
+		m_tvEmail.setText(m_user.getEmail());
+		//城市
+		int cityID = m_user.getMajotId();
+		m_tvCity.setText(getCityName(cityID));
+		//公司
+		m_tvCompany.setText(m_user.getCompany());
 	}
 }

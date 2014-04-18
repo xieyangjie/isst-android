@@ -1,12 +1,16 @@
 package cn.edu.zju.isst.ui.contact;
 
-/** 电话本 */
+/**
+ * 电话本
+ * @author yyy
+ *
+ */
 public class NoteBookItem {
 	
-	/**索引字母*/
+	//索引字母
 	public String index;
 
-	/** 名字 */
+	//名字 
 	public String name;
 
 }

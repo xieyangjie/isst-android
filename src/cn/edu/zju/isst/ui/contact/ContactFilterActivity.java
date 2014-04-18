@@ -5,6 +5,7 @@ package cn.edu.zju.isst.ui.contact;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import cn.edu.zju.isst.R;
@@ -14,6 +15,7 @@ import cn.edu.zju.isst.db.Major;
 import cn.edu.zju.isst.ui.main.BaseActivity;
 import cn.edu.zju.isst.util.J;
 import cn.edu.zju.isst.util.L;
+import cn.edu.zju.isst.constant.Constants;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -34,11 +36,12 @@ public class ContactFilterActivity extends BaseActivity {
 	private final List<Major> m_listMajor = new ArrayList<Major>();
 	private ArrayList<String> m_arrayListCity = new ArrayList<String>();
 	private ArrayList<String> m_arrayListMajor = new ArrayList<String>();
+	private ArrayList<String> m_arrayListGrade = new ArrayList<String>();
 
 	// 控件
 	private EditText m_edtName;
 	private RadioGroup m_rdgGender;
-	private EditText m_edtGrade;
+	private Spinner m_spnGrade;
 	private EditText m_edtCompany;
 	private Spinner m_spnMajor;
 	private Spinner m_spnCity;
@@ -61,12 +64,12 @@ public class ContactFilterActivity extends BaseActivity {
 		// 获取控件
 		m_edtName = (EditText) findViewById(R.id.contact_filter_activity_name_edtx);
 		m_rdgGender = (RadioGroup) findViewById(R.id.contact_filter_activity_gender_rdg);
-		m_edtGrade = (EditText) findViewById(R.id.contact_filter_activity_grade_edtx);
-		m_btnOK = (Button) findViewById(R.id.contact_filter_activity_confirm_btn);
-		m_btnCancel = (Button) findViewById(R.id.contact_filter_activity_cancel_btn);
+		m_spnGrade = (Spinner) findViewById(R.id.contact_filter_activity_grade_spn);
 		m_spnMajor = (Spinner) findViewById(R.id.contact_filter_activity_major_spn);
 		m_spnCity = (Spinner) findViewById(R.id.contact_filter_activity_city_spn);
 		m_edtCompany = (EditText) findViewById(R.id.contact_filter_activity_company_edtx);
+		m_btnOK = (Button) findViewById(R.id.contact_filter_activity_confirm_btn);
+		m_btnCancel = (Button) findViewById(R.id.contact_filter_activity_cancel_btn);
 
 		// 按钮监听
 		m_btnOK.setOnClickListener(new onBtnOkClickListener());
@@ -75,10 +78,13 @@ public class ContactFilterActivity extends BaseActivity {
 		// 获取数据库中的城市列表，专业列表
 		getCityList();
 		getMajorList();
-
+		//获取年级列表
+		getGradeList();
+		
 		// 设置下拉框
 		initSpanner(m_spnCity, m_arrayListCity);
 		initSpanner(m_spnMajor, m_arrayListMajor);
+		initSpanner(m_spnGrade, m_arrayListGrade);
 	}
 
 	/**
@@ -103,8 +109,8 @@ public class ContactFilterActivity extends BaseActivity {
 	 */
 	private void getCityList() {
 		List<City> dbList = DataManager.getCityList(this);
+		m_arrayListCity.add("不限");
 		if (!J.isNullOrEmpty(dbList)) {
-			m_arrayListCity.add("不限");
 			for (City city : dbList) {
 				m_listCity.add(city);
 				m_arrayListCity.add(city.getName());
@@ -118,14 +124,28 @@ public class ContactFilterActivity extends BaseActivity {
 	 */
 	private void getMajorList() {
 		List<Major> dbList = DataManager.getMajorList(this);
+		m_arrayListMajor.add("不限");
 		if (!J.isNullOrEmpty(dbList)) {
-			m_arrayListMajor.add("不限");
 			for (Major major : dbList) {
 				m_listMajor.add(major);
 				m_arrayListMajor.add(major.getName());
 			}
 		}
 		L.i(" yyy getMajorList");
+	}
+	
+	/**
+	 * 设置年级列表,假设从2009年开始
+	 */
+	private void getGradeList()
+	{
+		Calendar calendar = Calendar.getInstance();
+		int year = calendar.get(Calendar.YEAR);
+		m_arrayListGrade.add("不限");
+		for (int i=2009;i<year;i++) {
+			m_arrayListGrade.add(String.valueOf(i));
+		}
+		
 	}
 
 	private void setUpActivity() {
@@ -151,9 +171,6 @@ public class ContactFilterActivity extends BaseActivity {
 
 			// 姓名
 			String name = m_edtName.getText().toString().trim();
-			if (name.length() <= 0) {
-				name = null;
-			}
 			// 获取性别ID的方法可能有其他的，现在不好
 			int genderId = 0;
 			String genderString = "";
@@ -189,12 +206,11 @@ public class ContactFilterActivity extends BaseActivity {
 				majorString = (m_listMajor.get(selectedmajorPosition))
 						.getName();
 			}
-
 			// 年级Id
 			int grade = 0;
-			String gradeString = m_edtGrade.getText().toString();
-			if (!J.isNullOrEmpty(gradeString.trim())) {
-				grade = Integer.valueOf((gradeString.trim()));
+			int selectGradePosition = m_spnGrade.getSelectedItemPosition();
+			if (selectGradePosition>= 1) {
+				grade = Integer.valueOf( m_arrayListGrade.get(selectGradePosition));
 			}
 			// 公司
 			String company = m_edtCompany.getText().toString().trim();
@@ -210,7 +226,7 @@ public class ContactFilterActivity extends BaseActivity {
 			uf.majorString = majorString;
 
 			data.putExtra("data", (Serializable) uf);
-			setResult(20, data);
+			setResult(Constants.RESULT_CODE_BETWEEN_CONTACT, data);
 
 			// 关闭掉这个Activity
 			finish();
