@@ -120,6 +120,9 @@ public class ContactListFragment extends Fragment {
 			// 初始化数据
 			initDate();
 		}
+		
+		//清空筛选条件
+		m_userFilter.clear();
 
 		// 控件
 		m_lvAlumni = (ListView) view
@@ -311,8 +314,8 @@ public class ContactListFragment extends Fragment {
 		if (m_userFilter.grade != 0) {
 			sb.append(" 年级：" + m_userFilter.grade);
 		}
-		if (m_userFilter.majorId != 0) {
-			sb.append(" 方向：" + m_userFilter.majorString);
+		if (!J.isNullOrEmpty(m_userFilter.major)) {
+			sb.append(" 方向：" + m_userFilter.major);
 		}
 		if (!J.isNullOrEmpty(m_userFilter.company)) {
 			sb.append(" 公司：" + m_userFilter.company);
@@ -328,7 +331,7 @@ public class ContactListFragment extends Fragment {
 	 */
 	private void getUserListFromApi(ContactFilter uf) {
 		AlumniApi.getUserList(uf.id, uf.name, uf.gender, uf.grade, uf.classId,
-				uf.majorId, uf.cityId, uf.company, new BaseListRequestListener());
+				uf.major, uf.cityId, uf.company, new BaseListRequestListener());
 	}
 
 	@Override

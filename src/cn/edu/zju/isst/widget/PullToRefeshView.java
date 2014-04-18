@@ -1,6 +1,3 @@
-/**
- * 
- */
 package cn.edu.zju.isst.widget;
 
 import android.content.Context;

@@ -16,6 +16,7 @@ import cn.edu.zju.isst.ui.main.BaseActivity;
 import cn.edu.zju.isst.util.J;
 import cn.edu.zju.isst.util.L;
 import cn.edu.zju.isst.constant.Constants;
+import android.R.string;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -198,13 +199,11 @@ public class ContactFilterActivity extends BaseActivity {
 				cityId = (m_listCity.get(selectedCityPosition)).getId();
 				cityString = (m_listCity.get(selectedCityPosition)).getName();
 			}
-			// 专业ID
-			int majorId = 0;
-			String majorString = "";
+			// 专业
+			String major = "";
 			int selectedmajorPosition = m_spnMajor.getSelectedItemPosition() - 1;
 			if (selectedmajorPosition >= 0) {
-				majorId = (m_listMajor.get(selectedmajorPosition)).getId();
-				majorString = (m_listMajor.get(selectedmajorPosition))
+				major = (m_listMajor.get(selectedmajorPosition))
 						.getName();
 			}
 			// 年级Id
@@ -220,11 +219,10 @@ public class ContactFilterActivity extends BaseActivity {
 			uf.gender = genderId;
 			uf.cityId = cityId;
 			uf.grade = grade;
-			uf.majorId = majorId;
+			uf.major = major;
 			uf.company = company;
 			uf.cityString = cityString;
 			uf.genderString = genderString;
-			uf.majorString = majorString;
 
 			data.putExtra("data", (Serializable) uf);
 			setResult(Constants.RESULT_CODE_BETWEEN_CONTACT, data);

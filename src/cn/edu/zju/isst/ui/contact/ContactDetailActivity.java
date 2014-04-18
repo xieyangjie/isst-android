@@ -181,23 +181,6 @@ public class ContactDetailActivity extends BaseActivity {
 		return res;
 	}
 	
-	/**
-	 * 按majorID获取majorName
-	 * @param majorID
-	 * @return majorName
-	 */
-	private String getMajorName(int majorID) {
-		String res = null;
-		for (int i=0;i<m_listMajor.size();i++) {
-			if (m_listMajor.get(i).getId() == majorID) {
-				res = m_listMajor.get(i).getName();
-				break;
-			}
-		}
-		return res;
-	}
-	
-	
 	private class getUserDetailHandler extends Handler
 	{
 		public void handleMessage(Message msg) {
@@ -266,14 +249,13 @@ public class ContactDetailActivity extends BaseActivity {
 		//年级
 		m_tvGrade.setText("" + m_user.getGrade() + "级");
 		//专业
-		int majorID = m_user.getMajotId();
-		m_tvMajor.setText(getMajorName(majorID));
+		m_tvMajor.setText(m_user.getMajor());
 		//电话
 		m_tvMobile.setText(m_user.getPhone());
 		//Email
 		m_tvEmail.setText(m_user.getEmail());
 		//城市
-		int cityID = m_user.getMajotId();
+		int cityID = m_user.getCityId();
 		m_tvCity.setText(getCityName(cityID));
 		//公司
 		m_tvCompany.setText(m_user.getCompany());

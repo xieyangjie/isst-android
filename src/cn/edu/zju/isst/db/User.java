@@ -33,7 +33,7 @@ public class User implements Serializable {
 	private int gender;
 	private int grade;
 	private int classId;
-	private int majorId;
+	private String major;
 	private int cityId;
 	private String email;
 	private String phone;
@@ -64,7 +64,7 @@ public class User implements Serializable {
 		gender = -1;
 		grade = -1;
 		classId = -1;
-		majorId = -1;
+		major = "";
 		cityId = -1;
 		email = "";
 		phone = "";
@@ -112,8 +112,8 @@ public class User implements Serializable {
 			if (J.isValidJsonValue("classId", jsonObject)) {
 				classId = jsonObject.getInt("classId");
 			}
-			if (J.isValidJsonValue("majorId", jsonObject)) {
-				majorId = jsonObject.getInt("majorId");
+			if (J.isValidJsonValue("major", jsonObject)) {
+				major = jsonObject.getString("major");
 			}
 			if (J.isValidJsonValue("cityId", jsonObject)) {
 				cityId = jsonObject.getInt("cityId");
@@ -209,8 +209,8 @@ public class User implements Serializable {
 	/**
 	 * @return the majotId
 	 */
-	public int getMajotId() {
-		return majorId;
+	public String getMajor() {
+		return major;
 	}
 
 	/**
