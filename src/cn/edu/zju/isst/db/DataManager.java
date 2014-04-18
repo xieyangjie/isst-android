@@ -10,6 +10,9 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.FutureTask;
 
 import cn.edu.zju.isst.api.ArchiveCategory;
 import cn.edu.zju.isst.api.JobCategory;
@@ -90,6 +93,7 @@ public class DataManager {
 		if (!J.isNullOrEmpty(newsList)) {
 			writeObjectToDB(archiveCategory.getNameInDB(),
 					(Serializable) newsList);
+			L.i("Write archiveList to DB!");
 		}
 	}
 
@@ -262,9 +266,9 @@ public class DataManager {
 		return null;
 	}
 
-	public static void syncClassList(List<Klass> classMateList) {
-		if (!J.isNullOrEmpty(classMateList)) {
-			writeObjectToDB(CLASS_LIST_IN_DB, (Serializable) classMateList);
+	public static void syncClassList(List<Klass> classList) {
+		if (!J.isNullOrEmpty(classList)) {
+			writeObjectToDB(CLASS_LIST_IN_DB, (Serializable) classList);
 			L.i("Write class List to DB!");
 		}
 	}
@@ -286,9 +290,9 @@ public class DataManager {
 		return null;
 	}
 
-	public static void syncClassMateList(List<User> classList) {
-		if (!J.isNullOrEmpty(classList)) {
-			writeObjectToDB(CLASSMATE_LIST_IN_DB, (Serializable) classList);
+	public static void syncClassMateList(List<User> classMateList) {
+		if (!J.isNullOrEmpty(classMateList)) {
+			writeObjectToDB(CLASSMATE_LIST_IN_DB, (Serializable) classMateList);
 			L.i("Write class List to DB!");
 		}
 	}
@@ -340,23 +344,35 @@ public class DataManager {
 	 *            数据库表记录
 	 * @param object
 	 *            目标对象
-	 * @param context
-	 *            用于加载DBHelper获取当前数据库
 	 */
-	public static void writeObjectToDB(String name, Serializable object) {
-		if (J.isNullOrEmpty(name) || J.isNullOrEmpty(object)) {
-			return;
-		}
-		try {
-			ByteArrayOutputStream bos = new ByteArrayOutputStream();
-			ObjectOutputStream oos = new ObjectOutputStream(bos);
-			oos.writeObject(object);
-			L.i("Write object!!!");
-			DBManager.getInstance().insertOrUpdate(name, bos.toByteArray());
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	public static void writeObjectToDB(final String name,
+			final Serializable object) {
+		new Thread() {
+
+			/*
+			 * (non-Javadoc)
+			 * 
+			 * @see java.lang.Thread#run()
+			 */
+			@Override
+			public void run() {
+				if (J.isNullOrEmpty(name) || J.isNullOrEmpty(object)) {
+					return;
+				}
+				try {
+					ByteArrayOutputStream bos = new ByteArrayOutputStream();
+					ObjectOutputStream oos = new ObjectOutputStream(bos);
+					oos.writeObject(object);
+					L.i("Write object!!!");
+					DBManager.getInstance().insertOrUpdate(name,
+							bos.toByteArray());
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+
+		}.start();
 	}
 
 	/**
@@ -366,23 +382,44 @@ public class DataManager {
 	 *            数据库表记录
 	 * @return 目标对象
 	 */
-	public static Serializable objectFromDB(String name) {
-		Serializable object = null;
+	public static Serializable objectFromDB(final String name) {
+		FutureTask<Serializable> task = new FutureTask<Serializable>(
+				new Callable<Serializable>() {
+
+					@Override
+					public Serializable call() throws Exception {
+						Serializable object = null;
+						try {
+							byte[] data = DBManager.getInstance().get(name);
+							if (!J.isNullOrEmpty(data)) {
+								ByteArrayInputStream bis = new ByteArrayInputStream(
+										data);
+								ObjectInputStream ois = new ObjectInputStream(
+										bis);
+								object = (Serializable) ois.readObject();
+							}
+						} catch (IOException e) {
+							// TODO: handle exception
+						} catch (ClassNotFoundException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+
+						return object;
+					}
+				});
+		new Thread(task).start();
 		try {
-			byte[] data = DBManager.getInstance().get(name);
-			if (!J.isNullOrEmpty(data)) {
-				ByteArrayInputStream bis = new ByteArrayInputStream(data);
-				ObjectInputStream ois = new ObjectInputStream(bis);
-				object = (Serializable) ois.readObject();
-			}
-		} catch (IOException e) {
-			// TODO: handle exception
-		} catch (ClassNotFoundException e) {
+			return task.get();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ExecutionException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
-		return object;
+		
+		return null;
 	}
 
 }

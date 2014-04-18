@@ -11,6 +11,7 @@ import java.util.Map;
 import cn.edu.zju.isst.net.BetterAsyncWebServiceRunner;
 import cn.edu.zju.isst.net.CSTResponse;
 import cn.edu.zju.isst.net.RequestListener;
+import cn.edu.zju.isst.util.J;
 import cn.edu.zju.isst.util.L;
 
 /**
@@ -43,17 +44,20 @@ public class CSTApi {
 			final Map<String, String> params, RequestListener listener) {
 		String requestUrl = PREFIX + subUrl;
 		if (methodName.equalsIgnoreCase("POST")) {
-			BetterAsyncWebServiceRunner.getInstance().request(methodName, requestUrl,
-					params, listener);
-		}else {
+			BetterAsyncWebServiceRunner.getInstance().request(methodName,
+					requestUrl, params, listener);
+		} else {
 			try {
-				requestUrl = requestUrl + "?" + BetterAsyncWebServiceRunner.getInstance().paramsToString(params);
+				requestUrl = requestUrl
+						+ (J.isNullOrEmpty(params) ? ""
+								: ("?" + BetterAsyncWebServiceRunner
+										.getInstance().paramsToString(params)));
 			} catch (UnsupportedEncodingException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			BetterAsyncWebServiceRunner.getInstance().request(methodName, requestUrl,
-					null, listener);
+			BetterAsyncWebServiceRunner.getInstance().request(methodName,
+					requestUrl, null, listener);
 		}
 		L.i("CSTApi Request URL = " + requestUrl);
 	}
@@ -65,5 +69,5 @@ public class CSTApi {
 		return BetterAsyncWebServiceRunner.getInstance().responseOfRequest(
 				methodName, url, params);
 	}
-	
+
 }

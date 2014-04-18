@@ -15,6 +15,7 @@ import cn.edu.zju.isst.R;
 import cn.edu.zju.isst.api.LogoutApi;
 import cn.edu.zju.isst.constant.Nav;
 import cn.edu.zju.isst.db.DataManager;
+import cn.edu.zju.isst.db.GlobalDataCache;
 import cn.edu.zju.isst.dummy.DummyFragment;
 import cn.edu.zju.isst.net.CSTResponse;
 import cn.edu.zju.isst.net.RequestListener;
@@ -79,6 +80,8 @@ public class MainActivity extends BaseActivity implements
 		setUpSlidingMenu();
 
 		getActionBar().setDisplayHomeAsUpEnabled(true);
+		
+		requestGlobalData();
 	}
 
 	/*
@@ -191,6 +194,34 @@ public class MainActivity extends BaseActivity implements
 
 	}
 
+	public void logout() {
+		LogoutApi.logout(new RequestListener() {
+	
+			@Override
+			public void onComplete(Object result) {
+				// TODO Auto-generated method stub
+	
+			}
+	
+			@Override
+			public void onHttpError(CSTResponse response) {
+				L.i("logout onHttpError: " + response.getStatus());
+	
+			}
+	
+			@Override
+			public void onException(Exception e) {
+				// TODO Auto-generated method stub
+	
+			}
+		});
+		DataManager.deleteCurrentUser();
+		CSTSettings.setAutoLogin(false, MainActivity.this);
+		MainActivity.this.startActivity(new Intent(MainActivity.this,
+				LoginActivity.class));
+		MainActivity.this.finish();
+	}
+
 	/**
 	 * 设置侧拉菜单
 	 */
@@ -222,33 +253,11 @@ public class MainActivity extends BaseActivity implements
 		}
 		m_smMainMenu.showContent();
 	}
-
-	public void logout() {
-		LogoutApi.logout(new RequestListener() {
-
-			@Override
-			public void onComplete(Object result) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void onHttpError(CSTResponse response) {
-				L.i("logout onHttpError: " + response.getStatus());
-
-			}
-
-			@Override
-			public void onException(Exception e) {
-				// TODO Auto-generated method stub
-
-			}
-		});
-		DataManager.deleteCurrentUser();
-		CSTSettings.setAutoLogin(false, MainActivity.this);
-		MainActivity.this.startActivity(new Intent(MainActivity.this,
-				LoginActivity.class));
-		MainActivity.this.finish();
+	
+	private void requestGlobalData(){
+		GlobalDataCache.cacheCityList(null);
+		GlobalDataCache.cacheClassList(null);
+		GlobalDataCache.cacheMajorList(null);
 	}
 
 }
