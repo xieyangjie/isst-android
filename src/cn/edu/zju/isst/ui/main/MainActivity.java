@@ -20,6 +20,7 @@ import cn.edu.zju.isst.net.CSTResponse;
 import cn.edu.zju.isst.net.RequestListener;
 import cn.edu.zju.isst.settings.CSTSettings;
 import cn.edu.zju.isst.ui.contact.ContactListFragment;
+import cn.edu.zju.isst.ui.contact.ContactListFragment.FilterType;
 import cn.edu.zju.isst.ui.job.EmploymentListFragment;
 import cn.edu.zju.isst.ui.job.ExperienceListFragment;
 import cn.edu.zju.isst.ui.job.InternshipListFragment;
@@ -180,7 +181,7 @@ public class MainActivity extends BaseActivity implements
 			switchContent(DummyFragment.newInstance(CIAL.getName()));
 			break;
 		case CONT:
-			switchContent(ContactListFragment.getInstance());
+			switchContent(ContactListFragment.getInstance(FilterType.MY_CLASS));
 			break;
 		case USCE:
 			switchContent(UserCenterFragment.getInstance());

@@ -61,16 +61,20 @@ public class ContactListFragment extends Fragment {
 
 	private List<NoteBookItem> m_noteBookList = new ArrayList<NoteBookItem>();
 	private NoteBookadapter m_noteBookAdapter;
-
-	// 是否需要将获得用户列表写入数据库
-	boolean m_flag = true;
-
+	
+	public enum FilterType {
+		 MY_CLASS,MY_CITY,MY_FILTER
+	}
+	//表示实例的调用类型，显示本班还是本城市
+	private static FilterType m_ft;
+	
 	private static ContactListFragment INSTANCE = new ContactListFragment();
 
 	public ContactListFragment() {
 	}
 
-	public static ContactListFragment getInstance() {
+	public static ContactListFragment getInstance(FilterType ft) {
+		m_ft = ft;
 		return INSTANCE;
 	}
 
@@ -111,8 +115,11 @@ public class ContactListFragment extends Fragment {
 
 		m_handlerAlumniList = new HandlerAlumniList();
 
-		// 初始化数据
-		initDate();
+		//如果是筛选本班
+		if (m_ft == FilterType.MY_CLASS) {
+			// 初始化数据
+			initDate();
+		}
 
 		// 控件
 		m_lvAlumni = (ListView) view
@@ -151,7 +158,9 @@ public class ContactListFragment extends Fragment {
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		// TODO Auto-generated method stub
 		super.onCreateOptionsMenu(menu, inflater);
-		inflater.inflate(R.menu.alumni_list_fragment_ab_menu, menu);
+		if (m_ft == FilterType.MY_CLASS||m_ft == FilterType.MY_FILTER) {
+			inflater.inflate(R.menu.alumni_list_fragment_ab_menu, menu);
+		}
 	}
 
 	/*
@@ -290,7 +299,7 @@ public class ContactListFragment extends Fragment {
 	private void showFilterConditon() {
 		StringBuilder sb = new StringBuilder();
 
-		if (m_flag) {
+		if (m_ft == FilterType.MY_CLASS) {
 			sb.append(" 班级：" + "本班");
 		}
 		if (!J.isNullOrEmpty(m_userFilter.name)) {
@@ -328,7 +337,7 @@ public class ContactListFragment extends Fragment {
 			m_userFilter.clear();
 			m_userFilter = (ContactFilter) data.getExtras().getSerializable(
 					"data");
-			m_flag = false;
+			m_ft = FilterType.MY_FILTER;
 			getUserListFromApi(m_userFilter);
 
 			showFilterConditon();
@@ -342,7 +351,7 @@ public class ContactListFragment extends Fragment {
 			switch (msg.what) {
 			case STATUS_REQUEST_SUCCESS:
 				Collections.sort(m_listUser, new Pinyin4j.PinyinComparator());
-				if (m_flag) {
+				if (m_ft == FilterType.MY_CLASS) {
 					DataManager.syncClassMateList(m_listUser);
 				}
 				getNoteBookData();
