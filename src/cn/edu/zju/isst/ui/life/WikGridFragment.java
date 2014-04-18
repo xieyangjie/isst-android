@@ -227,7 +227,7 @@ public class WikGridFragment extends Fragment implements OnScrollListener {
 	private void initWikiList() {
 
 		List<Archive> dbWikiList = DataManager
-				.getCurrentWikiList(getActivity());
+				.getCurrentWikiList();
 		if (!m_listAchive.isEmpty()) {
 			m_listAchive.clear();
 		}
@@ -255,7 +255,7 @@ public class WikGridFragment extends Fragment implements OnScrollListener {
 			}
 			L.i(this.getClass().getName() + " refreshList: "
 					+ "Added archives to wikiList!");
-			DataManager.syncWikiList(m_listAchive, getActivity());
+			DataManager.syncWikiList(m_listAchive);
 		} catch (JSONException e) {
 			L.i(this.getClass().getName() + " refreshList!");
 			e.printStackTrace();

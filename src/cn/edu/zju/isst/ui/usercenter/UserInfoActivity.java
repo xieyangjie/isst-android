@@ -77,7 +77,7 @@ public class UserInfoActivity extends BaseActivity {
 	}
 
 	private void initUser() {
-		m_userCurrent = DataManager.getCurrentUser(UserInfoActivity.this);
+		m_userCurrent = DataManager.getCurrentUser();
 	}
 
 	private void showUserInfo() {

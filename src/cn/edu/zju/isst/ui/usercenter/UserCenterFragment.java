@@ -120,7 +120,7 @@ public class UserCenterFragment extends Fragment {
 	}
 
 	private void initUser() {
-		m_userCurrent = DataManager.getCurrentUser(getActivity());
+		m_userCurrent = DataManager.getCurrentUser();
 	}
 
 	private void show() {

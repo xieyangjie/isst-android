@@ -186,11 +186,11 @@ public class ContactListFragment extends Fragment {
 	 */
 	private void initDate() {
 		// 获取用户班级ID
-		User user = DataManager.getCurrentUser(getActivity());
+		User user = DataManager.getCurrentUser();
 		m_userFilter.classId = user.getClassId();
 
 		// 初始化通讯录列表
-		List<User> dbAlumniList = DataManager.getClassMateList(getActivity());
+		List<User> dbAlumniList = DataManager.getClassMateList();
 		if (!m_listUser.isEmpty()) {
 			m_listUser.clear();
 		}
@@ -212,7 +212,7 @@ public class ContactListFragment extends Fragment {
 	 */
 	private void requestData() {
 		if (NetworkConnection.isNetworkConnected(getActivity())) {
-			AlumniApi_getUserList(m_userFilter);
+			getUserList(m_userFilter);
 			AlumniApi.getCityList(new BaseListRequestListener(
 					m_handlerCityList, City.class, m_listCity));
 			AlumniApi.getMajorList(new BaseListRequestListener(
@@ -299,7 +299,7 @@ public class ContactListFragment extends Fragment {
 			Intent intent = new Intent(getActivity(),
 					ContactDetailActivity.class);
 			intent.putExtra("id", m_listUser.get(arg2).getId());
-			getActivity().startActivity(intent);
+			ContactListFragment.this.getActivity().startActivity(intent);
 		}
 	}
 
@@ -336,7 +336,7 @@ public class ContactListFragment extends Fragment {
 	/**
 	 * 调用AlumniApi.getUserList
 	 */
-	private void AlumniApi_getUserList(ContactFilter uf) {
+	private void getUserList(ContactFilter uf) {
 		AlumniApi.getUserList(uf.id, uf.name, uf.gender, uf.grade, uf.classId,
 				uf.majorId, uf.cityId, uf.company, new BaseListRequestListener(
 						m_handlerAlumniList, User.class, m_listUser));
@@ -349,7 +349,7 @@ public class ContactListFragment extends Fragment {
 			m_userFilter = (ContactFilter) data.getExtras().getSerializable(
 					"data");
 			m_flag = false;
-			AlumniApi_getUserList(m_userFilter);
+			getUserList(m_userFilter);
 			showFilterConditon();
 		}
 		super.onActivityResult(requestCode, resultCode, data);
@@ -362,7 +362,7 @@ public class ContactListFragment extends Fragment {
 			case STATUS_REQUEST_SUCCESS:
 				Collections.sort(m_listUser, new Pinyin4j.PinyinComparator());
 				if (m_flag) {
-					DataManager.syncClassMateList(m_listUser, getActivity());
+					DataManager.syncClassMateList(m_listUser);
 				}
 				getNoteBookData();
 				m_noteBookAdapter.notifyDataSetChanged();
@@ -382,7 +382,7 @@ public class ContactListFragment extends Fragment {
 			switch (msg.what) {
 			case STATUS_REQUEST_SUCCESS:
 				if (m_flag) {
-					DataManager.syncCityList(m_listCity, getActivity());
+					DataManager.syncCityList(m_listCity);
 				}
 				break;
 			case STATUS_NOT_LOGIN:
@@ -400,7 +400,7 @@ public class ContactListFragment extends Fragment {
 			switch (msg.what) {
 			case STATUS_REQUEST_SUCCESS:
 				if (m_flag) {
-					DataManager.syncMajorList(m_listMajors, getActivity());
+					DataManager.syncMajorList(m_listMajors);
 				}
 				break;
 			case STATUS_NOT_LOGIN:

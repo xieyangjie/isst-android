@@ -244,7 +244,7 @@ public class MainActivity extends BaseActivity implements
 
 			}
 		});
-		DataManager.deleteCurrentUser(MainActivity.this);
+		DataManager.deleteCurrentUser();
 		CSTSettings.setAutoLogin(false, MainActivity.this);
 		MainActivity.this.startActivity(new Intent(MainActivity.this,
 				LoginActivity.class));

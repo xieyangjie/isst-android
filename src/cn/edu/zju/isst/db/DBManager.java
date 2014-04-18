@@ -7,6 +7,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import cn.edu.zju.isst.MainApplication;
 import cn.edu.zju.isst.util.L;
 
 /**
@@ -19,16 +20,15 @@ public class DBManager {
 
 	private static final String MAIN_TABLE = "main";
 
-	private DBHelper helper;
 	private SQLiteDatabase db;
 
-	public DBManager(Context context) {
-
-		helper = new DBHelper(context);
-		db = helper.getWritableDatabase();
-		// 因为getWritableDatabase内部调用了mContext.openOrCreateDatabase(mName, 0,
-		// mFactory);
-		// 所以要确保context已初始化,我们可以把实例化DBManager的步骤放在Activity的onCreate里
+	private static DBManager INSTANCE = new DBManager();
+	
+	private DBManager() {
+	}
+	
+	public static DBManager getInstance(){
+		return INSTANCE;
 	}
 
 	/**
@@ -40,6 +40,7 @@ public class DBManager {
 	 *            记录数据
 	 */
 	public void insertOrUpdate(String name, byte[] data) {
+		db = DBHelper.getInstance().getWritableDatabase();
 		db.beginTransaction(); // 开始事务
 		try {
 			Cursor cursor = db.rawQuery("select * from " + MAIN_TABLE
@@ -48,12 +49,6 @@ public class DBManager {
 			if (cursor.getCount() == 0) {
 				cursor.close();
 				L.i("DB add!");
-				// String sql = "INSERT INTO main (name, object) VALUES(?,?)";
-				// SQLiteStatement insertStatement = db.compileStatement(sql);
-				// insertStatement.clearBindings();
-				// insertStatement.bindString(0, name);
-				// insertStatement.bindBlob(1, data);
-				// insertStatement.executeInsert();
 				ContentValues cv = new ContentValues();
 				cv.put("name", name);
 				cv.put("object", data);
@@ -96,6 +91,7 @@ public class DBManager {
 	}
 
 	public void delete(String name) {
+		db = DBHelper.getInstance().getWritableDatabase();
 		db.beginTransaction(); // 开始事务
 		try {
 			L.i("DB delete!");
@@ -122,6 +118,7 @@ public class DBManager {
 	 * @return 记录数据
 	 */
 	public byte[] get(String name) {
+		db = DBHelper.getInstance().getWritableDatabase();
 		byte[] data = null;
 		db.beginTransaction(); // 开始事务
 		try {

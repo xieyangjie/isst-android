@@ -58,7 +58,7 @@ public class BaseActivity extends Activity implements LoginSimulation,
 
 	@Override
 	public void updateLogin() {
-		User currentUser = DataManager.getCurrentUser(BaseActivity.this);
+		User currentUser = DataManager.getCurrentUser();
 		LoginApi.update(currentUser, 0.0, 0.0, new RequestListener() {
 
 			@Override
@@ -106,8 +106,7 @@ public class BaseActivity extends Activity implements LoginSimulation,
 					try {
 						DataManager.syncLogin(
 								new User(((JSONObject) msg.obj)
-										.getJSONObject("body")),
-								BaseActivity.this);
+										.getJSONObject("body")));
 					} catch (JSONException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
