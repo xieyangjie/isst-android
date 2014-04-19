@@ -35,6 +35,7 @@ import cn.edu.zju.isst.ui.login.LoginActivity;
 import cn.edu.zju.isst.ui.usercenter.UserCenterFragment;
 import cn.edu.zju.isst.util.L;
 import cn.edu.zju.isst.util.T;
+import cn.edu.zuj.isst.ui.city.CastellanFragment;
 
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
@@ -175,7 +176,7 @@ public class MainActivity extends BaseActivity implements
 			switchContent(ExperienceListFragment.getInstance());
 			break;
 		case CIMA:
-			switchContent(DummyFragment.newInstance(CIMA.getName()));
+			switchContent(CastellanFragment.GetInstance());
 			break;
 		case CIAC:
 			switchContent(DummyFragment.newInstance(CIAC.getName()));

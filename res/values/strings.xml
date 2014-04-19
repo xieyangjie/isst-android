@@ -27,6 +27,8 @@
     <string name="filter_filter_conditon">筛选条件:</string>
     <string name="cancel">取消</string>
     
+    <string name="castellan_fragment_city">城市</string>
+    
     <string name="contact_detail_mobile">手机</string>
     <string name="contact_detail_email">Email</string>
     <string name="contact_detail_city">所在城市</string>

@@ -435,5 +435,4 @@ public class ContactListFragment extends Fragment {
         } 
         return cityName; 
     } 
-	
 }
