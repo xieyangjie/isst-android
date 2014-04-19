@@ -40,7 +40,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import cn.edu.zju.isst.R;
 import cn.edu.zju.isst.api.AlumniApi;
-import cn.edu.zju.isst.db.City;
 import cn.edu.zju.isst.db.DataManager;
 import cn.edu.zju.isst.db.User;
 import cn.edu.zju.isst.exception.ExceptionWeeder;
@@ -61,7 +60,6 @@ import cn.edu.zju.isst.util.L;
 public class ContactListFragment extends Fragment {
 
 	private final List<User> m_listUser = new ArrayList<User>();
-	private final List<City> m_listCity = new ArrayList<City>();
 	
 	private HandlerAlumniList m_handlerAlumniList;
 
@@ -100,11 +98,6 @@ public class ContactListFragment extends Fragment {
 		this.m_ft = m_ft;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see android.support.v4.app.Fragment#onCreate(android.os.Bundle)
-	 */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -112,25 +105,12 @@ public class ContactListFragment extends Fragment {
 		setHasOptionsMenu(true);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * android.support.v4.app.ListFragment#onCreateView(android.view.LayoutInflater
-	 * , android.view.ViewGroup, android.os.Bundle)
-	 */
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		return inflater.inflate(R.layout.contact_list_fragment, null);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see android.support.v4.app.ListFragment#onViewCreated(android.view.View,
-	 * android.os.Bundle)
-	 */
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
@@ -153,10 +133,9 @@ public class ContactListFragment extends Fragment {
 		}
 		//筛选同城
 		else if (m_ft == FilterType.MY_CITY) {
-			String cityNameString = getCityName(getActivity());
-			L.i("yyy city" + cityNameString );
-			m_userFilter.cityString = cityNameString;
-			m_userFilter.cityId = getCityId(cityNameString);
+			m_userFilter.cityId = DataManager.getCurrentUser().getCityId();
+			L.i("yyy" + m_userFilter.cityId);
+			m_userFilter.cityString = "同城";
 			getUserListFromApi(m_userFilter);
 		}
 		
@@ -170,11 +149,6 @@ public class ContactListFragment extends Fragment {
 		showFilterConditon();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see android.support.v4.app.Fragment#onActivityCreated(android.os.Bundle)
-	 */
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -182,13 +156,6 @@ public class ContactListFragment extends Fragment {
 
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * android.support.v4.app.Fragment#onCreateOptionsMenu(android.view.Menu,
-	 * android.view.MenuInflater)
-	 */
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		// TODO Auto-generated method stub
@@ -198,13 +165,6 @@ public class ContactListFragment extends Fragment {
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * android.support.v4.app.Fragment#onOptionsItemSelected(android.view.MenuItem
-	 * )
-	 */
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
@@ -407,10 +367,10 @@ public class ContactListFragment extends Fragment {
 		public void onClick(View v) {
 			//清空筛选条件
 			m_userFilter.clear();
+			showFilterConditon();
 			m_ft = FilterType.MY_CLASS;
 			initDate();
 			m_noteBookAdapter.notifyDataSetChanged();
-			showFilterConditon();
 			HideClearFilterButtonOrNot();
 		}
 		
@@ -476,22 +436,4 @@ public class ContactListFragment extends Fragment {
         return cityName; 
     } 
 	
-	private void getCityList() {
-		List<City> dbList = DataManager.getCityList();
-		if (!J.isNullOrEmpty(dbList)) {
-			for (City city : dbList) {
-				m_listCity.add(city);
-			}
-		}
-	}
-	
-	private int getCityId(String cityName) {
-		getCityList();
-		for (City city : m_listCity) {
-			if (city.getName().compareTo(cityName) == 0) {
-				return m_userFilter.cityId = city.getId();
-			}
-		}
-		return 0;
-	}
 }

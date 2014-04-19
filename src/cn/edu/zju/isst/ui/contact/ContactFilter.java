@@ -18,12 +18,10 @@ public class ContactFilter  implements Serializable{
 	public int grade;
 	public int classId;
 	public String major;
-//	public int majorId;
 	public int cityId;
 	public String company;
 	//以下是现实的字符串
 	public String genderString;
-//	public String majorString;
 	public String cityString;
 	public ContactFilter() {
 		clear();
