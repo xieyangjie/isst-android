@@ -19,6 +19,7 @@ import android.view.View.OnClickListener;
 import android.webkit.WebSettings;
 import android.webkit.WebSettings.LayoutAlgorithm;
 import android.webkit.WebView;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -41,7 +42,7 @@ import cn.edu.zju.isst.util.TimeString;
  * 
  *         TODO WIP
  */
-public class JobDetailActivity extends BaseActivity {
+public class RecommendDetailActivity extends BaseActivity {
 
 	/**
 	 * 归档id
@@ -56,14 +57,7 @@ public class JobDetailActivity extends BaseActivity {
 	private TextView m_txvPublisher;
 	private WebView m_webvContent;
 	private ImageView m_imgBtnPublisher;
-
-	// Activity需要工厂方法吗？
-	// public JobDetailActivity(){
-	// }
-	//
-	// public static JobDetailActivity newInstance(){
-	// return new JobDetailActivity();
-	// }
+	private Button m_BtnCommened;
 
 	/*
 	 * (non-Javadoc)
@@ -73,7 +67,7 @@ public class JobDetailActivity extends BaseActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.job_detail_activity);
+		setContentView(R.layout.job_recommend_detail_activity);
 		initComponent();
 
 		ActionBar actionBar = getActionBar();
@@ -173,7 +167,7 @@ public class JobDetailActivity extends BaseActivity {
 			// MainActivity.class);
 			// intentParent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			// JobDetailActivity.this.startActivity(intentParent);
-			JobDetailActivity.this.finish();
+			RecommendDetailActivity.this.finish();
 			return true;
 		}
 
@@ -191,13 +185,14 @@ public class JobDetailActivity extends BaseActivity {
 		m_txvPublisher = (TextView) findViewById(R.id.job_detail_activity_publisher_txv);
 		m_webvContent = (WebView) findViewById(R.id.job_detail_activity_content_webv);
 		m_imgBtnPublisher = (ImageButton) findViewById(R.id.job_detail_activity_publisher_btn);
-
+		m_BtnCommened = (Button) findViewById(R.id.job_recommend_imgbtn);
+		
 		m_imgBtnPublisher.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				Intent intent = new Intent(JobDetailActivity.this,
+				Intent intent = new Intent(RecommendDetailActivity.this,
 						ContactDetailActivity.class);
 				int id = -1;
 				if (!J.isNullOrEmpty(m_jobCurrent)) {
@@ -206,6 +201,21 @@ public class JobDetailActivity extends BaseActivity {
 				intent.putExtra("id", id);
 				startActivity(intent);
 			}
+		});
+		
+		m_BtnCommened.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent(RecommendDetailActivity.this,
+						JobCommentListActivity.class);
+				int id = -1;
+				if (!J.isNullOrEmpty(m_jobCurrent)) {
+					id = m_jobCurrent.getId();
+				}
+				intent.putExtra("id", id);
+				startActivity(intent);			}
 		});
 		WebSettings settings = m_webvContent.getSettings();
 		settings.setUseWideViewPort(true);

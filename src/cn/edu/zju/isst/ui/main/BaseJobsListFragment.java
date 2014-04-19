@@ -39,6 +39,7 @@ import cn.edu.zju.isst.net.CSTResponse;
 import cn.edu.zju.isst.net.NetworkConnection;
 import cn.edu.zju.isst.net.RequestListener;
 import cn.edu.zju.isst.ui.job.JobDetailActivity;
+import cn.edu.zju.isst.ui.job.RecommendDetailActivity;
 import cn.edu.zju.isst.util.J;
 import cn.edu.zju.isst.util.L;
 import cn.edu.zju.isst.util.TimeString;
@@ -175,6 +176,9 @@ public class BaseJobsListFragment extends ListFragment implements
 		L.i(this.getClass().getName() + " onListItemClick postion = "
 				+ position);
 		Intent intent = new Intent(getActivity(), JobDetailActivity.class);
+		if (m_jobCategory == JobCategory.RECOMMEND) {
+			intent = new Intent(getActivity(), RecommendDetailActivity.class);
+		}
 		intent.putExtra("id", m_listAchive.get(position).getId());
 		getActivity().startActivity(intent);
 	}

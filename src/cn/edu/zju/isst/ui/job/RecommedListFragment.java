@@ -12,16 +12,16 @@ import cn.edu.zju.isst.ui.main.BaseJobsListFragment;
  * @author theasir
  * 
  */
-public class RecommentListFragment extends BaseJobsListFragment {
+public class RecommedListFragment extends BaseJobsListFragment {
 
-	private static RecommentListFragment INSTANCE = new RecommentListFragment();
+	private static RecommedListFragment INSTANCE = new RecommedListFragment();
 
-	public RecommentListFragment() {
+	public RecommedListFragment() {
 		super();
 		super.setJobCategory(JobCategory.RECOMMEND);
 	}
 
-	public static RecommentListFragment getInstance() {
+	public static RecommedListFragment getInstance() {
 		return INSTANCE;
 	}
 }

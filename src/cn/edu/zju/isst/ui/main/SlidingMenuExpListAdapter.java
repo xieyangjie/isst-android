@@ -5,12 +5,18 @@ package cn.edu.zju.isst.ui.main;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Vector;
 
 import cn.edu.zju.isst.R;
+import cn.edu.zju.isst.util.L;
+import cn.edu.zju.isst.constant.Constants;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
@@ -29,6 +35,7 @@ public class SlidingMenuExpListAdapter extends BaseExpandableListAdapter {
 	private List<String> m_listGroupNames;
 	private Map<String, List<String>> m_mapGroupCollection;
 	private SELECTED m_selectedIndex;
+	private Vector<Vector<String>> m_expListResourse;
 
 	/**
 	 * 
@@ -39,6 +46,8 @@ public class SlidingMenuExpListAdapter extends BaseExpandableListAdapter {
 		this.m_listGroupNames = groupNames;
 		this.m_mapGroupCollection = groupCollection;
 		this.m_selectedIndex = new SELECTED();
+		this.m_expListResourse = new Vector<Vector<String>>();
+		initResourceVector();
 	}
 
 	/*
@@ -143,11 +152,12 @@ public class SlidingMenuExpListAdapter extends BaseExpandableListAdapter {
 				mainImage.setImageResource(R.drawable.ic_not_expand);
 			}
 		} else {
-			mainImage.setVisibility(View.GONE);
+			Drawable drawable = getDrawableSource((m_expListResourse
+					.elementAt(groupPosition)).elementAt(0));
+			mainImage.setImageDrawable(drawable);
 			if (m_selectedIndex.groupIndex == groupPosition) {
 				tempView.setBackgroundColor(Color.BLUE);
 			}
-			// L.i("CarpeDiem", "groupIndex =" + m_selectedIndex.groupIndex);
 		}
 		return tempView;
 	}
@@ -169,7 +179,13 @@ public class SlidingMenuExpListAdapter extends BaseExpandableListAdapter {
 		}
 		TextView subNav = (TextView) convertView
 				.findViewById(R.id.sm_child_item_nav);
+		ImageView imgView = (ImageView) convertView
+				.findViewById(R.id.sm_child_item_img);
+
 		subNav.setText(nav);
+		Drawable drawable = getDrawableSource((m_expListResourse
+				.elementAt(groupPosition)).elementAt(childPosition));
+		imgView.setImageDrawable(drawable);
 		if (groupPosition == m_selectedIndex.groupIndex
 				&& childPosition == m_selectedIndex.childIndex) {
 			convertView.setBackgroundColor(Color.BLUE);
@@ -195,6 +211,40 @@ public class SlidingMenuExpListAdapter extends BaseExpandableListAdapter {
 
 	public void setChildIndex(int childIndex) {
 		this.m_selectedIndex.setChildIndex(childIndex);
+	}
+
+	/*
+	 * 初始化侧拉栏资源二维数组
+	 */
+	@SuppressLint("UseValueOf")
+	private void initResourceVector() {
+		// TODO Auto-generated method stub
+		int groupIndex = 0, childIndex = 0, groupCount, childCount;
+		Vector<String> tempVector = new Vector<String>();
+		groupCount = getGroupCount();
+
+		for (groupIndex = 0; groupIndex < groupCount; groupIndex++) {
+			childCount = getChildrenCount(groupIndex);
+			// childIndex = 0 时而childcount ＝ 0时，也需要加载资源
+			for (childIndex = 0; childIndex < childCount || childIndex == 0; childIndex++) {
+				String resName = "ic_explist_0_0";// 暂时写死，有了资源后调整"ic_explist_"+groupIndex
+													// +"_" + childIndex;
+				tempVector.add(resName);
+			}
+			if (!tempVector.isEmpty()) {
+				m_expListResourse.add(tempVector);
+
+			}
+
+		}
+	}
+
+	private Drawable getDrawableSource(String resName) {
+		Resources resources = m_actiContext.getResources();
+
+		Drawable drawable = resources.getDrawable(resources.getIdentifier(
+				resName, "drawable", Constants.PACKAGE_NAME));
+		return drawable;
 	}
 
 	public class SELECTED {

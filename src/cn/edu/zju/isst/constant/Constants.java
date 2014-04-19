@@ -86,5 +86,15 @@ public final class Constants {
 	 * HTTP请求超时
 	 */
 	public static final int HTTP_CONNECT_TIMEOUT = 10000;
-
+	
+	/**
+	 * 包名
+	 */
+	public static final String PACKAGE_NAME = "cn.edu.zju.isst";
+	
+	/**
+	 * 发布者
+	 */
+	public static final String PUBLISHER_NAME = "发布者：";
+	
 }

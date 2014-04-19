@@ -14,7 +14,7 @@ import cn.edu.zju.isst.db.DataManager;
 public enum JobCategory {
 
 	EMPLOYMENT("employment", DataManager.EMPLOYMENT_LIST__IN_DB), INTERNSHIP("internship",
-			DataManager.INTERNSHIP_LIST_IN_DB), RECOMMEND("recommand",
+			DataManager.INTERNSHIP_LIST_IN_DB), RECOMMEND("recommend",
 			DataManager.RECOMMEND_LIST_IN_DB);
 
 	private String subUrl;
