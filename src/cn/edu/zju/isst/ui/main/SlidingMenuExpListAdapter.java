@@ -158,7 +158,6 @@ public class SlidingMenuExpListAdapter extends BaseExpandableListAdapter {
 			if (m_selectedIndex.groupIndex == groupPosition) {
 				tempView.setBackgroundColor(Color.BLUE);
 			}
-			L.i("CarpeDiem", "groupIndex =" + m_selectedIndex.groupIndex);
 		}
 		return tempView;
 	}

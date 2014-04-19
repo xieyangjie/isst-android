@@ -19,6 +19,7 @@ import android.view.View.OnClickListener;
 import android.webkit.WebSettings;
 import android.webkit.WebSettings.LayoutAlgorithm;
 import android.webkit.WebView;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -56,6 +57,7 @@ public class RecommendDetailActivity extends BaseActivity {
 	private TextView m_txvPublisher;
 	private WebView m_webvContent;
 	private ImageView m_imgBtnPublisher;
+	private Button m_BtnCommened;
 
 	/*
 	 * (non-Javadoc)
@@ -183,7 +185,8 @@ public class RecommendDetailActivity extends BaseActivity {
 		m_txvPublisher = (TextView) findViewById(R.id.job_detail_activity_publisher_txv);
 		m_webvContent = (WebView) findViewById(R.id.job_detail_activity_content_webv);
 		m_imgBtnPublisher = (ImageButton) findViewById(R.id.job_detail_activity_publisher_btn);
-
+		m_BtnCommened = (Button) findViewById(R.id.job_recommend_imgbtn);
+		
 		m_imgBtnPublisher.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -198,6 +201,21 @@ public class RecommendDetailActivity extends BaseActivity {
 				intent.putExtra("id", id);
 				startActivity(intent);
 			}
+		});
+		
+		m_BtnCommened.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent(RecommendDetailActivity.this,
+						JobCommentListActivity.class);
+				int id = -1;
+				if (!J.isNullOrEmpty(m_jobCurrent)) {
+					id = m_jobCurrent.getId();
+				}
+				intent.putExtra("id", id);
+				startActivity(intent);			}
 		});
 		WebSettings settings = m_webvContent.getSettings();
 		settings.setUseWideViewPort(true);

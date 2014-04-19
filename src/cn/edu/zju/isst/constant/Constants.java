@@ -96,5 +96,5 @@ public final class Constants {
 	 * 发布者
 	 */
 	public static final String PUBLISHER_NAME = "发布者：";
-
+	
 }

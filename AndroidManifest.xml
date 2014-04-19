@@ -54,6 +54,11 @@
         </activity>
         
         <activity
+            android:name=".ui.job.JobCommentListActivity"
+            android:label="@string/app_name" >
+         </activity>
+        
+        <activity
             android:name=".ui.life.CampusActivityDetailActivity"
             android:label="@string/app_name" >
         </activity>

@@ -117,6 +117,7 @@ public class BaseArchiveListFragment extends ListFragment implements
 		setUpAdapter();
 
 		setUpListener();
+		
 
 		m_ptrView.setOnRefreshListener(new PullToRefreshListener() {
 
