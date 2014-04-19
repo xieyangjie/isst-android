@@ -294,13 +294,11 @@ public class WikGridFragment extends Fragment implements OnScrollListener {
 			switch (type) {// TODO 刷新策略
 			case REFRESH:
 				// 设置刷新策略，一次性加载最新若干条
-				ArchiveApi.getWikiList(null, 10, null,
-						new WikiListRequestListener(type));
-				ArchiveApi.getWikiList(null, 10, null,
+				ArchiveApi.getWikiList(1, 10, "",
 						new WikiListRequestListener(type));
 				break;
 			case LOADMORE:
-				ArchiveApi.getWikiList(null, 5, null,
+				ArchiveApi.getWikiList(1, 5, "",
 						new WikiListRequestListener(type));
 				break;
 			default:

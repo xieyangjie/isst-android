@@ -15,7 +15,6 @@ import cn.edu.zju.isst.R;
 import cn.edu.zju.isst.api.LogoutApi;
 import cn.edu.zju.isst.constant.Nav;
 import cn.edu.zju.isst.db.DataManager;
-import cn.edu.zju.isst.db.GlobalDataCache;
 import cn.edu.zju.isst.dummy.DummyFragment;
 import cn.edu.zju.isst.net.CSTResponse;
 import cn.edu.zju.isst.net.RequestListener;

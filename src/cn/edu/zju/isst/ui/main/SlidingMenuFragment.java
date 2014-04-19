@@ -10,22 +10,15 @@ import java.util.Map;
 
 import android.app.Activity;
 import android.app.Fragment;
-import cn.edu.zju.isst.R;
-import cn.edu.zju.isst.constant.Nav;
-import cn.edu.zju.isst.constant.NavGroup;
-import cn.edu.zju.isst.ui.main.SlidingMenuExpListAdapter.SELECTED;
-import cn.edu.zju.isst.util.J;
-import cn.edu.zju.isst.util.L;
-import android.R.integer;
-import android.app.Activity;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ExpandableListView;
-import android.widget.ListView;
+import cn.edu.zju.isst.R;
+import cn.edu.zju.isst.constant.Nav;
+import cn.edu.zju.isst.constant.NavGroup;
+import cn.edu.zju.isst.util.L;
 
 /**
  * 侧拉菜单Fragment类

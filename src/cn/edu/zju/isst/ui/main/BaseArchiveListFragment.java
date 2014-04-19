@@ -11,6 +11,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.annotation.SuppressLint;
 import android.app.ListFragment;
 import android.content.Context;
 import android.content.Intent;
@@ -127,7 +128,7 @@ public class BaseArchiveListFragment extends ListFragment implements
 		}, 0);
 		
 		if (m_bIsFirstTime) {
-			requestData(LoadType.REFRESH);
+//			requestData(LoadType.REFRESH);
 			m_bIsFirstTime = false;
 		}
 	}
@@ -153,7 +154,7 @@ public class BaseArchiveListFragment extends ListFragment implements
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		super.onCreateOptionsMenu(menu, inflater);
-		inflater.inflate(R.menu.news_list_fragment_ab_menu, menu);
+//		inflater.inflate(R.menu.news_list_fragment_ab_menu, menu);
 	}
 
 	/*
@@ -166,9 +167,6 @@ public class BaseArchiveListFragment extends ListFragment implements
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-		case R.id.action_refresh:
-			requestData(LoadType.REFRESH);
-			return true;
 		default:
 			return super.onOptionsItemSelected(item);
 		}
@@ -226,6 +224,7 @@ public class BaseArchiveListFragment extends ListFragment implements
 		}
 	}
 
+	@SuppressLint("HandlerLeak")
 	protected void initHandler() {
 		m_handlerArchiveList = new Handler() {
 

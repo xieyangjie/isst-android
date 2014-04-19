@@ -3,25 +3,41 @@
  */
 package cn.edu.zju.isst.ui.usercenter;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.ActionBar;
+import android.app.ProgressDialog;
+import android.content.Intent;
+import android.database.DataSetObserver;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ProgressBar;
+import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 import cn.edu.zju.isst.R;
 import cn.edu.zju.isst.api.UserApi;
+import cn.edu.zju.isst.db.City;
 import cn.edu.zju.isst.db.DataManager;
 import cn.edu.zju.isst.db.User;
 import cn.edu.zju.isst.net.CSTResponse;
 import cn.edu.zju.isst.net.RequestListener;
+import cn.edu.zju.isst.ui.login.LoginActivity;
 import cn.edu.zju.isst.ui.main.BaseActivity;
 import cn.edu.zju.isst.util.CM;
+import cn.edu.zju.isst.util.J;
 import static cn.edu.zju.isst.constant.Constants.*;
 
 /**
@@ -31,10 +47,13 @@ import static cn.edu.zju.isst.constant.Constants.*;
 public class UserInfoEditActivity extends BaseActivity {
 
 	private User m_userCurrent;
+	private List<City> m_listCity = new ArrayList<City>();
+	private List<String> m_listCityString = new ArrayList<String>();
 	private Handler m_handler;
-	
+
 	private Button m_btnDone;
 	private Button m_btnCancel;
+	private Spinner m_spnCity;
 	private EditText m_edtxEmail;
 	private EditText m_edtxPhone;
 	private EditText m_edtxQq;
@@ -46,6 +65,7 @@ public class UserInfoEditActivity extends BaseActivity {
 	private CheckBox m_chbPublicQq;
 	private CheckBox m_chbPublicCompany;
 	private CheckBox m_chbPublicPosition;
+	private ProgressDialog m_pgdWating;
 
 	/*
 	 * (non-Javadoc)
@@ -64,7 +84,11 @@ public class UserInfoEditActivity extends BaseActivity {
 		initUser();
 
 		initHandler();
-		
+
+		initCityList();
+
+		initSpanner(m_spnCity, m_listCityString);
+
 		setUpListener();
 
 		bindData();
@@ -86,6 +110,8 @@ public class UserInfoEditActivity extends BaseActivity {
 		m_btnCancel = (Button) getActionBarView().findViewById(
 				R.id.user_info_edit_custom_actionbar_action_cancel_btn);
 
+		m_spnCity = (Spinner) findViewById(R.id.user_info_edit_activity_city_spn);
+
 		m_edtxEmail = (EditText) findViewById(R.id.user_info_edit_activity_email_edtx);
 		m_edtxPhone = (EditText) findViewById(R.id.user_info_edit_activity_phone_edtx);
 		m_edtxQq = (EditText) findViewById(R.id.user_info_edit_activity_qq_edtx);
@@ -104,26 +130,32 @@ public class UserInfoEditActivity extends BaseActivity {
 				.getSerializableExtra("currentUser") : DataManager
 				.getCurrentUser();
 	}
-	
-	private void initHandler(){
-		m_handler = new Handler(){
 
-			/* (non-Javadoc)
+	private void initHandler() {
+		m_handler = new Handler() {
+
+			/*
+			 * (non-Javadoc)
+			 * 
 			 * @see android.os.Handler#handleMessage(android.os.Message)
 			 */
 			@Override
 			public void handleMessage(Message msg) {
 				switch (msg.what) {
 				case STATUS_REQUEST_SUCCESS:
-					CM.showConfirm(UserInfoEditActivity.this, "success");
-					DataManager.syncCurrentUser(m_userCurrent);
+					complete();
 					break;
-
+				case STATUS_NOT_LOGIN:
+					updateLogin();
+					sendRequest(m_userCurrent);
+					break;
 				default:
+					m_pgdWating.dismiss();
+					dispose(msg);
 					break;
 				}
 			}
-			
+
 		};
 	}
 
@@ -132,9 +164,18 @@ public class UserInfoEditActivity extends BaseActivity {
 
 			@Override
 			public void onClick(View v) {
-				if (isValidEmail() && isValidPhone()) {
+				if (isValidEmail(m_edtxEmail.getText().toString())
+						&& isValidPhone(m_edtxPhone.getText().toString())) {
+					m_pgdWating = ProgressDialog.show(
+							UserInfoEditActivity.this,
+							getString(R.string.loading),
+							getString(R.string.please_wait), true, false);
 					retriveData();
 					sendRequest(m_userCurrent);
+				} else if (!isValidEmail(m_edtxEmail.getText().toString())) {
+					CM.showInfo(UserInfoEditActivity.this, "请输入有效的电子邮箱地址！");
+				} else {
+					CM.showInfo(UserInfoEditActivity.this, "请输入有效的移动电话号码！");
 				}
 			}
 		});
@@ -143,13 +184,34 @@ public class UserInfoEditActivity extends BaseActivity {
 
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
-
+				cancel();
 			}
 		});
 	}
 
+	private void initSpanner(Spinner spanner, List<String> list) {
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+				android.R.layout.simple_spinner_item, list);
+
+		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+		spanner.setAdapter(adapter);
+	}
+
+	private void initCityList() {
+		List<City> dbList = DataManager.getCityList();
+		if (!J.isNullOrEmpty(dbList)) {
+			for (City city : dbList) {
+				m_listCity.add(city);
+				m_listCityString.add(city.getName());
+			}
+		}
+		m_listCityString.add("其他");
+	}
+
 	private void bindData() {
+		m_spnCity.setSelection(getPositionForCityId(m_userCurrent.getCityId()));
+
 		m_edtxEmail.setText(m_userCurrent.getEmail());
 		m_edtxPhone.setText(m_userCurrent.getPhone());
 		m_edtxQq.setText(m_userCurrent.getQq());
@@ -165,6 +227,11 @@ public class UserInfoEditActivity extends BaseActivity {
 	}
 
 	private void retriveData() {
+		m_userCurrent
+				.setCityId(m_spnCity.getSelectedItemPosition() < m_listCity
+						.size() ? m_listCity.get(
+						m_spnCity.getSelectedItemPosition()).getId() : 0);
+
 		m_userCurrent.setEmail(m_edtxEmail.getText().toString());
 		m_userCurrent.setPhone(m_edtxPhone.getText().toString());
 		m_userCurrent.setQq(m_edtxQq.getText().toString());
@@ -186,7 +253,7 @@ public class UserInfoEditActivity extends BaseActivity {
 			public void onComplete(Object result) {
 				Message msg = m_handler.obtainMessage();
 				try {
-					final int status = ((JSONObject)result).getInt("status");
+					final int status = ((JSONObject) result).getInt("status");
 					msg.what = status;
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
@@ -210,11 +277,41 @@ public class UserInfoEditActivity extends BaseActivity {
 		});
 	}
 
-	private boolean isValidEmail() {
-		return true;
+	private void complete() {
+		DataManager.syncCurrentUser(m_userCurrent);
+
+		m_pgdWating.dismiss();
+
+		Intent intent = new Intent();
+		intent.putExtra("updatedUser", m_userCurrent);
+		setResult(UserInfoActivity.RESULT_CODE_DONE, intent);
+		UserInfoEditActivity.this.finish();
 	}
 
-	private boolean isValidPhone() {
-		return true;
+	private void cancel() {
+		setResult(UserInfoActivity.RESULT_CODE_CANCEL, null);
+		UserInfoEditActivity.this.finish();
+	}
+
+	private boolean isValidEmail(String email) {
+		Pattern pattern = Pattern
+				.compile("^\\w+([-.]\\w+)*@\\w+([-]\\w+)*\\.(\\w+([-]\\w+)*\\.)*[a-z]{2,3}$");
+		Matcher matcher = pattern.matcher(email);
+		return matcher.matches();
+	}
+
+	private boolean isValidPhone(String phone) {
+		Pattern pattern = Pattern.compile("^13\\d{9}||15\\d{9}||18\\d{9}$");
+		Matcher matcher = pattern.matcher(phone);
+		return matcher.matches();
+	}
+
+	private int getPositionForCityId(int cityId) {
+		for (int i = 0; i < m_listCity.size(); i++) {
+			if (cityId == m_listCity.get(i).getId()) {
+				return i;
+			}
+		}
+		return m_listCity.size();
 	}
 }

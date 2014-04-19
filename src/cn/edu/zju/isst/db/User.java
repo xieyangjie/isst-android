@@ -305,6 +305,13 @@ public class User implements Serializable {
 	}
 
 	/**
+	 * @param cityId the cityId to set
+	 */
+	public void setCityId(int cityId) {
+		this.cityId = cityId;
+	}
+
+	/**
 	 * @param email the email to set
 	 */
 	public void setEmail(String email) {

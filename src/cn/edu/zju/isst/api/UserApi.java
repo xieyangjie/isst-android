@@ -19,6 +19,7 @@ public class UserApi extends CSTApi {
 
 	public static void update(User currentUser, RequestListener listener) {
 		Map<String, String> paramsMap = new HashMap<String, String>();
+		paramsMap.put("cityId", "" + currentUser.getCityId());
 		paramsMap.put("email", currentUser.getEmail());
 		paramsMap.put("phone", currentUser.getPhone());
 		paramsMap.put("qq", currentUser.getQq());
@@ -30,7 +31,7 @@ public class UserApi extends CSTApi {
 		paramsMap.put("privatePhone", "" + currentUser.isPrivatePhone());
 		paramsMap.put("privateCompany", "" + currentUser.isPrivateCompany());
 		paramsMap.put("privatePosition", "" + currentUser.isPrivatePosition());
-		
+
 		request("POST", SUB_URL, paramsMap, listener);
 	}
 }

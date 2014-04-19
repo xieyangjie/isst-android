@@ -4,79 +4,53 @@
     android:versionName="1.0" >
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-	<uses-permission android:name="android.permission.INTERNET" />
-	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
-    <uses-permission android:name="android.permission.CALL_PHONE"/>
-    
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+
     <uses-sdk
         android:minSdkVersion="14"
         android:targetSdkVersion="19" />
 
     <application
+        android:name=".MainApplication"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:name=".MainApplication" android:theme="@android:style/Theme.Holo.Light.DarkActionBar">
-        <activity
-            android:name=".ui.loading.LoadingActivity"
-            android:label="@string/app_name" >
+        android:theme="@android:style/Theme.Holo.Light.DarkActionBar" >
+        <activity android:name=".ui.loading.LoadingActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        
         <activity
             android:name=".ui.login.LoginActivity"
             android:label="@string/app_name" >
         </activity>
-        
         <activity
             android:name=".ui.main.MainActivity"
-            android:label="@string/app_name" >
+            android:icon="@drawable/ic_home_sm"
+            android:theme="@style/TransIndicatorTheme" >
         </activity>
-        
-        <activity
-            android:name=".ui.life.ArchiveDetailActivity"
-            android:label="@string/app_name" >
+        <activity android:name=".ui.life.ArchiveDetailActivity" >
         </activity>
-        
-        <activity
-            android:name=".ui.job.JobDetailActivity"
-            android:label="@string/app_name" >
+        <activity android:name=".ui.job.JobDetailActivity" >
         </activity>
-        
-        <activity
-            android:name=".ui.life.CampusActivityDetailActivity"
-            android:label="@string/app_name" >
+        <activity android:name=".ui.life.CampusActivityDetailActivity" >
         </activity>
-        
-        <activity
-            android:name=".ui.life.RestaurantDetailActivity"
-            android:label="@string/app_name" >
+        <activity android:name=".ui.life.RestaurantDetailActivity" >
         </activity>
-        
-        <activity
-            android:name=".ui.usercenter.UserInfoActivity"
-            android:label="@string/app_name" >
+        <activity android:name=".ui.usercenter.UserInfoActivity" >
         </activity>
-        
-        <activity android:name=".ui.usercenter.UserInfoEditActivity" />
-        
-        <activity
-            android:name=".ui.contact.ContactDetailActivity"
-            android:label="@string/app_name" >
+        <activity android:name=".ui.usercenter.UserInfoEditActivity" >
         </activity>
-        
-        <activity
-            android:name=".ui.contact.ContactFilterActivity"
-            android:label="@string/app_name"
-            android:windowSoftInputMode="stateHidden|stateUnspecified" >
+        <activity android:name=".ui.contact.ContactDetailActivity" >
+        </activity>
+        <activity android:name=".ui.contact.ContactFilterActivity" >
         </activity>
     </application>
-    
-    
 
 </manifest>

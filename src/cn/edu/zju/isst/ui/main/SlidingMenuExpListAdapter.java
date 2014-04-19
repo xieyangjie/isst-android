@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 
 import cn.edu.zju.isst.R;
-import cn.edu.zju.isst.util.L;
 
 import android.app.Activity;
 import android.graphics.Color;

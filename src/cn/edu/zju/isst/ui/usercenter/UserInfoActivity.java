@@ -14,6 +14,7 @@ import cn.edu.zju.isst.R;
 import cn.edu.zju.isst.db.DataManager;
 import cn.edu.zju.isst.db.User;
 import cn.edu.zju.isst.ui.main.BaseActivity;
+import cn.edu.zju.isst.util.CM;
 
 /**
  * @author theasir
@@ -23,7 +24,8 @@ public class UserInfoActivity extends BaseActivity {
 
 	public static final int REQUEST_CODE_EDIT = 0x01;
 	public static final int RESULT_CODE_DONE = 0x10;
-	
+	public static final int RESULT_CODE_CANCEL = 0x20;
+
 	private User m_userCurrent;
 	private final ViewHolder m_viewHolder = new ViewHolder();
 
@@ -45,11 +47,14 @@ public class UserInfoActivity extends BaseActivity {
 
 		initUser();
 
-		showUserInfo(m_userCurrent);
+		bindData(m_userCurrent);
 	}
-	
-	/* (non-Javadoc)
-	 * @see android.app.Activity#onActivityResult(int, int, android.content.Intent)
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.app.Activity#onActivityResult(int, int,
+	 * android.content.Intent)
 	 */
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -57,7 +62,11 @@ public class UserInfoActivity extends BaseActivity {
 		case REQUEST_CODE_EDIT:
 			switch (resultCode) {
 			case RESULT_CODE_DONE:
-				updatedInfo();
+				CM.showConfirm(UserInfoActivity.this, "success!");
+				m_userCurrent = data.hasExtra("updatedUser") ? (User) data
+						.getSerializableExtra("updatedUser") : DataManager
+						.getCurrentUser();
+				bindData(m_userCurrent);
 				break;
 
 			default:
@@ -70,7 +79,9 @@ public class UserInfoActivity extends BaseActivity {
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see android.app.Activity#onCreateOptionsMenu(android.view.Menu)
 	 */
 	@Override
@@ -91,9 +102,11 @@ public class UserInfoActivity extends BaseActivity {
 			UserInfoActivity.this.finish();
 			return true;
 		case R.id.action_edit:
-			Intent intent = new Intent(UserInfoActivity.this, UserInfoEditActivity.class);
+			Intent intent = new Intent(UserInfoActivity.this,
+					UserInfoEditActivity.class);
 			intent.putExtra("currentUser", m_userCurrent);
-			UserInfoActivity.this.startActivityForResult(intent, REQUEST_CODE_EDIT);
+			UserInfoActivity.this.startActivityForResult(intent,
+					REQUEST_CODE_EDIT);
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
@@ -102,6 +115,8 @@ public class UserInfoActivity extends BaseActivity {
 
 	private void initComponent() {
 		m_viewHolder.avatarImgv = (ImageView) findViewById(R.id.user_info_activity_user_avatar_imgv);
+		m_viewHolder.genderImgv = (ImageView) findViewById(R.id.user_info_activity_gender_imgv);
+		m_viewHolder.cityTxv = (TextView) findViewById(R.id.user_info_activity_city_txv);
 		m_viewHolder.signatureTxv = (TextView) findViewById(R.id.user_info_activity_signature_txv);
 		m_viewHolder.nameTxv = (TextView) findViewById(R.id.user_info_activity_name_txv);
 		m_viewHolder.usernameTxv = (TextView) findViewById(R.id.user_info_activity_username_txv);
@@ -119,13 +134,18 @@ public class UserInfoActivity extends BaseActivity {
 		m_userCurrent = DataManager.getCurrentUser();
 	}
 
-	private void showUserInfo(User currentUser) {
+	private void bindData(User currentUser) {
+		m_viewHolder.genderImgv
+				.setImageResource(currentUser.getGender() == 1 ? R.drawable.ic_male
+						: R.drawable.ic_female);
+
+		m_viewHolder.cityTxv.setText("" + currentUser.getCityId());
 		m_viewHolder.signatureTxv.setText(currentUser.getSignature());
 		m_viewHolder.nameTxv.setText(currentUser.getName());
 		m_viewHolder.usernameTxv.setText(currentUser.getUsername());
-		m_viewHolder.gradeTxv.setText("2013");
-		m_viewHolder.classTxv.setText("1309");
-		m_viewHolder.majorTxv.setText("移动互联网与游戏开发");
+		m_viewHolder.gradeTxv.setText("" + currentUser.getGrade());
+		m_viewHolder.classTxv.setText("" + currentUser.getClassId());
+		m_viewHolder.majorTxv.setText("" + currentUser.getMajotId());
 		m_viewHolder.phoneTxv.setText(currentUser.getPhone());
 		m_viewHolder.emailTxv.setText(currentUser.getEmail());
 		m_viewHolder.qqTxv.setText(currentUser.getQq());
@@ -133,13 +153,10 @@ public class UserInfoActivity extends BaseActivity {
 		m_viewHolder.positionTxv.setText(currentUser.getPosition());
 	}
 
-	private void updatedInfo() {
-		// TODO Auto-generated method stub
-		
-	}
-
 	private class ViewHolder {
 		public ImageView avatarImgv;
+		public ImageView genderImgv;
+		public TextView cityTxv;
 		public TextView signatureTxv;
 		public TextView nameTxv;
 		public TextView usernameTxv;
