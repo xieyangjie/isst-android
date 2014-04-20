@@ -35,7 +35,7 @@ public class ExceptionWeeder {
 	 */
 	public static void fckException(Exception e, Message msg) {
 		L.i("ExceptionWeeder FUCK U Exception type of " + e.getClass());
-		e.printStackTrace();
+
 		if (L.isDebuggable()) {
 			e.printStackTrace();
 		}
