@@ -18,7 +18,14 @@
 	        android:id="@+id/contact_list_fragment_conditon_content_txv"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
-	        android:layout_toRightOf="@+id/contact_list_fragment_conditon_txv" />
+	        android:layout_toRightOf="@+id/contact_list_fragment_conditon_txv"
+	        android:layout_toLeftOf="@+id/contact_list_fragment_clear_condition_btn" />
+	    <Button 
+	        android:id="@+id/contact_list_fragment_clear_condition_btn"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="@string/cancel"
+	        android:layout_alignParentRight="true" />
     </RelativeLayout>
     
     <ListView

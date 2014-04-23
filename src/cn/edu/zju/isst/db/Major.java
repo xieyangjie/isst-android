@@ -21,11 +21,9 @@ public class Major implements Serializable {
 	 */
 	private static final long serialVersionUID = 2601333053594383811L;
 
-	private int id;
 	private String name;
 
 	public Major(JSONObject jsonObject) throws JSONException {
-		id = -1;
 		name = "";
 		update(jsonObject);
 	}
@@ -40,20 +38,10 @@ public class Major implements Serializable {
 	 */
 	public void update(JSONObject jsonObject) throws JSONException {
 		if (!J.isNullOrEmpty(jsonObject)) {
-			if (J.isValidJsonValue("id", jsonObject)) {
-				id = jsonObject.getInt("id");
-			}
 			if (J.isValidJsonValue("name", jsonObject)) {
 				name = jsonObject.getString("name");
 			}
 		}
-	}
-
-	/**
-	 * @return the id
-	 */
-	public int getId() {
-		return id;
 	}
 
 	/**

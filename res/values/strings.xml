@@ -28,12 +28,16 @@
     <string name="filter_filter_conditon">筛选条件:</string>
     <string name="cancel">取消</string>
     
+    <string name="castellan_fragment_city">城市</string>
+    
     <string name="contact_detail_mobile">手机</string>
     <string name="contact_detail_email">Email</string>
     <string name="contact_detail_city">所在城市</string>
     <string name="contact_detail_company">所在单位</string>
+    <string name="contact_detail_position">职位</string>
    <string name="contact_detail_imagebutton_call">拨打联系人电话</string>
    <string name="contact_detail_imagebutton_message">给联系人发送短信</string>
+   <string name="contact_detail_imagebutton_email">给联系人发送邮件</string>
     
     <string name="back_twice_to_exit">再按一次返回退出</string>
     
