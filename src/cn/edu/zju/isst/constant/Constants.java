@@ -97,6 +97,7 @@ public final class Constants {
 	 */
 	public static final String PUBLISHER_NAME = "发布者：";
 	
+	/**
 	 * the result code to propagate to the original activity,
 	 * this is the code between ContactFilter and ContactListFragment
 	 */

@@ -145,7 +145,7 @@ public class UserInfoActivity extends BaseActivity {
 		m_viewHolder.usernameTxv.setText(currentUser.getUsername());
 		m_viewHolder.gradeTxv.setText("" + currentUser.getGrade());
 		m_viewHolder.classTxv.setText("" + currentUser.getClassId());
-		m_viewHolder.majorTxv.setText("" + currentUser.getMajotId());
+		m_viewHolder.majorTxv.setText(currentUser.getMajor());
 		m_viewHolder.phoneTxv.setText(currentUser.getPhone());
 		m_viewHolder.emailTxv.setText(currentUser.getEmail());
 		m_viewHolder.qqTxv.setText(currentUser.getQq());

@@ -77,4 +77,8 @@
     <string name="done">完成</string>
     
     <string name="publik">公开</string>
+    
+    <string name="new_update_avaliable">有可用的新版本</string>
+    <string name="update_detail">检测到有新版本，立即更新吗？</string>
+    
 </resources>
