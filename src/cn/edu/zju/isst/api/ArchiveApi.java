@@ -31,7 +31,7 @@ public class ArchiveApi extends CSTApi {
 	 * @param listener
 	 *            回调对象
 	 */
-	public static void getWikiList(Integer page, Integer pageSize,
+	public static void getWikiList(int page, int pageSize,
 			String keywords, RequestListener listener) {
 		getArchiveList(ArchiveCategory.ENCYCLOPEDIA, page, pageSize, keywords,
 				listener);

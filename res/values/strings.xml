@@ -12,6 +12,7 @@
     
     <string name="action_refresh">刷新</string>
     <string name="action_logout">注销</string>
+    <string name="action_edit">修改</string>
     
     <string name="action_filter">筛选</string>
     <string name="filter_name">姓名</string>
@@ -27,12 +28,16 @@
     <string name="filter_filter_conditon">筛选条件:</string>
     <string name="cancel">取消</string>
     
+    <string name="castellan_fragment_city">城市</string>
+    
     <string name="contact_detail_mobile">手机</string>
     <string name="contact_detail_email">Email</string>
     <string name="contact_detail_city">所在城市</string>
     <string name="contact_detail_company">所在单位</string>
+    <string name="contact_detail_position">职位</string>
    <string name="contact_detail_imagebutton_call">拨打联系人电话</string>
    <string name="contact_detail_imagebutton_message">给联系人发送短信</string>
+   <string name="contact_detail_imagebutton_email">给联系人发送邮件</string>
     
     <string name="back_twice_to_exit">再按一次返回退出</string>
     
@@ -68,4 +73,12 @@
     <string name="updated_at">上次更新于%1$s前</string>  
     <string name="updated_just_now">刚刚更新</string>  
     <string name="time_error">时间有问题</string>
+    
+    <string name="done">完成</string>
+    
+    <string name="publik">公开</string>
+    
+    <string name="new_update_avaliable">有可用的新版本</string>
+    <string name="update_detail">检测到有新版本，立即更新吗？</string>
+    
 </resources>

@@ -2,6 +2,8 @@ package cn.edu.zju.isst.ui.contact;
 
 import java.io.Serializable;
 
+import android.R.string;
+
 public class ContactFilter  implements Serializable{
 
 	/**
@@ -15,12 +17,11 @@ public class ContactFilter  implements Serializable{
 	public int gender;
 	public int grade;
 	public int classId;
-	public int majorId;
+	public String major;
 	public int cityId;
 	public String company;
 	//以下是现实的字符串
 	public String genderString;
-	public String majorString;
 	public String cityString;
 	public ContactFilter() {
 		clear();
@@ -33,7 +34,7 @@ public class ContactFilter  implements Serializable{
 		gender = 0;
 		grade = 0;
 		classId = 0;
-		majorId = 0;
+		major = "";
 		cityId = 0;
 		company = "";
 	}

@@ -16,7 +16,8 @@
             android:layout_height="match_parent"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:src="@drawable/ic_launcher"
+            android:padding="@dimen/padding_middle"
+            android:src="@drawable/avatar_default"
             android:contentDescription="@string/user_avatar" />
 
         <TextView

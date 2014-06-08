@@ -108,13 +108,21 @@
                     android:text="@string/filter_grade"
                     android:textSize="@dimen/text_size_middle" />
 
-                <EditText
+<!--                 <EditText
                     android:id="@+id/contact_filter_activity_grade_edtx"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_toRightOf="@+id/contact_filter_activity_final_grade_txv"
                     android:inputType="text"
+                    android:padding="@dimen/padding_small"
+                    android:textSize="@dimen/text_size_middle" /> -->
+                <Spinner 
+                    android:id="@+id/contact_filter_activity_grade_spn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@+id/contact_filter_activity_final_grade_txv"
                     android:padding="@dimen/padding_small"
                     android:textSize="@dimen/text_size_middle" />
             </RelativeLayout>

@@ -20,6 +20,7 @@ import cn.edu.zju.isst.net.CSTResponse;
 import cn.edu.zju.isst.net.RequestListener;
 import cn.edu.zju.isst.settings.CSTSettings;
 import cn.edu.zju.isst.ui.contact.ContactListFragment;
+import cn.edu.zju.isst.ui.contact.ContactListFragment.FilterType;
 import cn.edu.zju.isst.ui.job.EmploymentListFragment;
 import cn.edu.zju.isst.ui.job.ExperienceListFragment;
 import cn.edu.zju.isst.ui.job.InternshipListFragment;
@@ -33,6 +34,7 @@ import cn.edu.zju.isst.ui.login.LoginActivity;
 import cn.edu.zju.isst.ui.usercenter.UserCenterFragment;
 import cn.edu.zju.isst.util.L;
 import cn.edu.zju.isst.util.T;
+import cn.edu.zuj.isst.ui.city.CastellanFragment;
 
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
@@ -79,6 +81,8 @@ public class MainActivity extends BaseActivity implements
 		setUpSlidingMenu();
 
 		getActionBar().setDisplayHomeAsUpEnabled(true);
+		
+		requestGlobalData();
 	}
 
 	/*
@@ -171,16 +175,16 @@ public class MainActivity extends BaseActivity implements
 			switchContent(ExperienceListFragment.getInstance());
 			break;
 		case CIMA:
-			switchContent(DummyFragment.newInstance(CIMA.getName()));
+			switchContent(CastellanFragment.GetInstance());
 			break;
 		case CIAC:
 			switchContent(DummyFragment.newInstance(CIAC.getName()));
 			break;
 		case CIAL:
-			switchContent(DummyFragment.newInstance(CIAL.getName()));
+			switchContent(ContactListFragment.getInstance(FilterType.MY_CITY));
 			break;
 		case CONT:
-			switchContent(ContactListFragment.getInstance());
+			switchContent(ContactListFragment.getInstance(FilterType.MY_CLASS));
 			break;
 		case USCE:
 			switchContent(UserCenterFragment.getInstance());
@@ -189,6 +193,34 @@ public class MainActivity extends BaseActivity implements
 			break;
 		}
 
+	}
+
+	public void logout() {
+		LogoutApi.logout(new RequestListener() {
+	
+			@Override
+			public void onComplete(Object result) {
+				// TODO Auto-generated method stub
+	
+			}
+	
+			@Override
+			public void onHttpError(CSTResponse response) {
+				L.i("logout onHttpError: " + response.getStatus());
+	
+			}
+	
+			@Override
+			public void onException(Exception e) {
+				// TODO Auto-generated method stub
+	
+			}
+		});
+		DataManager.deleteCurrentUser();
+		CSTSettings.setAutoLogin(false, MainActivity.this);
+		MainActivity.this.startActivity(new Intent(MainActivity.this,
+				LoginActivity.class));
+		MainActivity.this.finish();
 	}
 
 	/**
@@ -221,34 +253,6 @@ public class MainActivity extends BaseActivity implements
 					.replace(R.id.content_frame, m_fragCurrentContent).commit();
 		}
 		m_smMainMenu.showContent();
-	}
-
-	public void logout() {
-		LogoutApi.logout(new RequestListener() {
-
-			@Override
-			public void onComplete(Object result) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void onHttpError(CSTResponse response) {
-				L.i("logout onHttpError: " + response.getStatus());
-
-			}
-
-			@Override
-			public void onException(Exception e) {
-				// TODO Auto-generated method stub
-
-			}
-		});
-		DataManager.deleteCurrentUser();
-		CSTSettings.setAutoLogin(false, MainActivity.this);
-		MainActivity.this.startActivity(new Intent(MainActivity.this,
-				LoginActivity.class));
-		MainActivity.this.finish();
 	}
 
 }

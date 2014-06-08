@@ -1,42 +1,23 @@
 package cn.edu.zju.isst.ui.contact;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-
 import cn.edu.zju.isst.R;
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-/** 实现Filterable接口,编写过滤规则 */
 public class NoteBookadapter extends BaseAdapter {
 	private Context ctx;
 	private ViewHolder holder;
 	List<NoteBookItem> list;
-	Map<String, Integer> selector;// 键值是索引表的字母，值为对应在listview中的位置
-	/** 字母表 */
-	String index[] = { "#", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J",
-			"K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W",
-			"X", "Y", "Z" };
 
 	public NoteBookadapter(Context context, List<NoteBookItem> list) {
 		this.ctx = context;
 		this.list = list;
-		selector = new HashMap<String, Integer>();
-		for (int j = 0; j < index.length; j++) {// 循环字母表，找出list中对应字母的位置
-			for (int i = 0; i < list.size(); i++) {
-				if (list.get(i).index.equals(index[j].toLowerCase(Locale.ENGLISH)))
-					selector.put(index[j], i);
-			}
 
-		}
 	}
 
 	@Override
@@ -64,7 +45,7 @@ public class NoteBookadapter extends BaseAdapter {
 				holder = new ViewHolder();
 				convertView = LayoutInflater.from(ctx).inflate(
 						R.layout.contact_note_list_item, null);
-				holder.tv1 = (TextView) convertView
+				holder.tvName = (TextView) convertView
 						.findViewById(R.id.contact_note_list_item_name_txv);
 				holder.index = (TextView) convertView
 						.findViewById(R.id.contact_note_list_item_index_txv);
@@ -74,7 +55,7 @@ public class NoteBookadapter extends BaseAdapter {
 			}
 			// 绑定数据
 			NoteBookItem item = list.get(position);
-			holder.tv1.setText(item.name);
+			holder.tvName.setText(item.name);
 
 			// 显示index
 			String currentStr = item.index;
@@ -93,35 +74,15 @@ public class NoteBookadapter extends BaseAdapter {
 		} catch (OutOfMemoryError e) {
 			Runtime.getRuntime().gc();
 		} catch (Exception ex) {
-			// handler.sendEmptyMessage(CommonMessage.PARSE_ERROR);
 			ex.printStackTrace();
 		}
 		return convertView;
 	}
 
-	class ViewHolder {
-		ImageView iv;
-		TextView tv1;
-		TextView tv2;
-		TextView tv3;
-		View layout;
-		/** 索引字母 */
+	private class ViewHolder {
+		//姓名TextView
+		TextView tvName;
+		//索引TextView
 		TextView index;
-	}
-
-	public Map<String, Integer> getSelector() {
-		return selector;
-	}
-
-	public void setSelector(Map<String, Integer> selector) {
-		this.selector = selector;
-	}
-
-	public String[] getIndex() {
-		return index;
-	}
-
-	public void setIndex(String[] index) {
-		this.index = index;
 	}
 }

@@ -21,7 +21,7 @@ public class AlumniApi extends CSTApi {
 	private static final String SUB_URL = "/api";
 
 	public static void getUserList(int id, String name, int gender, int grade,
-			int classId, int majorId, int cityId, String company,
+			int classId, String major, int cityId, String company,
 			RequestListener listener) {
 		StringBuilder sb = new StringBuilder();
 		sb.append(SUB_URL).append("/alumni");
@@ -32,7 +32,7 @@ public class AlumniApi extends CSTApi {
 		paramsMap.put("gender", "" + gender);
 		paramsMap.put("grade", "" + grade);
 		paramsMap.put("classId", "" + classId);
-		paramsMap.put("majorId", "" + majorId);
+		paramsMap.put("major", "" + major);
 		paramsMap.put("cityId", "" + cityId);
 		paramsMap.put("company", company);
 
