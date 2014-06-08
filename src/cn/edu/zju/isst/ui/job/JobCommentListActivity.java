@@ -368,7 +368,7 @@ public class JobCommentListActivity extends BaseActivity implements
 			m_requestType = RequestType.SEND;
 			try {
 				msg.what = ((JSONObject) result).getInt("status");
-				L.i("comment", msg.obj.toString());
+			//	L.i("comment", msg.obj.toString());
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
