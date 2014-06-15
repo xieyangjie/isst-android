@@ -25,8 +25,8 @@ public class CSTApi {
 	/**
 	 * 服务器前缀地址
 	 */
-	// private static final String PREFIX = "http://www.zjucst.com";
-	private static final String PREFIX = "http://yplan.cloudapp.net:8080/isst";
+	 private static final String PREFIX = "http://www.cst.zju.edu.cn/isst";
+	//private static final String PREFIX = "http://yplan.cloudapp.net:8080/isst";
 
 	/**
 	 * 发送请求
