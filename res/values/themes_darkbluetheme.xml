@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Generated with http://android-holo-colors.com -->
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+  <style name="DarkBlueTheme" parent="@style/_DarkBlueTheme"/>
+
+  <style name="_DarkBlueTheme" parent="android:Theme.Holo.Light.DarkActionBar">
+
+    <item name="android:editTextBackground">@drawable/darkbluetheme_edit_text_holo_light</item>
+
+    <item name="android:textColorHighlight">#99081d50</item>
+    <item name="android:textSelectHandleLeft">@drawable/darkbluetheme_text_select_handle_left</item>
+    <item name="android:textSelectHandleRight">@drawable/darkbluetheme_text_select_handle_right</item>
+    <item name="android:textSelectHandle">@drawable/darkbluetheme_text_select_handle_middle</item>
+
+    <item name="android:autoCompleteTextViewStyle">@style/AutoCompleteTextViewDarkBlueTheme</item>
+
+    <item name="android:listChoiceIndicatorMultiple">@drawable/darkbluetheme_btn_check_holo_light</item>
+
+    <item name="android:listChoiceIndicatorSingle">@drawable/darkbluetheme_btn_radio_holo_light</item>
+
+    <item name="android:buttonStyle">@style/ButtonDarkBlueTheme</item>
+
+    <item name="android:imageButtonStyle">@style/ImageButtonDarkBlueTheme</item>
+
+    <item name="android:dropDownSpinnerStyle">@style/SpinnerDarkBlueTheme</item>
+
+    <item name="android:progressBarStyleHorizontal">@style/ProgressBarDarkBlueTheme</item>
+
+    <item name="android:seekBarStyle">@style/SeekBarDarkBlueTheme</item>
+
+    <item name="android:ratingBarStyle">@style/RatingBarDarkBlueTheme</item>
+
+    <item name="android:ratingBarStyleIndicator">@style/RatingBarBigDarkBlueTheme</item>
+
+    <item name="android:ratingBarStyleSmall">@style/RatingBarSmallDarkBlueTheme</item>
+
+    <item name="android:buttonStyleToggle">@style/ToggleDarkBlueTheme</item>
+
+    <item name="android:listChoiceBackgroundIndicator">@drawable/darkbluetheme_list_selector_holo_light</item>
+
+    <item name="android:activatedBackgroundIndicator">@drawable/darkbluetheme_activated_background_holo_light</item>
+
+    <item name="android:fastScrollThumbDrawable">@drawable/darkbluetheme_fastscroll_thumb_holo</item>
+
+  </style>
+
+</resources>

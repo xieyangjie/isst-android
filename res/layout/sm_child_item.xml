@@ -10,7 +10,8 @@
         android:id="@+id/sm_child_item_img"
         android:layout_height="match_parent"
 	    android:layout_width="25dp"  
-	    android:contentDescription="@string/sm_child_item_icon"/>
+	    android:contentDescription="@string/sm_child_item_icon"
+	    android:src="@drawable/ic_action_web_site"/>
     
     <TextView
         android:id="@+id/sm_child_item_nav"

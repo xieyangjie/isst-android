@@ -1,6 +1,7 @@
 /**
  * 
  */
+
 package cn.edu.zju.isst.api;
 
 import java.io.IOException;
@@ -18,56 +19,45 @@ import cn.edu.zju.isst.util.L;
  * 接口基类
  * 
  * @author theasir
- * 
  */
 public class CSTApi {
 
-	/**
-	 * 服务器前缀地址
-	 */
-	 private static final String PREFIX = "http://www.cst.zju.edu.cn/isst";
-	//private static final String PREFIX = "http://yplan.cloudapp.net:8080/isst";
+    /**
+     * 服务器前缀地址
+     */
+    private static final String PREFIX = "http://www.cst.zju.edu.cn/isst";
 
-	/**
-	 * 发送请求
-	 * 
-	 * @param methodName
-	 *            方法类别
-	 * @param subUrl
-	 *            子网址
-	 * @param params
-	 *            要传递的参数
-	 * @param listener
-	 *            回调对象
-	 */
-	protected static void request(final String methodName, final String subUrl,
-			final Map<String, String> params, RequestListener listener) {
-		String requestUrl = PREFIX + subUrl;
-		if (methodName.equalsIgnoreCase("POST")) {
-			BetterAsyncWebServiceRunner.getInstance().request(methodName,
-					requestUrl, params, listener);
-		} else {
-			try {
-				requestUrl = requestUrl
-						+ (J.isNullOrEmpty(params) ? ""
-								: ("?" + BetterAsyncWebServiceRunner
-										.getInstance().paramsToString(params)));
-			} catch (UnsupportedEncodingException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			BetterAsyncWebServiceRunner.getInstance().request(methodName,
-					requestUrl, null, listener);
-		}
-		L.i("CSTApi Request URL = " + requestUrl);
-	}
+    // private static final String PREFIX =
+    // "http://yplan.cloudapp.net:8080/isst";
 
-	protected static CSTResponse responseOfRequest(final String methodName,
-			final String subUrl, final Map<String, String> params)
-			throws MalformedURLException, IOException {
-		String url = PREFIX + subUrl;
-		return BetterAsyncWebServiceRunner.getInstance().responseOfRequest(
-				methodName, url, params);
-	}
+    /**
+     * 发送请求
+     * 
+     * @param methodName 方法类别
+     * @param subUrl 子网址
+     * @param params 要传递的参数
+     * @param listener 回调对象
+     */
+    protected static void request(final String methodName, final String subUrl, final Map<String, String> params, RequestListener listener) {
+        String requestUrl = PREFIX + subUrl;
+        if (methodName.equalsIgnoreCase("POST")) {
+            BetterAsyncWebServiceRunner.getInstance().request(methodName, requestUrl, params, listener);
+        } else {
+            try {
+                requestUrl = requestUrl + (J.isNullOrEmpty(params) ? "" : ("?" + BetterAsyncWebServiceRunner.getInstance().paramsToString(params)));
+            } catch (UnsupportedEncodingException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            BetterAsyncWebServiceRunner.getInstance().request(methodName, requestUrl, null, listener);
+        }
+        L.i("CSTApi Request URL = " + requestUrl);
+    }
+
+    protected static CSTResponse responseOfRequest(final String methodName, final String subUrl, final Map<String, String> params)
+            throws MalformedURLException, IOException {
+        String url = PREFIX + subUrl;
+        return BetterAsyncWebServiceRunner.getInstance().responseOfRequest(methodName, url, params);
+    }
 
 }

@@ -14,6 +14,7 @@ import cn.edu.zju.isst.net.UpdateManager;
 import cn.edu.zju.isst.settings.CSTSettings;
 import cn.edu.zju.isst.ui.login.LoginActivity;
 import cn.edu.zju.isst.ui.main.MainActivity;
+import cn.edu.zju.isst.ui.main.NewMainActivity;
 import cn.edu.zju.isst.util.L;
 
 /**
@@ -80,7 +81,7 @@ public class LoadingActivity extends Activity {
 				+ CSTSettings.isAutoLogin(LoadingActivity.this));
 		if (CSTSettings.isAutoLogin(LoadingActivity.this)) {
 			LoadingActivity.this.startActivity(new Intent(LoadingActivity.this,
-					MainActivity.class));
+					NewMainActivity.class));
 		} else {
 			LoadingActivity.this.startActivity(new Intent(LoadingActivity.this,
 					LoginActivity.class));
