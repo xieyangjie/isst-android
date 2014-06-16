@@ -106,32 +106,35 @@ public class BaseArchiveListFragment extends ListFragment implements
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-
+		L.i(this.getClass().getName() + "----enter---- onViewCreated");
 		initComponent(view);
 
 		if (m_bIsFirstTime) {
 			initArchiveList();
+			m_bIsFirstTime = false;
 		}
-
+		
 		initHandler();
 
 		setUpAdapter();
 
 		setUpListener();
 		
-
+		//L.d(tag, msg)
 		m_ptrView.setOnRefreshListener(new PullToRefreshListener() {
 
 			@Override
 			public void onRefresh() {
+				L.i(this.getClass().getName() + "-----enter onViewCreated---onRefresh---");
 				requestData(LoadType.REFRESH);
 			}
 		}, 0);
 		
-		if (m_bIsFirstTime) {
-//			requestData(LoadType.REFRESH);
-			m_bIsFirstTime = false;
-		}
+//		if (m_bIsFirstTime) {
+////			requestData(LoadType.REFRESH);
+//			m_bIsFirstTime = false;
+//		}
+		
 	}
 
 	/*
@@ -218,10 +221,14 @@ public class BaseArchiveListFragment extends ListFragment implements
 	 */
 	protected void initArchiveList() {
 		List<Archive> dbArchiveList = getArchiveList();
+		m_listAchive.clear();
 		if (!J.isNullOrEmpty(dbArchiveList)) {
 			for (Archive archive : dbArchiveList) {
 				m_listAchive.add(archive);
 			}
+		}
+		if (J.isNullOrEmpty(m_listAchive)){
+			requestData(LoadType.REFRESH);
 		}
 	}
 
@@ -252,11 +259,11 @@ public class BaseArchiveListFragment extends ListFragment implements
 					m_adapterArchiveList.notifyDataSetChanged();
 					break;
 				case STATUS_NOT_LOGIN:// TODO
-					((MainActivity) getActivity()).updateLogin();
+					((NewMainActivity) getActivity()).updateLogin();
 					requestData(m_loadType);
 					break;
 				default:
-					((MainActivity) getActivity()).dispose(msg);
+					((NewMainActivity) getActivity()).dispose(msg);
 					break;
 				}
 			}
@@ -327,6 +334,7 @@ public class BaseArchiveListFragment extends ListFragment implements
 	 *            加载方式
 	 */
 	protected void requestData(LoadType type) {
+		
 		if (NetworkConnection.isNetworkConnected(getActivity())) {
 			m_loadType = type;
 			switch (type) {
@@ -347,6 +355,7 @@ public class BaseArchiveListFragment extends ListFragment implements
 			msg.what = NETWORK_NOT_CONNECTED;
 			m_handlerArchiveList.sendMessage(msg);
 		}
+		
 	}
 
 	protected List<Archive> getArchiveList() {

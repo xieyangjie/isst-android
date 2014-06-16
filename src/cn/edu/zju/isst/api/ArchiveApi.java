@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import cn.edu.zju.isst.net.RequestListener;
+import cn.edu.zju.isst.util.L;
 
 /**
  * 归档接口
@@ -53,6 +54,7 @@ public class ArchiveApi extends CSTApi {
 	 */
 	public static void getArchiveList(ArchiveCategory category, int page,
 			int pageSize, String keywords, RequestListener listener) {
+		L.i("API---getArchiveList----enter");
 		StringBuilder sb = new StringBuilder();
 		sb.append(SUB_URL).append("categories/").append(category.getSubUrl());
 		

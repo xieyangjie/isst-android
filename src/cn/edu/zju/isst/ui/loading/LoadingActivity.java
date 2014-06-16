@@ -3,6 +3,10 @@
  */
 package cn.edu.zju.isst.ui.loading;
 
+import com.baidu.android.pushservice.PushConstants;
+import com.baidu.android.pushservice.PushManager;
+import com.baidu.android.pushservice.PushSettings;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -38,7 +42,17 @@ public class LoadingActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.loading_activity);
-
+		//打开推送
+        L.i("Loading____pushSetting");
+        PushSettings.enableDebugMode(getApplicationContext(), true);
+        
+        
+    	// 以apikey的方式登录，一般放在主Activity的onCreate中
+       
+		PushManager.startWork(getApplicationContext(),
+				PushConstants.LOGIN_TYPE_API_KEY, 
+				"PqDQfrucX3ubvW7fm0M23gWu");
+		
 		initAlertDialog();
 		
 		m_aldUpdate.show();

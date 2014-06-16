@@ -242,11 +242,11 @@ public class BaseJobsListFragment extends ListFragment implements
 					m_adapterJobList.notifyDataSetChanged();
 					break;
 				case STATUS_NOT_LOGIN:// TODO
-					((MainActivity) getActivity()).updateLogin();
+					((NewMainActivity) getActivity()).updateLogin();
 					requestData(m_loadType);
 					break;
 				default:
-					((MainActivity) getActivity()).dispose(msg);
+					((NewMainActivity) getActivity()).dispose(msg);
 					break;
 				}
 			}

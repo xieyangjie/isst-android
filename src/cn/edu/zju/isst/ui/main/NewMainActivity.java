@@ -79,7 +79,12 @@ public class NewMainActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
 	switch (item.getItemId()) {
 	case android.R.id.home:
-	    mDrawerLayout.openDrawer(mDrawerList);
+		if(mDrawerLayout.isDrawerOpen(mDrawerList)){
+			mDrawerLayout.closeDrawer(mDrawerList);
+		}
+		else{
+			mDrawerLayout.openDrawer(mDrawerList);
+		}
 	    return true;
 	case R.id.action_logout:
 	    logout();
