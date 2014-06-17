@@ -63,7 +63,7 @@
     <string name="sm_child_item_icon">侧拉栏图标</string>
     
     <string name="job_detail_activity_publisher_btn">发布者联系人</string>
-	<string name="job_waiting_for_comment">发布评论...</string>
+	<string name="job_waiting_for_comment">发布评论&#8230;</string>
     
     <string name="pull_to_refresh_ic_description">下拉刷新箭头</string>
     <string name="pull_to_refresh">下拉可以刷新</string>  
@@ -80,5 +80,8 @@
     
     <string name="new_update_avaliable">有可用的新版本</string>
     <string name="update_detail">检测到有新版本，立即更新吗？</string>
+    
+    <string name="drawer_open">打开抽屉</string>
+    <string name="drawer_close">关闭抽屉</string>
     
 </resources>

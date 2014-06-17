@@ -2,4 +2,5 @@
 <resources>
     <color name="light_gray">#D3D3D3</color>
     <color name="black">#FF000000</color>
+    <color name="text_orange">#e99324</color>
 </resources>

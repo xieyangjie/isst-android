@@ -4,10 +4,6 @@
 
 package cn.edu.zju.isst.ui.main;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import android.app.Activity;
 import android.view.View;
 import android.view.ViewGroup;

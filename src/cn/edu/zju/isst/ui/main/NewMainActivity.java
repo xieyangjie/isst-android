@@ -3,7 +3,7 @@
  */
 package cn.edu.zju.isst.ui.main;
 
-import static cn.edu.zju.isst.constant.Nav.CIAC;
+import static cn.edu.zju.isst.constant.Nav.*;
 import cn.edu.zju.isst.R;
 import cn.edu.zju.isst.api.LogoutApi;
 import cn.edu.zju.isst.constant.Nav;
@@ -30,7 +30,9 @@ import cn.edu.zuj.isst.ui.city.CastellanFragment;
 import android.app.ActionBar;
 import android.app.Fragment;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -44,7 +46,11 @@ import android.widget.ListView;
  */
 public class NewMainActivity extends BaseActivity {
 
+    private final String mDrawerTitle = "导航";
+    private String mTitle;
+    
     private DrawerLayout mDrawerLayout;
+    private ActionBarDrawerToggle mDrawerToggle;
     private ListView mDrawerList;
 
     private Fragment mCurrentFragment;
@@ -60,6 +66,7 @@ public class NewMainActivity extends BaseActivity {
 	    mCurrentFragment = NewsListFragment.getInstance();
 	    getFragmentManager().beginTransaction()
 		    .add(R.id.content_frame, mCurrentFragment).commit();
+	    mTitle = Nav.NEWS.getName();
 	}
 
 	setUpActionbar();
@@ -70,6 +77,12 @@ public class NewMainActivity extends BaseActivity {
     }
 
     @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+	boolean isDrawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
+	return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 	getMenuInflater().inflate(R.menu.main_activity_ab_menu, menu);
 	return super.onCreateOptionsMenu(menu);
@@ -77,6 +90,10 @@ public class NewMainActivity extends BaseActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+	if (mDrawerToggle.onOptionsItemSelected(item)) {
+	    return true;
+	}
+	
 	switch (item.getItemId()) {
 	case android.R.id.home:
 	    mDrawerLayout.openDrawer(mDrawerList);
@@ -89,13 +106,46 @@ public class NewMainActivity extends BaseActivity {
 	}
     }
 
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+	super.onPostCreate(savedInstanceState);
+	mDrawerToggle.syncState();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+	super.onConfigurationChanged(newConfig);
+	mDrawerToggle.onConfigurationChanged(newConfig);
+    }
+
     private void setUpActionbar() {
 	ActionBar actionBar = getActionBar();
 	actionBar.setDisplayHomeAsUpEnabled(true);
+	actionBar.setHomeButtonEnabled(true);
     }
 
     private void setUpDrawer() {
 	mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+	mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
+		R.drawable.ic_drawer, R.string.drawer_open, R.string.drawer_close) {
+
+	    @Override
+	    public void onDrawerClosed(View drawerView) {
+		super.onDrawerClosed(drawerView);
+		getActionBar().setTitle(mTitle);
+		invalidateOptionsMenu();
+	    }
+
+	    @Override
+	    public void onDrawerOpened(View drawerView) {
+		super.onDrawerOpened(drawerView);
+		getActionBar().setTitle(mDrawerTitle);
+	    }
+
+	};
+	
+	mDrawerLayout.setDrawerListener(mDrawerToggle);
+	
 	mDrawerList = (ListView) findViewById(R.id.left_drawer);
 
 	mDrawerList.setAdapter(new MainDrawerAdapter(this));
@@ -110,34 +160,34 @@ public class NewMainActivity extends BaseActivity {
 		    .replace(R.id.content_frame, mCurrentFragment).commit();
 	}
     }
-    
+
     public void logout() {
 	LogoutApi.logout(new RequestListener() {
 
-		@Override
-		public void onComplete(Object result) {
-			// TODO Auto-generated method stub
+	    @Override
+	    public void onComplete(Object result) {
+		// TODO Auto-generated method stub
 
-		}
+	    }
 
-		@Override
-		public void onHttpError(CSTResponse response) {
-			L.i("logout onHttpError: " + response.getStatus());
+	    @Override
+	    public void onHttpError(CSTResponse response) {
+		L.i("logout onHttpError: " + response.getStatus());
 
-		}
+	    }
 
-		@Override
-		public void onException(Exception e) {
-			// TODO Auto-generated method stub
+	    @Override
+	    public void onException(Exception e) {
+		// TODO Auto-generated method stub
 
-		}
+	    }
 	});
 	DataManager.deleteCurrentUser();
 	CSTSettings.setAutoLogin(false, NewMainActivity.this);
 	NewMainActivity.this.startActivity(new Intent(NewMainActivity.this,
-			LoginActivity.class));
+		LoginActivity.class));
 	NewMainActivity.this.finish();
-}
+    }
 
     private class DrawerItemClickListener implements
 	    ListView.OnItemClickListener {
@@ -146,9 +196,10 @@ public class NewMainActivity extends BaseActivity {
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 		long id) {
 	    Nav nav = Nav.values()[position];
-	    NewMainActivity.this.setTitle(nav.getName());
+	    mTitle = nav.getName();
+	    getActionBar().setTitle(mTitle);
 	    mDrawerList.setItemChecked(position, true);
-	    
+
 	    switch (nav) {
 	    case NEWS:
 		switchContent(NewsListFragment.getInstance());
@@ -197,7 +248,7 @@ public class NewMainActivity extends BaseActivity {
 	    default:
 		break;
 	    }
-	    
+
 	    mDrawerLayout.closeDrawer(mDrawerList);
 	}
 

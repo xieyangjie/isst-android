@@ -58,6 +58,7 @@
         android:layout_margin="10dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:text="@string/action_logout" />
+        android:text="@string/action_logout"
+        android:textColor="@color/text_orange" />
 
 </RelativeLayout>
