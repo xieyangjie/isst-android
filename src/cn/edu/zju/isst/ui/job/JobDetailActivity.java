@@ -95,6 +95,7 @@ public class JobDetailActivity extends BaseActivity {
 				switch (msg.what) {
 				case STATUS_REQUEST_SUCCESS:
 					L.i("Handler Success Archieve id = " + m_jobCurrent.getId());
+					initPublisherBtn();
 					showJobDetail();
 					break;
 				case STATUS_NOT_LOGIN:
@@ -157,6 +158,7 @@ public class JobDetailActivity extends BaseActivity {
 			}
 
 		});
+		
 
 	}
 
@@ -191,30 +193,43 @@ public class JobDetailActivity extends BaseActivity {
 		m_txvPublisher = (TextView) findViewById(R.id.job_detail_activity_publisher_txv);
 		m_webvContent = (WebView) findViewById(R.id.job_detail_activity_content_webv);
 		m_imgBtnPublisher = (ImageButton) findViewById(R.id.job_detail_activity_publisher_btn);
-
-		m_imgBtnPublisher.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				Intent intent = new Intent(JobDetailActivity.this,
-						ContactDetailActivity.class);
-				int id = -1;
-				if (!J.isNullOrEmpty(m_jobCurrent)) {
-					id = m_jobCurrent.getPublisherId();
-				}
-				intent.putExtra("id", id);
-				startActivity(intent);
-			}
-		});
+		
 		WebSettings settings = m_webvContent.getSettings();
 		settings.setUseWideViewPort(true);
 		settings.setLoadWithOverviewMode(true);
 		settings.setLayoutAlgorithm(LayoutAlgorithm.NARROW_COLUMNS);
 		settings.setDefaultFontSize(48);
+	
+		
 		// settings.setTextSize(TextSize.NORMAL);
 	}
+	/**
+	 * 初始化pulisher按钮
+	 */
+	private void initPublisherBtn() {
+		if (J.isNullOrEmpty(m_jobCurrent)) {
+			L.i(this.getClass().getName()+"initPublisherBtn-------m_jobCurrent is null------");
+			return;
+		} else if (m_jobCurrent.getPublisherId() <= 0) { // 是管理员0,不需要链接发布者,‘<’做保险，正常不出现
+			L.i(this.getClass().getName()+"initPublisherBtn-------m_jobCurrent ＝0------");
+			m_imgBtnPublisher.setVisibility(View.INVISIBLE);
+		} else {
+			m_imgBtnPublisher.setVisibility(View.VISIBLE);
+			m_imgBtnPublisher.setOnClickListener(new OnClickListener() {
 
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					Intent intent = new Intent(JobDetailActivity.this,
+							ContactDetailActivity.class);
+					int id = -1;
+					id = m_jobCurrent.getPublisherId();
+					intent.putExtra("id", id);
+					startActivity(intent);
+				}
+			});
+		}
+	}
 	/**
 	 * 绑定数据并显示
 	 */

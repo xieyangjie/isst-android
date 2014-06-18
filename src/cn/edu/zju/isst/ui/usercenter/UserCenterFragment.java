@@ -18,6 +18,8 @@ import cn.edu.zju.isst.db.DataManager;
 import cn.edu.zju.isst.db.User;
 import cn.edu.zju.isst.dummy.TestFloatingActivity;
 import cn.edu.zju.isst.ui.main.MainActivity;
+import cn.edu.zju.isst.ui.main.NewMainActivity;
+import cn.edu.zju.isst.util.J;
 
 /**
  * @author theasir
@@ -114,7 +116,7 @@ public class UserCenterFragment extends Fragment {
 
 			@Override
 			public void onClick(View v) {
-				((MainActivity) getActivity()).logout();
+					((NewMainActivity) getActivity()).logout();
 			}
 		});
 	}

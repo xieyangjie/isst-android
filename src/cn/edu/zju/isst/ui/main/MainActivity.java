@@ -4,7 +4,6 @@
 package cn.edu.zju.isst.ui.main;
 
 import static cn.edu.zju.isst.constant.Nav.*;
-
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,6 +18,7 @@ import cn.edu.zju.isst.dummy.DummyFragment;
 import cn.edu.zju.isst.net.CSTResponse;
 import cn.edu.zju.isst.net.RequestListener;
 import cn.edu.zju.isst.settings.CSTSettings;
+import cn.edu.zju.isst.ui.city.CastellanFragment;
 import cn.edu.zju.isst.ui.contact.ContactListFragment;
 import cn.edu.zju.isst.ui.contact.ContactListFragment.FilterType;
 import cn.edu.zju.isst.ui.job.EmploymentListFragment;
@@ -34,7 +34,6 @@ import cn.edu.zju.isst.ui.login.LoginActivity;
 import cn.edu.zju.isst.ui.usercenter.UserCenterFragment;
 import cn.edu.zju.isst.util.L;
 import cn.edu.zju.isst.util.T;
-import cn.edu.zuj.isst.ui.city.CastellanFragment;
 
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 

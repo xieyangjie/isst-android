@@ -3,6 +3,8 @@
  */
 package cn.edu.zju.isst.ui.usercenter;
 
+import java.util.List;
+
 import android.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,6 +13,7 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 import cn.edu.zju.isst.R;
+import cn.edu.zju.isst.db.City;
 import cn.edu.zju.isst.db.DataManager;
 import cn.edu.zju.isst.db.User;
 import cn.edu.zju.isst.ui.main.BaseActivity;
@@ -139,7 +142,14 @@ public class UserInfoActivity extends BaseActivity {
 				.setImageResource(currentUser.getGender() == 1 ? R.drawable.ic_male
 						: R.drawable.ic_female);
 
-		m_viewHolder.cityTxv.setText("" + currentUser.getCityId());
+		List<City> cityList = DataManager.getCityList();
+		String cityName = "";
+		for (City city : cityList) {
+		    if (city.getId() == currentUser.getCityId()) {
+			cityName = city.getName();
+		    }
+		}
+		m_viewHolder.cityTxv.setText(cityName);
 		m_viewHolder.signatureTxv.setText(currentUser.getSignature());
 		m_viewHolder.nameTxv.setText(currentUser.getName());
 		m_viewHolder.usernameTxv.setText(currentUser.getUsername());

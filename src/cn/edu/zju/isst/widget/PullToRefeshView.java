@@ -17,6 +17,7 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import cn.edu.zju.isst.R;
+import cn.edu.zju.isst.util.L;
 
 /**
  * @author theasir
@@ -178,6 +179,7 @@ public class PullToRefeshView extends LinearLayout implements OnTouchListener {
 	 */
 	public PullToRefeshView(Context context, AttributeSet attrs) {
 		super(context, attrs);
+		L.i(this.getClass().getName() + "----enter---PullToRefresh");
 		preferences = PreferenceManager.getDefaultSharedPreferences(context);
 		header = LayoutInflater.from(context).inflate(R.layout.pull_to_refresh, null, true);
 		progressBar = (ProgressBar) header.findViewById(R.id.progress_bar);
@@ -185,7 +187,7 @@ public class PullToRefeshView extends LinearLayout implements OnTouchListener {
 		description = (TextView) header.findViewById(R.id.description);
 		updateAt = (TextView) header.findViewById(R.id.updated_at);
 		touchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
-		refreshUpdatedAtValue();
+		//refreshUpdatedAtValue();
 		setOrientation(VERTICAL);
 		addView(header, 0);
 	}
@@ -196,10 +198,14 @@ public class PullToRefeshView extends LinearLayout implements OnTouchListener {
 	@Override
 	protected void onLayout(boolean changed, int l, int t, int r, int b) {
 		super.onLayout(changed, l, t, r, b);
+		L.i(this.getClass().getName() + "----enter---onLayout");
+		L.i(this.getClass().getName() + "----enter---onLayout---changed="+changed+",loadOnce="+loadOnce);
 		if (changed && !loadOnce) {
 			hideHeaderHeight = -header.getHeight();
 			headerLayoutParams = (MarginLayoutParams) header.getLayoutParams();
 			headerLayoutParams.topMargin = hideHeaderHeight;
+			header.setLayoutParams(headerLayoutParams);
+			new HideHeaderTask().execute();
 			listView = (ListView) getChildAt(1);
 			listView.setOnTouchListener(this);
 			loadOnce = true;
@@ -212,6 +218,7 @@ public class PullToRefeshView extends LinearLayout implements OnTouchListener {
 	@Override
 	public boolean onTouch(View v, MotionEvent event) {
 		setIsAbleToPull(event);
+		L.i(this.getClass().getName() + "----enter---onTouch");
 		if (ableToPull) {
 			switch (event.getAction()) {
 			case MotionEvent.ACTION_DOWN:
@@ -274,6 +281,7 @@ public class PullToRefeshView extends LinearLayout implements OnTouchListener {
 	 *            为了防止不同界面的下拉刷新在上次更新时间上互相有冲突， 请不同界面在注册下拉刷新监听器时一定要传入不同的id。
 	 */
 	public void setOnRefreshListener(PullToRefreshListener listener, int id) {
+		L.i(this.getClass().getName() + "----enter---setOnRefreshListener");
 		mListener = listener;
 		mId = id;
 	}
@@ -282,6 +290,7 @@ public class PullToRefeshView extends LinearLayout implements OnTouchListener {
 	 * 当所有的刷新逻辑完成后，记录调用一下，否则你的ListView将一直处于正在刷新状态。
 	 */
 	public void finishRefreshing() {
+		L.i(this.getClass().getName() + "----enter---finishRefreshing");
 		currentStatus = STATUS_REFRESH_FINISHED;
 		preferences.edit().putLong(UPDATED_AT + mId, System.currentTimeMillis()).commit();
 		new HideHeaderTask().execute();
@@ -294,6 +303,8 @@ public class PullToRefeshView extends LinearLayout implements OnTouchListener {
 	 * @param event
 	 */
 	private void setIsAbleToPull(MotionEvent event) {
+		L.i(this.getClass().getName() + "----enter---setIsAbleToPull");
+
 		View firstChild = listView.getChildAt(0);
 		if (firstChild != null) {
 			int firstVisiblePos = listView.getFirstVisiblePosition();
@@ -320,6 +331,8 @@ public class PullToRefeshView extends LinearLayout implements OnTouchListener {
 	 * 更新下拉头中的信息。
 	 */
 	private void updateHeaderView() {
+		L.i(this.getClass().getName() + "----enter---updateHeaderView");
+
 		if (lastStatus != currentStatus) {
 			if (currentStatus == STATUS_PULL_TO_REFRESH) {
 				description.setText(getResources().getString(R.string.pull_to_refresh));
@@ -366,6 +379,8 @@ public class PullToRefeshView extends LinearLayout implements OnTouchListener {
 	 * 刷新下拉头中上次更新时间的文字描述。
 	 */
 	private void refreshUpdatedAtValue() {
+		L.i(this.getClass().getName() + "----enter---refreshUpdatedAtValue");
+
 		lastUpdateTime = preferences.getLong(UPDATED_AT + mId, -1);
 		long currentTime = System.currentTimeMillis();
 		long timePassed = currentTime - lastUpdateTime;
