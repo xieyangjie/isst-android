@@ -40,6 +40,7 @@ proguard/
 
 # private files
 #private/
+*.keystore
  
 # OS
 .DS_Store
