@@ -59,6 +59,6 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:text="@string/action_logout"
-        android:textColor="@color/text_orange" />
+        android:textColor="@android:color/white" />
 
 </RelativeLayout>

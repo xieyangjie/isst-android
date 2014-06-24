@@ -13,6 +13,7 @@ import cn.edu.zju.isst.net.CSTResponse;
 import cn.edu.zju.isst.net.RequestListener;
 import cn.edu.zju.isst.settings.CSTSettings;
 import cn.edu.zju.isst.ui.city.CastellanFragment;
+import cn.edu.zju.isst.ui.city.CityActivityListFragment;
 import cn.edu.zju.isst.ui.contact.ContactListFragment;
 import cn.edu.zju.isst.ui.contact.ContactListFragment.FilterType;
 import cn.edu.zju.isst.ui.job.EmploymentListFragment;
@@ -74,6 +75,9 @@ public class NewMainActivity extends BaseActivity {
 	setUpDrawer();
 
 	requestGlobalData();
+	
+	//TODO better way to control
+	updateLogin();
     }
 
     @Override
@@ -237,7 +241,7 @@ public class NewMainActivity extends BaseActivity {
 		switchContent(CastellanFragment.GetInstance());
 		break;
 	    case CIAC:
-		switchContent(DummyFragment.newInstance(CIAC.getName()));
+		switchContent(CityActivityListFragment.getInstance());
 		break;
 	    case CIAL:
 		switchContent(ContactListFragment

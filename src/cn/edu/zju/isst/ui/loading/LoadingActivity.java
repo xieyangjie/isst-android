@@ -98,6 +98,7 @@ public class LoadingActivity extends Activity {
 	if (CSTSettings.isAutoLogin(LoadingActivity.this)) {
 	    LoadingActivity.this.startActivity(new Intent(LoadingActivity.this,
 		    NewMainActivity.class));
+	    
 	} else {
 	    LoadingActivity.this.startActivity(new Intent(LoadingActivity.this,
 		    LoginActivity.class));
