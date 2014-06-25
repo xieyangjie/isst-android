@@ -30,6 +30,7 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            
         </activity>
         <activity
             android:name=".ui.login.LoginActivity"
@@ -49,6 +50,8 @@
         </activity>
         <activity android:name=".ui.job.JobCommentListActivity" >
         </activity>
+        <activity android:name=".ui.job.PublishRecommendActivity" >      
+        </activity>
         <activity android:name=".ui.life.CampusActivityDetailActivity" >
         </activity>
         <activity android:name=".ui.life.RestaurantDetailActivity" >
@@ -63,6 +66,7 @@
         </activity>
         <activity android:name=".ui.city.CityActivityDetailActivity" >
         </activity>
+        
         
          <!-- push service client -->
         <receiver android:name="cn.edu.zju.isst.baidupush.PushMessageReceiver">

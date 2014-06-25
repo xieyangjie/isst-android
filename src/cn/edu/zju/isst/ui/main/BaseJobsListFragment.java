@@ -23,9 +23,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.View.OnClickListener;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import cn.edu.zju.isst.R;
@@ -38,7 +41,9 @@ import cn.edu.zju.isst.exception.HttpErrorWeeder;
 import cn.edu.zju.isst.net.CSTResponse;
 import cn.edu.zju.isst.net.NetworkConnection;
 import cn.edu.zju.isst.net.RequestListener;
+import cn.edu.zju.isst.ui.contact.ContactDetailActivity;
 import cn.edu.zju.isst.ui.job.JobDetailActivity;
+import cn.edu.zju.isst.ui.job.PublishRecommendActivity;
 import cn.edu.zju.isst.ui.job.RecommendDetailActivity;
 import cn.edu.zju.isst.util.J;
 import cn.edu.zju.isst.util.L;
@@ -62,6 +67,7 @@ public class BaseJobsListFragment extends ListFragment implements
 	private final List<Job> m_listAchive = new ArrayList<Job>();
 	private Handler m_handlerJobList;
 	private JobListAdapter m_adapterJobList;
+	private View m_viewContainer;
 
 	private ListView m_lsvJobList;
 
@@ -203,6 +209,24 @@ public class BaseJobsListFragment extends ListFragment implements
 
 	protected void initComponent(View view) {
 		m_lsvJobList = (ListView) view.findViewById(android.R.id.list);
+		m_viewContainer = (View) view.findViewById(R.id.job_recommend_imgbtn_container);
+		if(m_jobCategory ==JobCategory.RECOMMEND){
+			m_viewContainer.setVisibility(view.VISIBLE);
+			Button btnPublish =(Button) view.findViewById(R.id.job_recommend_imgbtn);
+			btnPublish.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					Intent intent = new Intent(getActivity(),
+							PublishRecommendActivity.class);
+					startActivity(intent);
+				}
+			});
+		}
+		else{
+			m_viewContainer.setVisibility(view.GONE);
+		}
 	}
 
 	/**
