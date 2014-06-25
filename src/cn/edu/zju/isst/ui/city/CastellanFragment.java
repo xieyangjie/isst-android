@@ -34,6 +34,8 @@ import android.widget.TextView;
  */
 public class CastellanFragment extends Fragment {
 
+    private static final String PRIVATE_INFO = "未公开";
+    
     private TextView m_tvName;
     private TextView m_tvGender;
     private TextView m_tvGrade;
@@ -167,6 +169,21 @@ public class CastellanFragment extends Fragment {
 	m_tvCompany.setText(m_user.getCompany());
 	// 职位
 	m_tvPosition.setText(m_user.getPosition());
+	if (m_user.isPrivatePhone()) {
+	    m_tvMobile.setText(PRIVATE_INFO);
+	    m_ibtnMobileCall.setVisibility(View.GONE);
+	    m_ibtnMessage.setVisibility(View.GONE);
+	}
+	if (m_user.isPrivateEmail()) {
+	    m_tvEmail.setText(PRIVATE_INFO);
+	    m_ibtnEmail.setVisibility(View.GONE);
+	}
+	if (m_user.isPrivateCompany()) {
+	    m_tvCompany.setText(PRIVATE_INFO);
+	}
+	if (m_user.isPrivatePosition()) {
+	    m_tvPosition.setText(PRIVATE_INFO);
+	}
     }
 
     /**
@@ -235,7 +252,7 @@ public class CastellanFragment extends Fragment {
 	@Override
 	public void onClick(View v) {
 	    String number = m_tvMobile.getText().toString();
-	    Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:"
+	    Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:"
 		    + number));
 	    startActivity(intent);
 	}

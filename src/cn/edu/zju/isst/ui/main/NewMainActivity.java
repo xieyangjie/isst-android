@@ -68,6 +68,7 @@ public class NewMainActivity extends BaseActivity {
 	    getFragmentManager().beginTransaction()
 		    .add(R.id.content_frame, mCurrentFragment).commit();
 	    mTitle = Nav.NEWS.getName();
+	    getActionBar().setTitle(mTitle);
 	}
 
 	setUpActionbar();

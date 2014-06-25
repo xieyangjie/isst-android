@@ -277,7 +277,7 @@ public class CityActivityDetailActivity extends BaseActivity {
 		+ TimeString.toHM(mCityActivity.startTime) + "-"
 		+ TimeString.toHM(mCityActivity.expireTime));
 	mViewHolder.locationTxv.setText("活动地点:" + mCityActivity.location);
-	mViewHolder.contentWebv.loadDataWithBaseURL(null, "一秒变格格呀亲",
+	mViewHolder.contentWebv.loadDataWithBaseURL(null, mCityActivity.content,
 		"text/html", "utf-8", null);
 	mViewHolder.participateBtn.setText(mCityActivity.isParticipate ? "取消报名"
 		: "报名参加");

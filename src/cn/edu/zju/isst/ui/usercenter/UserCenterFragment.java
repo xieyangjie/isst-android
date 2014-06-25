@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 import cn.edu.zju.isst.R;
 import cn.edu.zju.isst.db.DataManager;
 import cn.edu.zju.isst.db.User;
@@ -163,8 +164,7 @@ public class UserCenterFragment extends Fragment {
 	    
 	    @Override
 	    public void onClick(View v) {
-		// TODO Auto-generated method stub
-		
+		Toast.makeText(getActivity(), "该功能暂未实现", Toast.LENGTH_SHORT).show();
 	    }
 	});
 	
@@ -173,7 +173,7 @@ public class UserCenterFragment extends Fragment {
 	    @Override
 	    public void onClick(View v) {
 		// TODO Auto-generated method stub
-		
+		Toast.makeText(getActivity(), "该功能暂未实现", Toast.LENGTH_SHORT).show();
 	    }
 	});
 	
@@ -182,7 +182,7 @@ public class UserCenterFragment extends Fragment {
 	    @Override
 	    public void onClick(View v) {
 		// TODO Auto-generated method stub
-		
+		Toast.makeText(getActivity(), "该功能暂未实现", Toast.LENGTH_SHORT).show();
 	    }
 	});
 	
@@ -191,7 +191,7 @@ public class UserCenterFragment extends Fragment {
 	    @Override
 	    public void onClick(View v) {
 		// TODO Auto-generated method stub
-		
+		Toast.makeText(getActivity(), "该功能暂未实现", Toast.LENGTH_SHORT).show();
 	    }
 	});
 	
@@ -200,7 +200,7 @@ public class UserCenterFragment extends Fragment {
 	    @Override
 	    public void onClick(View v) {
 		// TODO Auto-generated method stub
-		
+		Toast.makeText(getActivity(), "该功能暂未实现", Toast.LENGTH_SHORT).show();
 	    }
 	});
 	
@@ -209,7 +209,7 @@ public class UserCenterFragment extends Fragment {
 	    @Override
 	    public void onClick(View v) {
 		// TODO Auto-generated method stub
-		
+		Toast.makeText(getActivity(), "该功能暂未实现", Toast.LENGTH_SHORT).show();
 	    }
 	});
 	
@@ -218,7 +218,7 @@ public class UserCenterFragment extends Fragment {
 	    @Override
 	    public void onClick(View v) {
 		// TODO Auto-generated method stub
-		
+		Toast.makeText(getActivity(), "该功能暂未实现", Toast.LENGTH_SHORT).show();
 	    }
 	});
     }
