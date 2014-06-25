@@ -7,6 +7,9 @@ import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -27,107 +30,206 @@ import cn.edu.zju.isst.util.J;
  */
 public class UserCenterFragment extends Fragment {
 
-	private User m_userCurrent;
+    private User m_userCurrent;
 
-	private View m_viewUser;
-	private ImageView m_imgvUserAvatar;
-	private TextView m_txvName;
-	private TextView m_txvSignature;
-	private Button m_btnLogout;
+    private ViewHolder mViewHolder = new ViewHolder();
 
-	private static UserCenterFragment INSTANCE = new UserCenterFragment();
+    private static UserCenterFragment INSTANCE = new UserCenterFragment();
 
-	public UserCenterFragment() {
+    public UserCenterFragment() {
+    }
+
+    public static UserCenterFragment getInstance() {
+	return INSTANCE;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see android.support.v4.app.Fragment#onCreate(android.os.Bundle)
+     */
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+	super.onCreate(savedInstanceState);
+	setHasOptionsMenu(true);
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
+     * android.view.ViewGroup, android.os.Bundle)
+     */
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+	    Bundle savedInstanceState) {
+	return inflater.inflate(R.layout.user_center_fragment, null);
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see android.support.v4.app.Fragment#onViewCreated(android.view.View,
+     * android.os.Bundle)
+     */
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+	super.onViewCreated(view, savedInstanceState);
+
+	initComponent(view);
+
+	setUpListener();
+
+	initUser();
+
+	show();
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+	super.onCreateOptionsMenu(menu, inflater);
+	inflater.inflate(R.menu.user_center_fragment_ab_menu, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+	switch (item.getItemId()) {
+	case R.id.message_center:
+	    Intent intent = new Intent(getActivity(), PushMessagesActivity.class);
+	    getActivity().startActivity(intent);
+	    return true;
+
+	default:
+	    return super.onOptionsItemSelected(item);
 	}
+    }
 
-	public static UserCenterFragment getInstance() {
-		return INSTANCE;
-	}
+    private class ViewHolder {
+	View userView;
+	ImageView avatarImgv;
+	TextView nameTxv;
+	TextView signTxv;
+	Button logoutBtn;
+	View stAffairView;
+	View taskCenterView;
+	View myRecomView;
+	View myExpView;
+	View myActivityView;
+	View peopleNearbyView;
+	View personalSettingvView;
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see android.support.v4.app.Fragment#onCreate(android.os.Bundle)
-	 */
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setHasOptionsMenu(true);
-	}
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
-	 * android.view.ViewGroup, android.os.Bundle)
-	 */
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.user_center_fragment, null);
-	}
+    private void initComponent(View view) {
+	mViewHolder.userView = view
+		.findViewById(R.id.user_center_fragment_user);
+	mViewHolder.avatarImgv = (ImageView) view
+		.findViewById(R.id.user_center_fragment_user_avatar_imgv);
+	mViewHolder.nameTxv = (TextView) view
+		.findViewById(R.id.user_center_fragment_name_txv);
+	mViewHolder.signTxv = (TextView) view
+		.findViewById(R.id.user_center_fragment_signature_txv);
+	mViewHolder.logoutBtn = (Button) view
+		.findViewById(R.id.user_center_fragment_logout_btn);
+	mViewHolder.stAffairView = view.findViewById(R.id.user_center_student_affair_txv);
+	mViewHolder.taskCenterView = view.findViewById(R.id.user_center_task_center_txv);
+	mViewHolder.myRecomView = view.findViewById(R.id.user_center_my_recommend_txv);
+	mViewHolder.myExpView = view.findViewById(R.id.user_center_my_experience_txv);
+	mViewHolder.myActivityView = view.findViewById(R.id.user_center_my_activity_txv);
+	mViewHolder.peopleNearbyView = view.findViewById(R.id.user_center_people_around_txv);
+	mViewHolder.personalSettingvView = view.findViewById(R.id.user_center_personal_setting_txv);
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see android.support.v4.app.Fragment#onViewCreated(android.view.View,
-	 * android.os.Bundle)
-	 */
-	@Override
-	public void onViewCreated(View view, Bundle savedInstanceState) {
-		super.onViewCreated(view, savedInstanceState);
+    private void setUpListener() {
+	mViewHolder.userView.setOnClickListener(new OnClickListener() {
 
-		initComponent(view);
+	    @Override
+	    public void onClick(View v) {
+		getActivity().startActivity(
+			new Intent(getActivity(), UserInfoActivity.class));
+	    }
+	});
 
-		setUpListener();
+	mViewHolder.logoutBtn.setOnClickListener(new OnClickListener() {
 
-		initUser();
+	    @Override
+	    public void onClick(View v) {
+		((NewMainActivity) getActivity()).logout();
+	    }
+	});
+	
+	mViewHolder.stAffairView.setOnClickListener(new OnClickListener() {
+	    
+	    @Override
+	    public void onClick(View v) {
+		// TODO Auto-generated method stub
+		
+	    }
+	});
+	
+	mViewHolder.taskCenterView.setOnClickListener(new OnClickListener() {
+	    
+	    @Override
+	    public void onClick(View v) {
+		// TODO Auto-generated method stub
+		
+	    }
+	});
+	
+	mViewHolder.myRecomView.setOnClickListener(new OnClickListener() {
+	    
+	    @Override
+	    public void onClick(View v) {
+		// TODO Auto-generated method stub
+		
+	    }
+	});
+	
+	mViewHolder.myExpView.setOnClickListener(new OnClickListener() {
+	    
+	    @Override
+	    public void onClick(View v) {
+		// TODO Auto-generated method stub
+		
+	    }
+	});
+	
+	mViewHolder.myActivityView.setOnClickListener(new OnClickListener() {
+	    
+	    @Override
+	    public void onClick(View v) {
+		// TODO Auto-generated method stub
+		
+	    }
+	});
+	
+	mViewHolder.peopleNearbyView.setOnClickListener(new OnClickListener() {
+	    
+	    @Override
+	    public void onClick(View v) {
+		// TODO Auto-generated method stub
+		
+	    }
+	});
+	
+	mViewHolder.personalSettingvView.setOnClickListener(new OnClickListener() {
+	    
+	    @Override
+	    public void onClick(View v) {
+		// TODO Auto-generated method stub
+		
+	    }
+	});
+    }
 
-		show();
-	}
+    private void initUser() {
+	m_userCurrent = DataManager.getCurrentUser();
+    }
 
-	private void initComponent(View view) {
-		m_viewUser = view.findViewById(R.id.user_center_fragment_user);
-		m_imgvUserAvatar = (ImageView) view
-				.findViewById(R.id.user_center_fragment_user_avatar_imgv);
-		m_txvName = (TextView) view
-				.findViewById(R.id.user_center_fragment_name_txv);
-		m_txvSignature = (TextView) view
-				.findViewById(R.id.user_center_fragment_signature_txv);
-		m_btnLogout = (Button) view
-				.findViewById(R.id.user_center_fragment_logout_btn);
-	}
-
-	private void setUpListener() {
-		m_viewUser.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				getActivity().startActivity(
-						new Intent(getActivity(), UserInfoActivity.class));
-
-				// getActivity().startActivity(
-				// new Intent(getActivity(), TestFloatingActivity.class));
-			}
-		});
-
-		m_btnLogout.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-					((NewMainActivity) getActivity()).logout();
-			}
-		});
-	}
-
-	private void initUser() {
-		m_userCurrent = DataManager.getCurrentUser();
-	}
-
-	private void show() {
-		m_txvName.setText(m_userCurrent.getName());
-		m_txvSignature.setText(m_userCurrent.getSignature());
-	}
+    private void show() {
+	mViewHolder.nameTxv.setText(m_userCurrent.getName());
+	mViewHolder.signTxv.setText(m_userCurrent.getSignature());
+    }
 
 }

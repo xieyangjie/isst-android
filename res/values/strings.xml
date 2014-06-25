@@ -84,4 +84,13 @@
     <string name="drawer_open">打开抽屉</string>
     <string name="drawer_close">关闭抽屉</string>
     
+    <string name="student_affair">学生事务</string>
+    <string name="task_center">任务中心</string>
+    <string name="my_recommend">我的内推</string>
+    <string name="my_experience">我的经验</string>
+    <string name="my_activity">活动管理</string>
+    <string name="people_around">附近的人</string>
+    <string name="personal_setting">个人设置</string>
+    <string name="message_center">消息中心</string>
+    
 </resources>

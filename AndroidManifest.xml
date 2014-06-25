@@ -57,6 +57,8 @@
         </activity>
         <activity android:name=".ui.usercenter.UserInfoEditActivity" >
         </activity>
+        <activity android:name=".ui.usercenter.PushMessagesActivity" >
+        </activity>
         <activity android:name=".ui.contact.ContactDetailActivity" >
         </activity>
         <activity android:name=".ui.contact.ContactFilterActivity" >
