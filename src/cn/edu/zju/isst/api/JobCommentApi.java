@@ -47,4 +47,5 @@ public class JobCommentApi extends CSTApi {
 		paramsMap.put("content", content.toString());
 		request("POST", SUB_URL + jobId + "/comments",paramsMap, listener);
 	}
+	
 }

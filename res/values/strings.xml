@@ -93,4 +93,10 @@
     <string name="personal_setting">个人设置</string>
     <string name="message_center">消息中心</string>
     
+    <string name="publish_recommend_title">标题</string>
+    <string name="publish_recommend_content">内容</string>
+    <string name="publish_recommend_company">公司</string>
+    <string name="publish_recommend_position">职位</string>
+    <string name="publish_recommend_city">城市</string>
+    
 </resources>

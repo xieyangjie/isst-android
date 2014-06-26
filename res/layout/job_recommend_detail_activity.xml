@@ -23,6 +23,7 @@
         <Button
             android:id="@+id/job_recommend_imgbtn"
             style="?android:attr/borderlessButtonStyle"
+            android:text="@string/job_waiting_for_comment"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1" />
