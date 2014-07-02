@@ -11,6 +11,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.ActionBar;
 import android.app.ListFragment;
 import android.content.Context;
 import android.content.Intent;
@@ -26,25 +27,28 @@ import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 import cn.edu.zju.isst.R;
-import cn.edu.zju.isst.api.JobApi;
-import cn.edu.zju.isst.api.JobCategory;
-import cn.edu.zju.isst.db.Job;
+import cn.edu.zju.isst.api.UserCenterApi;
+import cn.edu.zju.isst.api.UserCenterCategory;
+import cn.edu.zju.isst.api.UserCenterCategory;
 import cn.edu.zju.isst.db.DataManager;
+import cn.edu.zju.isst.db.UserCenterList;
 import cn.edu.zju.isst.exception.ExceptionWeeder;
 import cn.edu.zju.isst.exception.HttpErrorWeeder;
 import cn.edu.zju.isst.net.CSTResponse;
 import cn.edu.zju.isst.net.NetworkConnection;
 import cn.edu.zju.isst.net.RequestListener;
 import cn.edu.zju.isst.ui.contact.ContactDetailActivity;
-import cn.edu.zju.isst.ui.job.JobDetailActivity;
-import cn.edu.zju.isst.ui.job.PublishRecommendActivity;
 import cn.edu.zju.isst.ui.job.RecommendDetailActivity;
+import cn.edu.zju.isst.ui.life.ArchiveDetailActivity;
+import cn.edu.zju.isst.ui.usercenter.MyRecommendDetailActivity;
 import cn.edu.zju.isst.util.J;
 import cn.edu.zju.isst.util.L;
 import cn.edu.zju.isst.util.TimeString;
@@ -55,25 +59,23 @@ import cn.edu.zju.isst.util.TimeString;
  * @author theasir
  * 
  */
-public class BaseJobsListFragment extends ListFragment implements
+public class BaseUserCenterListFragment extends ListFragment implements
 		OnScrollListener {
 
 	private int m_nVisibleLastIndex;
 	private int m_nCurrentPage;
 	private boolean m_bIsFirstTime;
 
-	private JobCategory m_jobCategory;
+	private UserCenterCategory m_userCenterCategory;
 	private LoadType m_loadType;
-	private final List<Job> m_listAchive = new ArrayList<Job>();
-	private Handler m_handlerJobList;
-	private JobListAdapter m_adapterJobList;
+	private final List<UserCenterList> m_listAchive = new ArrayList<UserCenterList>();
+	private Handler m_handlerUserCenterList;
+	private UserCenterListAdapter m_adapterUserCenterList;
 	private View m_viewContainer;
 
-	private ListView m_lsvJobList;
-	
-	
+	private ListView m_lsvUserCenterList;
 
-	public BaseJobsListFragment() {
+	public BaseUserCenterListFragment() {
 		m_nCurrentPage = 1;
 		m_bIsFirstTime = true;
 	}
@@ -86,6 +88,7 @@ public class BaseJobsListFragment extends ListFragment implements
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		//action_bar_activities_item
 		setHasOptionsMenu(true);
 	}
 
@@ -99,7 +102,7 @@ public class BaseJobsListFragment extends ListFragment implements
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.job_list_fragment, null);
+		return inflater.inflate(R.layout.usercenter_list_fragment, null);
 	}
 
 	/*
@@ -115,7 +118,7 @@ public class BaseJobsListFragment extends ListFragment implements
 		initComponent(view);
 
 		if (m_bIsFirstTime) {
-			initJobList();
+			initUserCenterList();
 		}
 
 		initHandler();
@@ -183,10 +186,21 @@ public class BaseJobsListFragment extends ListFragment implements
 	public void onListItemClick(ListView l, View v, int position, long id) {
 		L.i(this.getClass().getName() + " onListItemClick postion = "
 				+ position);
-		Intent intent = new Intent(getActivity(), JobDetailActivity.class);
-		if (m_jobCategory == JobCategory.RECOMMEND) {
+		Intent intent = null;
+		switch (m_userCenterCategory) {
+		case MYRECOMMEND:
 			intent = new Intent(getActivity(), RecommendDetailActivity.class);
+			intent.putExtra("isEditView", true);
+			break;
+		case MYEXPIENCE:
+			intent = new Intent(getActivity(), ArchiveDetailActivity.class);
+			break;
+		case MYACTIVITIES:
+			break;
+		default:
+			break;
 		}
+
 		intent.putExtra("id", m_listAchive.get(position).getId());
 		getActivity().startActivity(intent);
 	}
@@ -194,7 +208,7 @@ public class BaseJobsListFragment extends ListFragment implements
 	@Override
 	public void onScrollStateChanged(AbsListView view, int scrollState) {
 		if (scrollState == SCROLL_STATE_IDLE
-				&& m_nVisibleLastIndex == m_adapterJobList.getCount() - 1) {
+				&& m_nVisibleLastIndex == m_adapterUserCenterList.getCount() - 1) {
 			requestData(LoadType.LOADMORE);
 		}
 	}
@@ -205,48 +219,28 @@ public class BaseJobsListFragment extends ListFragment implements
 		m_nVisibleLastIndex = firstVisibleItem + visibleItemCount - 1;
 	}
 
-	public void setJobCategory(JobCategory jobCategory) {
-		m_jobCategory = jobCategory;
+	public void setUserCenterCategory(UserCenterCategory UserCenterCategory) {
+		m_userCenterCategory = UserCenterCategory;
 	}
 
 	protected void initComponent(View view) {
-		
-		
-		m_lsvJobList = (ListView) view.findViewById(android.R.id.list);
-		m_viewContainer = (View) view.findViewById(R.id.job_recommend_imgbtn_container);
-		if(m_jobCategory ==JobCategory.RECOMMEND){
-			m_viewContainer.setVisibility(view.VISIBLE);
-			Button btnPublish =(Button) view.findViewById(R.id.job_recommend_imgbtn);
-			btnPublish.setOnClickListener(new OnClickListener() {
-
-				@Override
-				public void onClick(View v) {
-					// TODO Auto-generated method stub
-					Intent intent = new Intent(getActivity(),
-							PublishRecommendActivity.class);
-					startActivity(intent);
-				}
-			});
-		}
-		else{
-			m_viewContainer.setVisibility(view.GONE);
-		}
+		m_lsvUserCenterList = (ListView) view.findViewById(android.R.id.list);
 	}
 
 	/**
 	 * 初始化归档列表，若有缓存则读取缓存
 	 */
-	protected void initJobList() {
-		List<Job> dbJobList = getJobList();
-		if (!J.isNullOrEmpty(dbJobList)) {
-			for (Job job : dbJobList) {
-				m_listAchive.add(job);
+	protected void initUserCenterList() {
+		List<UserCenterList> dbUserCenterList = getUserCenterList();
+		if (!J.isNullOrEmpty(dbUserCenterList)) {
+			for (UserCenterList userCenterList : dbUserCenterList) {
+				m_listAchive.add(userCenterList);
 			}
 		}
 	}
 
 	protected void initHandler() {
-		m_handlerJobList = new Handler() {
+		m_handlerUserCenterList = new Handler() {
 
 			/*
 			 * (non-Javadoc)
@@ -267,7 +261,7 @@ public class BaseJobsListFragment extends ListFragment implements
 					default:
 						break;
 					}
-					m_adapterJobList.notifyDataSetChanged();
+					m_adapterUserCenterList.notifyDataSetChanged();
 					break;
 				case STATUS_NOT_LOGIN:// TODO
 					((NewMainActivity) getActivity()).updateLogin();
@@ -283,12 +277,12 @@ public class BaseJobsListFragment extends ListFragment implements
 	}
 
 	protected void setUpAdapter() {
-		m_adapterJobList = new JobListAdapter(getActivity());
-		setListAdapter(m_adapterJobList);
+		m_adapterUserCenterList = new UserCenterListAdapter(getActivity());
+		setListAdapter(m_adapterUserCenterList);
 	}
 
 	protected void setUpListener() {
-		m_lsvJobList.setOnScrollListener(this);
+		m_lsvUserCenterList.setOnScrollListener(this);
 	}
 
 	/**
@@ -308,9 +302,10 @@ public class BaseJobsListFragment extends ListFragment implements
 			JSONArray jsonArray = jsonObject.getJSONArray("body");
 
 			for (int i = 0; i < jsonArray.length(); i++) {
-				m_listAchive.add(new Job((JSONObject) jsonArray.get(i)));
+				m_listAchive.add(new UserCenterList((JSONObject) jsonArray
+						.get(i)));
 			}
-			syncJobList();
+			syncUserCenterList();
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
@@ -331,7 +326,8 @@ public class BaseJobsListFragment extends ListFragment implements
 			jsonArray = jsonObject.getJSONArray("body");
 
 			for (int i = 0; i < jsonArray.length(); i++) {
-				m_listAchive.add(new Job((JSONObject) jsonArray.get(i)));
+				m_listAchive.add(new UserCenterList((JSONObject) jsonArray
+						.get(i)));
 			}
 		} catch (JSONException e) {
 			e.printStackTrace();
@@ -349,30 +345,31 @@ public class BaseJobsListFragment extends ListFragment implements
 			m_loadType = type;
 			switch (type) {
 			case REFRESH:
-				JobApi.getJobList(m_jobCategory, 1, 20, null,
-						new JobListRequestListener());
+				UserCenterApi.getUserCenterList(m_userCenterCategory, 1, 20,
+						new UserCenterListRequestListener());
 				m_nCurrentPage = 1;
 				break;
 			case LOADMORE:
-				JobApi.getJobList(m_jobCategory, ++m_nCurrentPage,
-						20, null, new JobListRequestListener());
+				UserCenterApi.getUserCenterList(m_userCenterCategory,
+						++m_nCurrentPage, 20,
+						new UserCenterListRequestListener());
 				break;
 			default:
 				break;
 			}
 		} else {
-			Message msg = m_handlerJobList.obtainMessage();
+			Message msg = m_handlerUserCenterList.obtainMessage();
 			msg.what = NETWORK_NOT_CONNECTED;
-			m_handlerJobList.sendMessage(msg);
+			m_handlerUserCenterList.sendMessage(msg);
 		}
 	}
 
-	protected List<Job> getJobList() {
-		return DataManager.getJobList(m_jobCategory);
+	protected List<UserCenterList> getUserCenterList() {
+		return DataManager.getUserCenterList(m_userCenterCategory);
 	}
 
-	protected void syncJobList() {
-		DataManager.syncJobList(m_jobCategory, m_listAchive);
+	protected void syncUserCenterList() {
+		DataManager.syncUserCenterList(m_userCenterCategory, m_listAchive);
 	}
 
 	/**
@@ -391,11 +388,11 @@ public class BaseJobsListFragment extends ListFragment implements
 	 * @author theasir
 	 * 
 	 */
-	public class JobListRequestListener implements RequestListener {
+	public class UserCenterListRequestListener implements RequestListener {
 
 		@Override
 		public void onComplete(Object result) {
-			Message msg = m_handlerJobList.obtainMessage();
+			Message msg = m_handlerUserCenterList.obtainMessage();
 			try {
 				if (!J.isValidJsonValue("status", (JSONObject) result)) {
 					return;
@@ -407,23 +404,23 @@ public class BaseJobsListFragment extends ListFragment implements
 				e.printStackTrace();
 			}
 
-			m_handlerJobList.sendMessage(msg);
+			m_handlerUserCenterList.sendMessage(msg);
 		}
 
 		@Override
 		public void onHttpError(CSTResponse response) {
 			L.i(this.getClass().getName() + " onHttpError!");
-			Message msg = m_handlerJobList.obtainMessage();
+			Message msg = m_handlerUserCenterList.obtainMessage();
 			HttpErrorWeeder.fckHttpError(response, msg);
-			m_handlerJobList.sendMessage(msg);
+			m_handlerUserCenterList.sendMessage(msg);
 		}
 
 		@Override
 		public void onException(Exception e) {
 			L.i(this.getClass().getName() + " onException!");
-			Message msg = m_handlerJobList.obtainMessage();
+			Message msg = m_handlerUserCenterList.obtainMessage();
 			ExceptionWeeder.fckException(e, msg);
-			m_handlerJobList.sendMessage(msg);
+			m_handlerUserCenterList.sendMessage(msg);
 		}
 
 	}
@@ -448,11 +445,11 @@ public class BaseJobsListFragment extends ListFragment implements
 	 * @author theasir
 	 * 
 	 */
-	public class JobListAdapter extends BaseAdapter {
+	public class UserCenterListAdapter extends BaseAdapter {
 
 		private LayoutInflater inflater;
 
-		public JobListAdapter(Context context) {
+		public UserCenterListAdapter(Context context) {
 			this.inflater = LayoutInflater.from(context);
 		}
 
@@ -478,18 +475,12 @@ public class BaseJobsListFragment extends ListFragment implements
 			if (convertView == null) {
 				holder = new ViewHolder();
 
-				convertView = inflater
-						.inflate(R.layout.job_list_item, null);
+				convertView = inflater.inflate(R.layout.usercenter_list_item,
+						null);
 				holder.titleTxv = (TextView) convertView
-						.findViewById(R.id.job_list_item_title_txv);
+						.findViewById(R.id.usercenter_list_item_title_txv);
 				holder.dateTxv = (TextView) convertView
-						.findViewById(R.id.job_list_item_date_txv);
-				holder.publisherTxv = (TextView) convertView
-						.findViewById(R.id.job_list_item_publisher_txv);
-				holder.descriptionTxv = (TextView) convertView
-						.findViewById(R.id.job_list_item_description_txv);
-				holder.indicatorView = (View) convertView
-						.findViewById(R.id.job_list_item_indicator_view);
+						.findViewById(R.id.usercenter_list_item_date_txv);
 
 				convertView.setTag(holder);
 			} else {
@@ -499,10 +490,7 @@ public class BaseJobsListFragment extends ListFragment implements
 			holder.titleTxv.setText(m_listAchive.get(position).getTitle());
 			holder.dateTxv.setText(TimeString.toYMD(m_listAchive.get(position)
 					.getUpdatedAt()));
-			holder.publisherTxv.setText(m_listAchive.get(position)
-					.getPublisher().getName());
-			holder.descriptionTxv.setText(m_listAchive.get(position)
-					.getDescription());
+
 			// holder.indicatorView.setBackgroundColor(Color.BLUE);
 
 			return convertView;

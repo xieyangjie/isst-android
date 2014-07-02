@@ -1,4 +1,7 @@
-package cn.edu.zju.isst.ui.main;
+/**
+ * 
+ */
+package cn.edu.zju.isst.ui.usercenter;
 
 import static cn.edu.zju.isst.constant.Constants.NETWORK_NOT_CONNECTED;
 import static cn.edu.zju.isst.constant.Constants.STATUS_NOT_LOGIN;
@@ -11,111 +14,136 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.ListFragment;
+import cn.edu.zju.isst.R;
+import cn.edu.zju.isst.api.ArchiveCategory;
+import cn.edu.zju.isst.api.UserCenterApi;
+import cn.edu.zju.isst.api.UserCenterCategory;
+import cn.edu.zju.isst.db.DataManager;
+import cn.edu.zju.isst.db.User;
+import cn.edu.zju.isst.db.UserCenterList;
+import cn.edu.zju.isst.exception.ExceptionWeeder;
+import cn.edu.zju.isst.exception.HttpErrorWeeder;
+import cn.edu.zju.isst.net.CSTResponse;
+import cn.edu.zju.isst.net.NetworkConnection;
+import cn.edu.zju.isst.net.RequestListener;
+import cn.edu.zju.isst.ui.life.ArchiveDetailActivity;
+import cn.edu.zju.isst.ui.life.NewsListFragment;
+import cn.edu.zju.isst.ui.main.NewMainActivity;
+import cn.edu.zju.isst.ui.main.BaseArchiveListFragment.ArchiveListAdapter;
+import cn.edu.zju.isst.ui.main.BaseArchiveListFragment.ArchiveListRequestListener;
+import cn.edu.zju.isst.ui.main.BaseArchiveListFragment.LoadType;
+import cn.edu.zju.isst.util.J;
+import cn.edu.zju.isst.util.L;
+import cn.edu.zju.isst.util.TimeString;
+import cn.edu.zju.isst.widget.PullToRefeshView;
+import cn.edu.zju.isst.widget.PullToRefeshView.PullToRefreshListener;
+import android.R.integer;
+import android.annotation.SuppressLint;
+import android.app.ActionBar;
+import android.app.Fragment;
+import android.app.ActionBar.OnNavigationListener;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.View.OnClickListener;
 import android.widget.AbsListView;
-import android.widget.AbsListView.OnScrollListener;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
-import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.SpinnerAdapter;
 import android.widget.TextView;
-import cn.edu.zju.isst.R;
-import cn.edu.zju.isst.api.JobApi;
-import cn.edu.zju.isst.api.JobCategory;
-import cn.edu.zju.isst.db.Job;
-import cn.edu.zju.isst.db.DataManager;
-import cn.edu.zju.isst.exception.ExceptionWeeder;
-import cn.edu.zju.isst.exception.HttpErrorWeeder;
-import cn.edu.zju.isst.net.CSTResponse;
-import cn.edu.zju.isst.net.NetworkConnection;
-import cn.edu.zju.isst.net.RequestListener;
-import cn.edu.zju.isst.ui.contact.ContactDetailActivity;
-import cn.edu.zju.isst.ui.job.JobDetailActivity;
-import cn.edu.zju.isst.ui.job.PublishRecommendActivity;
-import cn.edu.zju.isst.ui.job.RecommendDetailActivity;
-import cn.edu.zju.isst.util.J;
-import cn.edu.zju.isst.util.L;
-import cn.edu.zju.isst.util.TimeString;
+import android.widget.AbsListView.OnScrollListener;
 
 /**
- * 归档列表基类
- * 
- * @author theasir
+ * @author yyy
  * 
  */
-public class BaseJobsListFragment extends ListFragment implements
+public class MyActivitiesFragment extends ListFragment implements
 		OnScrollListener {
+	
+	private static MyActivitiesFragment INSTANCE = new MyActivitiesFragment();
 
+	public static MyActivitiesFragment getInstance() {
+		return INSTANCE;
+	}
 	private int m_nVisibleLastIndex;
 	private int m_nCurrentPage;
 	private boolean m_bIsFirstTime;
 
-	private JobCategory m_jobCategory;
+
+	private int m_type;// 0发布的，1参加的
+
+	private ArrayList<String> m_arrayListType = new ArrayList<String>();
 	private LoadType m_loadType;
-	private final List<Job> m_listAchive = new ArrayList<Job>();
-	private Handler m_handlerJobList;
-	private JobListAdapter m_adapterJobList;
-	private View m_viewContainer;
+	private final List<UserCenterList> m_listAchive = new ArrayList<UserCenterList>();
+	private Handler m_handlerArchiveList;
+	private ArchiveListAdapter m_adapterArchiveList;
 
-	private ListView m_lsvJobList;
-	
-	
+	private PullToRefeshView m_ptrView;
+	private ListView m_lsvArchiveList;
 
-	public BaseJobsListFragment() {
+	/**
+	 * 
+	 */
+	public MyActivitiesFragment() {
+		// TODO Auto-generated constructor stub
+		m_arrayListType.add("我发布的活动");
+		m_arrayListType.add("我参加的活动");
 		m_nCurrentPage = 1;
 		m_bIsFirstTime = true;
+
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see android.support.v4.app.Fragment#onCreate(android.os.Bundle)
-	 */
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
+		SpinnerAdapter adapter = new ArrayAdapter<String>(getActivity(),
+				R.layout.action_bar_city_item, m_arrayListType);
+		// 得到ActionBar
+		ActionBar actionBar = getActivity().getActionBar();
+		// 将ActionBar的操作模型设置为NAVIGATION_MODE_LIST
+		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+		// 为ActionBar设置下拉菜单和监听器
+		actionBar.setListNavigationCallbacks(adapter, new DropDownListenser());
+
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * android.support.v4.app.ListFragment#onCreateView(android.view.LayoutInflater
-	 * , android.view.ViewGroup, android.os.Bundle)
-	 */
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.job_list_fragment, null);
+		return inflater.inflate(R.layout.my_activties_list_fragment, null);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see android.support.v4.app.ListFragment#onViewCreated(android.view.View,
-	 * android.os.Bundle)
-	 */
+	@Override
+	public void onDestroyView() {
+		// 得到ActionBar
+		ActionBar actionBar = getActivity().getActionBar();
+		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+		super.onDestroyView();
+	}
+
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
-		super.onViewCreated(view, savedInstanceState);
+		// 控件
 
+		m_type = 0;
+		ActionBar actionBar = getActivity().getActionBar();
+		actionBar.setSelectedNavigationItem(m_type);
 		initComponent(view);
 
 		if (m_bIsFirstTime) {
-			initJobList();
+			initArchiveList();
+			m_bIsFirstTime = false;
 		}
 
 		initHandler();
@@ -124,21 +152,32 @@ public class BaseJobsListFragment extends ListFragment implements
 
 		setUpListener();
 
-		if (m_bIsFirstTime) {
-			requestData(LoadType.REFRESH);
-			m_bIsFirstTime = false;
-		}
+		// L.d(tag, msg)
+		m_ptrView.setOnRefreshListener(new PullToRefreshListener() {
+
+			@Override
+			public void onRefresh() {
+				L.i(this.getClass().getName()
+						+ "-----enter onViewCreated---onRefresh---");
+				requestData(LoadType.REFRESH);
+			}
+		}, 0);
+
+		super.onViewCreated(view, savedInstanceState);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see android.support.v4.app.Fragment#onActivityCreated(android.os.Bundle)
+	/**
+	 * 实现 ActionBar.OnNavigationListener接口
 	 */
-	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
+	private class DropDownListenser implements OnNavigationListener {
 
+		@Override
+		public boolean onNavigationItemSelected(int arg0, long arg1) {
+			if (arg0 != m_type) {
+				requestData(LoadType.REFRESH);
+			}
+			return false;
+		}
 	}
 
 	/*
@@ -151,7 +190,7 @@ public class BaseJobsListFragment extends ListFragment implements
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		super.onCreateOptionsMenu(menu, inflater);
-		inflater.inflate(R.menu.news_list_fragment_ab_menu, menu);
+		// inflater.inflate(R.menu.news_list_fragment_ab_menu, menu);
 	}
 
 	/*
@@ -164,9 +203,6 @@ public class BaseJobsListFragment extends ListFragment implements
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-		case R.id.action_refresh:
-			requestData(LoadType.REFRESH);
-			return true;
 		default:
 			return super.onOptionsItemSelected(item);
 		}
@@ -183,10 +219,7 @@ public class BaseJobsListFragment extends ListFragment implements
 	public void onListItemClick(ListView l, View v, int position, long id) {
 		L.i(this.getClass().getName() + " onListItemClick postion = "
 				+ position);
-		Intent intent = new Intent(getActivity(), JobDetailActivity.class);
-		if (m_jobCategory == JobCategory.RECOMMEND) {
-			intent = new Intent(getActivity(), RecommendDetailActivity.class);
-		}
+		Intent intent = new Intent(getActivity(), ArchiveDetailActivity.class);
 		intent.putExtra("id", m_listAchive.get(position).getId());
 		getActivity().startActivity(intent);
 	}
@@ -194,7 +227,7 @@ public class BaseJobsListFragment extends ListFragment implements
 	@Override
 	public void onScrollStateChanged(AbsListView view, int scrollState) {
 		if (scrollState == SCROLL_STATE_IDLE
-				&& m_nVisibleLastIndex == m_adapterJobList.getCount() - 1) {
+				&& m_nVisibleLastIndex == m_adapterArchiveList.getCount() - 1) {
 			requestData(LoadType.LOADMORE);
 		}
 	}
@@ -205,48 +238,31 @@ public class BaseJobsListFragment extends ListFragment implements
 		m_nVisibleLastIndex = firstVisibleItem + visibleItemCount - 1;
 	}
 
-	public void setJobCategory(JobCategory jobCategory) {
-		m_jobCategory = jobCategory;
-	}
-
 	protected void initComponent(View view) {
-		
-		
-		m_lsvJobList = (ListView) view.findViewById(android.R.id.list);
-		m_viewContainer = (View) view.findViewById(R.id.job_recommend_imgbtn_container);
-		if(m_jobCategory ==JobCategory.RECOMMEND){
-			m_viewContainer.setVisibility(view.VISIBLE);
-			Button btnPublish =(Button) view.findViewById(R.id.job_recommend_imgbtn);
-			btnPublish.setOnClickListener(new OnClickListener() {
-
-				@Override
-				public void onClick(View v) {
-					// TODO Auto-generated method stub
-					Intent intent = new Intent(getActivity(),
-							PublishRecommendActivity.class);
-					startActivity(intent);
-				}
-			});
-		}
-		else{
-			m_viewContainer.setVisibility(view.GONE);
-		}
+		m_ptrView = (PullToRefeshView) view
+				.findViewById(R.id.archive_list_fragment_ptr_view);
+		m_lsvArchiveList = (ListView) view.findViewById(android.R.id.list);
 	}
 
 	/**
 	 * 初始化归档列表，若有缓存则读取缓存
 	 */
-	protected void initJobList() {
-		List<Job> dbJobList = getJobList();
-		if (!J.isNullOrEmpty(dbJobList)) {
-			for (Job job : dbJobList) {
-				m_listAchive.add(job);
+	protected void initArchiveList() {
+		List<UserCenterList> dbArchiveList = getArchiveList();
+		m_listAchive.clear();
+		if (!J.isNullOrEmpty(dbArchiveList)) {
+			for (UserCenterList archive : dbArchiveList) {
+				m_listAchive.add(archive);
 			}
+		}
+		if (J.isNullOrEmpty(m_listAchive)) {
+			requestData(LoadType.REFRESH);
 		}
 	}
 
+	@SuppressLint("HandlerLeak")
 	protected void initHandler() {
-		m_handlerJobList = new Handler() {
+		m_handlerArchiveList = new Handler() {
 
 			/*
 			 * (non-Javadoc)
@@ -255,6 +271,7 @@ public class BaseJobsListFragment extends ListFragment implements
 			 */
 			@Override
 			public void handleMessage(Message msg) {
+				m_ptrView.finishRefreshing();
 				switch (msg.what) {
 				case STATUS_REQUEST_SUCCESS:
 					switch (m_loadType) {
@@ -267,7 +284,7 @@ public class BaseJobsListFragment extends ListFragment implements
 					default:
 						break;
 					}
-					m_adapterJobList.notifyDataSetChanged();
+					m_adapterArchiveList.notifyDataSetChanged();
 					break;
 				case STATUS_NOT_LOGIN:// TODO
 					((NewMainActivity) getActivity()).updateLogin();
@@ -283,12 +300,12 @@ public class BaseJobsListFragment extends ListFragment implements
 	}
 
 	protected void setUpAdapter() {
-		m_adapterJobList = new JobListAdapter(getActivity());
-		setListAdapter(m_adapterJobList);
+		m_adapterArchiveList = new ArchiveListAdapter(getActivity());
+		setListAdapter(m_adapterArchiveList);
 	}
 
 	protected void setUpListener() {
-		m_lsvJobList.setOnScrollListener(this);
+		m_lsvArchiveList.setOnScrollListener(this);
 	}
 
 	/**
@@ -308,9 +325,9 @@ public class BaseJobsListFragment extends ListFragment implements
 			JSONArray jsonArray = jsonObject.getJSONArray("body");
 
 			for (int i = 0; i < jsonArray.length(); i++) {
-				m_listAchive.add(new Job((JSONObject) jsonArray.get(i)));
+				m_listAchive.add(new UserCenterList((JSONObject) jsonArray.get(i)));
 			}
-			syncJobList();
+			syncArchiveList();
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
@@ -331,7 +348,7 @@ public class BaseJobsListFragment extends ListFragment implements
 			jsonArray = jsonObject.getJSONArray("body");
 
 			for (int i = 0; i < jsonArray.length(); i++) {
-				m_listAchive.add(new Job((JSONObject) jsonArray.get(i)));
+				m_listAchive.add(new UserCenterList((JSONObject) jsonArray.get(i)));
 			}
 		} catch (JSONException e) {
 			e.printStackTrace();
@@ -345,34 +362,40 @@ public class BaseJobsListFragment extends ListFragment implements
 	 *            加载方式
 	 */
 	protected void requestData(LoadType type) {
+
 		if (NetworkConnection.isNetworkConnected(getActivity())) {
 			m_loadType = type;
 			switch (type) {
 			case REFRESH:
-				JobApi.getJobList(m_jobCategory, 1, 20, null,
-						new JobListRequestListener());
+				if(m_type == 0)
+					UserCenterApi.getMyActivities(1, 20, new ListRequestListener());
+				else 
+					UserCenterApi.getMyPublicActivities(1, 20, new ListRequestListener());
 				m_nCurrentPage = 1;
 				break;
 			case LOADMORE:
-				JobApi.getJobList(m_jobCategory, ++m_nCurrentPage,
-						20, null, new JobListRequestListener());
+				if(m_type == 0)
+					UserCenterApi.getMyActivities(++m_nCurrentPage, 20, new ListRequestListener());
+				else 
+					UserCenterApi.getMyPublicActivities(++m_nCurrentPage, 20, new ListRequestListener());
 				break;
 			default:
 				break;
 			}
 		} else {
-			Message msg = m_handlerJobList.obtainMessage();
+			Message msg = m_handlerArchiveList.obtainMessage();
 			msg.what = NETWORK_NOT_CONNECTED;
-			m_handlerJobList.sendMessage(msg);
+			m_handlerArchiveList.sendMessage(msg);
 		}
+
 	}
 
-	protected List<Job> getJobList() {
-		return DataManager.getJobList(m_jobCategory);
+	protected List<UserCenterList> getArchiveList() {
+		return DataManager.getUserCenterList(UserCenterCategory.MYACTIVITIES);
 	}
 
-	protected void syncJobList() {
-		DataManager.syncJobList(m_jobCategory, m_listAchive);
+	protected void syncArchiveList() {
+		DataManager.syncUserCenterList(UserCenterCategory.MYACTIVITIES, m_listAchive);
 	}
 
 	/**
@@ -391,11 +414,11 @@ public class BaseJobsListFragment extends ListFragment implements
 	 * @author theasir
 	 * 
 	 */
-	public class JobListRequestListener implements RequestListener {
+	public class ListRequestListener implements RequestListener {
 
 		@Override
 		public void onComplete(Object result) {
-			Message msg = m_handlerJobList.obtainMessage();
+			Message msg = m_handlerArchiveList.obtainMessage();
 			try {
 				if (!J.isValidJsonValue("status", (JSONObject) result)) {
 					return;
@@ -407,23 +430,23 @@ public class BaseJobsListFragment extends ListFragment implements
 				e.printStackTrace();
 			}
 
-			m_handlerJobList.sendMessage(msg);
+			m_handlerArchiveList.sendMessage(msg);
 		}
 
 		@Override
 		public void onHttpError(CSTResponse response) {
 			L.i(this.getClass().getName() + " onHttpError!");
-			Message msg = m_handlerJobList.obtainMessage();
+			Message msg = m_handlerArchiveList.obtainMessage();
 			HttpErrorWeeder.fckHttpError(response, msg);
-			m_handlerJobList.sendMessage(msg);
+			m_handlerArchiveList.sendMessage(msg);
 		}
 
 		@Override
 		public void onException(Exception e) {
 			L.i(this.getClass().getName() + " onException!");
-			Message msg = m_handlerJobList.obtainMessage();
+			Message msg = m_handlerArchiveList.obtainMessage();
 			ExceptionWeeder.fckException(e, msg);
-			m_handlerJobList.sendMessage(msg);
+			m_handlerArchiveList.sendMessage(msg);
 		}
 
 	}
@@ -448,11 +471,11 @@ public class BaseJobsListFragment extends ListFragment implements
 	 * @author theasir
 	 * 
 	 */
-	public class JobListAdapter extends BaseAdapter {
+	public class ArchiveListAdapter extends BaseAdapter {
 
 		private LayoutInflater inflater;
 
-		public JobListAdapter(Context context) {
+		public ArchiveListAdapter(Context context) {
 			this.inflater = LayoutInflater.from(context);
 		}
 
@@ -479,17 +502,11 @@ public class BaseJobsListFragment extends ListFragment implements
 				holder = new ViewHolder();
 
 				convertView = inflater
-						.inflate(R.layout.job_list_item, null);
+						.inflate(R.layout.archive_list_item, null);
 				holder.titleTxv = (TextView) convertView
-						.findViewById(R.id.job_list_item_title_txv);
+						.findViewById(R.id.archive_list_item_title_txv);
 				holder.dateTxv = (TextView) convertView
-						.findViewById(R.id.job_list_item_date_txv);
-				holder.publisherTxv = (TextView) convertView
-						.findViewById(R.id.job_list_item_publisher_txv);
-				holder.descriptionTxv = (TextView) convertView
-						.findViewById(R.id.job_list_item_description_txv);
-				holder.indicatorView = (View) convertView
-						.findViewById(R.id.job_list_item_indicator_view);
+						.findViewById(R.id.archive_list_item_date_txv);
 
 				convertView.setTag(holder);
 			} else {
@@ -499,15 +516,14 @@ public class BaseJobsListFragment extends ListFragment implements
 			holder.titleTxv.setText(m_listAchive.get(position).getTitle());
 			holder.dateTxv.setText(TimeString.toYMD(m_listAchive.get(position)
 					.getUpdatedAt()));
-			holder.publisherTxv.setText(m_listAchive.get(position)
-					.getPublisher().getName());
-			holder.descriptionTxv.setText(m_listAchive.get(position)
-					.getDescription());
+		
 			// holder.indicatorView.setBackgroundColor(Color.BLUE);
 
 			return convertView;
 		}
 
 	}
+
+	
 
 }

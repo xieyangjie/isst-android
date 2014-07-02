@@ -62,12 +62,14 @@
         </activity>
         <activity android:name=".ui.usercenter.PushMessagesActivity" >
         </activity>
+        <activity android:name="ui.usercenter.MyRecommendDetailActivity"></activity>
         <activity android:name=".ui.contact.ContactDetailActivity" >
         </activity>
         <activity android:name=".ui.contact.ContactFilterActivity" >
         </activity>
         <activity android:name=".ui.city.CityActivityDetailActivity" >
         </activity>
+        
         
         
          <!-- push service client -->

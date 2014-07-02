@@ -16,6 +16,7 @@ import java.util.concurrent.FutureTask;
 
 import cn.edu.zju.isst.api.ArchiveCategory;
 import cn.edu.zju.isst.api.JobCategory;
+import cn.edu.zju.isst.api.UserCenterCategory;
 import cn.edu.zju.isst.util.J;
 import cn.edu.zju.isst.util.L;
 
@@ -44,6 +45,10 @@ public class DataManager {
 	public static final String EMPLOYMENT_LIST__IN_DB = "employmentlist";
 	public static final String INTERNSHIP_LIST_IN_DB = "internship";
 	public static final String RECOMMEND_LIST_IN_DB = "recommend";
+	public static final String MYRECOMMEND_LIST_IN_DB = "myrecommend";
+	public static final String MYEXPIENCE_LIST_IN_DB = "myexprience";
+	public static final String MYACTIVITIES_LIST_IN_DB = "myactivites";
+	
 
 	/**
 	 * 同步登录接口返回数据
@@ -337,6 +342,28 @@ public class DataManager {
 		return null;
 	}
 
+	public static void syncUserCenterList(UserCenterCategory userCenterCategory, List<UserCenterList> userCenterList) {
+		if (!J.isNullOrEmpty(userCenterList)) {
+			writeObjectToDB(userCenterCategory.getNameInDB(), (Serializable) userCenterList);
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	public static List<UserCenterList> getUserCenterList(UserCenterCategory userCenterCategory) {
+		Object object = objectFromDB(userCenterCategory.getNameInDB());
+		if (!J.isNullOrEmpty(object)) {
+			List<UserCenterList> userCenterList = null;
+			try {
+				userCenterList = (List<UserCenterList>) object;
+			} catch (ClassCastException e) {
+				// TODO: handle exception
+			}
+			if (!J.isNullOrEmpty(userCenterList)) {
+				return userCenterList;
+			}
+		}
+		return null;
+	}
 	/**
 	 * 将目标对象序列化后写入当前数据库
 	 * 
