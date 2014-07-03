@@ -50,6 +50,7 @@ import cn.edu.zju.isst.ui.contact.ContactDetailActivity;
 import cn.edu.zju.isst.ui.job.PublishRecommendActivity;
 import cn.edu.zju.isst.ui.job.RecommendDetailActivity;
 import cn.edu.zju.isst.ui.life.ArchiveDetailActivity;
+import cn.edu.zju.isst.ui.usercenter.UserCenterFragment;
 import cn.edu.zju.isst.util.J;
 import cn.edu.zju.isst.util.L;
 import cn.edu.zju.isst.util.TimeString;

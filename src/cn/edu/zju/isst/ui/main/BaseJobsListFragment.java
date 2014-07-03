@@ -214,23 +214,23 @@ public class BaseJobsListFragment extends ListFragment implements
 		
 		m_lsvJobList = (ListView) view.findViewById(android.R.id.list);
 		m_viewContainer = (View) view.findViewById(R.id.job_recommend_imgbtn_container);
-		if(m_jobCategory ==JobCategory.RECOMMEND){
-			m_viewContainer.setVisibility(view.VISIBLE);
-			Button btnPublish =(Button) view.findViewById(R.id.job_recommend_imgbtn);
-			btnPublish.setOnClickListener(new OnClickListener() {
-
-				@Override
-				public void onClick(View v) {
-					// TODO Auto-generated method stub
-					Intent intent = new Intent(getActivity(),
-							PublishRecommendActivity.class);
-					startActivity(intent);
-				}
-			});
-		}
-		else{
+//		if(m_jobCategory ==JobCategory.RECOMMEND){
+//			m_viewContainer.setVisibility(view.VISIBLE);
+//			Button btnPublish =(Button) view.findViewById(R.id.job_recommend_imgbtn);
+//			btnPublish.setOnClickListener(new OnClickListener() {
+//
+//				@Override
+//				public void onClick(View v) {
+//					// TODO Auto-generated method stub
+//					Intent intent = new Intent(getActivity(),
+//							PublishRecommendActivity.class);
+//					startActivity(intent);
+//				}
+//			});
+//		}
+//		else{
 			m_viewContainer.setVisibility(view.GONE);
-		}
+//		}
 	}
 
 	/**
