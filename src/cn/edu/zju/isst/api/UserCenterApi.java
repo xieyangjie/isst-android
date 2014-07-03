@@ -61,7 +61,7 @@ public class UserCenterApi extends CSTApi {
 		paramsMap.put("page", "" + page);
 		paramsMap.put("pageSize", "" + pageSize);
 
-		request("GET", SUB_URL + "/activities／participated", paramsMap, listener);
+		request("GET", SUB_URL + "/activities/participated", paramsMap, listener);
 	}
 
 }

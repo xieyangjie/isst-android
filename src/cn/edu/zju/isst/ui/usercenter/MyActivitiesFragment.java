@@ -19,6 +19,8 @@ import cn.edu.zju.isst.api.ArchiveCategory;
 import cn.edu.zju.isst.api.UserCenterApi;
 import cn.edu.zju.isst.api.UserCenterCategory;
 import cn.edu.zju.isst.db.DataManager;
+import cn.edu.zju.isst.db.MyParticipatedActivity;
+import cn.edu.zju.isst.db.MyPublicActivity;
 import cn.edu.zju.isst.db.User;
 import cn.edu.zju.isst.db.UserCenterList;
 import cn.edu.zju.isst.exception.ExceptionWeeder;
@@ -26,6 +28,7 @@ import cn.edu.zju.isst.exception.HttpErrorWeeder;
 import cn.edu.zju.isst.net.CSTResponse;
 import cn.edu.zju.isst.net.NetworkConnection;
 import cn.edu.zju.isst.net.RequestListener;
+import cn.edu.zju.isst.ui.city.CityActivityDetailActivity;
 import cn.edu.zju.isst.ui.life.ArchiveDetailActivity;
 import cn.edu.zju.isst.ui.life.NewsListFragment;
 import cn.edu.zju.isst.ui.main.NewMainActivity;
@@ -68,22 +71,24 @@ import android.widget.AbsListView.OnScrollListener;
  */
 public class MyActivitiesFragment extends ListFragment implements
 		OnScrollListener {
-	
+
 	private static MyActivitiesFragment INSTANCE = new MyActivitiesFragment();
 
 	public static MyActivitiesFragment getInstance() {
 		return INSTANCE;
 	}
+
 	private int m_nVisibleLastIndex;
 	private int m_nCurrentPage;
 	private boolean m_bIsFirstTime;
-
 
 	private int m_type;// 0发布的，1参加的
 
 	private ArrayList<String> m_arrayListType = new ArrayList<String>();
 	private LoadType m_loadType;
-	private final List<UserCenterList> m_listAchive = new ArrayList<UserCenterList>();
+	private final List<MyPublicActivity> m_listPublic = new ArrayList<MyPublicActivity>();
+	private final List<MyParticipatedActivity> m_listParticipated = new ArrayList<MyParticipatedActivity>();
+
 	private Handler m_handlerArchiveList;
 	private ArchiveListAdapter m_adapterArchiveList;
 
@@ -101,7 +106,6 @@ public class MyActivitiesFragment extends ListFragment implements
 		m_bIsFirstTime = true;
 
 	}
-
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -173,7 +177,9 @@ public class MyActivitiesFragment extends ListFragment implements
 
 		@Override
 		public boolean onNavigationItemSelected(int arg0, long arg1) {
+			L.i("arg0 = "+arg0+" ; m_type = "+m_type);
 			if (arg0 != m_type) {
+				m_type = arg0;				
 				requestData(LoadType.REFRESH);
 			}
 			return false;
@@ -219,9 +225,18 @@ public class MyActivitiesFragment extends ListFragment implements
 	public void onListItemClick(ListView l, View v, int position, long id) {
 		L.i(this.getClass().getName() + " onListItemClick postion = "
 				+ position);
-		Intent intent = new Intent(getActivity(), ArchiveDetailActivity.class);
-		intent.putExtra("id", m_listAchive.get(position).getId());
+		Intent intent = new Intent(getActivity(),
+				CityActivityDetailActivity.class);
+		if (m_type == 0) {
+			intent.putExtra("id", m_listPublic.get(position).id);
+			intent.putExtra("cityId", m_listPublic.get(position).cityId);
+		} else {
+			intent.putExtra("id", m_listParticipated.get(position).id);
+			intent.putExtra("cityId", m_listParticipated.get(position).cityId);
+
+		}
 		getActivity().startActivity(intent);
+
 	}
 
 	@Override
@@ -248,14 +263,25 @@ public class MyActivitiesFragment extends ListFragment implements
 	 * 初始化归档列表，若有缓存则读取缓存
 	 */
 	protected void initArchiveList() {
-		List<UserCenterList> dbArchiveList = getArchiveList();
-		m_listAchive.clear();
-		if (!J.isNullOrEmpty(dbArchiveList)) {
-			for (UserCenterList archive : dbArchiveList) {
-				m_listAchive.add(archive);
+		List<MyPublicActivity> dbPublicList = getPublicList();
+		m_listPublic.clear();
+		if (!J.isNullOrEmpty(dbPublicList)) {
+			for (MyPublicActivity publicActivity : dbPublicList) {
+				m_listPublic.add(publicActivity);
 			}
 		}
-		if (J.isNullOrEmpty(m_listAchive)) {
+		if (J.isNullOrEmpty(m_listPublic)) {
+			requestData(LoadType.REFRESH);
+		}
+		// /
+		List<MyParticipatedActivity> dbParticipatedList = getParticipatedList();
+		m_listParticipated.clear();
+		if (!J.isNullOrEmpty(dbParticipatedList)) {
+			for (MyParticipatedActivity participatedActivity : dbParticipatedList) {
+				m_listParticipated.add(participatedActivity);
+			}
+		}
+		if (J.isNullOrEmpty(m_listParticipated)) {
 			requestData(LoadType.REFRESH);
 		}
 	}
@@ -315,19 +341,30 @@ public class MyActivitiesFragment extends ListFragment implements
 	 *            数据源
 	 */
 	protected void refresh(JSONObject jsonObject) {
-		if (!m_listAchive.isEmpty()) {
-			m_listAchive.clear();
+		if (!m_listPublic.isEmpty()) {
+			m_listPublic.clear();
+		}
+		if (!m_listParticipated.isEmpty()) {
+			m_listParticipated.clear();
 		}
 		try {
 			if (!J.isValidJsonValue("body", jsonObject)) {
 				return;
 			}
 			JSONArray jsonArray = jsonObject.getJSONArray("body");
-
-			for (int i = 0; i < jsonArray.length(); i++) {
-				m_listAchive.add(new UserCenterList((JSONObject) jsonArray.get(i)));
+			if (m_type == 0) {
+				for (int i = 0; i < jsonArray.length(); i++) {
+					m_listPublic.add(new MyPublicActivity(
+							(JSONObject) jsonArray.get(i)));
+				}
+				syncPublicList();
+			} else {
+				for (int i = 0; i < jsonArray.length(); i++) {
+					m_listParticipated.add(new MyParticipatedActivity(
+							(JSONObject) jsonArray.get(i)));
+				}
+				syncParticipatedList();
 			}
-			syncArchiveList();
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
@@ -346,9 +383,18 @@ public class MyActivitiesFragment extends ListFragment implements
 				return;
 			}
 			jsonArray = jsonObject.getJSONArray("body");
+			if (m_type == 0) {
+				for (int i = 0; i < jsonArray.length(); i++) {
 
-			for (int i = 0; i < jsonArray.length(); i++) {
-				m_listAchive.add(new UserCenterList((JSONObject) jsonArray.get(i)));
+					m_listPublic.add(new MyPublicActivity(
+							(JSONObject) jsonArray.get(i)));
+				}
+			} else {
+				for (int i = 0; i < jsonArray.length(); i++) {
+
+					m_listParticipated.add(new MyParticipatedActivity(
+							(JSONObject) jsonArray.get(i)));
+				}
 			}
 		} catch (JSONException e) {
 			e.printStackTrace();
@@ -367,17 +413,21 @@ public class MyActivitiesFragment extends ListFragment implements
 			m_loadType = type;
 			switch (type) {
 			case REFRESH:
-				if(m_type == 0)
-					UserCenterApi.getMyActivities(1, 20, new ListRequestListener());
-				else 
-					UserCenterApi.getMyPublicActivities(1, 20, new ListRequestListener());
+				if (m_type == 1)
+					UserCenterApi.getMyActivities(1, 20,
+							new ListRequestListener());
+				else
+					UserCenterApi.getMyPublicActivities(1, 20,
+							new ListRequestListener());
 				m_nCurrentPage = 1;
 				break;
 			case LOADMORE:
-				if(m_type == 0)
-					UserCenterApi.getMyActivities(++m_nCurrentPage, 20, new ListRequestListener());
-				else 
-					UserCenterApi.getMyPublicActivities(++m_nCurrentPage, 20, new ListRequestListener());
+				if (m_type == 1)
+					UserCenterApi.getMyActivities(++m_nCurrentPage, 20,
+							new ListRequestListener());
+				else
+					UserCenterApi.getMyPublicActivities(++m_nCurrentPage, 20,
+							new ListRequestListener());
 				break;
 			default:
 				break;
@@ -390,12 +440,20 @@ public class MyActivitiesFragment extends ListFragment implements
 
 	}
 
-	protected List<UserCenterList> getArchiveList() {
-		return DataManager.getUserCenterList(UserCenterCategory.MYACTIVITIES);
+	protected List<MyPublicActivity> getPublicList() {
+		return DataManager.getMyPublicActivityList();
 	}
 
-	protected void syncArchiveList() {
-		DataManager.syncUserCenterList(UserCenterCategory.MYACTIVITIES, m_listAchive);
+	protected void syncPublicList() {
+		DataManager.syncMyPublicActivityList(m_listPublic);
+	}
+
+	protected List<MyParticipatedActivity> getParticipatedList() {
+		return DataManager.getMyParticipatedActivityList();
+	}
+
+	protected void syncParticipatedList() {
+		DataManager.syncMyParticipatedActivityList(m_listParticipated);
 	}
 
 	/**
@@ -481,7 +539,10 @@ public class MyActivitiesFragment extends ListFragment implements
 
 		@Override
 		public int getCount() {
-			return m_listAchive.size();
+			if (m_type == 0)
+				return m_listPublic.size();
+			else
+				return m_listParticipated.size();
 		}
 
 		@Override
@@ -512,18 +573,22 @@ public class MyActivitiesFragment extends ListFragment implements
 			} else {
 				holder = (ViewHolder) convertView.getTag();
 			}
+			if (m_type == 0) {
+				holder.titleTxv.setText(m_listPublic.get(position).getTitle());
+				holder.dateTxv.setText(TimeString.toYMD(m_listPublic.get(
+						position).getUpdatedAt()));
+			} else {
+				holder.titleTxv.setText(m_listParticipated.get(position)
+						.getTitle());
+				holder.dateTxv.setText(TimeString.toYMD(m_listParticipated.get(
+						position).getUpdatedAt()));
 
-			holder.titleTxv.setText(m_listAchive.get(position).getTitle());
-			holder.dateTxv.setText(TimeString.toYMD(m_listAchive.get(position)
-					.getUpdatedAt()));
-		
+			}
 			// holder.indicatorView.setBackgroundColor(Color.BLUE);
 
 			return convertView;
 		}
 
 	}
-
-	
 
 }

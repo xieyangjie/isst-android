@@ -35,6 +35,7 @@ import android.widget.ListView;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 import cn.edu.zju.isst.R;
+import cn.edu.zju.isst.api.JobCategory;
 import cn.edu.zju.isst.api.UserCenterApi;
 import cn.edu.zju.isst.api.UserCenterCategory;
 import cn.edu.zju.isst.api.UserCenterCategory;
@@ -46,9 +47,9 @@ import cn.edu.zju.isst.net.CSTResponse;
 import cn.edu.zju.isst.net.NetworkConnection;
 import cn.edu.zju.isst.net.RequestListener;
 import cn.edu.zju.isst.ui.contact.ContactDetailActivity;
+import cn.edu.zju.isst.ui.job.PublishRecommendActivity;
 import cn.edu.zju.isst.ui.job.RecommendDetailActivity;
 import cn.edu.zju.isst.ui.life.ArchiveDetailActivity;
-import cn.edu.zju.isst.ui.usercenter.MyRecommendDetailActivity;
 import cn.edu.zju.isst.util.J;
 import cn.edu.zju.isst.util.L;
 import cn.edu.zju.isst.util.TimeString;
@@ -88,7 +89,7 @@ public class BaseUserCenterListFragment extends ListFragment implements
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		//action_bar_activities_item
+		// action_bar_activities_item
 		setHasOptionsMenu(true);
 	}
 
@@ -119,6 +120,7 @@ public class BaseUserCenterListFragment extends ListFragment implements
 
 		if (m_bIsFirstTime) {
 			initUserCenterList();
+			m_bIsFirstTime = false;
 		}
 
 		initHandler();
@@ -127,9 +129,8 @@ public class BaseUserCenterListFragment extends ListFragment implements
 
 		setUpListener();
 
-		if (m_bIsFirstTime) {
+		if (m_listAchive.size() == 0) {
 			requestData(LoadType.REFRESH);
-			m_bIsFirstTime = false;
 		}
 	}
 
@@ -190,12 +191,9 @@ public class BaseUserCenterListFragment extends ListFragment implements
 		switch (m_userCenterCategory) {
 		case MYRECOMMEND:
 			intent = new Intent(getActivity(), RecommendDetailActivity.class);
-			intent.putExtra("isEditView", true);
 			break;
 		case MYEXPIENCE:
 			intent = new Intent(getActivity(), ArchiveDetailActivity.class);
-			break;
-		case MYACTIVITIES:
 			break;
 		default:
 			break;
@@ -219,18 +217,38 @@ public class BaseUserCenterListFragment extends ListFragment implements
 		m_nVisibleLastIndex = firstVisibleItem + visibleItemCount - 1;
 	}
 
-	public void setUserCenterCategory(UserCenterCategory UserCenterCategory) {
-		m_userCenterCategory = UserCenterCategory;
+	public void setUserCenterCategory(UserCenterCategory userCenterCategory) {
+		m_userCenterCategory = userCenterCategory;
 	}
 
 	protected void initComponent(View view) {
 		m_lsvUserCenterList = (ListView) view.findViewById(android.R.id.list);
+		View viewContainer = (View) view
+				.findViewById(R.id.usercenter_public_btn_container);
+		if (m_userCenterCategory == UserCenterCategory.MYRECOMMEND) {
+			viewContainer.setVisibility(View.VISIBLE);
+			Button btnPublish = (Button) view
+					.findViewById(R.id.usercenter_public_btn);
+			btnPublish.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					Intent intent = new Intent(getActivity(),
+							PublishRecommendActivity.class);
+					startActivity(intent);
+				}
+			});
+		} else {
+			viewContainer.setVisibility(View.GONE);
+		}
 	}
 
 	/**
 	 * 初始化归档列表，若有缓存则读取缓存
 	 */
 	protected void initUserCenterList() {
+		m_listAchive.clear();
 		List<UserCenterList> dbUserCenterList = getUserCenterList();
 		if (!J.isNullOrEmpty(dbUserCenterList)) {
 			for (UserCenterList userCenterList : dbUserCenterList) {

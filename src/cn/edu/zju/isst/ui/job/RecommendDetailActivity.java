@@ -195,23 +195,19 @@ public class RecommendDetailActivity extends BaseActivity {
 		m_webvContent = (WebView) findViewById(R.id.job_detail_activity_content_webv);
 		m_imgBtnPublisher = (ImageButton) findViewById(R.id.job_detail_activity_publisher_btn);
 		m_BtnCommened = (Button) findViewById(R.id.job_recommend_imgbtn);
-		m_isEditView = getIntent().getBooleanExtra("isEditView", false);
-		if (m_isEditView == true) {
-			m_BtnCommened.setText("更新内推信息");
-		}
 
 		m_BtnCommened.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
-				if (m_isEditView) {
-					getFragmentManager()
-							.beginTransaction()
-							.replace(R.id.content_frame,
-									MyRecommendListFragment.getInstance())
-							.commit();
-				} else {
+//				if (m_isEditView) {
+//					getFragmentManager()
+//							.beginTransaction()
+//							.replace(R.id.content_frame,
+//									MyRecommendListFragment.getInstance())
+//							.commit();
+//				} else {
 					Intent intent = new Intent(RecommendDetailActivity.this,
 							JobCommentListActivity.class);
 					int id = -1;
@@ -222,7 +218,7 @@ public class RecommendDetailActivity extends BaseActivity {
 					startActivity(intent);
 				}
 
-			}
+//			}
 		});
 		WebSettings settings = m_webvContent.getSettings();
 		settings.setUseWideViewPort(true);
