@@ -163,12 +163,12 @@ public class NewMainActivity extends BaseActivity {
     }
 
     private void switchContent(Fragment fragment) {
-	if (fragment != mCurrentFragment) {
+//	if (fragment != mCurrentFragment ) {
 	    mCurrentFragment = fragment;
 
 	    getFragmentManager().beginTransaction()
 		    .replace(R.id.content_frame, mCurrentFragment).commit();
-	}
+//	}
     }
 
     public void logout() {
