@@ -19,7 +19,7 @@ import android.net.Uri;
  */
 public class UpdateManager {
 //	public static final String UPDATE_APKFILE_URL = "http://www.zjucst.com/downloads/isst-1.0.0.apk";
-	public static final String UPDATE_APKFILE_URL = "http://apkc.mumayi.com/2014/01/07/48/488928/QCguishudi_V0.10_mumayi_61cce.apk";
+	public static final String UPDATE_APKFILE_URL = "http://www.cst.zju.edu.cn/isst-releases/isst.apk";
 
 	private static UpdateManager INSTANCE;
 	private Context context;

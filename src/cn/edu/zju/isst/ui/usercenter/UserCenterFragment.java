@@ -182,7 +182,9 @@ public class UserCenterFragment extends Fragment {
 	    @Override
 	    public void onClick(View v) {
 		// TODO Auto-generated method stub
-		Toast.makeText(getActivity(), "该功能暂未实现", Toast.LENGTH_SHORT).show();
+	    	getFragmentManager().beginTransaction()
+			.replace(R.id.content_frame, MyRecommendListFragment.getInstance()).commit();
+		//Toast.makeText(getActivity(), "该功能暂未实现", Toast.LENGTH_SHORT).show();
 	    }
 	});
 	
@@ -191,7 +193,9 @@ public class UserCenterFragment extends Fragment {
 	    @Override
 	    public void onClick(View v) {
 		// TODO Auto-generated method stub
-		Toast.makeText(getActivity(), "该功能暂未实现", Toast.LENGTH_SHORT).show();
+	    getFragmentManager().beginTransaction()
+			.replace(R.id.content_frame, MyExpListFragment.getInstance()).commit();
+		//Toast.makeText(getActivity(), "该功能暂未实现", Toast.LENGTH_SHORT).show();
 	    }
 	});
 	
@@ -200,7 +204,10 @@ public class UserCenterFragment extends Fragment {
 	    @Override
 	    public void onClick(View v) {
 		// TODO Auto-generated method stub
-		Toast.makeText(getActivity(), "该功能暂未实现", Toast.LENGTH_SHORT).show();
+	    	getFragmentManager().beginTransaction()
+			.replace(R.id.content_frame, MyActivitiesFragment.getInstance()).commit();
+		
+		//Toast.makeText(getActivity(), "该功能暂未实现", Toast.LENGTH_SHORT).show();
 	    }
 	});
 	

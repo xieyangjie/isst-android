@@ -8,11 +8,13 @@ import static cn.edu.zju.isst.constant.Constants.*;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.R.bool;
 import android.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.JsonReader;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -26,10 +28,12 @@ import android.widget.TextView;
 import cn.edu.zju.isst.R;
 import cn.edu.zju.isst.api.JobApi;
 import cn.edu.zju.isst.db.Job;
+import cn.edu.zju.isst.db.User;
 import cn.edu.zju.isst.net.CSTResponse;
 import cn.edu.zju.isst.net.RequestListener;
 import cn.edu.zju.isst.ui.contact.ContactDetailActivity;
 import cn.edu.zju.isst.ui.main.BaseActivity;
+import cn.edu.zju.isst.ui.usercenter.MyRecommendListFragment;
 import cn.edu.zju.isst.constant.Constants;
 import cn.edu.zju.isst.util.J;
 import cn.edu.zju.isst.util.L;
@@ -50,6 +54,7 @@ public class RecommendDetailActivity extends BaseActivity {
 	private int m_nId;
 
 	private Job m_jobCurrent;
+	private User m_jobPublisher;
 	private Handler m_handlerJobDetail;
 
 	private TextView m_txvTitle;
@@ -58,6 +63,7 @@ public class RecommendDetailActivity extends BaseActivity {
 	private WebView m_webvContent;
 	private ImageView m_imgBtnPublisher;
 	private Button m_BtnCommened;
+	private boolean m_isEditView;
 
 	/*
 	 * (non-Javadoc)
@@ -76,6 +82,7 @@ public class RecommendDetailActivity extends BaseActivity {
 
 		// 注意默认值-1，当Intent中没有id时是无效的，故启动这个JobDetailActivity的Activity必须在Intent中放置"id"参数
 		m_nId = getIntent().getIntExtra("id", -1);
+		
 
 		m_handlerJobDetail = new Handler() {
 
@@ -89,6 +96,7 @@ public class RecommendDetailActivity extends BaseActivity {
 				switch (msg.what) {
 				case STATUS_REQUEST_SUCCESS:
 					L.i("Handler Success Archieve id = " + m_jobCurrent.getId());
+					initPublisherBtn();
 					showJobDetail();
 					break;
 				case STATUS_NOT_LOGIN:
@@ -118,6 +126,7 @@ public class RecommendDetailActivity extends BaseActivity {
 							break;
 						}
 						m_jobCurrent = new Job(jsonObject.getJSONObject("body"));
+						m_jobPublisher = new User(jsonObject.getJSONObject("body").getJSONObject("user"));
 						break;
 					case STATUS_NOT_LOGIN:
 						break;
@@ -186,36 +195,30 @@ public class RecommendDetailActivity extends BaseActivity {
 		m_webvContent = (WebView) findViewById(R.id.job_detail_activity_content_webv);
 		m_imgBtnPublisher = (ImageButton) findViewById(R.id.job_detail_activity_publisher_btn);
 		m_BtnCommened = (Button) findViewById(R.id.job_recommend_imgbtn);
-		
-		m_imgBtnPublisher.setOnClickListener(new OnClickListener() {
 
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				Intent intent = new Intent(RecommendDetailActivity.this,
-						ContactDetailActivity.class);
-				int id = -1;
-				if (!J.isNullOrEmpty(m_jobCurrent)) {
-					id = m_jobCurrent.getPublisherId();
-				}
-				intent.putExtra("id", id);
-				startActivity(intent);
-			}
-		});
-		
 		m_BtnCommened.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
-				Intent intent = new Intent(RecommendDetailActivity.this,
-						JobCommentListActivity.class);
-				int id = -1;
-				if (!J.isNullOrEmpty(m_jobCurrent)) {
-					id = m_jobCurrent.getId();
+//				if (m_isEditView) {
+//					getFragmentManager()
+//							.beginTransaction()
+//							.replace(R.id.content_frame,
+//									MyRecommendListFragment.getInstance())
+//							.commit();
+//				} else {
+					Intent intent = new Intent(RecommendDetailActivity.this,
+							JobCommentListActivity.class);
+					int id = -1;
+					if (!J.isNullOrEmpty(m_jobCurrent)) {
+						id = m_jobCurrent.getId();
+					}
+					intent.putExtra("id", id);
+					startActivity(intent);
 				}
-				intent.putExtra("id", id);
-				startActivity(intent);			}
+
+//			}
 		});
 		WebSettings settings = m_webvContent.getSettings();
 		settings.setUseWideViewPort(true);
@@ -223,6 +226,38 @@ public class RecommendDetailActivity extends BaseActivity {
 		settings.setLayoutAlgorithm(LayoutAlgorithm.NARROW_COLUMNS);
 		settings.setDefaultFontSize(48);
 		// settings.setTextSize(TextSize.NORMAL);
+	}
+
+	/**
+	 * 初始化pulisher按钮
+	 */
+	private void initPublisherBtn() {
+		if (J.isNullOrEmpty(m_jobCurrent)) {
+			L.i(this.getClass().getName()
+					+ "initPublisherBtn-------m_jobCurrent is null------");
+			return;
+		} else if (m_jobCurrent.getPublisherId() <= 0) { // 是管理员0,不需要链接发布者,‘<’做保险，正常不出现
+			L.i(this.getClass().getName()
+					+ "initPublisherBtn-------m_jobCurrent ＝0------");
+			m_imgBtnPublisher.setVisibility(View.INVISIBLE);
+		} else {
+			m_imgBtnPublisher.setVisibility(View.VISIBLE);
+			m_imgBtnPublisher.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					Intent intent = new Intent(RecommendDetailActivity.this,
+							ContactDetailActivity.class);
+					int id = -1;
+					id = m_jobCurrent.getPublisherId();
+					intent.putExtra("id", id);
+					
+					intent.putExtra("user",m_jobPublisher);
+					startActivity(intent);
+				}
+			});
+		}
 	}
 
 	/**
