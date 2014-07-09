@@ -3,13 +3,6 @@
  */
 package cn.edu.zju.isst.ui.loading;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import com.baidu.android.pushservice.PushConstants;
-import com.baidu.android.pushservice.PushManager;
-import com.baidu.android.pushservice.PushSettings;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -25,11 +18,16 @@ import cn.edu.zju.isst.net.RequestListener;
 import cn.edu.zju.isst.net.UpdateManager;
 import cn.edu.zju.isst.settings.CSTSettings;
 import cn.edu.zju.isst.ui.login.LoginActivity;
-import cn.edu.zju.isst.ui.main.MainActivity;
 import cn.edu.zju.isst.ui.main.NewMainActivity;
 import cn.edu.zju.isst.util.J;
 import cn.edu.zju.isst.util.L;
-import static cn.edu.zju.isst.constant.Constants.*;
+import com.baidu.android.pushservice.PushConstants;
+import com.baidu.android.pushservice.PushManager;
+import com.baidu.android.pushservice.PushSettings;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import static cn.edu.zju.isst.constant.Constants.STATUS_REQUEST_SUCCESS;
 
 /**
  * 加载页面
@@ -104,7 +102,7 @@ public class LoadingActivity extends Activity {
 	}
 
 	private void initHandler() {
-		m_handlerLoading = new Handler() {
+ 		m_handlerLoading = new Handler() {
 
 			/*
 			 * (non-Javadoc)
@@ -116,7 +114,7 @@ public class LoadingActivity extends Activity {
 				switch (msg.what) {
 				case STATUS_REQUEST_SUCCESS:
 					try {
-						if (getPackageManager().getPackageInfo(getPackageName(), 0).versionCode > (Integer) msg.obj) {
+						if (getPackageManager().getPackageInfo(getPackageName(), 0).versionCode < (Integer) msg.obj) {
 							m_aldUpdate.show();
 						}else {
 							jump();
