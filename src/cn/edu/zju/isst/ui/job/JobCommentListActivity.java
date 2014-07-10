@@ -48,7 +48,6 @@ import cn.edu.zju.isst.exception.HttpErrorWeeder;
 import cn.edu.zju.isst.net.CSTResponse;
 import cn.edu.zju.isst.net.RequestListener;
 import cn.edu.zju.isst.ui.main.BaseActivity;
-import cn.edu.zju.isst.ui.main.MainActivity;
 import cn.edu.zju.isst.ui.main.BaseJobsListFragment.LoadType;
 import cn.edu.zju.isst.util.CM;
 import cn.edu.zju.isst.util.J;

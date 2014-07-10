@@ -21,7 +21,6 @@ import cn.edu.zju.isst.R;
 import cn.edu.zju.isst.db.DataManager;
 import cn.edu.zju.isst.db.User;
 import cn.edu.zju.isst.dummy.TestFloatingActivity;
-import cn.edu.zju.isst.ui.main.MainActivity;
 import cn.edu.zju.isst.ui.main.NewMainActivity;
 import cn.edu.zju.isst.util.J;
 

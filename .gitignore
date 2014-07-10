@@ -48,4 +48,6 @@ proguard/
 .Spotlight-V100
 .Trashes
 
-.classpath
+# Gradle
+.gradle
+build/
