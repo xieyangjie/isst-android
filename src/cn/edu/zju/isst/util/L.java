@@ -9,7 +9,7 @@ import android.util.Log;
  * 
  */
 public class L {
-	private static boolean isDebuggable;// 是否需要打印bug，可以在application的onCreate函数里面初始化
+	private static boolean isDebuggable;// 是否需要打印log，可以在application的onCreate函数里面初始化
 	private static final String TAG = "CarpeDiem";
 
 	public static void setDebuggable(boolean isDebuggable) {

@@ -14,7 +14,7 @@ import cn.edu.zju.isst.util.L;
  * @author theasir
  * 
  */
-public class MainApplication extends Application {
+public class CSTApp extends Application {
 
 	
 	/*
