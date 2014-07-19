@@ -21,7 +21,6 @@ import cn.edu.zju.isst.R;
 import cn.edu.zju.isst.db.DataManager;
 import cn.edu.zju.isst.db.User;
 import cn.edu.zju.isst.dummy.TestFloatingActivity;
-import cn.edu.zju.isst.ui.main.MainActivity;
 import cn.edu.zju.isst.ui.main.NewMainActivity;
 import cn.edu.zju.isst.util.J;
 
@@ -182,7 +181,9 @@ public class UserCenterFragment extends Fragment {
 	    @Override
 	    public void onClick(View v) {
 		// TODO Auto-generated method stub
-		Toast.makeText(getActivity(), "该功能暂未实现", Toast.LENGTH_SHORT).show();
+	    	getFragmentManager().beginTransaction()
+			.replace(R.id.content_frame, MyRecommendListFragment.getInstance()).commit();
+		//Toast.makeText(getActivity(), "该功能暂未实现", Toast.LENGTH_SHORT).show();
 	    }
 	});
 	
@@ -191,7 +192,9 @@ public class UserCenterFragment extends Fragment {
 	    @Override
 	    public void onClick(View v) {
 		// TODO Auto-generated method stub
-		Toast.makeText(getActivity(), "该功能暂未实现", Toast.LENGTH_SHORT).show();
+	    getFragmentManager().beginTransaction()
+			.replace(R.id.content_frame, MyExpListFragment.getInstance()).commit();
+		//Toast.makeText(getActivity(), "该功能暂未实现", Toast.LENGTH_SHORT).show();
 	    }
 	});
 	
@@ -200,7 +203,10 @@ public class UserCenterFragment extends Fragment {
 	    @Override
 	    public void onClick(View v) {
 		// TODO Auto-generated method stub
-		Toast.makeText(getActivity(), "该功能暂未实现", Toast.LENGTH_SHORT).show();
+	    	getFragmentManager().beginTransaction()
+			.replace(R.id.content_frame, MyActivitiesFragment.getInstance()).commit();
+		
+		//Toast.makeText(getActivity(), "该功能暂未实现", Toast.LENGTH_SHORT).show();
 	    }
 	});
 	

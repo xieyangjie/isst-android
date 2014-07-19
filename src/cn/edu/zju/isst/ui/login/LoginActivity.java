@@ -36,7 +36,6 @@ import cn.edu.zju.isst.net.NetworkConnection;
 import cn.edu.zju.isst.net.RequestListener;
 import cn.edu.zju.isst.settings.CSTSettings;
 import cn.edu.zju.isst.ui.main.BaseActivity;
-import cn.edu.zju.isst.ui.main.MainActivity;
 import cn.edu.zju.isst.ui.main.NewMainActivity;
 import cn.edu.zju.isst.util.CM;
 import cn.edu.zju.isst.util.L;

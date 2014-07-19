@@ -187,6 +187,9 @@ public class ContactDetailActivity extends BaseActivity {
      * 显示用户详情
      */
     private void showUserDetail() {
+    	if(J.isNullOrEmpty(m_user)){
+    		return ;
+    	}
 	// 姓名
 	m_tvName.setText(m_user.getName());
 	// 性别

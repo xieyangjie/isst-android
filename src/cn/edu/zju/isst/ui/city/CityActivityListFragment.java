@@ -16,6 +16,7 @@ import cn.edu.zju.isst.R;
 import cn.edu.zju.isst.api.CityActivityApi;
 import cn.edu.zju.isst.db.CityActivity;
 import cn.edu.zju.isst.db.DataManager;
+import cn.edu.zju.isst.db.User;
 import cn.edu.zju.isst.exception.ExceptionWeeder;
 import cn.edu.zju.isst.exception.HttpErrorWeeder;
 import cn.edu.zju.isst.net.CSTResponse;
@@ -47,6 +48,7 @@ public class CityActivityListFragment extends ListFragment implements
 	OnScrollListener {
 
     private final List<CityActivity> mCityActivities = new ArrayList<CityActivity>();
+    private User m_currentUser;
     private Handler mHandler;
     private CityActivityListAdapter mListAdapter;
 
@@ -78,6 +80,8 @@ public class CityActivityListFragment extends ListFragment implements
 	super.onViewCreated(view, savedInstanceState);
 
 	initComponent(view);
+	
+	m_currentUser =  DataManager.getCurrentUser();
 
 	initHandler();
 
@@ -166,7 +170,7 @@ public class CityActivityListFragment extends ListFragment implements
 
     private void requestData() {
 	if (NetworkConnection.isNetworkConnected(getActivity())) {
-	    CityActivityApi.getCityActivityList(1, 1, 20, null,
+	    CityActivityApi.getCityActivityList(m_currentUser.getCityId(), 1, 20, null,
 		    new CityActivityListRequestListener());
 	} else {
 	    Message msg = mHandler.obtainMessage();

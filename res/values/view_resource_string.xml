@@ -2,10 +2,6 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
     <string name="campus_activity_imageview_picture">活动图片</string>
     
-    <string name="restaurant_imageview_icon">商家图标</string>
-    <string name="restaurant_imagebutton_call">拨打外卖电话</string>
-    <string name="restaurant_hotline">外卖电话：</string>
-    
     <string name="usercenter_welcomeback">欢迎回来：</string>
     <string name="user_avatar">用户头像</string>
     
