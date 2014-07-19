@@ -14,10 +14,5 @@ public class CSTArchiveTest {
     @Test
     public void testCreate() {
 
-        byte[] data = null;
-        
-        for (int i = 0; i < 1000000; i++) {
-            CSTArchive.create(data);
-        }
     }
 }

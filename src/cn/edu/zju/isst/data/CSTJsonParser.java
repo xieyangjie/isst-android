@@ -1,6 +1,5 @@
 package cn.edu.zju.isst.data;
 
-import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.json.JSONObject;
