@@ -1,162 +1,157 @@
 /**
- * 
+ *
  */
 package cn.edu.zju.isst.db;
 
-import java.io.Serializable;
-
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.Serializable;
 
 import cn.edu.zju.isst.util.J;
 
 /**
  * @author theasir
- *
  */
 public class Job implements Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -4484228163762265990L;
+    /**
+     *
+     */
+    private static final long serialVersionUID = -4484228163762265990L;
 
-	/**
-	 * 以下字段详见服务器接口文档
-	 */
-	private int id;
-	private String title;
-	private String company;
-	private String position;
-	private String description;
-	private long updatedAt;
-	private int publisherId;
-	private Publisher publisher;
-	private String content;
-	
-	/**
-	 * 默认值初始化并更新
-	 * 
-	 * @param jsonObject
-	 *            数据源
-	 * @throws JSONException
-	 *             未处理异常
-	 */
-	public Job(JSONObject jsonObject) throws JSONException {
-		id = -1;
-		title = "";
-		company = "";
-		position = "";
-		description = "";
-		updatedAt = 0;
-		publisher = new Publisher(new JSONObject("{}"));// TODO 怎样初始化比较好？
-		publisherId = 0;
-		content = "";
-		update(jsonObject);
-	}
+    /**
+     * 以下字段详见服务器接口文档
+     */
+    private int id;
+    private String title;
+    private String company;
+    private String position;
+    private String description;
+    private long updatedAt;
+    private int publisherId;
+    private Publisher publisher;
+    private String content;
 
-	/**
-	 * 更新数据，强制判断设计
-	 * 
-	 * @param jsonObject
-	 *            数据源
-	 * @throws JSONException
-	 *             未处理异常
-	 */
-	public void update(JSONObject jsonObject) throws JSONException {
-		if (!J.isNullOrEmpty(jsonObject)) {
-			if (J.isValidJsonValue("id", jsonObject)) {
-				id = jsonObject.getInt("id");
-			}
-			if (J.isValidJsonValue("title", jsonObject)) {
-				title = jsonObject.getString("title");
-			}
-			if (J.isValidJsonValue("title", jsonObject)) {
-				title = jsonObject.getString("title");
-			}
-			if (J.isValidJsonValue("company", jsonObject)) {
-				company = jsonObject.getString("company");
-			}
-			if (J.isValidJsonValue("position", jsonObject)) {
-				position = jsonObject.getString("position");
-			}
-			if (J.isValidJsonValue("updatedAt", jsonObject)) {
-				updatedAt = jsonObject.getLong("updatedAt");
-			}
-			if (J.isValidJsonValue("user", jsonObject)) {
-				publisher = new Publisher(jsonObject.getJSONObject("user"));
-			}
-			if (J.isValidJsonValue("userId", jsonObject)) {
-				publisherId = jsonObject.getInt("userId");
-			} else {
-				publisherId = publisher.getId();
-			}
-			if (J.isValidJsonValue("content", jsonObject)) {
-				content = jsonObject.getString("content");
-			}
-		}
-	}
+    /**
+     * 默认值初始化并更新
+     *
+     * @param jsonObject 数据源
+     * @throws JSONException 未处理异常
+     */
+    public Job(JSONObject jsonObject) throws JSONException {
+        id = -1;
+        title = "";
+        company = "";
+        position = "";
+        description = "";
+        updatedAt = 0;
+        publisher = new Publisher(new JSONObject("{}"));// TODO 怎样初始化比较好？
+        publisherId = 0;
+        content = "";
+        update(jsonObject);
+    }
 
-	/**
-	 * @return the id
-	 */
-	public int getId() {
-		return id;
-	}
+    /**
+     * 更新数据，强制判断设计
+     *
+     * @param jsonObject 数据源
+     * @throws JSONException 未处理异常
+     */
+    public void update(JSONObject jsonObject) throws JSONException {
+        if (!J.isNullOrEmpty(jsonObject)) {
+            if (J.isValidJsonValue("id", jsonObject)) {
+                id = jsonObject.getInt("id");
+            }
+            if (J.isValidJsonValue("title", jsonObject)) {
+                title = jsonObject.getString("title");
+            }
+            if (J.isValidJsonValue("title", jsonObject)) {
+                title = jsonObject.getString("title");
+            }
+            if (J.isValidJsonValue("company", jsonObject)) {
+                company = jsonObject.getString("company");
+            }
+            if (J.isValidJsonValue("position", jsonObject)) {
+                position = jsonObject.getString("position");
+            }
+            if (J.isValidJsonValue("updatedAt", jsonObject)) {
+                updatedAt = jsonObject.getLong("updatedAt");
+            }
+            if (J.isValidJsonValue("user", jsonObject)) {
+                publisher = new Publisher(jsonObject.getJSONObject("user"));
+            }
+            if (J.isValidJsonValue("userId", jsonObject)) {
+                publisherId = jsonObject.getInt("userId");
+            } else {
+                publisherId = publisher.getId();
+            }
+            if (J.isValidJsonValue("content", jsonObject)) {
+                content = jsonObject.getString("content");
+            }
+        }
+    }
 
-	/**
-	 * @return the title
-	 */
-	public String getTitle() {
-		return title;
-	}
+    /**
+     * @return the id
+     */
+    public int getId() {
+        return id;
+    }
 
-	/**
-	 * @return the company
-	 */
-	public String getCompany() {
-		return company;
-	}
+    /**
+     * @return the title
+     */
+    public String getTitle() {
+        return title;
+    }
 
-	/**
-	 * @return the position
-	 */
-	public String getPosition() {
-		return position;
-	}
+    /**
+     * @return the company
+     */
+    public String getCompany() {
+        return company;
+    }
 
-	/**
-	 * @return the description
-	 */
-	public String getDescription() {
-		return description;
-	}
+    /**
+     * @return the position
+     */
+    public String getPosition() {
+        return position;
+    }
 
-	/**
-	 * @return the updatedAt
-	 */
-	public long getUpdatedAt() {
-		return updatedAt;
-	}
+    /**
+     * @return the description
+     */
+    public String getDescription() {
+        return description;
+    }
 
-	/**
-	 * @return the publisherId
-	 */
-	public int getPublisherId() {
-		return publisherId;
-	}
+    /**
+     * @return the updatedAt
+     */
+    public long getUpdatedAt() {
+        return updatedAt;
+    }
 
-	/**
-	 * @return the publisher
-	 */
-	public Publisher getPublisher() {
-		return publisher;
-	}
+    /**
+     * @return the publisherId
+     */
+    public int getPublisherId() {
+        return publisherId;
+    }
 
-	/**
-	 * @return the content
-	 */
-	public String getContent() {
-		return content;
-	}
+    /**
+     * @return the publisher
+     */
+    public Publisher getPublisher() {
+        return publisher;
+    }
+
+    /**
+     * @return the content
+     */
+    public String getContent() {
+        return content;
+    }
 }

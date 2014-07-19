@@ -20,7 +20,7 @@
     <style name="TransIndicatorTheme" parent="android:Theme.Holo.Light.DarkActionBar">
         <item name="android:homeAsUpIndicator">@drawable/homeasupindicator</item>
     </style>
-    
+
     <style name="PopupTheme" parent="android:Theme.Holo.Light.Dialog">
         <item name="android:windowIsFloating">false</item>
         <item name="android:windowContentOverlay">@null</item>

@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 
 package cn.edu.zju.isst.api;
@@ -17,7 +17,7 @@ import cn.edu.zju.isst.util.L;
 
 /**
  * 接口基类
- * 
+ *
  * @author theasir
  */
 public class CSTApi {
@@ -32,11 +32,11 @@ public class CSTApi {
 
     /**
      * 发送请求
-     * 
+     *
      * @param methodName 方法类别
-     * @param subUrl 子网址
-     * @param params 要传递的参数
-     * @param listener 回调对象
+     * @param subUrl     子网址
+     * @param params     要传递的参数
+     * @param listener   回调对象
      */
     protected static void request(final String methodName, final String subUrl, final Map<String, String> params, RequestListener listener) {
         String requestUrl = PREFIX + subUrl;

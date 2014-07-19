@@ -4,8 +4,8 @@
     android:layout_height="wrap_content"
     android:paddingTop="5dp"
     android:paddingBottom="10dp"
-    android:descendantFocusability="blocksDescendants" >
-    
+    android:descendantFocusability="blocksDescendants">
+
     <TextView
         android:id="@+id/campus_activity_list_item_title_txv"
         android:layout_width="match_parent"
@@ -33,7 +33,7 @@
         android:layout_toLeftOf="@+id/campus_activity_list_item_expiretime_txv"
         android:paddingRight="10dp"
         android:textAppearance="?android:attr/textAppearanceSmall" />
-    
+
     <TextView
         android:id="@+id/campus_activity_list_item_expiretime_txv"
         android:layout_width="wrap_content"

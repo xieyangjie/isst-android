@@ -4,8 +4,8 @@
     android:layout_height="wrap_content"
     android:paddingTop="5dp"
     android:paddingBottom="10dp"
-    android:descendantFocusability="blocksDescendants" >
-    
+    android:descendantFocusability="blocksDescendants">
+
     <TextView
         android:id="@+id/archive_list_item_title_txv"
         android:layout_width="match_parent"

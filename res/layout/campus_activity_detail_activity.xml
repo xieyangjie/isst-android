@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent">
 
     <ImageView
         android:id="@+id/campus_activity_detail_activity_picture_imgv"
@@ -36,5 +36,5 @@
         android:layout_alignParentBottom="true"
         android:layout_below="@+id/campus_activity_detail_activity_duration_txv"
         android:layout_centerHorizontal="true" />
-    
+
 </RelativeLayout>

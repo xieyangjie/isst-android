@@ -5,7 +5,7 @@
     android:descendantFocusability="blocksDescendants"
     android:orientation="vertical"
     android:paddingBottom="10dp"
-    android:paddingTop="5dp" >
+    android:paddingTop="5dp">
 
     <TextView
         android:id="@+id/city_activity_title"
@@ -19,7 +19,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="10dp" >
+        android:padding="10dp">
 
         <TextView
             android:id="@+id/city_activity_update_time"
@@ -38,7 +38,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="10dp" >
+        android:padding="10dp">
 
         <TextView
             android:id="@+id/city_activity_start_time"

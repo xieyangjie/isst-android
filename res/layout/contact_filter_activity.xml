@@ -4,24 +4,24 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:showDividers="middle"
-    android:divider="?android:attr/dividerHorizontal" >
+    android:divider="?android:attr/dividerHorizontal">
 
     <ScrollView
         android:id="@+id/contact_filter_activity_filter_area"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1" >
+        android:layout_weight="1">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/padding_middle" >
+            android:padding="@dimen/padding_middle">
 
             <RelativeLayout
                 android:id="@+id/contact_filter_activity_name_area"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/one_line_middle_height"
-                android:layout_alignParentTop="true" >
+                android:layout_alignParentTop="true">
 
                 <TextView
                     android:id="@+id/contact_filter_activity_final_name_txv"
@@ -48,7 +48,7 @@
                 android:id="@+id/contact_filter_activity_gender_area"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/one_line_middle_height"
-                android:layout_below="@+id/contact_filter_activity_name_area" >
+                android:layout_below="@+id/contact_filter_activity_name_area">
 
                 <TextView
                     android:id="@+id/contact_filter_activity_final_gender_txv"
@@ -66,7 +66,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_toRightOf="@+id/contact_filter_activity_final_gender_txv"
-                    android:orientation="horizontal" >
+                    android:orientation="horizontal">
 
                     <RadioButton
                         android:id="@+id/contact_filter_activity_gender_unset_rdbtn"
@@ -96,7 +96,7 @@
                 android:id="@+id/contact_filter_activity_grade_area"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/one_line_middle_height"
-                android:layout_below="@+id/contact_filter_activity_gender_area" >
+                android:layout_below="@+id/contact_filter_activity_gender_area">
 
                 <TextView
                     android:id="@+id/contact_filter_activity_final_grade_txv"
@@ -108,16 +108,16 @@
                     android:text="@string/filter_grade"
                     android:textSize="@dimen/text_size_middle" />
 
-<!--                 <EditText
-                    android:id="@+id/contact_filter_activity_grade_edtx"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_toRightOf="@+id/contact_filter_activity_final_grade_txv"
-                    android:inputType="text"
-                    android:padding="@dimen/padding_small"
-                    android:textSize="@dimen/text_size_middle" /> -->
-                <Spinner 
+                <!--                 <EditText
+                                    android:id="@+id/contact_filter_activity_grade_edtx"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerVertical="true"
+                                    android:layout_toRightOf="@+id/contact_filter_activity_final_grade_txv"
+                                    android:inputType="text"
+                                    android:padding="@dimen/padding_small"
+                                    android:textSize="@dimen/text_size_middle" /> -->
+                <Spinner
                     android:id="@+id/contact_filter_activity_grade_spn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -131,7 +131,7 @@
                 android:id="@+id/contact_filter_activity_major_area"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/one_line_middle_height"
-                android:layout_below="@+id/contact_filter_activity_grade_area" >
+                android:layout_below="@+id/contact_filter_activity_grade_area">
 
                 <TextView
                     android:id="@+id/contact_filter_activity_final_major_txv"
@@ -156,7 +156,7 @@
                 android:id="@+id/contact_filter_activity_city_area"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/one_line_middle_height"
-                android:layout_below="@+id/contact_filter_activity_major_area" >
+                android:layout_below="@+id/contact_filter_activity_major_area">
 
                 <TextView
                     android:id="@+id/contact_filter_activity_final_city_txv"
@@ -181,7 +181,7 @@
                 android:id="@+id/contact_filter_activity_company_area"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/one_line_middle_height"
-                android:layout_below="@+id/contact_filter_activity_city_area" >
+                android:layout_below="@+id/contact_filter_activity_city_area">
 
                 <TextView
                     android:id="@+id/contact_filter_activity_final_company_txv"
@@ -213,7 +213,7 @@
         android:layout_height="wrap_content"
         android:divider="?android:attr/dividerVertical"
         android:orientation="horizontal"
-        android:showDividers="middle" >
+        android:showDividers="middle">
 
         <Button
             android:id="@+id/contact_filter_activity_cancel_btn"

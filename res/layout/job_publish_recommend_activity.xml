@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="8dp"
-    android:orientation="vertical" >
+    android:orientation="vertical">
 
     <LinearLayout
         android:id="@+id/publish_recommend_title_container"
@@ -11,15 +11,14 @@
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_gravity="center"
-        android:orientation="horizontal" >
+        android:orientation="horizontal">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center"
             android:text="@string/publish_recommend_title"
-            android:textAppearance="?android:attr/textAppearanceLarge" >
-        </TextView>
+            android:textAppearance="?android:attr/textAppearanceLarge"></TextView>
 
         <EditText
             android:id="@+id/publish_recommend_title"
@@ -35,15 +34,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:orientation="horizontal" >
+        android:orientation="horizontal">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center"
             android:text="@string/publish_recommend_content"
-            android:textAppearance="?android:attr/textAppearanceLarge" >
-        </TextView>
+            android:textAppearance="?android:attr/textAppearanceLarge"></TextView>
 
         <EditText
             android:id="@+id/publish_recommend_content"
@@ -60,15 +58,14 @@
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_gravity="center"
-        android:orientation="horizontal" >
+        android:orientation="horizontal">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center"
             android:text="@string/publish_recommend_company"
-            android:textAppearance="?android:attr/textAppearanceLarge" >
-        </TextView>
+            android:textAppearance="?android:attr/textAppearanceLarge"></TextView>
 
         <EditText
             android:id="@+id/publish_recommend_company"
@@ -84,15 +81,14 @@
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_gravity="center"
-        android:orientation="horizontal" >
+        android:orientation="horizontal">
 
-        <TextView 
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center"
             android:text="@string/publish_recommend_position"
-            android:textAppearance="?android:attr/textAppearanceLarge" >
-        </TextView>
+            android:textAppearance="?android:attr/textAppearanceLarge"></TextView>
 
         <EditText
             android:id="@+id/publish_recommend_position"
@@ -108,24 +104,24 @@
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_gravity="center"
-        android:orientation="horizontal" >
+        android:orientation="horizontal">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center"
             android:text="@string/publish_recommend_city"
-            android:textAppearance="?android:attr/textAppearanceLarge" >
-        </TextView>
-		<Spinner
-                android:id="@+id/publish_recommend_city"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
-                android:layout_marginRight="10dp"
-                android:layout_gravity="center_vertical"
-                android:padding="@dimen/padding_small"
-                android:layout_weight="1" />
+            android:textAppearance="?android:attr/textAppearanceLarge"></TextView>
+
+        <Spinner
+            android:id="@+id/publish_recommend_city"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="10dp"
+            android:layout_gravity="center_vertical"
+            android:padding="@dimen/padding_small"
+            android:layout_weight="1" />
     </LinearLayout>
 
 </RelativeLayout>

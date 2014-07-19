@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent">
 
     <RelativeLayout
         android:id="@+id/castellan_fragment_name_area"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/light_gray"
-        android:padding="@dimen/padding_small" >
+        android:padding="@dimen/padding_small">
 
         <TextView
             android:id="@+id/castellan_fragment_name_txv"
@@ -43,7 +43,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/castellan_fragment_name_area"
-        android:padding="@dimen/padding_small" >
+        android:padding="@dimen/padding_small">
 
         <TextView
             android:id="@+id/castellan_fragment_mobile"
@@ -86,7 +86,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/castellan_fragment_dividerOne"
-        android:padding="@dimen/padding_small" >
+        android:padding="@dimen/padding_small">
 
         <TextView
             android:id="@+id/castellan_fragment_email"
@@ -121,7 +121,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/castellan_fragment_dividerTwo"
-        android:padding="@dimen/padding_small" >
+        android:padding="@dimen/padding_small">
 
         <TextView
             android:id="@+id/castellan_fragment_city"
@@ -148,7 +148,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/castellan_fragment_dividerThree"
-        android:padding="@dimen/padding_small" >
+        android:padding="@dimen/padding_small">
 
         <TextView
             android:id="@+id/castellan_fragment_company"
@@ -175,7 +175,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/castellan_fragment_dividerFour"
-        android:padding="@dimen/padding_small" >
+        android:padding="@dimen/padding_small">
 
         <TextView
             android:id="@+id/castellan_fragment_position"

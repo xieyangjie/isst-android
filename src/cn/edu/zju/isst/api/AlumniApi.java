@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package cn.edu.zju.isst.api;
 
@@ -11,9 +11,9 @@ import cn.edu.zju.isst.util.L;
 
 /**
  * 归档接口
- * 
+ *
  * @author theasir
- * 
+ *         <p/>
  *         TODO WIP
  */
 public class AlumniApi extends CSTApi {
@@ -21,57 +21,57 @@ public class AlumniApi extends CSTApi {
     private static final String SUB_URL = "/api";
 
     public static void getUserList(int id, String name, int gender, int grade,
-	    int classId, String major, int cityId, String company,
-	    RequestListener listener) {
-	StringBuilder sb = new StringBuilder();
-	sb.append(SUB_URL).append("/alumni");
+                                   int classId, String major, int cityId, String company,
+                                   RequestListener listener) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(SUB_URL).append("/alumni");
 
-	Map<String, String> paramsMap = new HashMap<String, String>();
-	paramsMap.put("id", "" + id);
-	paramsMap.put("name", name);
-	paramsMap.put("gender", "" + gender);
-	paramsMap.put("grade", "" + grade);
-	paramsMap.put("classId", "" + classId);
-	paramsMap.put("major", "" + major);
-	paramsMap.put("cityId", "" + cityId);
-	paramsMap.put("company", company);
+        Map<String, String> paramsMap = new HashMap<String, String>();
+        paramsMap.put("id", "" + id);
+        paramsMap.put("name", name);
+        paramsMap.put("gender", "" + gender);
+        paramsMap.put("grade", "" + grade);
+        paramsMap.put("classId", "" + classId);
+        paramsMap.put("major", "" + major);
+        paramsMap.put("cityId", "" + cityId);
+        paramsMap.put("company", company);
 
-	request("GET", sb.toString(), paramsMap, listener);
+        request("GET", sb.toString(), paramsMap, listener);
     }
 
     public static void getClassesList(RequestListener listener) {
-	StringBuilder sb = new StringBuilder();
-	sb.append(SUB_URL).append("/classes");
+        StringBuilder sb = new StringBuilder();
+        sb.append(SUB_URL).append("/classes");
 
-	L.i("yyy --- getClassesList:" + sb.toString());
+        L.i("yyy --- getClassesList:" + sb.toString());
 
-	request("GET", sb.toString(), null, listener);
+        request("GET", sb.toString(), null, listener);
     }
 
     public static void getMajorList(RequestListener listener) {
-	StringBuilder sb = new StringBuilder();
-	sb.append(SUB_URL).append("/majors");
+        StringBuilder sb = new StringBuilder();
+        sb.append(SUB_URL).append("/majors");
 
-	L.i("yyy --- getMajorList:" + sb.toString());
+        L.i("yyy --- getMajorList:" + sb.toString());
 
-	request("GET", sb.toString(), null, listener);
+        request("GET", sb.toString(), null, listener);
     }
 
     public static void getCityList(RequestListener listener) {
-	StringBuilder sb = new StringBuilder();
-	sb.append(SUB_URL).append("/cities");
+        StringBuilder sb = new StringBuilder();
+        sb.append(SUB_URL).append("/cities");
 
-	L.i("yyy --- getCityList:" + sb.toString());
+        L.i("yyy --- getCityList:" + sb.toString());
 
-	request("GET", sb.toString(), null, listener);
+        request("GET", sb.toString(), null, listener);
     }
 
     public static void getUser(int id, RequestListener listener) {
-	StringBuilder sb = new StringBuilder();
-	sb.append(SUB_URL).append("/alumni").append("/" + id);
+        StringBuilder sb = new StringBuilder();
+        sb.append(SUB_URL).append("/alumni").append("/" + id);
 
-	L.i("yyy --- getUser:" + sb.toString());
+        L.i("yyy --- getUser:" + sb.toString());
 
-	request("GET", sb.toString(), null, listener);
+        request("GET", sb.toString(), null, listener);
     }
 }

@@ -7,12 +7,12 @@
     <dimen name="sm_offset">120dp</dimen>
     <dimen name="sm_list_padding">10dp</dimen>
     <dimen name="sm_shadow_width">15dp</dimen>
-    
+
     <dimen name="one_line_middle_height">40dp</dimen>
-    
+
     <dimen name="padding_small">5dp</dimen>
     <dimen name="padding_middle">10dp</dimen>
     <dimen name="padding_big">20dp</dimen>
-    
+
     <dimen name="margin_small">5dp</dimen>
 </resources>

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:android="http://schemas.android.com/apk/res/android">
+<resources>
     <string name="campus_activity_imageview_picture">活动图片</string>
-    
+
     <string name="usercenter_welcomeback">欢迎回来：</string>
     <string name="user_avatar">用户头像</string>
-    
+
     <string name="user_username">学号</string>
     <string name="user_name">姓名</string>
     <string name="user_gender">性别</string>
@@ -14,13 +14,13 @@
     <string name="user_city">城市</string>
     <string name="user_email">电子邮件</string>
     <string name="user_phone">移动电话</string>
-	<string name="user_qq">QQ</string>
-	<string name="user_company">公司</string>
-	<string name="user_position">职位</string>
-	<string name="user_signature">个性签名</string>
-	<string name="user_is_citymaster">是否城主</string>
-	<string name="user_is_public">公开</string>
-	
-	<string name="user_info_imageview_gender">性别</string>
-	<string name="user_info_imageview_location">城市</string>
+    <string name="user_qq">QQ</string>
+    <string name="user_company">公司</string>
+    <string name="user_position">职位</string>
+    <string name="user_signature">个性签名</string>
+    <string name="user_is_citymaster">是否城主</string>
+    <string name="user_is_public">公开</string>
+
+    <string name="user_info_imageview_gender">性别</string>
+    <string name="user_info_imageview_location">城市</string>
 </resources>
