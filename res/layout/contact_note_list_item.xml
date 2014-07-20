@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:showDividers="middle"
-    android:divider="?android:attr/dividerHorizontal" >
+    android:divider="?android:attr/dividerHorizontal">
 
     <TextView
         android:id="@+id/contact_note_list_item_index_txv"

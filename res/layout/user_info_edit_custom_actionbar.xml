@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:divider="?android:attr/dividerVertical"
     android:orientation="horizontal"
-    android:showDividers="middle" >
+    android:showDividers="middle">
 
     <Button
         android:id="@+id/user_info_edit_custom_actionbar_action_cancel_btn"
