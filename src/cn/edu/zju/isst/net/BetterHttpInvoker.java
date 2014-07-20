@@ -69,7 +69,7 @@ public class BetterHttpInvoker {
      * @throws IOException 未处理异常
      */
     public CSTResponse post(URL uri, Map<String, List<String>> headers,
-                            byte[] body) throws IOException {
+            byte[] body) throws IOException {
         POST post = new POST(uri, headers, body);
         return getOrPost(post);
     }
@@ -171,7 +171,9 @@ public class BetterHttpInvoker {
      * @author theasir
      */
     private class Request {
+
         private URL uri;
+
         private Map<String, List<String>> headers;
 
         public Request(URL uri, Map<String, List<String>> headers) {
@@ -201,6 +203,7 @@ public class BetterHttpInvoker {
      * @author theasir
      */
     private class POST extends Request {
+
         private byte[] body;
 
         public POST(URL uri, Map<String, List<String>> headers, byte[] body) {
@@ -223,6 +226,7 @@ public class BetterHttpInvoker {
      * @author theasir
      */
     private class GET extends Request {
+
         public GET(URL uri, Map<String, List<String>> headers) {
             super(uri, headers);
         }

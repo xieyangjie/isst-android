@@ -10,6 +10,7 @@ import cn.edu.zju.isst.util.J;
  * 判断网络是否链接正常
  */
 public class NetworkConnection {
+
     public static boolean isNetworkConnected(Context context) {
         if (!J.isNullOrEmpty(context)) {
             ConnectivityManager connectivityManager = (ConnectivityManager) context

@@ -1,12 +1,12 @@
 package cn.edu.zju.isst.baidupush;
 
+import com.baidu.android.pushservice.PushConstants;
+
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
-
-import com.baidu.android.pushservice.PushConstants;
 
 import cn.edu.zju.isst.ui.loading.LoadingActivity;
 
@@ -14,6 +14,7 @@ import cn.edu.zju.isst.ui.loading.LoadingActivity;
  * Push消息处理receiver
  */
 public class PushMessageReceiver extends BroadcastReceiver {
+
     /**
      * TAG to Log
      */
@@ -40,7 +41,6 @@ public class PushMessageReceiver extends BroadcastReceiver {
 
             //自定义内容的json串
             Log.d(TAG, "EXTRA_EXTRA = " + intent.getStringExtra(PushConstants.EXTRA_EXTRA));
-
 
 //			//用户在此自定义处理消息,以下代码为demo界面展示用
 //			Intent responseIntent = null;
@@ -105,9 +105,9 @@ public class PushMessageReceiver extends BroadcastReceiver {
     private void showActivity(final Context context, Intent intent) {
         // TODO Auto-generated method stub
 
-
         Intent aIntent = new Intent();
-        aIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        aIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED
+                | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         aIntent.setClass(context, LoadingActivity.class);
 //		String title = intent
 //				.getStringExtra(PushConstants.EXTRA_NOTIFICATION_TITLE);

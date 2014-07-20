@@ -21,12 +21,12 @@ public class CM {
     }
 
     public static void showAlert(final Activity activity,
-                                 final int textResourceId) {
+            final int textResourceId) {
         Crouton.showText(activity, textResourceId, Style.ALERT);
     }
 
     public static void showAlert(final Activity activity, final String text,
-                                 final int duration) {
+            final int duration) {
         Crouton.makeText(activity, text, Style.ALERT)
                 .setConfiguration(
                         new Configuration.Builder().setDuration(duration)
@@ -39,12 +39,12 @@ public class CM {
     }
 
     public static void showConfirm(final Activity activity,
-                                   final int textResourceId) {
+            final int textResourceId) {
         Crouton.showText(activity, textResourceId, Style.CONFIRM);
     }
 
     public static void showConfirm(final Activity activity, final String text,
-                                   final int duration) {
+            final int duration) {
         Crouton.makeText(activity, text, Style.CONFIRM)
                 .setConfiguration(
                         new Configuration.Builder().setDuration(duration)
@@ -57,12 +57,12 @@ public class CM {
     }
 
     public static void showInfo(final Activity activity,
-                                final int textResourceId) {
+            final int textResourceId) {
         Crouton.showText(activity, textResourceId, Style.INFO);
     }
 
     public static void showInfo(final Activity activity, final String text,
-                                final int duration) {
+            final int duration) {
         Crouton.makeText(activity, text, Style.INFO)
                 .setConfiguration(
                         new Configuration.Builder().setDuration(duration)

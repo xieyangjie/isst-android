@@ -18,11 +18,15 @@ import cn.edu.zju.isst.util.L;
  * @author stevwayne
  */
 public class UpdateManager {
+
     //	public static final String UPDATE_APKFILE_URL = "http://www.zjucst.com/downloads/isst-1.0.0.apk";
-    public static final String UPDATE_APKFILE_URL = "http://www.cst.zju.edu.cn/isst-releases/isst.apk";
+    public static final String UPDATE_APKFILE_URL
+            = "http://www.cst.zju.edu.cn/isst-releases/isst.apk";
 
     private static UpdateManager INSTANCE;
+
     private Context context;
+
     private DownloadManager dm;
 
     private UpdateManager(Context context) {
@@ -52,7 +56,8 @@ public class UpdateManager {
         Uri uri = Uri.parse(UPDATE_APKFILE_URL);
         DownloadManager.Request request = new DownloadManager.Request(uri);
         request.setDestinationInExternalPublicDir("Downloads", "ISST2.apk");
-        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+        request.setNotificationVisibility(
+                DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
 
         final long ref = dm.enqueue(request);
         L.i("UpdateApkId", "" + ref);

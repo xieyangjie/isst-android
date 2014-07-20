@@ -17,13 +17,15 @@ import cn.edu.zju.isst.util.L;
  *         TODO WIP
  */
 public class CSTSettings {
+
     private static final String SP_NAME = "ISST";
 
     private static final String FOR_THE_FIRST_TIME = "for_the_first_time";
+
     private static final String IS_AUTO_LOGIN = "is_auto_login";
 
     public static void setForTheFirstTime(boolean isForTheFirstTime,
-                                          Activity activity) {
+            Activity activity) {
         writeValueForKey(FOR_THE_FIRST_TIME, isForTheFirstTime, activity);
     }
 
@@ -51,7 +53,7 @@ public class CSTSettings {
     }
 
     private static void writeValueForKey(String key, Object value,
-                                         Activity activity) {
+            Activity activity) {
         SharedPreferences sp = activity.getSharedPreferences(SP_NAME,
                 Activity.MODE_PRIVATE);
         Editor editor = sp.edit();

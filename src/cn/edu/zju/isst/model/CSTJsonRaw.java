@@ -7,8 +7,11 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CSTJsonRaw extends CSTJsonBaseObject {
+
     public int status;
+
     public String message;
+
     public Object body;
 
     private CSTJsonRaw() {

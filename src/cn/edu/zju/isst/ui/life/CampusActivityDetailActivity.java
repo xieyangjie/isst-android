@@ -3,6 +3,9 @@
  */
 package cn.edu.zju.isst.ui.life;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.ActionBar;
 import android.os.Bundle;
 import android.os.Handler;
@@ -11,9 +14,6 @@ import android.view.MenuItem;
 import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import cn.edu.zju.isst.R;
 import cn.edu.zju.isst.api.CampusActivityApi;
@@ -33,11 +33,15 @@ public class CampusActivityDetailActivity extends BaseActivity {
     private int m_nId;
 
     private CampusActivity m_campusActivityCurrent;
+
     private Handler m_handlerCampusActivityDetail;
 
     private ImageView m_imgvPicture;
+
     private TextView m_txvDuration;
+
     private TextView m_txvLocation;
+
     private WebView m_webvContent;
 
     /*

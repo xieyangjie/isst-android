@@ -30,16 +30,20 @@ import cn.edu.zju.isst.constant.Constants;
 public class SlidingMenuExpListAdapter extends BaseExpandableListAdapter {
 
     private Activity m_actiContext;
+
     private List<String> m_listGroupNames;
+
     private Map<String, List<String>> m_mapGroupCollection;
+
     private SELECTED m_selectedIndex;
+
     private Vector<Vector<String>> m_expListResourse;
 
     /**
      *
      */
     public SlidingMenuExpListAdapter(Activity context, List<String> groupNames,
-                                     Map<String, List<String>> groupCollection) {
+            Map<String, List<String>> groupCollection) {
         this.m_actiContext = context;
         this.m_listGroupNames = groupNames;
         this.m_mapGroupCollection = groupCollection;
@@ -66,8 +70,9 @@ public class SlidingMenuExpListAdapter extends BaseExpandableListAdapter {
     @Override
     public int getChildrenCount(int groupPosition) {
         if (!m_mapGroupCollection.containsKey(m_listGroupNames
-                .get(groupPosition)))
+                .get(groupPosition))) {
             return 0;
+        }
         return m_mapGroupCollection.get(m_listGroupNames.get(groupPosition))
                 .size();
     }
@@ -131,7 +136,7 @@ public class SlidingMenuExpListAdapter extends BaseExpandableListAdapter {
      */
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded,
-                             View convertView, ViewGroup parent) {
+            View convertView, ViewGroup parent) {
         String nav = (String) getGroup(groupPosition);
 
         View tempView = m_actiContext.getLayoutInflater().inflate(
@@ -168,7 +173,7 @@ public class SlidingMenuExpListAdapter extends BaseExpandableListAdapter {
      */
     @Override
     public View getChildView(int groupPosition, int childPosition,
-                             boolean isLastChild, View convertView, ViewGroup parent) {
+            boolean isLastChild, View convertView, ViewGroup parent) {
         String nav = (String) getChild(groupPosition, childPosition);
 
         if (convertView == null) {
@@ -246,7 +251,9 @@ public class SlidingMenuExpListAdapter extends BaseExpandableListAdapter {
     }
 
     public class SELECTED {
+
         private int groupIndex;
+
         private int childIndex;
 
         public SELECTED() {

@@ -1,5 +1,9 @@
 package cn.edu.zju.isst.ui.main;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.ListFragment;
 import android.content.Context;
 import android.content.Intent;
@@ -19,10 +23,6 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,14 +57,21 @@ public class BaseUserCenterListFragment extends ListFragment implements
         OnScrollListener {
 
     private int m_nVisibleLastIndex;
+
     private int m_nCurrentPage;
+
     private boolean m_bIsFirstTime;
 
     private UserCenterCategory m_userCenterCategory;
+
     private LoadType m_loadType;
+
     private final List<UserCenterList> m_listAchive = new ArrayList<UserCenterList>();
+
     private Handler m_handlerUserCenterList;
+
     private UserCenterListAdapter m_adapterUserCenterList;
+
     private View m_viewContainer;
 
     private ListView m_lsvUserCenterList;
@@ -95,7 +102,7 @@ public class BaseUserCenterListFragment extends ListFragment implements
      */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+            Bundle savedInstanceState) {
         return inflater.inflate(R.layout.usercenter_list_fragment, null);
     }
 
@@ -206,7 +213,7 @@ public class BaseUserCenterListFragment extends ListFragment implements
 
     @Override
     public void onScroll(AbsListView view, int firstVisibleItem,
-                         int visibleItemCount, int totalItemCount) {
+            int visibleItemCount, int totalItemCount) {
         m_nVisibleLastIndex = firstVisibleItem + visibleItemCount - 1;
     }
 
@@ -437,10 +444,15 @@ public class BaseUserCenterListFragment extends ListFragment implements
      * @author theasir
      */
     protected final class ViewHolder {
+
         public TextView titleTxv;
+
         public TextView dateTxv;
+
         public TextView publisherTxv;
+
         public TextView descriptionTxv;
+
         public View indicatorView;
     }
 

@@ -26,9 +26,13 @@ public class Publisher implements Serializable {
      * 以下字段详见服务器接口文档
      */
     private int id;
+
     private String name;
+
     private String phone;
+
     private String qq;
+
     private String email;
 
     /**

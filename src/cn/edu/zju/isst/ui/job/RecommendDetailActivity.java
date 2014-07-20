@@ -3,6 +3,9 @@
  */
 package cn.edu.zju.isst.ui.job;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,9 +21,6 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import cn.edu.zju.isst.R;
 import cn.edu.zju.isst.api.JobApi;
@@ -53,15 +53,23 @@ public class RecommendDetailActivity extends BaseActivity {
     private int m_nId;
 
     private Job m_jobCurrent;
+
     private User m_jobPublisher;
+
     private Handler m_handlerJobDetail;
 
     private TextView m_txvTitle;
+
     private TextView m_txvDate;
+
     private TextView m_txvPublisher;
+
     private WebView m_webvContent;
+
     private ImageView m_imgBtnPublisher;
+
     private Button m_BtnCommened;
+
     private boolean m_isEditView;
 
     /*
@@ -81,7 +89,6 @@ public class RecommendDetailActivity extends BaseActivity {
 
         // 注意默认值-1，当Intent中没有id时是无效的，故启动这个JobDetailActivity的Activity必须在Intent中放置"id"参数
         m_nId = getIntent().getIntExtra("id", -1);
-
 
         m_handlerJobDetail = new Handler() {
 
@@ -125,7 +132,8 @@ public class RecommendDetailActivity extends BaseActivity {
                                 break;
                             }
                             m_jobCurrent = new Job(jsonObject.getJSONObject("body"));
-                            m_jobPublisher = new User(jsonObject.getJSONObject("body").getJSONObject("user"));
+                            m_jobPublisher = new User(
+                                    jsonObject.getJSONObject("body").getJSONObject("user"));
                             break;
                         case STATUS_NOT_LOGIN:
                             break;

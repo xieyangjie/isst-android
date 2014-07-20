@@ -18,7 +18,7 @@ public class CityActivityApi extends CSTApi {
     private static final String SUB_URL = "/api/cities";
 
     public static void getCityActivityList(int cityId, int page, int pageSize,
-                                           String keywords, RequestListener listener) {
+            String keywords, RequestListener listener) {
         StringBuilder sb = new StringBuilder();
         sb.append(SUB_URL).append("/" + cityId).append("/activities");
 
@@ -31,7 +31,7 @@ public class CityActivityApi extends CSTApi {
     }
 
     public static void getAuditingActivityList(int cityId, int page,
-                                               integer pageSize, RequestListener listener) {
+            integer pageSize, RequestListener listener) {
         StringBuilder sb = new StringBuilder();
         sb.append(SUB_URL).append("/" + cityId).append("/activities/auditing");
 
@@ -43,7 +43,7 @@ public class CityActivityApi extends CSTApi {
     }
 
     public static void getCityActivityDetail(int cityId, int activityId,
-                                             RequestListener listener) {
+            RequestListener listener) {
         StringBuilder sb = new StringBuilder();
         sb.append(SUB_URL).append("/" + cityId).append("/activities")
                 .append("/" + activityId);
@@ -52,7 +52,7 @@ public class CityActivityApi extends CSTApi {
     }
 
     public static void getCityActivityParList(int cityId, int activityId,
-                                              int page, int pageSize, RequestListener listener) {
+            int page, int pageSize, RequestListener listener) {
         StringBuilder sb = new StringBuilder();
         sb.append(SUB_URL).append("/" + cityId).append("/activities")
                 .append("/" + activityId).append("/participants");

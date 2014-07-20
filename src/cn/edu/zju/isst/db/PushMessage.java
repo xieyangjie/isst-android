@@ -21,8 +21,11 @@ public class PushMessage implements Serializable {
     private static final long serialVersionUID = 2915741690852964093L;
 
     public int id;
+
     public String title;
+
     public String content;
+
     public long createdTime;
 
     public PushMessage(JSONObject jsonObject) throws JSONException {

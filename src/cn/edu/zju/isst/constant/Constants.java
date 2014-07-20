@@ -22,22 +22,27 @@ public final class Constants {
      * 成功返回
      */
     public static final int STATUS_REQUEST_SUCCESS = 0;
+
     /**
      * 用户不存在
      */
     public static final int STATUS_LOGIN_USERNAME_NOT_EXIST = 10;
+
     /**
      * 密码错误
      */
     public static final int STATUS_LOGIN_PASSWORD_ERROR = 11;
+
     /**
      * 认证失效
      */
     public static final int STATUS_LOGIN_AUTH_EXPIRED = 12;
+
     /**
      * 认证失败
      */
     public static final int STATUS_LOGIN_AUTH_FAILED = 13;
+
     /**
      * 未登录
      */
@@ -52,18 +57,22 @@ public final class Constants {
      * 未知异常
      */
     public static final int EXCEPTION_UNKNOWN = -0xe0;
+
     /**
      * IO异常
      */
     public static final int EXCEPTION_IO = -0xe1;
+
     /**
      * Socket超时异常
      */
     public static final int EXCEPTION_SOCKETTIMEOUT = -0xe2;
+
     /**
      * JSON异常
      */
     public static final int EXCEPTION_JSON = -0xe3;
+
     /**
      * 类型转换异常
      */
@@ -73,10 +82,12 @@ public final class Constants {
      * 未知网络错误
      */
     public static final int HTTPERROR_UNKNOWN = -0xf0;
+
     /**
      * HTTP 4xx
      */
     public static final int HTTPERROR_CLIENTERROR = -0xf4;
+
     /**
      * HTTP 5xx
      */

@@ -20,6 +20,7 @@ public class DBHelper extends SQLiteOpenHelper {
      * 数据库名称（文件名）
      */
     private static final String DATABASE_NAME = "main.db";
+
     /**
      * 数据库版本
      */

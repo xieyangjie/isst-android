@@ -18,6 +18,7 @@ public enum ArchiveCategory {
             DataManager.EXPERIENCE_LIST_IN_DB);
 
     private String subUrl;
+
     private String nameInDB;
 
     private ArchiveCategory(String subUrl, String nameInDB) {

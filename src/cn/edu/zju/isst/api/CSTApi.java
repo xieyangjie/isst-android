@@ -38,23 +38,28 @@ public class CSTApi {
      * @param params     要传递的参数
      * @param listener   回调对象
      */
-    protected static void request(final String methodName, final String subUrl, final Map<String, String> params, RequestListener listener) {
+    protected static void request(final String methodName, final String subUrl,
+            final Map<String, String> params, RequestListener listener) {
         String requestUrl = PREFIX + subUrl;
         if (methodName.equalsIgnoreCase("POST")) {
-            BetterAsyncWebServiceRunner.getInstance().request(methodName, requestUrl, params, listener);
+            BetterAsyncWebServiceRunner.getInstance()
+                    .request(methodName, requestUrl, params, listener);
         } else {
             try {
-                requestUrl = requestUrl + (J.isNullOrEmpty(params) ? "" : ("?" + BetterAsyncWebServiceRunner.getInstance().paramsToString(params)));
+                requestUrl = requestUrl + (J.isNullOrEmpty(params) ? ""
+                        : ("?" + BetterAsyncWebServiceRunner.getInstance().paramsToString(params)));
             } catch (UnsupportedEncodingException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
-            BetterAsyncWebServiceRunner.getInstance().request(methodName, requestUrl, null, listener);
+            BetterAsyncWebServiceRunner.getInstance()
+                    .request(methodName, requestUrl, null, listener);
         }
         L.i("CSTApi Request URL = " + requestUrl);
     }
 
-    protected static CSTResponse responseOfRequest(final String methodName, final String subUrl, final Map<String, String> params)
+    protected static CSTResponse responseOfRequest(final String methodName, final String subUrl,
+            final Map<String, String> params)
             throws MalformedURLException, IOException {
         String url = PREFIX + subUrl;
         return BetterAsyncWebServiceRunner.getInstance().responseOfRequest(methodName, url, params);

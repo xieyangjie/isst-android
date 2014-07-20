@@ -26,25 +26,45 @@ public class User implements Serializable {
      * 以下字段详见服务器接口文档
      */
     private int id;
+
     private String username;
+
     private String password;
+
     private String name;
+
     private int gender;
+
     private int grade;
+
     private int classId;
+
     private String major;
+
     private int cityId;
+
     private String email;
+
     private String phone;
+
     private String qq;
+
     private String company;
+
     private String position;
+
     private String signature;
+
     private boolean cityPrincipal;
+
     private boolean privateQQ;
+
     private boolean privateEmail;
+
     private boolean privatePhone;
+
     private boolean privateCompany;
+
     private boolean privatePosition;
 
     /**

@@ -31,7 +31,7 @@ public class CSTResponse {
     private byte[] body;
 
     protected CSTResponse(int status, Map<String, List<String>> headers,
-                          byte[] body) {
+            byte[] body) {
         this.status = status;
         this.headers = headers;
         this.body = body;

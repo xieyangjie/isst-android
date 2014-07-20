@@ -1,5 +1,9 @@
 package cn.edu.zju.isst.ui.main;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.ListFragment;
 import android.content.Context;
 import android.content.Intent;
@@ -17,10 +21,6 @@ import android.widget.AbsListView.OnScrollListener;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,14 +54,21 @@ public class BaseJobsListFragment extends ListFragment implements
         OnScrollListener {
 
     private int m_nVisibleLastIndex;
+
     private int m_nCurrentPage;
+
     private boolean m_bIsFirstTime;
 
     private JobCategory m_jobCategory;
+
     private LoadType m_loadType;
+
     private final List<Job> m_listAchive = new ArrayList<Job>();
+
     private Handler m_handlerJobList;
+
     private JobListAdapter m_adapterJobList;
+
     private View m_viewContainer;
 
     private ListView m_lsvJobList;
@@ -92,7 +99,7 @@ public class BaseJobsListFragment extends ListFragment implements
      */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+            Bundle savedInstanceState) {
         return inflater.inflate(R.layout.job_list_fragment, null);
     }
 
@@ -195,7 +202,7 @@ public class BaseJobsListFragment extends ListFragment implements
 
     @Override
     public void onScroll(AbsListView view, int firstVisibleItem,
-                         int visibleItemCount, int totalItemCount) {
+            int visibleItemCount, int totalItemCount) {
         m_nVisibleLastIndex = firstVisibleItem + visibleItemCount - 1;
     }
 
@@ -204,7 +211,6 @@ public class BaseJobsListFragment extends ListFragment implements
     }
 
     protected void initComponent(View view) {
-
 
         m_lsvJobList = (ListView) view.findViewById(android.R.id.list);
         m_viewContainer = (View) view.findViewById(R.id.job_recommend_imgbtn_container);
@@ -423,10 +429,15 @@ public class BaseJobsListFragment extends ListFragment implements
      * @author theasir
      */
     protected final class ViewHolder {
+
         public TextView titleTxv;
+
         public TextView dateTxv;
+
         public TextView publisherTxv;
+
         public TextView descriptionTxv;
+
         public View indicatorView;
     }
 

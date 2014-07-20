@@ -145,6 +145,7 @@ public class PullToRefeshView extends LinearLayout implements OnTouchListener {
      * STATUS_REFRESHING 和 STATUS_REFRESH_FINISHED
      */
     private int currentStatus = STATUS_REFRESH_FINISHED;
+
     ;
 
     /**
@@ -174,9 +175,6 @@ public class PullToRefeshView extends LinearLayout implements OnTouchListener {
 
     /**
      * 下拉刷新控件的构造函数，会在运行时动态添加一个下拉头的布局。
-     *
-     * @param context
-     * @param attrs
      */
     public PullToRefeshView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -200,7 +198,8 @@ public class PullToRefeshView extends LinearLayout implements OnTouchListener {
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         super.onLayout(changed, l, t, r, b);
         L.i(this.getClass().getName() + "----enter---onLayout");
-        L.i(this.getClass().getName() + "----enter---onLayout---changed=" + changed + ",loadOnce=" + loadOnce);
+        L.i(this.getClass().getName() + "----enter---onLayout---changed=" + changed + ",loadOnce="
+                + loadOnce);
         if (changed && !loadOnce) {
             hideHeaderHeight = -header.getHeight();
             headerLayoutParams = (MarginLayoutParams) header.getLayoutParams();
@@ -298,8 +297,6 @@ public class PullToRefeshView extends LinearLayout implements OnTouchListener {
     /**
      * 根据当前ListView的滚动状态来设定 {@link #ableToPull}
      * 的值，每次都需要在onTouch中第一个执行，这样可以判断出当前应该是滚动ListView，还是应该进行下拉。
-     *
-     * @param event
      */
     private void setIsAbleToPull(MotionEvent event) {
         L.i(this.getClass().getName() + "----enter---setIsAbleToPull");

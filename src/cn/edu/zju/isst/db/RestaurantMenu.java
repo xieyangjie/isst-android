@@ -24,8 +24,11 @@ public class RestaurantMenu implements Serializable {
      * 以下字段详见服务器接口文档
      */
     private String name;
+
     private String picture;
+
     private String description;
+
     private float price;
 
     /**

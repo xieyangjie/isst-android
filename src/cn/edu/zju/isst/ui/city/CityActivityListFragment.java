@@ -3,6 +3,10 @@
  */
 package cn.edu.zju.isst.ui.city;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.ListFragment;
 import android.content.Context;
 import android.content.Intent;
@@ -17,10 +21,6 @@ import android.widget.AbsListView.OnScrollListener;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,8 +49,11 @@ public class CityActivityListFragment extends ListFragment implements
         OnScrollListener {
 
     private final List<CityActivity> mCityActivities = new ArrayList<CityActivity>();
+
     private User m_currentUser;
+
     private Handler mHandler;
+
     private CityActivityListAdapter mListAdapter;
 
     private ListView mCityActivityListView;
@@ -72,7 +75,7 @@ public class CityActivityListFragment extends ListFragment implements
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+            Bundle savedInstanceState) {
         return inflater.inflate(R.layout.list_fragment, null);
     }
 
@@ -109,7 +112,7 @@ public class CityActivityListFragment extends ListFragment implements
 
     @Override
     public void onScroll(AbsListView view, int firstVisibleItem,
-                         int visibleItemCount, int totalItemCount) {
+            int visibleItemCount, int totalItemCount) {
         // TODO Auto-generated method stub
 
     }
@@ -218,10 +221,15 @@ public class CityActivityListFragment extends ListFragment implements
     }
 
     private final class ViewHolder {
+
         public TextView titleTxv;
+
         public TextView updateTimeTxv;
+
         public TextView publisherTxv;
+
         public TextView startTimeTxv;
+
         public TextView expireTimeTxv;
     }
 

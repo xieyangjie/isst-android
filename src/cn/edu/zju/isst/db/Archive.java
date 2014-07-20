@@ -26,11 +26,17 @@ public class Archive implements Serializable {
      * 以下字段详见服务器接口文档
      */
     private int id;
+
     private String title;
+
     private String description;
+
     private long updatedAt;
+
     private int publisherId;
+
     private Publisher publisher;
+
     private String content;
 
     /**

@@ -16,8 +16,8 @@ public class UserCenterApi extends CSTApi {
     // api在users里，界面在job
     // 发布内推
     public static void publishRecommend(int id, String title, String content,
-                                        String company, String position, int cityId,
-                                        RequestListener listener) {
+            String company, String position, int cityId,
+            RequestListener listener) {
         Map<String, String> paramsMap = new HashMap<String, String>();
         paramsMap.put("id", "" + id);
         paramsMap.put("title", title);
@@ -31,7 +31,7 @@ public class UserCenterApi extends CSTApi {
 
     // 发布的内推,经验列表
     public static void getUserCenterList(UserCenterCategory userCenterCategory,
-                                         int page, int pageSize, RequestListener listener) {
+            int page, int pageSize, RequestListener listener) {
         Map<String, String> paramsMap = new HashMap<String, String>();
         paramsMap.put("page", "" + page);
         paramsMap.put("pageSize", "" + pageSize);
@@ -42,7 +42,7 @@ public class UserCenterApi extends CSTApi {
 
     // 发布的活动列表
     public static void getMyPublicActivities(int page, int pageSize,
-                                             RequestListener listener) {
+            RequestListener listener) {
         Map<String, String> paramsMap = new HashMap<String, String>();
         paramsMap.put("page", "" + page);
         paramsMap.put("pageSize", "" + pageSize);
@@ -52,7 +52,7 @@ public class UserCenterApi extends CSTApi {
 
     // 参加的活动列表
     public static void getMyActivities(int page, int pageSize,
-                                       RequestListener listener) {
+            RequestListener listener) {
         Map<String, String> paramsMap = new HashMap<String, String>();
         paramsMap.put("page", "" + page);
         paramsMap.put("pageSize", "" + pageSize);

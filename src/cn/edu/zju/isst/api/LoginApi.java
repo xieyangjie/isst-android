@@ -41,7 +41,7 @@ public class LoginApi extends CSTApi {
      * @param listener  回调对象
      */
     public static void validate(String userName, String password,
-                                double longitude, double latitude, RequestListener listener) {
+            double longitude, double latitude, RequestListener listener) {
         Map<String, String> paramsMap = new HashMap<String, String>();
         paramsMap.put("username", userName);
         paramsMap.put("password", password);
@@ -56,7 +56,8 @@ public class LoginApi extends CSTApi {
         paramsMap.put("longitude", String.valueOf(longitude));
         paramsMap.put("latitude", String.valueOf(latitude));
 
-        L.i("yyy:" + "username=" + paramsMap.get("username") + "&password=" + paramsMap.get("password") + "&" + "token=" + paramsMap.get("token") + "&"
+        L.i("yyy:" + "username=" + paramsMap.get("username") + "&password=" + paramsMap
+                .get("password") + "&" + "token=" + paramsMap.get("token") + "&"
                 + "timestamp=" + paramsMap.get("timestamp"));
         L.i("LoginToken", "token=" + paramsMap.get("token") + "&"
                 + "timestamp=" + paramsMap.get("timestamp"));
@@ -73,7 +74,7 @@ public class LoginApi extends CSTApi {
      * @param listener    回调对象
      */
     public static void update(User currentUser, double longitude,
-                              double latitude, RequestListener listener) {
+            double latitude, RequestListener listener) {
         Map<String, String> paramsMap = new HashMap<String, String>();
         paramsMap.put("userId", String.valueOf(currentUser.getId()));
         paramsMap.put(
@@ -131,10 +132,12 @@ public class LoginApi extends CSTApi {
             StringBuffer buf = new StringBuffer("");
             for (int offset = 0; offset < byteDigest.length; offset++) {
                 i = byteDigest[offset];
-                if (i < 0)
+                if (i < 0) {
                     i += 256;
-                if (i < 16)
+                }
+                if (i < 16) {
                     buf.append("0");
+                }
                 buf.append(Integer.toHexString(i));
             }
             // 32位加密

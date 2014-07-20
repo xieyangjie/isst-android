@@ -19,7 +19,7 @@ public class RestaurantApi extends CSTApi {
     private static final String SUB_URL = "/api/restaurants";
 
     public static void getRestaurantList(int page, int pageSize,
-                                         String keywords, RequestListener listener) {
+            String keywords, RequestListener listener) {
         Map<String, String> paramsMap = new HashMap<String, String>();
         paramsMap.put("page", "" + page);
         paramsMap.put("pageSize", "" + pageSize);

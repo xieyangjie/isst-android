@@ -17,6 +17,7 @@ public enum JobCategory {
             DataManager.RECOMMEND_LIST_IN_DB);
 
     private String subUrl;
+
     private String nameInDB;
 
     private JobCategory(String subUrl, String nameInDB) {

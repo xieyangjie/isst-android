@@ -3,6 +3,9 @@
  */
 package cn.edu.zju.isst.ui.usercenter;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.ActionBar;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -15,9 +18,6 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,24 +44,41 @@ import static cn.edu.zju.isst.constant.Constants.STATUS_REQUEST_SUCCESS;
 public class UserInfoEditActivity extends BaseActivity {
 
     private User m_userCurrent;
+
     private List<City> m_listCity = new ArrayList<City>();
+
     private List<String> m_listCityString = new ArrayList<String>();
+
     private Handler m_handler;
 
     private Button m_btnDone;
+
     private Button m_btnCancel;
+
     private Spinner m_spnCity;
+
     private EditText m_edtxEmail;
+
     private EditText m_edtxPhone;
+
     private EditText m_edtxQq;
+
     private EditText m_edtxCompany;
+
     private EditText m_edtxPosition;
+
     private EditText m_edtxSignature;
+
     private CheckBox m_chbPublicEmail;
+
     private CheckBox m_chbPublicPhone;
+
     private CheckBox m_chbPublicQq;
+
     private CheckBox m_chbPublicCompany;
+
     private CheckBox m_chbPublicPosition;
+
     private ProgressDialog m_pgdWating;
 
     /*

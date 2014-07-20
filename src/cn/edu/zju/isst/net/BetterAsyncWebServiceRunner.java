@@ -3,9 +3,9 @@
  */
 package cn.edu.zju.isst.net;
 
-import android.webkit.CookieManager;
-
 import org.json.JSONObject;
+
+import android.webkit.CookieManager;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -59,7 +59,7 @@ public class BetterAsyncWebServiceRunner {
      * @param listener   回调对象
      */
     public void request(final String methodName, final String url,
-                        final Map<String, String> params, final RequestListener listener) {
+            final Map<String, String> params, final RequestListener listener) {
         new Thread() {
             @Override
             public void run() {
@@ -116,7 +116,7 @@ public class BetterAsyncWebServiceRunner {
     }
 
     public CSTResponse responseOfRequest(final String methodName,
-                                         final String url, final Map<String, String> params)
+            final String url, final Map<String, String> params)
             throws MalformedURLException, IOException {
         CSTResponse response = null;
         if (methodName.equalsIgnoreCase("GET")) {
@@ -181,8 +181,9 @@ public class BetterAsyncWebServiceRunner {
      * @return Http Headers
      */
     private Map<String, List<String>> getHeaders(String url) {
-        if (J.isNullOrEmpty(url))
+        if (J.isNullOrEmpty(url)) {
             return null;
+        }
         Map<String, List<String>> headers = new HashMap<String, List<String>>();
         List<String> cookieList = new ArrayList<String>();
         String cookieString = CookieManager.getInstance().getCookie(url);

@@ -24,7 +24,7 @@ public class JobCommentApi extends CSTApi {
      * @param pageSize 页面大小
      */
     public static void getJobCommentList(Integer page, int jobId, Integer pageSize,
-                                         RequestListener listener) {
+            RequestListener listener) {
 
         Map<String, String> paramsMap = new HashMap<String, String>();
         paramsMap.put("page", page.toString());

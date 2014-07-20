@@ -3,6 +3,9 @@
  */
 package cn.edu.zju.isst.ui.job;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,9 +20,6 @@ import android.webkit.WebView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import cn.edu.zju.isst.R;
 import cn.edu.zju.isst.api.JobApi;
@@ -51,12 +51,17 @@ public class JobDetailActivity extends BaseActivity {
     private int m_nId;
 
     private Job m_jobCurrent;
+
     private Handler m_handlerJobDetail;
 
     private TextView m_txvTitle;
+
     private TextView m_txvDate;
+
     private TextView m_txvPublisher;
+
     private WebView m_webvContent;
+
     private ImageView m_imgBtnPublisher;
 
     // Activity需要工厂方法吗？
@@ -201,7 +206,6 @@ public class JobDetailActivity extends BaseActivity {
         settings.setLoadWithOverviewMode(true);
         settings.setLayoutAlgorithm(LayoutAlgorithm.NARROW_COLUMNS);
         settings.setDefaultFontSize(48);
-
 
         // settings.setTextSize(TextSize.NORMAL);
     }

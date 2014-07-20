@@ -36,22 +36,37 @@ public class CastellanFragment extends Fragment {
     private static final String PRIVATE_INFO = "未公开";
 
     private TextView m_tvName;
+
     private TextView m_tvGender;
+
     private TextView m_tvGrade;
+
     private TextView m_tvMajor;
+
     private TextView m_tvMobile;
+
     private TextView m_tvEmail;
+
     private TextView m_tvCity;
+
     private TextView m_tvCompany;
+
     private TextView m_tvPosition;
+
     private ImageButton m_ibtnMobileCall;
+
     private ImageButton m_ibtnMessage;
+
     private ImageButton m_ibtnEmail;
 
     private City m_city;
+
     private User m_user;
+
     private final List<City> m_listCity = new ArrayList<City>();
+
     private ArrayList<String> m_arrayListCity = new ArrayList<String>();
+
     private static CastellanFragment INSTANCE = new CastellanFragment();
 
     /**
@@ -82,7 +97,7 @@ public class CastellanFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+            Bundle savedInstanceState) {
         return inflater.inflate(R.layout.castellan_fragment, null);
     }
 
@@ -202,9 +217,6 @@ public class CastellanFragment extends Fragment {
 
     /**
      * 按cityID获取city
-     *
-     * @param cityID
-     * @return
      */
     private City getCity(int cityID) {
         for (City city : m_listCity) {

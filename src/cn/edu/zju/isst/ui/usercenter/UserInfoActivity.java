@@ -26,10 +26,13 @@ import cn.edu.zju.isst.util.CM;
 public class UserInfoActivity extends BaseActivity {
 
     public static final int REQUEST_CODE_EDIT = 0x01;
+
     public static final int RESULT_CODE_DONE = 0x10;
+
     public static final int RESULT_CODE_CANCEL = 0x20;
 
     private User m_userCurrent;
+
     private final ViewHolder m_viewHolder = new ViewHolder();
 
     /*
@@ -117,7 +120,8 @@ public class UserInfoActivity extends BaseActivity {
     }
 
     private void initComponent() {
-        m_viewHolder.avatarImgv = (ImageView) findViewById(R.id.user_info_activity_user_avatar_imgv);
+        m_viewHolder.avatarImgv = (ImageView) findViewById(
+                R.id.user_info_activity_user_avatar_imgv);
         m_viewHolder.genderImgv = (ImageView) findViewById(R.id.user_info_activity_gender_imgv);
         m_viewHolder.cityTxv = (TextView) findViewById(R.id.user_info_activity_city_txv);
         m_viewHolder.signatureTxv = (TextView) findViewById(R.id.user_info_activity_signature_txv);
@@ -164,19 +168,33 @@ public class UserInfoActivity extends BaseActivity {
     }
 
     private class ViewHolder {
+
         public ImageView avatarImgv;
+
         public ImageView genderImgv;
+
         public TextView cityTxv;
+
         public TextView signatureTxv;
+
         public TextView nameTxv;
+
         public TextView usernameTxv;
+
         public TextView gradeTxv;
+
         public TextView classTxv;
+
         public TextView majorTxv;
+
         public TextView phoneTxv;
+
         public TextView emailTxv;
+
         public TextView qqTxv;
+
         public TextView companyTxv;
+
         public TextView positionTxv;
     }
 }

@@ -26,12 +26,19 @@ public class Restaurant implements Serializable {
      * 以下字段详见服务器接口文档
      */
     private int id;
+
     private String name;
+
     private String picture;
+
     private String address;
+
     private String hotline;
+
     private String businessHours;
+
     private String description;
+
     private String content;
 
     /**

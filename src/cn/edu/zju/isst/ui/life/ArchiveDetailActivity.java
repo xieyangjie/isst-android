@@ -3,6 +3,9 @@
  */
 package cn.edu.zju.isst.ui.life;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.ActionBar;
 import android.os.Bundle;
 import android.os.Handler;
@@ -12,9 +15,6 @@ import android.webkit.WebSettings;
 import android.webkit.WebSettings.LayoutAlgorithm;
 import android.webkit.WebView;
 import android.widget.TextView;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import cn.edu.zju.isst.R;
 import cn.edu.zju.isst.api.ArchiveApi;
@@ -44,11 +44,15 @@ public class ArchiveDetailActivity extends BaseActivity {
     private int m_nId;
 
     private Archive m_archiveCurrent;
+
     private Handler m_handlerArchiveDetail;
 
     private TextView m_txvTitle;
+
     private TextView m_txvDate;
+
     private TextView m_txvPublisher;
+
     private WebView m_webvContent;
 
     // Activity需要工厂方法吗？

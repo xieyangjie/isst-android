@@ -21,13 +21,21 @@ public class CampusActivity implements Serializable {
     private static final long serialVersionUID = 6366035213405880557L;
 
     private int id;
+
     private String title;
+
     private String picture;
+
     private String description;
+
     private String content;
+
     private String publisherName;
+
     private long updatedAt;
+
     private long startTime;
+
     private long expireTime;
 
     /**

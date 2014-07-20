@@ -3,6 +3,9 @@
  */
 package cn.edu.zju.isst.ui.login;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
@@ -20,9 +23,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import cn.edu.zju.isst.R;
 import cn.edu.zju.isst.api.LoginApi;
@@ -54,15 +54,21 @@ import static cn.edu.zju.isst.constant.Constants.STATUS_REQUEST_SUCCESS;
 public class LoginActivity extends BaseActivity {
 
     private boolean m_bIsLoginAgain;
+
     private String m_strUserName;
+
     private char[] m_strPassword;
 
     private Handler m_handlerLogin;
 
     private EditText m_edtxUserName;
+
     private EditText m_edtxPassword;
+
     private CheckBox m_chbAutologin;
+
     private Button m_btnLogin;
+
     private ProgressDialog m_pgdWating;
 
     /*
@@ -226,7 +232,7 @@ public class LoginActivity extends BaseActivity {
 
                                 @Override
                                 public void onClick(DialogInterface dialog,
-                                                    int which) {
+                                        int which) {
                                     dialog.dismiss();
                                     // TODO
                                 }

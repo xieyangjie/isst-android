@@ -48,7 +48,9 @@ public class GlobalDataCache {
     private static class BaseListRequestListener<T> implements RequestListener {
 
         int status;
+
         List<T> list;
+
         Class<T> clazz;
 
         public BaseListRequestListener(List<T> list, Class<T> clazz) {

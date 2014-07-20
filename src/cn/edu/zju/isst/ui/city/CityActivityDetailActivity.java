@@ -3,6 +3,9 @@
  */
 package cn.edu.zju.isst.ui.city;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.ActionBar;
 import android.app.ProgressDialog;
 import android.os.Bundle;
@@ -14,9 +17,6 @@ import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import cn.edu.zju.isst.R;
 import cn.edu.zju.isst.api.CityActivityApi;
@@ -36,13 +36,17 @@ import static cn.edu.zju.isst.constant.Constants.STATUS_REQUEST_SUCCESS;
 public class CityActivityDetailActivity extends BaseActivity {
 
     private int mId;
+
     private int mCityId;
 
     private CityActivity mCityActivity;
+
     private Handler mHandler;
+
     private Handler mBtnHandler;
 
     private final ViewHolder mViewHolder = new ViewHolder();
+
     private ProgressDialog m_pgdWating;
 
     @Override
@@ -86,7 +90,8 @@ public class CityActivityDetailActivity extends BaseActivity {
         mViewHolder.durationTxv = (TextView) findViewById(R.id.city_activity_detail_duration_txv);
         mViewHolder.locationTxv = (TextView) findViewById(R.id.city_activity_detail_location_txv);
         mViewHolder.contentWebv = (WebView) findViewById(R.id.city_activity_detail_content_webv);
-        mViewHolder.participateBtn = (Button) findViewById(R.id.city_activity_detail_participate_btn);
+        mViewHolder.participateBtn = (Button) findViewById(
+                R.id.city_activity_detail_participate_btn);
     }
 
     private void initHandler() {
@@ -283,10 +288,15 @@ public class CityActivityDetailActivity extends BaseActivity {
     }
 
     private class ViewHolder {
+
         public ImageView pictureImgv;
+
         public TextView durationTxv;
+
         public TextView locationTxv;
+
         public WebView contentWebv;
+
         public Button participateBtn;
     }
 }

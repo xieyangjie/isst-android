@@ -12,8 +12,11 @@ import java.util.List;
 import cn.edu.zju.isst.R;
 
 public class NoteBookadapter extends BaseAdapter {
+
     private Context ctx;
+
     private ViewHolder holder;
+
     List<NoteBookItem> list;
 
     public NoteBookadapter(Context context, List<NoteBookItem> list) {
@@ -82,8 +85,10 @@ public class NoteBookadapter extends BaseAdapter {
     }
 
     private class ViewHolder {
+
         //姓名TextView
         TextView tvName;
+
         //索引TextView
         TextView index;
     }

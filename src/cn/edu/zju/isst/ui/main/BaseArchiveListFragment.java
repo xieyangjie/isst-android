@@ -1,5 +1,9 @@
 package cn.edu.zju.isst.ui.main;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.annotation.SuppressLint;
 import android.app.ListFragment;
 import android.content.Context;
@@ -18,10 +22,6 @@ import android.widget.AbsListView.OnScrollListener;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,16 +56,23 @@ public class BaseArchiveListFragment extends ListFragment implements
         OnScrollListener {
 
     private int m_nVisibleLastIndex;
+
     private int m_nCurrentPage;
+
     private boolean m_bIsFirstTime;
 
     private ArchiveCategory m_archiveCategory;
+
     private LoadType m_loadType;
+
     private final List<Archive> m_listAchive = new ArrayList<Archive>();
+
     private Handler m_handlerArchiveList;
+
     private ArchiveListAdapter m_adapterArchiveList;
 
     private PullToRefeshView m_ptrView;
+
     private ListView m_lsvArchiveList;
 
     public BaseArchiveListFragment() {
@@ -93,7 +100,7 @@ public class BaseArchiveListFragment extends ListFragment implements
      */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+            Bundle savedInstanceState) {
         return inflater.inflate(R.layout.archive_list_fragment, null);
     }
 
@@ -202,7 +209,7 @@ public class BaseArchiveListFragment extends ListFragment implements
 
     @Override
     public void onScroll(AbsListView view, int firstVisibleItem,
-                         int visibleItemCount, int totalItemCount) {
+            int visibleItemCount, int totalItemCount) {
         m_nVisibleLastIndex = firstVisibleItem + visibleItemCount - 1;
     }
 
@@ -420,10 +427,15 @@ public class BaseArchiveListFragment extends ListFragment implements
      * @author theasir
      */
     protected final class ViewHolder {
+
         public TextView titleTxv;
+
         public TextView dateTxv;
+
         public TextView publisherTxv;
+
         public TextView descriptionTxv;
+
         public View indicatorView;
     }
 

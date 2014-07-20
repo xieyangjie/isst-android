@@ -3,6 +3,10 @@
  */
 package cn.edu.zju.isst.ui.life;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.ListFragment;
 import android.content.Context;
 import android.content.Intent;
@@ -20,10 +24,6 @@ import android.widget.AbsListView.OnScrollListener;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,12 +53,17 @@ public class CampusActivityListFragment extends ListFragment implements
         OnScrollListener {
 
     private int m_nVisibleLastIndex;
+
     private int m_nCurrentPage;
+
     private boolean m_bIsFirstTime;
 
     private LoadType m_loadType;
+
     private final List<CampusActivity> m_listCampusActivity = new ArrayList<CampusActivity>();
+
     private Handler m_handlerCampusActivityList;
+
     private CampusActivityListAdapter m_adapterCampusActivityList;
 
     private ListView m_lsvCampusActivityList;
@@ -94,7 +99,7 @@ public class CampusActivityListFragment extends ListFragment implements
      */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+            Bundle savedInstanceState) {
         return inflater.inflate(R.layout.list_fragment, null);
     }
 
@@ -198,7 +203,7 @@ public class CampusActivityListFragment extends ListFragment implements
 
     @Override
     public void onScroll(AbsListView view, int firstVisibleItem,
-                         int visibleItemCount, int totalItemCount) {
+            int visibleItemCount, int totalItemCount) {
         m_nVisibleLastIndex = firstVisibleItem + visibleItemCount - 1;
     }
 
@@ -407,11 +412,17 @@ public class CampusActivityListFragment extends ListFragment implements
      * @author theasir
      */
     private final class ViewHolder {
+
         public TextView titleTxv;
+
         public TextView updateTimeTxv;
+
         public TextView startTimeTxv;
+
         public TextView expireTimeTxv;
+
         public TextView descriptionTxv;
+
         public View indicatorView;
     }
 

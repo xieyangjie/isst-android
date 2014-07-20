@@ -24,6 +24,7 @@ import cn.edu.zju.isst.util.L;
 public class ContactDetailActivity extends BaseActivity {
 
     private final static String PRIVATE_INFO = "未公开";
+
     // 用户
     private User m_user;
 
@@ -31,16 +32,27 @@ public class ContactDetailActivity extends BaseActivity {
 
     // 控件
     private TextView m_tvName;
+
     private TextView m_tvGender;
+
     private TextView m_tvGrade;
+
     private TextView m_tvMajor;
+
     private TextView m_tvMobile;
+
     private TextView m_tvEmail;
+
     private TextView m_tvCity;
+
     private TextView m_tvCompany;
+
     private TextView m_tvPosition;
+
     private ImageButton m_ibtnMobileCall;
+
     private ImageButton m_ibtnMessage;
+
     private ImageButton m_ibtnEmail;
 
     public ContactDetailActivity() {
@@ -111,9 +123,6 @@ public class ContactDetailActivity extends BaseActivity {
 
     /**
      * 按cityID获取cityName
-     *
-     * @param cityID
-     * @return
      */
     private String getCityName(int cityID) {
         String res = null;

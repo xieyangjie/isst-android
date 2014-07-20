@@ -23,7 +23,7 @@ public class AsyncWebServiceRunner {
      * @param listener   回调对象
      */
     public static void request(final String methodName, final String url,
-                               final Map<String, String> params, final RequestListener listener) {
+            final Map<String, String> params, final RequestListener listener) {
         new Thread() {
             @Override
             public void run() {

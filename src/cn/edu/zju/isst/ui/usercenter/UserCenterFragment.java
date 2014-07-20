@@ -61,7 +61,7 @@ public class UserCenterFragment extends Fragment {
      */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+            Bundle savedInstanceState) {
         return inflater.inflate(R.layout.user_center_fragment, null);
     }
 
@@ -104,17 +104,29 @@ public class UserCenterFragment extends Fragment {
     }
 
     private class ViewHolder {
+
         View userView;
+
         ImageView avatarImgv;
+
         TextView nameTxv;
+
         TextView signTxv;
+
         Button logoutBtn;
+
         View stAffairView;
+
         View taskCenterView;
+
         View myRecomView;
+
         View myExpView;
+
         View myActivityView;
+
         View peopleNearbyView;
+
         View personalSettingvView;
 
     }
@@ -180,7 +192,8 @@ public class UserCenterFragment extends Fragment {
             public void onClick(View v) {
                 // TODO Auto-generated method stub
                 getFragmentManager().beginTransaction()
-                        .replace(R.id.content_frame, MyRecommendListFragment.getInstance()).commit();
+                        .replace(R.id.content_frame, MyRecommendListFragment.getInstance())
+                        .commit();
                 //Toast.makeText(getActivity(), "该功能暂未实现", Toast.LENGTH_SHORT).show();
             }
         });

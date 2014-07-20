@@ -3,6 +3,13 @@
  */
 package cn.edu.zju.isst.ui.loading;
 
+import com.baidu.android.pushservice.PushConstants;
+import com.baidu.android.pushservice.PushManager;
+import com.baidu.android.pushservice.PushSettings;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -11,13 +18,6 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-
-import com.baidu.android.pushservice.PushConstants;
-import com.baidu.android.pushservice.PushManager;
-import com.baidu.android.pushservice.PushSettings;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import cn.edu.zju.isst.R;
 import cn.edu.zju.isst.api.VersionApi;
@@ -118,7 +118,8 @@ public class LoadingActivity extends Activity {
                 switch (msg.what) {
                     case STATUS_REQUEST_SUCCESS:
                         try {
-                            if (getPackageManager().getPackageInfo(getPackageName(), 0).versionCode < (Integer) msg.obj) {
+                            if (getPackageManager().getPackageInfo(getPackageName(), 0).versionCode
+                                    < (Integer) msg.obj) {
                                 m_aldUpdate.show();
                             } else {
                                 jump();

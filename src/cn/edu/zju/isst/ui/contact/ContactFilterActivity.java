@@ -33,19 +33,30 @@ import cn.edu.zju.isst.util.L;
 public class ContactFilterActivity extends BaseActivity {
 
     private final List<City> m_listCity = new ArrayList<City>();
+
     private final List<Major> m_listMajor = new ArrayList<Major>();
+
     private ArrayList<String> m_arrayListCity = new ArrayList<String>();
+
     private ArrayList<String> m_arrayListMajor = new ArrayList<String>();
+
     private ArrayList<String> m_arrayListGrade = new ArrayList<String>();
 
     // 控件
     private EditText m_edtName;
+
     private RadioGroup m_rdgGender;
+
     private Spinner m_spnGrade;
+
     private EditText m_edtCompany;
+
     private Spinner m_spnMajor;
+
     private Spinner m_spnCity;
+
     private Button m_btnOK;
+
     private Button m_btnCancel;
 
     /**
@@ -161,6 +172,7 @@ public class ContactFilterActivity extends BaseActivity {
     }
 
     class onBtnOkClickListener implements OnClickListener {
+
         @Override
         public void onClick(View v) {
 
@@ -229,6 +241,7 @@ public class ContactFilterActivity extends BaseActivity {
     }
 
     class onBtnCancelClickListener implements OnClickListener {
+
         @Override
         public void onClick(View v) {
             ContactFilterActivity.this.finish();

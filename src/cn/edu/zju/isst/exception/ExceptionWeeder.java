@@ -3,9 +3,9 @@
  */
 package cn.edu.zju.isst.exception;
 
-import android.os.Message;
-
 import org.json.JSONException;
+
+import android.os.Message;
 
 import java.io.IOException;
 import java.net.SocketTimeoutException;

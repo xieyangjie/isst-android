@@ -3,6 +3,10 @@
  */
 package cn.edu.zju.isst.ui.job;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.ActionBar;
 import android.content.Context;
 import android.os.Bundle;
@@ -19,10 +23,6 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -57,18 +57,27 @@ public class JobCommentListActivity extends BaseActivity implements
     private final String PUBLIC_SUCCESS = "发布成功";
 
     private PullToRefeshView m_ptrView;
+
     private ListView m_commentAreaLstv;
+
     private ImageButton m_commentSendImgbtn;
+
     private EditText m_commentSendTxt;
 
     private SimpleAdapter m_listAdapter;
+
     private Handler m_handler;
 
     private List<Map<String, String>> m_commentDate = new ArrayList<Map<String, String>>();
+
     private int m_jobId;
+
     private LoadType m_loadType;
+
     private RequestType m_requestType;
+
     private int m_nVisibleLastIndex;
+
     private int m_nCurrentPage;
 
     /*
@@ -122,7 +131,7 @@ public class JobCommentListActivity extends BaseActivity implements
      */
     @Override
     public View onCreateView(View parent, String name, Context context,
-                             AttributeSet attrs) {
+            AttributeSet attrs) {
         // TODO Auto-generated method stub
         return super.onCreateView(parent, name, context, attrs);
     }
@@ -155,7 +164,7 @@ public class JobCommentListActivity extends BaseActivity implements
 
     @Override
     public void onScroll(AbsListView view, int firstVisibleItem,
-                         int visibleItemCount, int totalItemCount) {
+            int visibleItemCount, int totalItemCount) {
         m_nVisibleLastIndex = firstVisibleItem + visibleItemCount - 1;
     }
 
@@ -300,7 +309,8 @@ public class JobCommentListActivity extends BaseActivity implements
      * 收起软键盘并设置提示文字
      */
     public void collapseSoftInputMethod() {
-        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        InputMethodManager imm = (InputMethodManager) getSystemService(
+                Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(m_commentSendTxt.getWindowToken(),
                 InputMethodManager.HIDE_IMPLICIT_ONLY);
     }
@@ -318,6 +328,7 @@ public class JobCommentListActivity extends BaseActivity implements
     ;
 
     public class JobCommentListRequestListener implements RequestListener {
+
         Message msg = m_handler.obtainMessage();
 
         @Override

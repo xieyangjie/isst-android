@@ -21,6 +21,7 @@ public class Klass implements Serializable {
     private static final long serialVersionUID = -808116211507079409L;
 
     private int id;
+
     private String name;
 
     public Klass(JSONObject jsonObject) throws JSONException {

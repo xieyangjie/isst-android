@@ -98,9 +98,13 @@ public class MainDrawerAdapter extends BaseAdapter {
     }
 
     private class ViewHolder {
+
         public View groupAreaView;
+
         public TextView groupTitleTextView;
+
         public TextView titleTextView;
+
         public ImageView iconImageView;
     }
 

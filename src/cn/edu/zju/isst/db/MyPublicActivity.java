@@ -19,15 +19,25 @@ public class MyPublicActivity implements Serializable {
      *
      */
     private static final long serialVersionUID = 5026842607313893078L;
+
     public int id;
+
     public String title;
+
     public String imgUrl;
+
     public int cityId;
+
     public String location;
+
     public long startTime;
+
     public long expireTime;
+
     public long updatedAt;
+
     public String content;
+
     public Publisher publisher;
 
     public MyPublicActivity(JSONObject jsonObject) throws JSONException {

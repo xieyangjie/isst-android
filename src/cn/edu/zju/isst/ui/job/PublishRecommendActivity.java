@@ -1,5 +1,8 @@
 package cn.edu.zju.isst.ui.job;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.ActionBar;
 import android.os.Bundle;
 import android.os.Handler;
@@ -9,9 +12,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,16 +29,25 @@ import cn.edu.zju.isst.util.J;
 public class PublishRecommendActivity extends BaseActivity {
 
     private Handler m_handler;
+
     private UserCenterApi m_userApi;
+
     private List<City> m_listCity = new ArrayList<City>();
+
     private List<String> m_listCityString = new ArrayList<String>();
 
     private Button m_btnDone;
+
     private Button m_btnCancel;
+
     private EditText m_edtxTitle;
+
     private EditText m_edtxContent;
+
     private EditText m_edtxCompany;
+
     private EditText m_edtxPosition;
+
     private Spinner m_spnCity;
 
     /* (non-Javadoc)
@@ -140,36 +149,38 @@ public class PublishRecommendActivity extends BaseActivity {
                         .size() ? m_listCity.get(
                         m_spnCity.getSelectedItemPosition()).getId() : 0;
 
-                m_userApi.publishRecommend(0, title, content, company, position, cityId, new RequestListener() {
+                m_userApi.publishRecommend(0, title, content, company, position, cityId,
+                        new RequestListener() {
 
-                    @Override
-                    public void onHttpError(CSTResponse response) {
-                        // TODO Auto-generated method stub
+                            @Override
+                            public void onHttpError(CSTResponse response) {
+                                // TODO Auto-generated method stub
 
-                    }
+                            }
 
-                    @Override
-                    public void onException(Exception e) {
-                        // TODO Auto-generated method stub
+                            @Override
+                            public void onException(Exception e) {
+                                // TODO Auto-generated method stub
 
-                    }
+                            }
 
-                    @Override
-                    public void onComplete(Object result) {
-                        // TODO Auto-generated method stub
-                        Message msg = m_handler.obtainMessage();
-                        try {
-                            final int status = ((JSONObject) result).getInt("status");
-                            msg.obj = ((JSONObject) result).getString("message");
-                            msg.what = status;
-                        } catch (JSONException e) {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
+                            @Override
+                            public void onComplete(Object result) {
+                                // TODO Auto-generated method stub
+                                Message msg = m_handler.obtainMessage();
+                                try {
+                                    final int status = ((JSONObject) result).getInt("status");
+                                    msg.obj = ((JSONObject) result).getString("message");
+                                    msg.what = status;
+                                } catch (JSONException e) {
+                                    // TODO Auto-generated catch block
+                                    e.printStackTrace();
+                                }
+
+                                m_handler.sendMessage(msg);
+                            }
                         }
-
-                        m_handler.sendMessage(msg);
-                    }
-                });
+                );
             }
         });
 

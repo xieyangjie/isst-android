@@ -21,15 +21,25 @@ public class CityActivity implements Serializable {
     private static final long serialVersionUID = 8625251876718593076L;
 
     public int id;
+
     public String title;
+
     public String imgUrl;
+
     public int cityId;
+
     public String location;
+
     public long startTime;
+
     public long expireTime;
+
     public long updatedAt;
+
     public String content;
+
     public boolean isParticipate;
+
     public Publisher publisher;
 
     public CityActivity(JSONObject jsonObject) throws JSONException {

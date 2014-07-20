@@ -22,13 +22,18 @@ public class Comment implements Serializable {
      *
      */
     private static final long serialVersionUID = 8921134999128514894L;
+
     /**
      * 以下字段详见服务器接口文档
      */
     private int id;
+
     private String title;
+
     private String content;
+
     private long createdAt;
+
     private User user;
 
     /**

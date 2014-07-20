@@ -31,23 +31,41 @@ public class DataManager {
      * 以下字段为数据库表的记录
      */
     public static final String USER_IN_DB = "user";
+
     public static final String NEWS_LIST_IN_DB = "newslist";
+
     public static final String WIKI_LIST_IN_DB = "wikilist";
+
     public static final String STUD_LIST_IN_DB = "studlist";
+
     public static final String SCAC_LIST_IN_DB = "scaclist";
+
     public static final String RESTAURANT_LIST_IN_DB = "restaurantlist";
+
     public static final String EXPERIENCE_LIST_IN_DB = "expelist";
+
     public static final String MAJOR_LIST_IN_DB = "majorlist";
+
     public static final String CLASS_LIST_IN_DB = "classlist";
+
     public static final String CITY_LIST_IN_DB = "citylist";
+
     public static final String CLASSMATE_LIST_IN_DB = "classmatelist";
+
     public static final String EMPLOYMENT_LIST__IN_DB = "employmentlist";
+
     public static final String INTERNSHIP_LIST_IN_DB = "internship";
+
     public static final String RECOMMEND_LIST_IN_DB = "recommend";
+
     public static final String MYRECOMMEND_LIST_IN_DB = "myrecommend";
+
     public static final String MYEXPIENCE_LIST_IN_DB = "myexprience";
+
     public static final String MYACTIVITIES_LIST_IN_DB = "myactivites";
+
     public static final String MY_PUBLIC_LIST_IN_DB = "mypublicactivites";
+
     public static final String MY_PARTICIPATED_LIST_IN_DB = "myparticipatedactivites";
 
 
@@ -92,7 +110,7 @@ public class DataManager {
     }
 
     public static void syncArchiveList(ArchiveCategory archiveCategory,
-                                       List<Archive> newsList) {
+            List<Archive> newsList) {
         if (!J.isNullOrEmpty(newsList)) {
             writeObjectToDB(archiveCategory.getNameInDB(),
                     (Serializable) newsList);
@@ -334,7 +352,8 @@ public class DataManager {
         return null;
     }
 
-    public static void syncUserCenterList(UserCenterCategory userCenterCategory, List<UserCenterList> userCenterList) {
+    public static void syncUserCenterList(UserCenterCategory userCenterCategory,
+            List<UserCenterList> userCenterList) {
         if (!J.isNullOrEmpty(userCenterList)) {
             writeObjectToDB(userCenterCategory.getNameInDB(), (Serializable) userCenterList);
         }
@@ -416,7 +435,7 @@ public class DataManager {
      * @param object 目标对象
      */
     public static void writeObjectToDB(final String name,
-                                       final Serializable object) {
+            final Serializable object) {
         new Thread() {
 
             /*

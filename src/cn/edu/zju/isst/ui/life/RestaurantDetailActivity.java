@@ -3,6 +3,10 @@
  */
 package cn.edu.zju.isst.ui.life;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.ActionBar;
 import android.content.Intent;
 import android.net.Uri;
@@ -17,10 +21,6 @@ import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,13 +46,19 @@ public class RestaurantDetailActivity extends BaseActivity {
     private int m_nId;
 
     private Restaurant m_restaurantCurrent;
+
     private final List<RestaurantMenu> m_listRestaurantMenu = new ArrayList<RestaurantMenu>();
+
     private Handler m_handlerRestaurantDetail;
+
     private MenuListAdapter m_adapterMenu;
 
     private TextView m_txvContent;
+
     private TextView m_txvHotline;
+
     private ImageButton m_ibtnDial;
+
     private ListView m_lsvMenu;
 
     /*
@@ -263,7 +269,9 @@ public class RestaurantDetailActivity extends BaseActivity {
     }
 
     private final class ViewHolder {
+
         public TextView nameTxv;
+
         public TextView priceTxv;
     }
 

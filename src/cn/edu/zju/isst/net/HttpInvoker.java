@@ -29,7 +29,7 @@ import static cn.edu.zju.isst.constant.Constants.HTTP_CONNECT_TIMEOUT;
 public class HttpInvoker {
 
     public static String postRequest(final String url,
-                                     final Map<String, String> params) throws InterruptedException,
+            final Map<String, String> params) throws InterruptedException,
             ExecutionException {
         FutureTask<String> task = new FutureTask<String>(
                 new Callable<String>() {

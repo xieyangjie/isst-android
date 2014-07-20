@@ -3,6 +3,10 @@
  */
 package cn.edu.zju.isst.ui.life;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.ListFragment;
 import android.content.Context;
 import android.content.Intent;
@@ -18,10 +22,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +46,9 @@ import static cn.edu.zju.isst.constant.Constants.STATUS_REQUEST_SUCCESS;
 public class RestaurantListFragment extends ListFragment {
 
     private final List<Restaurant> m_listRestaurant = new ArrayList<Restaurant>();
+
     private Handler m_handlerRestaurantList;
+
     private RestaurantListAdapter m_adapterRestaurantList;
 
     private ListView m_lsvRestaurantList;
@@ -80,7 +82,7 @@ public class RestaurantListFragment extends ListFragment {
      */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+            Bundle savedInstanceState) {
         return inflater.inflate(R.layout.restaurant_list_fragment, null);
     }
 
@@ -233,9 +235,13 @@ public class RestaurantListFragment extends ListFragment {
     }
 
     private final class ViewHolder {
+
         public ImageView iconImgv;
+
         public TextView nameTxv;
+
         public TextView hotlineTxv;
+
         public ImageButton dialIbtn;
     }
 

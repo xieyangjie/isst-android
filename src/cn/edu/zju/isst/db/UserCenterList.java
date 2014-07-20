@@ -15,8 +15,11 @@ public class UserCenterList implements Serializable {
     private static final long serialVersionUID = -1327987432503433683L;
 
     private int id;
+
     private String title;
+
     private String content;
+
     private long updatedAt;
 
     /**

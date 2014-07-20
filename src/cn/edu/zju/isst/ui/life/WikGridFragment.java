@@ -3,6 +3,10 @@
  */
 package cn.edu.zju.isst.ui.life;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
@@ -22,10 +26,6 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.TextView;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,7 +58,9 @@ public class WikGridFragment extends Fragment implements OnScrollListener {
     private int m_nVisibleLastIndex;
 
     private final List<Archive> m_listAchive = new ArrayList<Archive>();
+
     private Handler m_handlerWikiList;
+
     private WikiListAdapter m_adapterWikiList;
 
     private GridView m_gvWiki;
@@ -94,7 +96,7 @@ public class WikGridFragment extends Fragment implements OnScrollListener {
      */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+            Bundle savedInstanceState) {
         return inflater.inflate(R.layout.wiki_grid_fragment, null);
     }
 
@@ -149,7 +151,7 @@ public class WikGridFragment extends Fragment implements OnScrollListener {
 
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-                                    long arg3) {
+                    long arg3) {
                 // TODO Auto-generated method stub
                 L.i(this.getClass().getName() + " onListItemClick postion = ");
                 Intent intent = new Intent(getActivity(),
@@ -218,7 +220,7 @@ public class WikGridFragment extends Fragment implements OnScrollListener {
 
     @Override
     public void onScroll(AbsListView view, int firstVisibleItem,
-                         int visibleItemCount, int totalItemCount) {
+            int visibleItemCount, int totalItemCount) {
         // m_nVisibleLastIndex = firstVisibleItem + visibleItemCount - 1;
     }
 
@@ -378,10 +380,15 @@ public class WikGridFragment extends Fragment implements OnScrollListener {
      * @author yyy
      */
     private final class ViewHolder {
+
         public TextView titleTxv;
+
         public TextView dateTxv;
+
         public TextView publisherTxv;
+
         public TextView descriptionTxv;
+
         public View indicatorView;
     }
 

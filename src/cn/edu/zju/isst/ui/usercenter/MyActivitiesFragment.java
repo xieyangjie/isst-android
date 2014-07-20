@@ -3,6 +3,10 @@
  */
 package cn.edu.zju.isst.ui.usercenter;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.ActionBar.OnNavigationListener;
@@ -25,10 +29,6 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,20 +68,28 @@ public class MyActivitiesFragment extends ListFragment implements
     }
 
     private int m_nVisibleLastIndex;
+
     private int m_nCurrentPage;
+
     private boolean m_bIsFirstTime;
 
     private int m_type;// 0发布的，1参加的
 
     private ArrayList<String> m_arrayListType = new ArrayList<String>();
+
     private LoadType m_loadType;
+
     private final List<MyPublicActivity> m_listPublic = new ArrayList<MyPublicActivity>();
-    private final List<MyParticipatedActivity> m_listParticipated = new ArrayList<MyParticipatedActivity>();
+
+    private final List<MyParticipatedActivity> m_listParticipated
+            = new ArrayList<MyParticipatedActivity>();
 
     private Handler m_handlerArchiveList;
+
     private ArchiveListAdapter m_adapterArchiveList;
 
     private PullToRefeshView m_ptrView;
+
     private ListView m_lsvArchiveList;
 
     /**
@@ -113,7 +121,7 @@ public class MyActivitiesFragment extends ListFragment implements
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+            Bundle savedInstanceState) {
         return inflater.inflate(R.layout.my_activties_list_fragment, null);
     }
 
@@ -238,7 +246,7 @@ public class MyActivitiesFragment extends ListFragment implements
 
     @Override
     public void onScroll(AbsListView view, int firstVisibleItem,
-                         int visibleItemCount, int totalItemCount) {
+            int visibleItemCount, int totalItemCount) {
         m_nVisibleLastIndex = firstVisibleItem + visibleItemCount - 1;
     }
 
@@ -399,21 +407,23 @@ public class MyActivitiesFragment extends ListFragment implements
             m_loadType = type;
             switch (type) {
                 case REFRESH:
-                    if (m_type == 1)
+                    if (m_type == 1) {
                         UserCenterApi.getMyActivities(1, 20,
                                 new ListRequestListener());
-                    else
+                    } else {
                         UserCenterApi.getMyPublicActivities(1, 20,
                                 new ListRequestListener());
+                    }
                     m_nCurrentPage = 1;
                     break;
                 case LOADMORE:
-                    if (m_type == 1)
+                    if (m_type == 1) {
                         UserCenterApi.getMyActivities(++m_nCurrentPage, 20,
                                 new ListRequestListener());
-                    else
+                    } else {
                         UserCenterApi.getMyPublicActivities(++m_nCurrentPage, 20,
                                 new ListRequestListener());
+                    }
                     break;
                 default:
                     break;
@@ -499,10 +509,15 @@ public class MyActivitiesFragment extends ListFragment implements
      * @author theasir
      */
     protected final class ViewHolder {
+
         public TextView titleTxv;
+
         public TextView dateTxv;
+
         public TextView publisherTxv;
+
         public TextView descriptionTxv;
+
         public View indicatorView;
     }
 
@@ -521,10 +536,11 @@ public class MyActivitiesFragment extends ListFragment implements
 
         @Override
         public int getCount() {
-            if (m_type == 0)
+            if (m_type == 0) {
                 return m_listPublic.size();
-            else
+            } else {
                 return m_listParticipated.size();
+            }
         }
 
         @Override

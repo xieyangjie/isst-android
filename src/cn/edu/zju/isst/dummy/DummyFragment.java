@@ -83,7 +83,7 @@ public class DummyFragment extends Fragment {
      */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+            Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.dummy_fragment, null);
         m_txvDummy = (TextView) rootView
                 .findViewById(R.id.dummy_fragment_textView1);

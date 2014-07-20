@@ -29,7 +29,7 @@ public class ArchiveApi extends CSTApi {
      * @param listener 回调对象
      */
     public static void getWikiList(int page, int pageSize,
-                                   String keywords, RequestListener listener) {
+            String keywords, RequestListener listener) {
         getArchiveList(ArchiveCategory.ENCYCLOPEDIA, page, pageSize, keywords,
                 listener);
     }
@@ -44,7 +44,7 @@ public class ArchiveApi extends CSTApi {
      * @param listener 回调对象
      */
     public static void getArchiveList(ArchiveCategory category, int page,
-                                      int pageSize, String keywords, RequestListener listener) {
+            int pageSize, String keywords, RequestListener listener) {
         L.i("API---getArchiveList----enter");
         StringBuilder sb = new StringBuilder();
         sb.append(SUB_URL).append("categories/").append(category.getSubUrl());

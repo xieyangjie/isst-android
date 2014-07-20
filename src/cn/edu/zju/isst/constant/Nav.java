@@ -29,10 +29,12 @@ public enum Nav {
      * 导航项名称名
      */
     private String name;
+
     /**
      * 导航项组号
      */
     private int index;
+
     /**
      * 导航项组内序号
      */

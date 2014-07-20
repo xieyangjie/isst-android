@@ -9,14 +9,12 @@ import android.widget.Toast;
  * @author way
  */
 public class T {
+
     // Toast
     private static Toast toast;
 
     /**
      * 短时间显示Toast
-     *
-     * @param context
-     * @param message
      */
     public static void showShort(Context context, CharSequence message) {
         if (null == toast) {
@@ -30,9 +28,6 @@ public class T {
 
     /**
      * 短时间显示Toast
-     *
-     * @param context
-     * @param message
      */
     public static void showShort(Context context, int message) {
         if (null == toast) {
@@ -46,9 +41,6 @@ public class T {
 
     /**
      * 长时间显示Toast
-     *
-     * @param context
-     * @param message
      */
     public static void showLong(Context context, CharSequence message) {
         if (null == toast) {
@@ -62,9 +54,6 @@ public class T {
 
     /**
      * 长时间显示Toast
-     *
-     * @param context
-     * @param message
      */
     public static void showLong(Context context, int message) {
         if (null == toast) {
@@ -78,10 +67,6 @@ public class T {
 
     /**
      * 自定义显示Toast时间
-     *
-     * @param context
-     * @param message
-     * @param duration
      */
     public static void show(Context context, CharSequence message, int duration) {
         if (null == toast) {
@@ -95,10 +80,6 @@ public class T {
 
     /**
      * 自定义显示Toast时间
-     *
-     * @param context
-     * @param message
-     * @param duration
      */
     public static void show(Context context, int message, int duration) {
         if (null == toast) {

@@ -3,6 +3,10 @@
  */
 package cn.edu.zju.isst.ui.usercenter;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.ActionBar;
 import android.content.Context;
 import android.os.Bundle;
@@ -15,10 +19,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +41,9 @@ import static cn.edu.zju.isst.constant.Constants.STATUS_REQUEST_SUCCESS;
 public class PushMessagesActivity extends BaseActivity {
 
     private List<PushMessage> mMessages = new ArrayList<PushMessage>();
+
     private Handler mHandler;
+
     private MsgListAdapter mAdapter;
 
     private ListView mMsgListView;
@@ -164,8 +166,11 @@ public class PushMessagesActivity extends BaseActivity {
     }
 
     private final class ViewHolder {
+
         TextView titleTxv;
+
         TextView contentTxv;
+
         TextView createdTimeTxv;
     }
 

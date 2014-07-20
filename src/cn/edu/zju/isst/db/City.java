@@ -21,7 +21,9 @@ public class City implements Serializable {
     private static final long serialVersionUID = 7323840975384308520L;
 
     private int id;
+
     private String name;
+
     private User cityMaster;
 
     public City(JSONObject jsonObject) throws JSONException {

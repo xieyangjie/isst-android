@@ -29,7 +29,7 @@ public class JobApi extends CSTApi {
      * @param listener 回调对象
      */
     public static void getJobList(JobCategory category, int page, int pageSize,
-                                  String keywords, RequestListener listener) {
+            String keywords, RequestListener listener) {
         StringBuilder sb = new StringBuilder();
         sb.append(SUB_URL).append("categories/").append(category.getSubUrl());
 

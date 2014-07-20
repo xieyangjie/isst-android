@@ -3,6 +3,10 @@
  */
 package cn.edu.zju.isst.ui.contact;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
@@ -26,10 +30,6 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -67,12 +67,15 @@ public class ContactListFragment extends Fragment {
     private HandlerAlumniList m_handlerAlumniList;
 
     private ListView m_lvAlumni;
+
     private TextView m_tvFilterCondition;
+
     private Button m_btnClearFilter;
 
     private ContactFilter m_userFilter = new ContactFilter();
 
     private List<NoteBookItem> m_noteBookList = new ArrayList<NoteBookItem>();
+
     private NoteBookadapter m_noteBookAdapter;
 
     public enum FilterType {
@@ -84,6 +87,7 @@ public class ContactListFragment extends Fragment {
     private FilterType m_ft;
 
     private static ContactListFragment INSTANCE_MYCLASS = new ContactListFragment();
+
     private static ContactListFragment INSTANCE_MYCITY = new ContactListFragment();
 
     public ContactListFragment() {
@@ -111,7 +115,7 @@ public class ContactListFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+            Bundle savedInstanceState) {
         return inflater.inflate(R.layout.contact_list_fragment, null);
     }
 
@@ -126,7 +130,8 @@ public class ContactListFragment extends Fragment {
                 .findViewById(R.id.contact_list_fragment_contacts_lsv);
         m_tvFilterCondition = (TextView) view
                 .findViewById(R.id.contact_list_fragment_conditon_content_txv);
-        m_btnClearFilter = (Button) view.findViewById(R.id.contact_list_fragment_clear_condition_btn);
+        m_btnClearFilter = (Button) view
+                .findViewById(R.id.contact_list_fragment_clear_condition_btn);
 
         //清空筛选条件
         m_userFilter.clear();
@@ -281,9 +286,10 @@ public class ContactListFragment extends Fragment {
     }
 
     private class onNotebookItemClickListener implements OnItemClickListener {
+
         @Override
         public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-                                long arg3) {
+                long arg3) {
             Intent intent = new Intent(getActivity(),
                     ContactDetailActivity.class);
             intent.putExtra("user", m_listUser.get(arg2));
@@ -345,6 +351,7 @@ public class ContactListFragment extends Fragment {
     }
 
     private class HandlerAlumniList extends Handler {
+
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
@@ -389,9 +396,6 @@ public class ContactListFragment extends Fragment {
 
     /**
      * 获取当前城市的名字
-     *
-     * @param context
-     * @return
      */
     private static String getCityName(Context context) {
         LocationManager locationManager;

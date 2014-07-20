@@ -29,7 +29,9 @@ import cn.edu.zju.isst.util.L;
 public class SlidingMenuFragment extends Fragment {
 
     private List<String> m_listGroupNames = new ArrayList<String>();// 存储所有组名
-    private Map<String, List<String>> m_mapGroupCollection = new HashMap<String, List<String>>();// 存储可展开组的数据
+
+    private Map<String, List<String>> m_mapGroupCollection = new HashMap<String, List<String>>();
+// 存储可展开组的数据
 
     private OnGroupMenuItemClickListener m_listenerOnMenuItemClick;
 
@@ -81,7 +83,7 @@ public class SlidingMenuFragment extends Fragment {
      */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+            Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.sm_main, null);
 
         m_explsvMenu = (ExpandableListView) rootView
@@ -108,12 +110,13 @@ public class SlidingMenuFragment extends Fragment {
 
                     @Override
                     public boolean onGroupClick(ExpandableListView parent,
-                                                View v, int groupPosition, long id) {
+                            View v, int groupPosition, long id) {
                         // TODO Auto-generated method stub
                         L.i("CarpeDiem", String.valueOf(groupPosition));
                         if (m_mapGroupCollection.containsKey(m_listGroupNames
-                                .get(groupPosition)))
+                                .get(groupPosition))) {
                             return false;
+                        }
                         int navIndex = 0, tempSize = 0;
                         for (int i = 0; i < groupPosition; i++) {
                             if (m_mapGroupCollection.containsKey(// 判断是否为一个可展开的组
@@ -123,8 +126,9 @@ public class SlidingMenuFragment extends Fragment {
                                 L.i("CarpeDiem",
                                         "tempSize=" + String.valueOf(tempSize));
                                 navIndex += tempSize;
-                            } else
+                            } else {
                                 navIndex += 1;
+                            }
                         }
                         L.i("CarpeDiem",
                                 "navIndex =" + String.valueOf(navIndex));
@@ -151,8 +155,9 @@ public class SlidingMenuFragment extends Fragment {
                                 tempSize = m_mapGroupCollection.get(
                                         m_listGroupNames.get(i)).size();
                                 navIndex += tempSize;
-                            } else
+                            } else {
                                 navIndex += 1;
+                            }
                         }
                         navIndex += childPosition;
 
@@ -188,6 +193,7 @@ public class SlidingMenuFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnGroupMenuItemClickListener {
+
         public void onGroupMenuItemClick(Nav item);
     }
 
@@ -206,8 +212,9 @@ public class SlidingMenuFragment extends Fragment {
                     tempList.add(nav.getName());
                 }
             }
-            if (tempList.size() > 1)
+            if (tempList.size() > 1) {
                 m_mapGroupCollection.put(m_listGroupNames.get(i), tempList);
+            }
         }
 
     }

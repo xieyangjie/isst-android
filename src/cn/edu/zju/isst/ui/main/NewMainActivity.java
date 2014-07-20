@@ -46,10 +46,13 @@ import cn.edu.zju.isst.util.L;
 public class NewMainActivity extends BaseActivity {
 
     private final String mDrawerTitle = "导航";
+
     private String mTitle;
 
     private DrawerLayout mDrawerLayout;
+
     private ActionBarDrawerToggle mDrawerToggle;
+
     private ListView mDrawerList;
 
     private Fragment mCurrentFragment;
@@ -201,7 +204,7 @@ public class NewMainActivity extends BaseActivity {
 
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position,
-                                long id) {
+                long id) {
             Nav nav = Nav.values()[position];
             mTitle = nav.getName();
             getActionBar().setTitle(mTitle);
