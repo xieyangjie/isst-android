@@ -1,29 +1,68 @@
 package cn.edu.zju.isst.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Created by i308844 on 7/17/14.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class CSTArchive extends CSTJsonBaseObject {
+public class CSTArchive {
 
-    public int id;
+    @JsonProperty("id")
+    private int id;
 
-    public String title;
+    @JsonProperty("title")
+    private String title;
 
-    public String description;
+    @JsonProperty("description")
+    private String description;
 
-    public long updateAt;
+    @JsonProperty("updatedAt")
+    private long updateTime;
 
-    public int publisherId;
+    @JsonProperty("userId")
+    private int publisherId;
 
-    public CSTUser publisher;
+    @JsonProperty("user")
+    private CSTUser publisher;
 
-    public String content;
+    @JsonProperty("content")
+    private String content;
 
     private CSTArchive() {
 
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public long getUpdateTime() {
+        return updateTime;
+    }
+
+    public int getPublisherId() {
+        return publisherId;
+    }
+
+    public CSTUser getPublisher() {
+        return publisher;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
 }
