@@ -31,14 +31,14 @@ public class CSTJsonParser {
         return mapper.readValue(String.valueOf(jsonObject), clazz);
     }
 
-    public static <T> List<T> getCollection(String jsonStr, Class <? extends List> collectionClazz,
+    public static <T> List<T> readCollection(String jsonStr, Class <? extends List> collectionClazz,
               Class <T> elementClazz) throws IOException {
         JavaType javaType = mapper.getTypeFactory().constructParametricType(collectionClazz, elementClazz);
         List <T> listResult  = mapper.readValue(jsonStr, javaType);
         return listResult;
     }
 
-    public static <K, V> Map<K, V> getMap(String jsonStr, Class <? extends Map> mapClazz ,Class<K> keyClazz,
+    public static <K, V> Map<K, V> readMap(String jsonStr, Class <? extends Map> mapClazz ,Class<K> keyClazz,
               Class<V> valueClazz) throws IOException {
         JavaType javaType = mapper.getTypeFactory().constructMapType(mapClazz, keyClazz, valueClazz);
         Map <K,V> mapResult = mapper.readValue(jsonStr, javaType);
