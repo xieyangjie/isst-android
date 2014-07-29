@@ -39,7 +39,7 @@ import cn.edu.zju.isst.net.NetworkConnection;
 import cn.edu.zju.isst.net.RequestListener;
 import cn.edu.zju.isst.ui.job.PublishRecommendActivity;
 import cn.edu.zju.isst.ui.job.RecommendDetailActivity;
-import cn.edu.zju.isst.ui.life.ArchiveDetailActivity;
+import cn.edu.zju.isst.v2.archive.gui.ArchiveDetailActivity;
 import cn.edu.zju.isst.util.J;
 import cn.edu.zju.isst.util.L;
 import cn.edu.zju.isst.util.TimeString;

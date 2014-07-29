@@ -1,7 +1,7 @@
 /**
  *
  */
-package cn.edu.zju.isst.ui.life;
+package cn.edu.zju.isst.v2.archive.gui;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -17,7 +17,7 @@ import android.webkit.WebView;
 import android.widget.TextView;
 
 import cn.edu.zju.isst.R;
-import cn.edu.zju.isst.api.ArchiveApi;
+import cn.edu.zju.isst.v2.archive.net.ArchiveApi;
 import cn.edu.zju.isst.db.Archive;
 import cn.edu.zju.isst.net.CSTResponse;
 import cn.edu.zju.isst.net.RequestListener;

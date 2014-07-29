@@ -12,6 +12,8 @@ import android.net.Uri;
 import java.util.HashMap;
 import java.util.Map;
 
+import cn.edu.zju.isst.v2.user.data.CSTUserProvider;
+
 /**
  * Created by i308844 on 7/28/14.
  */

@@ -1,11 +1,12 @@
 /**
  *
  */
-package cn.edu.zju.isst.api;
+package cn.edu.zju.isst.v2.user.net;
 
 import java.util.HashMap;
 import java.util.Map;
 
+import cn.edu.zju.isst.api.CSTApi;
 import cn.edu.zju.isst.db.User;
 import cn.edu.zju.isst.net.RequestListener;
 

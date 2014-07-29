@@ -25,7 +25,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import cn.edu.zju.isst.R;
-import cn.edu.zju.isst.api.UserApi;
+import cn.edu.zju.isst.v2.user.net.UserApi;
 import cn.edu.zju.isst.db.City;
 import cn.edu.zju.isst.db.DataManager;
 import cn.edu.zju.isst.db.User;

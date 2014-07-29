@@ -1,10 +1,9 @@
 /**
  *
  */
-package cn.edu.zju.isst.ui.life;
+package cn.edu.zju.isst.v2.archive.gui;
 
 import cn.edu.zju.isst.api.ArchiveCategory;
-import cn.edu.zju.isst.ui.main.BaseArchiveListFragment;
 
 /**
  * 新闻列表页

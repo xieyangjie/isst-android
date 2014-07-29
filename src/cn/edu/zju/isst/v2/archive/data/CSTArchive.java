@@ -1,7 +1,9 @@
-package cn.edu.zju.isst.v2.model;
+package cn.edu.zju.isst.v2.archive.data;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import cn.edu.zju.isst.v2.user.data.CSTUser;
 
 /**
  * Created by i308844 on 7/17/14.

@@ -1,8 +1,11 @@
-package cn.edu.zju.isst.v2.db;
+package cn.edu.zju.isst.v2.user.data;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+
+import cn.edu.zju.isst.v2.db.CSTProvider;
+import cn.edu.zju.isst.v2.db.SimpleTableProvider;
 
 /**
  * Created by i308844 on 7/29/14.

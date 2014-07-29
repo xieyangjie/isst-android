@@ -1,11 +1,13 @@
 /**
  *
  */
-package cn.edu.zju.isst.api;
+package cn.edu.zju.isst.v2.archive.net;
 
 import java.util.HashMap;
 import java.util.Map;
 
+import cn.edu.zju.isst.api.ArchiveCategory;
+import cn.edu.zju.isst.api.CSTApi;
 import cn.edu.zju.isst.net.RequestListener;
 import cn.edu.zju.isst.util.L;
 

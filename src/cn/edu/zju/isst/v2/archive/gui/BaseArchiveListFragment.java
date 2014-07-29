@@ -1,4 +1,4 @@
-package cn.edu.zju.isst.ui.main;
+package cn.edu.zju.isst.v2.archive.gui;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.edu.zju.isst.R;
-import cn.edu.zju.isst.api.ArchiveApi;
+import cn.edu.zju.isst.v2.archive.net.ArchiveApi;
 import cn.edu.zju.isst.api.ArchiveCategory;
 import cn.edu.zju.isst.db.Archive;
 import cn.edu.zju.isst.db.DataManager;
@@ -36,7 +36,7 @@ import cn.edu.zju.isst.exception.HttpErrorWeeder;
 import cn.edu.zju.isst.net.CSTResponse;
 import cn.edu.zju.isst.net.NetworkConnection;
 import cn.edu.zju.isst.net.RequestListener;
-import cn.edu.zju.isst.ui.life.ArchiveDetailActivity;
+import cn.edu.zju.isst.ui.main.NewMainActivity;
 import cn.edu.zju.isst.util.J;
 import cn.edu.zju.isst.util.L;
 import cn.edu.zju.isst.util.TimeString;
