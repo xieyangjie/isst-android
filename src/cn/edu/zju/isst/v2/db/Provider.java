@@ -8,7 +8,7 @@ import android.net.Uri;
 /**
  * Created by i308844 on 7/28/14.
  */
-public interface ProviderHelper {
+public interface Provider {
 
     String getTableName();
 

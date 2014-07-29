@@ -7,7 +7,7 @@ import android.net.Uri;
 /**
  * Created by i308844 on 7/29/14.
  */
-public class CSTUserProviderHelper extends SimpleTableProviderHelper {
+public class CSTUserProvider extends SimpleTableProvider {
 
     public enum Columns{
         ID("id"),
@@ -71,7 +71,7 @@ public class CSTUserProviderHelper extends SimpleTableProviderHelper {
             + Columns.PVT_JOB_TITLE.key + " INTEGER(1) "
             + "UNIQUE (" + Columns.ID.key + ") ON CONFLICT REPLACE)";
 
-    public CSTUserProviderHelper(Context context) {
+    public CSTUserProvider(Context context) {
         super(context);
     }
 

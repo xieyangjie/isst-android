@@ -11,7 +11,7 @@ import android.provider.BaseColumns;
 /**
  * Created by i308844 on 7/28/14.
  */
-public abstract class SimpleTableProviderHelper implements ProviderHelper, BaseColumns {
+public abstract class SimpleTableProvider implements Provider, BaseColumns {
 
     protected Context mContext;
 
@@ -19,7 +19,7 @@ public abstract class SimpleTableProviderHelper implements ProviderHelper, BaseC
 
     protected abstract Uri getBaseContentUri();
 
-    protected SimpleTableProviderHelper(Context context) {
+    protected SimpleTableProvider(Context context) {
         mContext = context;
     }
 
