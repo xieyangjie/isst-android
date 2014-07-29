@@ -1,17 +1,15 @@
-package cn.edu.zju.isst.model;
+package cn.edu.zju.isst.v2.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import org.json.JSONObject;
-
-import java.util.List;
+import org.json.JSONArray;
 
 /**
- * Created by i308844 on 7/15/14.
+ * Created by i308844 on 7/29/14.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class CSTJsonRaw {
+public class CSTRawParsedJsonArray {
 
     @JsonProperty("status")
     private int status;
@@ -19,10 +17,10 @@ public class CSTJsonRaw {
     @JsonProperty("message")
     private String message;
 
-    @JsonProperty("body")
-    private JSONObject body;
+    @JsonProperty("jsonArrayBody")
+    private JSONArray jsonArrayBody;
 
-    private CSTJsonRaw() {
+    private CSTRawParsedJsonArray() {
 
     }
 
@@ -34,7 +32,7 @@ public class CSTJsonRaw {
         return message;
     }
 
-    public JSONObject getBody() {
-        return body;
+    public JSONArray getJsonArrayBody() {
+        return jsonArrayBody;
     }
 }

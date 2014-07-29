@@ -1,4 +1,4 @@
-package cn.edu.zju.isst.model;
+package cn.edu.zju.isst.v2.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
