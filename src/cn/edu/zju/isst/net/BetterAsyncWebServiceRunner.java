@@ -64,32 +64,6 @@ public class BetterAsyncWebServiceRunner {
             @Override
             public void run() {
                 try {
-                    // JSONObject result = null;
-                    // String resultString = null;
-                    // CSTResponse response = null;
-                    // if (methodName.equalsIgnoreCase("GET")) {
-                    // L.i("BetterAsyncWebServiceRunner_____get");
-                    // response = BetterHttpInvoker.getInstance().get(
-                    // new URL(url), getHeaders(url));
-                    // } else if (methodName.equalsIgnoreCase("POST")) {
-                    // L.i("BetterAsyncWebServiceRunner_____post");
-                    // response = BetterHttpInvoker.getInstance().post(
-                    // new URL(url), getHeaders(url),
-                    // paramsToBytes(params));
-                    // } else {
-                    // L.i("BetterAsyncWebServiceRunner Unsupported Method: "
-                    // + (Judgement.isNullOrEmpty(methodName) ? "null"
-                    // : methodName));
-                    // }
-                    //
-                    // if (!Judgement.isNullOrEmpty(response)
-                    // && response.getStatus() == HttpURLConnection.HTTP_OK) {
-                    // refreshCookies(url, response.getHeaders());
-                    // resultString = readByte(response.getBody());
-                    // if (!Judgement.isNullOrEmpty(resultString)) {
-                    // result = new JSONObject(resultString);
-                    // }
-                    // }
                     JSONObject result = null;
                     CSTResponse response = responseOfRequest(methodName, url,
                             params);
