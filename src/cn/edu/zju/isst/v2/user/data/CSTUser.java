@@ -5,11 +5,13 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 
+import cn.edu.zju.isst.v2.model.CSTDataItem;
+
 /**
  * Created by i308844 on 7/15/14.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class CSTUser {
+public class CSTUser extends CSTDataItem<CSTUser>{
 
     public enum Gender {
         MALE(1), FEMALE(2);
@@ -120,5 +122,10 @@ public class CSTUser {
 
     public CSTUser() {
 
+    }
+
+    @Override
+    public CSTUser create() {
+        return new CSTUser();
     }
 }
