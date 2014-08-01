@@ -23,5 +23,4 @@ public abstract class CSTDataItem<T> {
         return statusInfo;
     }
 
-    public abstract T create();
 }

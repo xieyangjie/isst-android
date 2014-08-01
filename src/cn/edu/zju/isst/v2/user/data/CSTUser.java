@@ -124,8 +124,4 @@ public class CSTUser extends CSTDataItem<CSTUser>{
 
     }
 
-    @Override
-    public CSTUser create() {
-        return new CSTUser();
-    }
 }
