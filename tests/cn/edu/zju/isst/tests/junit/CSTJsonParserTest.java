@@ -6,12 +6,11 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-import cn.edu.zju.isst.v2.data.CSTJsonParser;
-import cn.edu.zju.isst.v2.archive.data.CSTArchive;
-import cn.edu.zju.isst.v2.model.CSTRawParsedJsonObject;
-import cn.edu.zju.isst.v2.user.data.CSTUser;
 import cn.edu.zju.isst.tests.junit.util.CSTFileUtil;
 import cn.edu.zju.isst.tests.junit.util.CSTPrinter;
+import cn.edu.zju.isst.v2.archive.data.CSTArchive;
+import cn.edu.zju.isst.v2.data.CSTJsonParserUtil;
+import cn.edu.zju.isst.v2.user.data.CSTUser;
 
 public class CSTJsonParserTest {
 
@@ -22,23 +21,24 @@ public class CSTJsonParserTest {
         byte[] data = CSTFileUtil.fileToByte(file);
         CSTUser user = null;
         try {
-            user = CSTJsonParser.readByte(data, CSTUser.class);
+            user = CSTJsonParserUtil.readByte(data, CSTUser.class);
         } catch (IOException e) {
             e.printStackTrace();
         }
         CSTPrinter.out(user);
 
-        file = new File("data/archive.json");
-        data = CSTFileUtil.fileToByte(file);
-        CSTArchive archive = null;
-        CSTRawParsedJsonObject jsonRaw = null;
-        try {
-            jsonRaw = CSTJsonParser.readByte(data, CSTRawParsedJsonObject.class);
-            archive = CSTJsonParser.readJsonObject(jsonRaw.getJsonObjectBody(), CSTArchive.class);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        CSTPrinter.out(archive);
+//        file = new File("data/archive.json");
+//        data = CSTFileUtil.fileToByte(file);
+//        CSTArchive archive = null;
+//        CSTRawParsedJsonObject jsonRaw = null;
+//        try {
+//            jsonRaw = CSTJsonParserUtil.readByte(data, CSTRawParsedJsonObject.class);
+//            archive = CSTJsonParserUtil
+//                    .readJsonObject(jsonRaw.getJsonObjectBody(), CSTArchive.class);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        CSTPrinter.out(archive);
         System.out.println("====end====\n");
     }
 

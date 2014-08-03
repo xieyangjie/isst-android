@@ -18,9 +18,9 @@ public abstract class CSTRequest<T> extends Request<T> {
     private Map<String, String> mHeaders;
 
     public CSTRequest(int method, String url, Map<String, String> params,
-            Response.Listener<T> listener, Response.ErrorListener errorListener) {
-        super(method, url, errorListener);
-        this.mListener = listener;
+            CSTResponse<T> response) {
+        super(method, url, response);
+        this.mListener = response;
         this.mParams = params;
         this.mHeaders = CSTHttpUtil.getCookiesHeaders(url);
     }
