@@ -58,7 +58,7 @@ public class CSTUserDataDelegate {
         ContentResolver resolver = context.getContentResolver();
         Cursor cursor = resolver
                 .query(CSTUserProvider.CONTENT_URI, null, CSTUserProvider.Columns.ID.key + " = ?",
-                        new String[]{
+                                new String[]{
                                 id
                         }, null);
         if (cursor != null && cursor.moveToFirst()) {
@@ -85,8 +85,27 @@ public class CSTUserDataDelegate {
         ContentValues values = new ContentValues();
 
         values.put(CSTUserProvider.Columns.ID.key, user.id);
-        //TODO put all user info into values
-
+        values.put(CSTUserProvider.Columns.USER_NAME.key,user.userName);
+        values.put(CSTUserProvider.Columns.NAME.key,user.name);
+        values.put(CSTUserProvider.Columns.GENDER.key,user.gender.getTypeName());
+        values.put(CSTUserProvider.Columns.GRADE.key,user.grade);
+        values.put(CSTUserProvider.Columns.CLASS_ID.key,user.clazzId);
+        values.put(CSTUserProvider.Columns.CLASS_NAME.key,user.clazzName);
+        values.put(CSTUserProvider.Columns.MAJOR.key,user.majorName);
+        values.put(CSTUserProvider.Columns.CITY_ID.key,user.cityId);
+        values.put(CSTUserProvider.Columns.CITY_NAME.key,user.cityName);
+        values.put(CSTUserProvider.Columns.EMAIL.key,user.email);
+        values.put(CSTUserProvider.Columns.PHONE.key,user.phoneNum);
+        values.put(CSTUserProvider.Columns.QQ.key,user.qqNum);
+        values.put(CSTUserProvider.Columns.COMPANY.key,user.company);
+        values.put(CSTUserProvider.Columns.JOB_TITLE.key,user.jobTitle);
+        values.put(CSTUserProvider.Columns.SIGN.key,user.sign);
+        values.put(CSTUserProvider.Columns.IS_CASTELLAN.key,user.castellan);
+        values.put(CSTUserProvider.Columns.PVT_QQ.key,user.pvtQq);
+        values.put(CSTUserProvider.Columns.PVT_EMAIL.key,user.pvtEmail);
+        values.put(CSTUserProvider.Columns.PVT_PHONE.key,user.pvtPhoneNum);
+        values.put(CSTUserProvider.Columns.PVT_COMPANY.key,user.pvtCompany);
+        values.put(CSTUserProvider.Columns.PVT_JOB_TITLE.key,user.pvtJobTitle);
         return values;
     }
 }
