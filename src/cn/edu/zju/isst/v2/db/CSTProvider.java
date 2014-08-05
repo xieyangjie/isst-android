@@ -12,6 +12,7 @@ import android.net.Uri;
 import java.util.HashMap;
 import java.util.Map;
 
+import cn.edu.zju.isst.v2.campusactivity.data.CSTCampusActivityProvider;
 import cn.edu.zju.isst.v2.user.data.CSTUserProvider;
 
 /**
@@ -20,6 +21,7 @@ import cn.edu.zju.isst.v2.user.data.CSTUserProvider;
 public class CSTProvider extends ContentProvider {
 
     private static final int TABLE_USER_CODE = 1;
+    private static final int TABLE_CAMPUSACTIVITY_CODE=2;
 
     private static final String AUTHORITY = "cn.edu.zju.isst.v2.db.cstprovider";
 
@@ -37,6 +39,7 @@ public class CSTProvider extends ContentProvider {
 
     static {
         sURIMatcher.addURI(AUTHORITY, CSTUserProvider.TABLE_NAME, TABLE_USER_CODE);
+        sURIMatcher.addURI(AUTHORITY, CSTCampusActivityProvider.TABLE_NAME,TABLE_CAMPUSACTIVITY_CODE);
     }
 
     private class DatabaseHelper extends SQLiteOpenHelper {
@@ -75,7 +78,8 @@ public class CSTProvider extends ContentProvider {
         mDatabaseHelper = new DatabaseHelper(getContext());
         mProviderMap
                 .put(CSTUserProvider.TABLE_NAME, new CSTUserProvider(getContext()));
-
+        mProviderMap.
+                put(CSTCampusActivityProvider.TABLE_NAME,new CSTCampusActivityProvider(getContext()));
         SQLiteDatabase writableDatabase = mDatabaseHelper.getWritableDatabase();
         for (Provider provider : mProviderMap.values()) {
             provider.setDBRef(writableDatabase);
@@ -126,6 +130,8 @@ public class CSTProvider extends ContentProvider {
         switch (sURIMatcher.match(uri)) {
             case TABLE_USER_CODE:
                 return CSTUserProvider.TABLE_NAME;
+            case TABLE_CAMPUSACTIVITY_CODE:
+                return CSTCampusActivityProvider.TABLE_NAME;
             default:
                 throw new IllegalArgumentException("Unknown URI: " + uri);
         }
