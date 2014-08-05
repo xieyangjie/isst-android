@@ -3,68 +3,36 @@ package cn.edu.zju.isst.v2.archive.data;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import cn.edu.zju.isst.v2.model.CSTDataItem;
 import cn.edu.zju.isst.v2.user.data.CSTUser;
 
 /**
  * Created by i308844 on 7/17/14.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class CSTArchive {
+public class CSTArchive extends CSTDataItem<CSTArchive> {
 
     @JsonProperty("id")
-    private int id;
+    public int id;
 
     @JsonProperty("title")
-    private String title;
+    public String title;
 
     @JsonProperty("description")
-    private String description;
+    public String description;
 
     @JsonProperty("updatedAt")
-    private long updateTime;
+    public long updateTime;
 
     @JsonProperty("userId")
-    private int publisherId;
+    public int publisherId;
 
     @JsonProperty("user")
-    private CSTUser publisher;
+    public CSTUser publisher;
 
     @JsonProperty("content")
-    private String content;
+    public String content;
 
-    private CSTArchive() {
-
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public long getUpdateTime() {
-        return updateTime;
-    }
-
-    public int getPublisherId() {
-        return publisherId;
-    }
-
-    public CSTUser getPublisher() {
-        return publisher;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
+    public CSTArchive() {
     }
 }
