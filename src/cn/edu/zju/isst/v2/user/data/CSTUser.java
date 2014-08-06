@@ -4,8 +4,6 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
-
-import cn.edu.zju.isst.v2.archive.data.CSTConsumer;
 import cn.edu.zju.isst.v2.archive.data.CommonUser;
 import cn.edu.zju.isst.v2.model.CSTDataItem;
 
@@ -51,6 +49,11 @@ public class CSTUser extends CommonUser {
             return this.typeName;
         }
     }
+
+
+
+    @JsonProperty("password")
+    public String pwd;
 
     @JsonProperty("cityPrincipal")
     public boolean castellan;

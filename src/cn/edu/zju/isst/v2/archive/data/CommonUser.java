@@ -9,6 +9,9 @@ import cn.edu.zju.isst.v2.user.data.CSTUser;
  */
 public class CommonUser extends BasicUser {
 
+    @JsonProperty("username")
+    public String userName;
+
     @JsonProperty("gender")
     public CSTUser.Gender gender;
 
@@ -19,16 +22,16 @@ public class CommonUser extends BasicUser {
     public String clazzName;
 
     @JsonProperty("grade")
-    public String grade;
+    public int grade;
 
     @JsonProperty("cityId")
-    public String cityId;
+    public int cityId;
 
     @JsonProperty("cityName")
     public String cityName;
 
     @JsonProperty("major")
-    public String major;
+    public String majorName;
 
     @JsonProperty("company")
     public String company;
@@ -37,7 +40,7 @@ public class CommonUser extends BasicUser {
     public String jobTitle;
 
     @JsonProperty("signature")
-    public String signature;
+    public String sign;
 
     public CommonUser() {
     }
