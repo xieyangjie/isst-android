@@ -7,7 +7,7 @@ import cn.edu.zju.isst.v2.model.CSTDataItem;
 /**
  * Created by tan on 2014/7/30.
  */
-public class CSTCampusActivity extends CSTDataItem<CSTCampusActivity> {
+public class CSTCampusEvent extends CSTDataItem<CSTCampusEvent> {
 
     @JsonProperty("id")
     public int id;
@@ -36,6 +36,6 @@ public class CSTCampusActivity extends CSTDataItem<CSTCampusActivity> {
     @JsonProperty("expireTime")
     public long expireTime;
 
-    public CSTCampusActivity() {
+    public CSTCampusEvent() {
     }
 }

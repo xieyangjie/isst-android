@@ -7,7 +7,7 @@ import cn.edu.zju.isst.v2.model.CSTDataItem;
 /**
  * Created by tan on 2014/8/3.
  */
-public class CSTCityActivity extends CSTDataItem<CSTCityActivity> {
+public class CSTCityEvent extends CSTDataItem<CSTCityEvent> {
 
     @JsonProperty("id")
     public int id;
@@ -42,6 +42,6 @@ public class CSTCityActivity extends CSTDataItem<CSTCityActivity> {
     @JsonProperty("publisher")
     public CSTPublisher publisher;
 
-    public CSTCityActivity() {
+    public CSTCityEvent() {
     }
 }
