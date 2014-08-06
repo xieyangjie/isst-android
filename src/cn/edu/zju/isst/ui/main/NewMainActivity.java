@@ -32,13 +32,14 @@ import cn.edu.zju.isst.ui.job.ExperienceListFragment;
 import cn.edu.zju.isst.ui.job.InternshipListFragment;
 import cn.edu.zju.isst.ui.job.RecommedListFragment;
 import cn.edu.zju.isst.ui.life.CampusActivityListFragment;
-import cn.edu.zju.isst.v2.archive.gui.NewsListFragment;
 import cn.edu.zju.isst.ui.life.RestaurantListFragment;
 import cn.edu.zju.isst.ui.life.StudyListFragment;
 import cn.edu.zju.isst.ui.life.WikGridFragment;
 import cn.edu.zju.isst.ui.login.LoginActivity;
 import cn.edu.zju.isst.ui.usercenter.UserCenterFragment;
 import cn.edu.zju.isst.util.L;
+import cn.edu.zju.isst.v2.archive.gui.NewsListFragment;
+import cn.edu.zju.isst.v2.dummy.DummySwipeToRefreshFragment;
 
 /**
  * @author theasir
@@ -65,11 +66,13 @@ public class NewMainActivity extends BaseActivity {
         mCurrentFragment = null;
 
         if (savedInstanceState == null) {
-            mCurrentFragment = NewsListFragment.getInstance();
+//            mCurrentFragment = NewsListFragment.getInstance();
+            mCurrentFragment = new DummySwipeToRefreshFragment();
             getFragmentManager().beginTransaction()
                     .add(R.id.content_frame, mCurrentFragment).commit();
-            mTitle = Nav.NEWS.getName();
-            getActionBar().setTitle(mTitle);
+//            mTitle = Nav.NEWS.getName();
+//            getActionBar().setTitle(mTitle);
+            getActionBar().setTitle("DummySwipeToRefreshFragment");
         }
 
         setUpActionbar();
