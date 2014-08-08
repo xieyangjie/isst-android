@@ -27,7 +27,6 @@ public class UserTest extends Activity {
     private Button delete_user;
     private ListView listView;
     private CSTUserProvider provider;
-    private TextView textView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,7 +111,7 @@ public class UserTest extends Activity {
         ArrayList<Map<String, String>> list = new ArrayList<Map<String, String>>();
         for (CSTUser user : users) {
             HashMap<String, String> map = new HashMap<String, String>();
-            map.put("name", user.name);
+            map.put("name", user.gender.getTypeName());
             list.add(map);
         }
         SimpleAdapter adapter = new SimpleAdapter(this, list, android.R.layout.simple_list_item_1,

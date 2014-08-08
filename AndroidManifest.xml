@@ -25,7 +25,7 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/Theme.Isst_color_ab_style" >
-        <activity android:name=".v2.campusactivity.CampusActivityTest" >
+        <activity android:name=".v2.cityparticipant.CityParticipantTest" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -96,10 +96,34 @@
         <!-- android:name="com.baidu.android.pushservice.PushService" -->
         <!-- android:exported="true" -->
         <!-- android:process=":bdservice_v1"/> -->
-        <!--<activity
+        <!--
+        <activity
             android:name=".v2.campusactivity.CampusActivityTest"
             android:label="@string/title_activity_campus_activity_test" >
-        </activity> -->
+        </activity>
+        -->
+        <!--
+        <activity
+            android:name=".v2.city.CityTest"
+            android:label="@string/title_activity_city_test" >
+        </activity>
+        -->
+        <!--
+        <activity
+            android:name=".v2.publisher.PublisherTest"
+            android:label="@string/title_activity_publisher_test" >
+        </activity>
+        -->
+        <!--
+        <activity
+            android:name=".v2.cityevent.CityEventTest"
+            android:label="@string/title_activity_city_event_test" >
+        </activity>
+        -->
+        <!--<activity
+            android:name=".v2.cityparticipant.CityParticipantTest"
+            android:label="@string/title_activity_city_participant_test" >
+        </activity>-->
     </application>
 
 </manifest>

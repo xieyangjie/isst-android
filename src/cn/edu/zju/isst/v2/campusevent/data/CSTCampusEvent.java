@@ -1,34 +1,41 @@
-package cn.edu.zju.isst.v2.campusactivity.data;
-
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+package cn.edu.zju.isst.v2.campusevent.data;
 
 import cn.edu.zju.isst.v2.model.CSTDataItem;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
- * Created by lqynydyxf on 2014/8/5.
+ * Created by tan on 2014/7/30.
  */
-@JsonIgnoreProperties(ignoreUnknown = true)
-public class CSTCampusActivity extends CSTDataItem<CSTCampusActivity> {
+public class CSTCampusEvent extends CSTDataItem<CSTCampusEvent> {
+
     @JsonProperty("id")
     public int id;
+
     @JsonProperty("title")
     public String title;
+
     @JsonProperty("picture")
     public String picture;
+
     @JsonProperty("description")
     public String description;
+
     @JsonProperty("content")
     public String content;
+
     @JsonProperty("publisherName")
-    public String publishername;
-    @JsonProperty("updataAt")
+    public String pubName;
+
+    @JsonProperty("updatedAt")
     public long updatedAt;
+
     @JsonProperty("startTime")
     public long startTime;
+
     @JsonProperty("expireTime")
     public long expireTime;
-    public CSTCampusActivity(){
 
+    public CSTCampusEvent() {
     }
 }
