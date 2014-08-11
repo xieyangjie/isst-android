@@ -10,9 +10,9 @@ import java.io.IOException;
  */
 public class CSTFileUtil {
 
-    public static byte[] fileToByte(File file){
+    public static byte[] fileToByte(File file) {
         FileInputStream fileInputStream = null;
-        byte[] bytes = new byte[(int)file.length()];
+        byte[] bytes = new byte[(int) file.length()];
         try {
             fileInputStream = new FileInputStream(file);
             fileInputStream.read(bytes);

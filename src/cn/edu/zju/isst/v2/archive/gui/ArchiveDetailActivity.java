@@ -17,7 +17,6 @@ import android.webkit.WebView;
 import android.widget.TextView;
 
 import cn.edu.zju.isst.R;
-import cn.edu.zju.isst.v2.archive.net.ArchiveApi;
 import cn.edu.zju.isst.db.Archive;
 import cn.edu.zju.isst.net.CSTResponse;
 import cn.edu.zju.isst.net.RequestListener;
@@ -25,6 +24,7 @@ import cn.edu.zju.isst.ui.main.BaseActivity;
 import cn.edu.zju.isst.util.J;
 import cn.edu.zju.isst.util.L;
 import cn.edu.zju.isst.util.TimeString;
+import cn.edu.zju.isst.v2.archive.net.ArchiveApi;
 
 import static cn.edu.zju.isst.constant.Constants.STATUS_NOT_LOGIN;
 import static cn.edu.zju.isst.constant.Constants.STATUS_REQUEST_SUCCESS;

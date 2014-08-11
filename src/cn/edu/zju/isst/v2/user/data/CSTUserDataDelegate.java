@@ -60,7 +60,8 @@ public class CSTUserDataDelegate {
                 .query(CSTUserProvider.CONTENT_URI, null, CSTUserProvider.Columns.ID.key + " = ?",
                         new String[]{
                                 id
-                        }, null);
+                        }, null
+                );
         if (cursor != null && cursor.moveToFirst()) {
             try {
                 return getUser(cursor);

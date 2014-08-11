@@ -12,7 +12,7 @@ import cn.edu.zju.isst.util.J;
  */
 public class CSTHttpUtil {
 
-    public static Map<String, String> getCookiesHeaders(String url){
+    public static Map<String, String> getCookiesHeaders(String url) {
         Map<String, String> headers = new HashMap<String, String>();
         CookieManager.getInstance().removeExpiredCookie();
         String cookieString = CookieManager.getInstance().getCookie(url);
@@ -22,7 +22,7 @@ public class CSTHttpUtil {
         return headers;
     }
 
-    public static void refreshCookies(String url, Map<String, String> headers){
+    public static void refreshCookies(String url, Map<String, String> headers) {
         String cookie = headers.get("Set-Cookie");
         if (!J.isNullOrEmpty(cookie)) {
             CookieManager.getInstance().setCookie(url, cookie);

@@ -14,12 +14,12 @@ public abstract class CSTDataItem<T> {
 
     public List<T> itemList = new ArrayList<>();
 
-    public CSTDataItem<T> setStatusInfo(CSTStatusInfo statusInfo){
+    public CSTDataItem<T> setStatusInfo(CSTStatusInfo statusInfo) {
         this.statusInfo = statusInfo;
         return this;
     }
 
-    public CSTStatusInfo getStatusInfo(){
+    public CSTStatusInfo getStatusInfo() {
         return statusInfo;
     }
 
