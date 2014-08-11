@@ -5,6 +5,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 
+import cn.edu.zju.isst.v2.archive.data.CSTCityParticipant;
 import cn.edu.zju.isst.v2.user.data.CSTUser;
 import cn.edu.zju.isst.v2.user.data.CSTUserProvider;
 

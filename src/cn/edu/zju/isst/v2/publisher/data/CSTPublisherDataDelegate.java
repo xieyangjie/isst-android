@@ -5,6 +5,8 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 
+import cn.edu.zju.isst.v2.archive.data.CSTPublisher;
+
 /**
  * Created by lqynydyxf on 2014/8/7.
  */

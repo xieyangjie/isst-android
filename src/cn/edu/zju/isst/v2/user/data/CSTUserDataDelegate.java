@@ -18,7 +18,7 @@ public class CSTUserDataDelegate {
                 .getString(cursor.getColumnIndex(CSTUserProvider.Columns.USER_NAME.key));
         user.pwd = cursor.getString(cursor.getColumnIndex(CSTUserProvider.Columns.PASSWORD.key));
         user.name = cursor.getString(cursor.getColumnIndex(CSTUserProvider.Columns.NAME.key));
-        if (cursor.getString(cursor.getColumnIndex(CSTUserProvider.Columns.GENDER.key)) == "男") {
+        if (cursor.getString(cursor.getColumnIndex(CSTUserProvider.Columns.GENDER.key)).equals("男") ){
             user.gender = CSTUser.Gender.MALE;
         } else {
             user.gender = CSTUser.Gender.FEMALE;

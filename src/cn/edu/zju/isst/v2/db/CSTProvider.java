@@ -16,7 +16,6 @@ import cn.edu.zju.isst.v2.campusevent.data.CSTCampusEventProvider;
 import cn.edu.zju.isst.v2.city.data.CSTCityProvider;
 import cn.edu.zju.isst.v2.citycomment.data.CSTCommentProvider;
 import cn.edu.zju.isst.v2.cityevent.data.CSTCityEventProvider;
-import cn.edu.zju.isst.v2.cityparticipant.data.CSTCityParticipant;
 import cn.edu.zju.isst.v2.cityparticipant.data.CSTCityParticipantProvider;
 import cn.edu.zju.isst.v2.publisher.data.CSTPublisherProvider;
 import cn.edu.zju.isst.v2.user.data.CSTUserProvider;

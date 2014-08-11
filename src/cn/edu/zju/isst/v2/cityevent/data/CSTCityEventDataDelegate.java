@@ -5,10 +5,9 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 
-import cn.edu.zju.isst.v2.city.data.CSTCityProvider;
+import cn.edu.zju.isst.v2.archive.data.CSTCityEvent;
+import cn.edu.zju.isst.v2.archive.data.CSTPublisher;
 import cn.edu.zju.isst.v2.db.Tools;
-import cn.edu.zju.isst.v2.publisher.data.CSTPublisher;
-import cn.edu.zju.isst.v2.user.data.CSTUserProvider;
 
 /**
  * Created by lqynydyxf on 2014/8/7.
