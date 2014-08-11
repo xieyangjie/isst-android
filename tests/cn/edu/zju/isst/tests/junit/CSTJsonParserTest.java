@@ -8,6 +8,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+import cn.edu.zju.isst.tests.junit.util.CSTFileUtil;
+import cn.edu.zju.isst.tests.junit.util.CSTPrinter;
 import cn.edu.zju.isst.v2.archive.data.BasicUser;
 import cn.edu.zju.isst.v2.archive.data.CSTAlumni;
 import cn.edu.zju.isst.v2.archive.data.CSTCampusEvent;
@@ -28,14 +30,9 @@ import cn.edu.zju.isst.v2.archive.data.CSTRecommend;
 import cn.edu.zju.isst.v2.archive.data.CSTRestaurant;
 import cn.edu.zju.isst.v2.archive.data.CSTRestaurantMenu;
 import cn.edu.zju.isst.v2.archive.data.CSTTask;
-import cn.edu.zju.isst.v2.archive.data.MessageBase;
 import cn.edu.zju.isst.v2.data.CSTJsonParser;
-import cn.edu.zju.isst.v2.archive.data.CSTArchive;
 import cn.edu.zju.isst.v2.data.CSTJsonParserUtil;
-import cn.edu.zju.isst.v2.model.CSTDataItem;
 import cn.edu.zju.isst.v2.user.data.CSTUser;
-import cn.edu.zju.isst.tests.junit.util.CSTFileUtil;
-import cn.edu.zju.isst.tests.junit.util.CSTPrinter;
 
 public class CSTJsonParserTest {
 
@@ -61,7 +58,7 @@ public class CSTJsonParserTest {
     @Test
     public void testReadCSTPublisher() {
         System.out.println("\n====" + this.getClass() + " : testReadCSTPublisher()====");
-        File file = new File("data/Publisher.json");
+        File file = new File("data/CSTPublisher.json");
         byte[] data = CSTFileUtil.fileToByte(file);
         String jsonStr = new String(data);
         JSONObject json = null;
