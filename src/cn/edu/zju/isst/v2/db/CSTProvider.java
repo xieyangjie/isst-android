@@ -14,6 +14,7 @@ import java.util.Map;
 
 import cn.edu.zju.isst.v2.campusevent.data.CSTCampusEventProvider;
 import cn.edu.zju.isst.v2.city.data.CSTCityProvider;
+import cn.edu.zju.isst.v2.citycomment.data.CSTCommentProvider;
 import cn.edu.zju.isst.v2.cityevent.data.CSTCityEventProvider;
 import cn.edu.zju.isst.v2.cityparticipant.data.CSTCityParticipant;
 import cn.edu.zju.isst.v2.cityparticipant.data.CSTCityParticipantProvider;
@@ -31,6 +32,7 @@ public class CSTProvider extends ContentProvider {
     private static final int TABLE_PUBLISHER_CODE=4;
     private static final int TABLE_CITYEVENT_CODE=5;
     private static final int TABLE_CITYPARTICIPANT_CODE=6;
+    private static final int TABLE_COMMENT_CODE=7;
 
     private static final String AUTHORITY = "cn.edu.zju.isst.v2.db.cstprovider";
 
@@ -53,6 +55,7 @@ public class CSTProvider extends ContentProvider {
         sURIMatcher.addURI(AUTHORITY, CSTPublisherProvider.TABLE_NAME,TABLE_PUBLISHER_CODE);
         sURIMatcher.addURI(AUTHORITY, CSTCityEventProvider.TABLE_NAME,TABLE_CITYEVENT_CODE);
         sURIMatcher.addURI(AUTHORITY, CSTCityParticipantProvider.TABLE_NAME,TABLE_CITYPARTICIPANT_CODE);
+        sURIMatcher.addURI(AUTHORITY, CSTCommentProvider.TABLE_NAME,TABLE_COMMENT_CODE);
     }
 
     private class DatabaseHelper extends SQLiteOpenHelper {
@@ -97,6 +100,7 @@ public class CSTProvider extends ContentProvider {
         mProviderMap.put(CSTPublisherProvider.TABLE_NAME,new CSTPublisherProvider(getContext()));
         mProviderMap.put(CSTCityEventProvider.TABLE_NAME,new CSTCityEventProvider(getContext()));
         mProviderMap.put(CSTCityParticipantProvider.TABLE_NAME,new CSTCityParticipantProvider(getContext()));
+        mProviderMap.put(CSTCommentProvider.TABLE_NAME,new CSTCommentProvider(getContext()));
         SQLiteDatabase writableDatabase = mDatabaseHelper.getWritableDatabase();
         for (Provider provider : mProviderMap.values()) {
             provider.setDBRef(writableDatabase);
@@ -157,6 +161,8 @@ public class CSTProvider extends ContentProvider {
                 return CSTCityEventProvider.TABLE_NAME;
             case TABLE_CITYPARTICIPANT_CODE:
                 return CSTCityParticipantProvider.TABLE_NAME;
+            case TABLE_COMMENT_CODE:
+                return CSTCommentProvider.TABLE_NAME;
             default:
                 throw new IllegalArgumentException("Unknown URI: " + uri);
         }

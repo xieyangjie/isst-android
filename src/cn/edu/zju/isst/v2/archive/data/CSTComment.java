@@ -15,11 +15,11 @@ public class CSTComment extends CSTDataItem<CSTComment> {
     public int id;
 
     @JsonProperty("content")
-    private String content;
+    public String content;
 
     @JsonProperty("createdAt")
-    private long createdAt;
+    public long createdAt;
 
     @JsonProperty("user")
-    private CSTUser user;
+    public CSTUser user;
 }

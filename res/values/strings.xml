@@ -85,5 +85,6 @@
     <string name="title_activity_publisher_test">PublisherTest</string>
     <string name="title_activity_city_event_test">CityEventTest</string>
     <string name="title_activity_city_participant_test">CityParticipantTest</string>
+    <string name="title_activity_comment_test">CommentTest</string>
 
 </resources>

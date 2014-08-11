@@ -88,7 +88,7 @@ public class CityTest extends Activity {
         ArrayList<Map<String, String>> list = new ArrayList<Map<String, String>>();
         for (CSTCity city : cities) {
             HashMap<String, String> map = new HashMap<String, String>();
-            map.put("name", city.cityMaster.qqNum);
+            map.put("name", city.cityMaster.gender.getTypeName());
             list.add(map);
         }
         SimpleAdapter adapter = new SimpleAdapter(this, list, android.R.layout.simple_list_item_1,
