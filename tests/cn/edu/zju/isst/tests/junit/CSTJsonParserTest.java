@@ -98,24 +98,6 @@ public class CSTJsonParserTest {
         System.out.println(cityEvent.publisher.qqNum);
     }
 
-    /*测试CSTMessageBase类*/
-    @Test
-    public void testReadCSTMessageBase() {
-        System.out.println("\n====" + this.getClass() + " : testReadMessageBase()====");
-        File file = new File("data/MessageBase.json");
-        byte[] data = CSTFileUtil.fileToByte(file);
-        MessageBase messageBase = null;
-        CSTUser user = null;
-        try {
-            messageBase  = CSTJsonParserUtil.readByte(data, MessageBase.class);
-            user = CSTJsonParserUtil.readJsonObject(messageBase.body, CSTUser.class);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        CSTPrinter.out(user);
-
-    }
-
     /*测试CSTAlumni类*/
     @Test
     public void testReadCSTAlumni() {
