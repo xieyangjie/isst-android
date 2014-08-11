@@ -1,5 +1,6 @@
 package cn.edu.zju.isst.v2.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,7 +9,7 @@ import cn.edu.zju.isst.v2.net.CSTStatusInfo;
 /**
  * Created by i308844 on 7/31/14.
  */
-public abstract class CSTDataItem<T> {
+public abstract class CSTDataItem<T> implements Serializable {
 
     private CSTStatusInfo statusInfo;
 

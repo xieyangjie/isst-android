@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-import cn.edu.zju.isst.v2.archive.data.CommonUser;
+import cn.edu.zju.isst.v2.data.CommonUser;
 
 /**
  * Created by i308844 on 7/15/14.
