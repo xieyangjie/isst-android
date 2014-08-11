@@ -18,7 +18,7 @@ public class CSTCityParticipantDataDelegate {
         cityParticipant.userName=cursor.getString(cursor.getColumnIndex(CSTCityParticipantProvider.Columns.USER_NAME.key));
         cityParticipant.name=cursor.getString(cursor.getColumnIndex(CSTCityParticipantProvider.Columns.NAME.key));
         cityParticipant.grade=cursor.getInt(cursor.getColumnIndex(CSTCityParticipantProvider.Columns.GRADE.key));
-        if(cursor.getString(cursor.getColumnIndex(CSTCityParticipantProvider.Columns.GENDER.key))=="男"){
+        if(cursor.getString(cursor.getColumnIndex(CSTCityParticipantProvider.Columns.GENDER.key)).equals("男")){
             cityParticipant.gender= CSTUser.Gender.MALE;
         }else{
             cityParticipant.gender=CSTUser.Gender.FEMALE;
