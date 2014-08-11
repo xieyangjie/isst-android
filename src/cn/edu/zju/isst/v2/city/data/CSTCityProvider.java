@@ -11,10 +11,12 @@ import cn.edu.zju.isst.v2.db.SimpleTableProvider;
  * Created by lqynydyxf on 2014/8/6.
  */
 public class CSTCityProvider extends SimpleTableProvider {
+
     public enum Columns {
         ID("id"),
         NAME("name"),
         CITY_MASTER("citymaster");
+
         public String key;
 
         private Columns(String key) {
@@ -23,7 +25,10 @@ public class CSTCityProvider extends SimpleTableProvider {
     }
 
     public static final String TABLE_NAME = "city";
-    public static final Uri CONTENT_URI = CSTProvider.CONTENT_URI.buildUpon().appendPath(TABLE_NAME).build();
+
+    public static final Uri CONTENT_URI = CSTProvider.CONTENT_URI.buildUpon().appendPath(TABLE_NAME)
+            .build();
+
     public static final String CREATE_TABLE_QUERY = "CREATE TABLE " + TABLE_NAME + " ("
             + _ID + " INTEGER PRIMARY KEY, "
             + Columns.ID.key + " INTEGER, "

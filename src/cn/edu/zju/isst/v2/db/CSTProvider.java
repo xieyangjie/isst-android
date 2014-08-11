@@ -12,11 +12,11 @@ import android.net.Uri;
 import java.util.HashMap;
 import java.util.Map;
 
-import cn.edu.zju.isst.v2.campusevent.data.CSTCampusEventProvider;
+import cn.edu.zju.isst.v2.campus.event.data.CSTCampusEventProvider;
 import cn.edu.zju.isst.v2.city.data.CSTCityProvider;
-import cn.edu.zju.isst.v2.citycomment.data.CSTCommentProvider;
-import cn.edu.zju.isst.v2.cityevent.data.CSTCityEventProvider;
-import cn.edu.zju.isst.v2.cityparticipant.data.CSTCityParticipantProvider;
+import cn.edu.zju.isst.v2.city.event.data.CSTCityEventProvider;
+import cn.edu.zju.isst.v2.city.event.data.CSTCityParticipantProvider;
+import cn.edu.zju.isst.v2.comment.data.CSTCommentProvider;
 import cn.edu.zju.isst.v2.publisher.data.CSTPublisherProvider;
 import cn.edu.zju.isst.v2.user.data.CSTUserProvider;
 
@@ -26,12 +26,18 @@ import cn.edu.zju.isst.v2.user.data.CSTUserProvider;
 public class CSTProvider extends ContentProvider {
 
     private static final int TABLE_USER_CODE = 1;
+
     private static final int TABLE_CAMPUSEvent_CODE = 2;
+
     private static final int TABLE_CITY_CODE = 3;
-    private static final int TABLE_PUBLISHER_CODE=4;
-    private static final int TABLE_CITYEVENT_CODE=5;
-    private static final int TABLE_CITYPARTICIPANT_CODE=6;
-    private static final int TABLE_COMMENT_CODE=7;
+
+    private static final int TABLE_PUBLISHER_CODE = 4;
+
+    private static final int TABLE_CITYEVENT_CODE = 5;
+
+    private static final int TABLE_CITYPARTICIPANT_CODE = 6;
+
+    private static final int TABLE_COMMENT_CODE = 7;
 
     private static final String AUTHORITY = "cn.edu.zju.isst.v2.db.cstprovider";
 
@@ -51,10 +57,11 @@ public class CSTProvider extends ContentProvider {
         sURIMatcher.addURI(AUTHORITY, CSTUserProvider.TABLE_NAME, TABLE_USER_CODE);
         sURIMatcher.addURI(AUTHORITY, CSTCampusEventProvider.TABLE_NAME, TABLE_CAMPUSEvent_CODE);
         sURIMatcher.addURI(AUTHORITY, CSTCityProvider.TABLE_NAME, TABLE_CITY_CODE);
-        sURIMatcher.addURI(AUTHORITY, CSTPublisherProvider.TABLE_NAME,TABLE_PUBLISHER_CODE);
-        sURIMatcher.addURI(AUTHORITY, CSTCityEventProvider.TABLE_NAME,TABLE_CITYEVENT_CODE);
-        sURIMatcher.addURI(AUTHORITY, CSTCityParticipantProvider.TABLE_NAME,TABLE_CITYPARTICIPANT_CODE);
-        sURIMatcher.addURI(AUTHORITY, CSTCommentProvider.TABLE_NAME,TABLE_COMMENT_CODE);
+        sURIMatcher.addURI(AUTHORITY, CSTPublisherProvider.TABLE_NAME, TABLE_PUBLISHER_CODE);
+        sURIMatcher.addURI(AUTHORITY, CSTCityEventProvider.TABLE_NAME, TABLE_CITYEVENT_CODE);
+        sURIMatcher.addURI(AUTHORITY, CSTCityParticipantProvider.TABLE_NAME,
+                TABLE_CITYPARTICIPANT_CODE);
+        sURIMatcher.addURI(AUTHORITY, CSTCommentProvider.TABLE_NAME, TABLE_COMMENT_CODE);
     }
 
     private class DatabaseHelper extends SQLiteOpenHelper {
@@ -96,10 +103,11 @@ public class CSTProvider extends ContentProvider {
         mProviderMap.
                 put(CSTCampusEventProvider.TABLE_NAME, new CSTCampusEventProvider(getContext()));
         mProviderMap.put(CSTCityProvider.TABLE_NAME, new CSTCityProvider(getContext()));
-        mProviderMap.put(CSTPublisherProvider.TABLE_NAME,new CSTPublisherProvider(getContext()));
-        mProviderMap.put(CSTCityEventProvider.TABLE_NAME,new CSTCityEventProvider(getContext()));
-        mProviderMap.put(CSTCityParticipantProvider.TABLE_NAME,new CSTCityParticipantProvider(getContext()));
-        mProviderMap.put(CSTCommentProvider.TABLE_NAME,new CSTCommentProvider(getContext()));
+        mProviderMap.put(CSTPublisherProvider.TABLE_NAME, new CSTPublisherProvider(getContext()));
+        mProviderMap.put(CSTCityEventProvider.TABLE_NAME, new CSTCityEventProvider(getContext()));
+        mProviderMap.put(CSTCityParticipantProvider.TABLE_NAME,
+                new CSTCityParticipantProvider(getContext()));
+        mProviderMap.put(CSTCommentProvider.TABLE_NAME, new CSTCommentProvider(getContext()));
         SQLiteDatabase writableDatabase = mDatabaseHelper.getWritableDatabase();
         for (Provider provider : mProviderMap.values()) {
             provider.setDBRef(writableDatabase);
@@ -109,7 +117,7 @@ public class CSTProvider extends ContentProvider {
 
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs,
-                        String sortOrder) {
+            String sortOrder) {
         return getProvider(uri).query(uri, projection, selection, selectionArgs, sortOrder);
     }
 

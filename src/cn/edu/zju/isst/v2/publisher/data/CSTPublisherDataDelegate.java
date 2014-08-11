@@ -5,26 +5,32 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 
-import cn.edu.zju.isst.v2.archive.data.CSTPublisher;
+import cn.edu.zju.isst.v2.data.CSTPublisher;
 
 /**
  * Created by lqynydyxf on 2014/8/7.
  */
 public class CSTPublisherDataDelegate {
+
     public static CSTPublisher getPublisher(Cursor cursor) {
         CSTPublisher publisher = new CSTPublisher();
         publisher.id = cursor.getInt(cursor.getColumnIndex(CSTPublisherProvider.Columns.ID.key));
-        publisher.name = cursor.getString(cursor.getColumnIndex(CSTPublisherProvider.Columns.NAME.key));
-        publisher.qqNum = cursor.getString(cursor.getColumnIndex(CSTPublisherProvider.Columns.QQ.key));
-        publisher.phoneNum = cursor.getString(cursor.getColumnIndex(CSTPublisherProvider.Columns.PHONE.key));
-        publisher.email = cursor.getString(cursor.getColumnIndex(CSTPublisherProvider.Columns.EMAIL.key));
+        publisher.name = cursor
+                .getString(cursor.getColumnIndex(CSTPublisherProvider.Columns.NAME.key));
+        publisher.qqNum = cursor
+                .getString(cursor.getColumnIndex(CSTPublisherProvider.Columns.QQ.key));
+        publisher.phoneNum = cursor
+                .getString(cursor.getColumnIndex(CSTPublisherProvider.Columns.PHONE.key));
+        publisher.email = cursor
+                .getString(cursor.getColumnIndex(CSTPublisherProvider.Columns.EMAIL.key));
         return publisher;
     }
 
     public static CSTPublisher getPublisher(Context context, String id) {
         ContentResolver resolver = context.getContentResolver();
         Cursor cursor = resolver
-                .query(CSTPublisherProvider.CONTENT_URI, null, CSTPublisherProvider.Columns.ID.key + " = ?",
+                .query(CSTPublisherProvider.CONTENT_URI, null,
+                        CSTPublisherProvider.Columns.ID.key + " = ?",
                         new String[]{
                                 id
                         }, null

@@ -4,7 +4,6 @@ import org.json.JSONObject;
 
 import android.content.Context;
 
-import cn.edu.zju.isst.util.L;
 import cn.edu.zju.isst.v2.data.CSTJsonParser;
 import cn.edu.zju.isst.v2.net.CSTResponse;
 import cn.edu.zju.isst.v2.user.data.CSTUser;

@@ -7,7 +7,6 @@ import org.json.JSONObject;
 import java.io.IOException;
 
 import cn.edu.zju.isst.constant.Constants;
-import cn.edu.zju.isst.v2.data.CSTJsonParserUtil;
 import cn.edu.zju.isst.v2.model.CSTDataItem;
 import cn.edu.zju.isst.v2.net.CSTStatusInfo;
 

@@ -18,7 +18,8 @@ public interface Provider {
 
     void setDBRef(SQLiteDatabase database);
 
-    Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder);
+    Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs,
+            String sortOrder);
 
     Uri insert(Uri uri, ContentValues values);
 

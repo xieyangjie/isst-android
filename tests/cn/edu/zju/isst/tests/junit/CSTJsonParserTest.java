@@ -6,8 +6,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-import cn.edu.zju.isst.tests.junit.util.CSTFileUtil;
-import cn.edu.zju.isst.tests.junit.util.CSTPrinter;
+import cn.edu.zju.isst.tests.util.CSTFileUtil;
+import cn.edu.zju.isst.tests.util.CSTPrinter;
 import cn.edu.zju.isst.v2.archive.data.CSTArchive;
 import cn.edu.zju.isst.v2.data.CSTJsonParserUtil;
 import cn.edu.zju.isst.v2.user.data.CSTUser;
