@@ -6,7 +6,6 @@ import com.android.volley.VolleyError;
 import android.content.Context;
 
 import cn.edu.zju.isst.constant.Constants;
-import cn.edu.zju.isst.util.L;
 
 /**
  * Created by i308844 on 7/28/14.
@@ -16,7 +15,7 @@ public abstract class CSTResponse<T> implements Response.Listener<T>, Response.E
 
     protected Context mContext;
 
-    protected CSTResponse(Context context){
+    protected CSTResponse(Context context) {
         this.mContext = context;
     }
 
@@ -36,8 +35,8 @@ public abstract class CSTResponse<T> implements Response.Listener<T>, Response.E
         return null;
     }
 
-    protected void dispatchStatus(CSTStatusInfo statusInfo){
-        if (statusInfo.status == Constants.STATUS_REQUEST_SUCCESS){
+    protected void dispatchStatus(CSTStatusInfo statusInfo) {
+        if (statusInfo.status == Constants.STATUS_REQUEST_SUCCESS) {
             onSuccessStatus();
         } else {
             onErrorStatus(statusInfo);

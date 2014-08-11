@@ -27,7 +27,7 @@ public class UserResponse extends CSTResponse<JSONObject> {
         CSTUser user = (CSTUser) CSTJsonParser.parseJson(response, new CSTUser());
         dispatchStatus(user.getStatusInfo());
 
-        L.d("user",user.toString());
+        L.d("user", user.toString());
 
         //TODO must not pass null or empty user
         if (clearDatabase) {

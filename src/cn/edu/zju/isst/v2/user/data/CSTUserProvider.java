@@ -12,7 +12,7 @@ import cn.edu.zju.isst.v2.db.SimpleTableProvider;
  */
 public class CSTUserProvider extends SimpleTableProvider {
 
-    public enum Columns{
+    public enum Columns {
         ID("id"),
         USER_NAME("user_name"),
         PASSWORD("password"),
@@ -45,7 +45,9 @@ public class CSTUserProvider extends SimpleTableProvider {
     }
 
     public static final String TABLE_NAME = "user";
-    public static final Uri CONTENT_URI = CSTProvider.CONTENT_URI.buildUpon().appendPath(TABLE_NAME).build();
+
+    public static final Uri CONTENT_URI = CSTProvider.CONTENT_URI.buildUpon().appendPath(TABLE_NAME)
+            .build();
 
     public static final String CREATE_TABLE_QUERY = "CREATE TABLE " + TABLE_NAME + " ("
             + _ID + " INTEGER PRIMARY KEY, "

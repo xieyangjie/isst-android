@@ -65,15 +65,15 @@ public class CSTJsonParserTest {
         CSTPublisher publisher = new CSTPublisher();
         try {
             json = new JSONObject(jsonStr);
-            publisher = (CSTPublisher)CSTJsonParser.parseJson(json,  publisher);
+            publisher = (CSTPublisher) CSTJsonParser.parseJson(json, publisher);
         } catch (JSONException e) {
             e.printStackTrace();
         }
         System.out.println(publisher.name);
         System.out.println(publisher.email);
         System.out.println(publisher.phoneNum);
-        for(BasicUser i:(List< BasicUser>)publisher.itemList){
-            System.out.println(((CSTPublisher)i).qqNum);
+        for (BasicUser i : (List<BasicUser>) publisher.itemList) {
+            System.out.println(((CSTPublisher) i).qqNum);
         }
     }
 
@@ -88,7 +88,7 @@ public class CSTJsonParserTest {
         CSTCityEvent cityEvent = new CSTCityEvent();
         try {
             json = new JSONObject(jsonStr);
-            cityEvent = (CSTCityEvent)CSTJsonParser.parseJson(json,  cityEvent);
+            cityEvent = (CSTCityEvent) CSTJsonParser.parseJson(json, cityEvent);
         } catch (JSONException e) {
             e.printStackTrace();
         }

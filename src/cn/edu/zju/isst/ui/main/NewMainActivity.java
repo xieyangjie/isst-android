@@ -32,13 +32,13 @@ import cn.edu.zju.isst.ui.job.ExperienceListFragment;
 import cn.edu.zju.isst.ui.job.InternshipListFragment;
 import cn.edu.zju.isst.ui.job.RecommedListFragment;
 import cn.edu.zju.isst.ui.life.CampusActivityListFragment;
-import cn.edu.zju.isst.v2.archive.gui.NewsListFragment;
 import cn.edu.zju.isst.ui.life.RestaurantListFragment;
 import cn.edu.zju.isst.ui.life.StudyListFragment;
 import cn.edu.zju.isst.ui.life.WikGridFragment;
 import cn.edu.zju.isst.ui.login.LoginActivity;
 import cn.edu.zju.isst.ui.usercenter.UserCenterFragment;
 import cn.edu.zju.isst.util.L;
+import cn.edu.zju.isst.v2.archive.gui.NewsListFragment;
 
 /**
  * @author theasir

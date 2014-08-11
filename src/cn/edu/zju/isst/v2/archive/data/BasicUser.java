@@ -7,9 +7,10 @@ import cn.edu.zju.isst.v2.model.CSTDataItem;
 /**
  * Created by tan on 2014/8/5.
  */
-public class BasicUser extends CSTDataItem<BasicUser>{
+public class BasicUser extends CSTDataItem<BasicUser> {
+
     @JsonProperty("id")
-    public int id ;
+    public int id;
 
     @JsonProperty("name")
     public String name;

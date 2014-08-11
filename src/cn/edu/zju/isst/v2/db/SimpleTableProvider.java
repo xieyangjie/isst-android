@@ -60,8 +60,7 @@ public abstract class SimpleTableProvider implements Provider, BaseColumns {
             }
 
             mDatabase.setTransactionSuccessful();
-        }
-        finally {
+        } finally {
             mDatabase.endTransaction();
         }
 
@@ -77,7 +76,8 @@ public abstract class SimpleTableProvider implements Provider, BaseColumns {
         long rowId = mDatabase.insertOrThrow(tableName, null, values);
         notifyChange(uri);
 
-        return getBaseContentUri().buildUpon().appendPath(tableName).appendPath(Long.toString(rowId)).build();
+        return getBaseContentUri().buildUpon().appendPath(tableName)
+                .appendPath(Long.toString(rowId)).build();
     }
 
     @Override
