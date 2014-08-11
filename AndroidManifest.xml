@@ -53,30 +53,30 @@
         <provider
             android:name=".v2.db.CSTProvider"
             android:authorities="cn.edu.zju.isst.v2.db.cstprovider"
+            android:name=".v2.db.CSTProvider"
             android:exported="false" />
 
-        <!-- &lt;!&ndash; push service client &ndash;&gt; -->
-        <!-- <receiver android:name="cn.edu.zju.isst.baidupush.PushMessageReceiver"> -->
-        <!-- <intent-filter> -->
-        <!-- &lt;!&ndash; 接收push消息 &ndash;&gt; -->
-        <!-- <action android:name="com.baidu.android.pushservice.action.MESSAGE"/> -->
-        <!-- &lt;!&ndash; 接收bind,unbind,fetch,delete等反馈消息 &ndash;&gt; -->
-        <!-- <action android:name="com.baidu.android.pushservice.action.RECEIVE"/> -->
-        <!-- <action android:name="com.baidu.android.pushservice.action.notification.CLICK"/> -->
-        <!-- </intent-filter> -->
-        <!-- </receiver> -->
-        <!-- &lt;!&ndash; push service &ndash;&gt; -->
-        <!-- <receiver -->
-        <!-- android:name="com.baidu.android.pushservice.PushServiceReceiver" -->
-        <!-- android:process=":bdservice_v1"> -->
-        <!-- <intent-filter> -->
-        <!-- <action android:name="android.intent.action.BOOT_COMPLETED"/> -->
-        <!-- <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/> -->
-        <!-- <action android:name="com.baidu.android.pushservice.action.notification.SHOW"/> -->
-        <!-- <action android:name="com.baidu.android.pushservice.action.media.CLICK"/> -->
-        <!-- </intent-filter> -->
-        <!-- </receiver> -->
-
+        <!--&lt;!&ndash; push service client &ndash;&gt;-->
+        <!--<receiver android:name="cn.edu.zju.isst.baidupush.PushMessageReceiver">-->
+        <!--<intent-filter>-->
+        <!--&lt;!&ndash; 接收push消息 &ndash;&gt;-->
+        <!--<action android:name="com.baidu.android.pushservice.action.MESSAGE"/>-->
+        <!--&lt;!&ndash; 接收bind,unbind,fetch,delete等反馈消息 &ndash;&gt;-->
+        <!--<action android:name="com.baidu.android.pushservice.action.RECEIVE"/>-->
+        <!--<action android:name="com.baidu.android.pushservice.action.notification.CLICK"/>-->
+        <!--</intent-filter>-->
+        <!--</receiver>-->
+        <!--&lt;!&ndash; push service &ndash;&gt;-->
+        <!--<receiver-->
+        <!--android:name="com.baidu.android.pushservice.PushServiceReceiver"-->
+        <!--android:process=":bdservice_v1">-->
+        <!--<intent-filter>-->
+        <!--<action android:name="android.intent.action.BOOT_COMPLETED"/>-->
+        <!--<action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>-->
+        <!--<action android:name="com.baidu.android.pushservice.action.notification.SHOW"/>-->
+        <!--<action android:name="com.baidu.android.pushservice.action.media.CLICK"/>-->
+        <!--</intent-filter>-->
+        <!--</receiver>-->
 
         <!-- <receiver -->
         <!-- android:name="com.baidu.android.pushservice.RegistrationReceiver" -->
