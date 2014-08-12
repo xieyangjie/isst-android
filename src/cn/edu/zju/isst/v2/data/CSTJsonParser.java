@@ -22,6 +22,10 @@ public class CSTJsonParser {
             return null;
         }
 
+        if (item == null){
+            throw new IllegalArgumentException("CSTDataItem MUST NOT be null!");
+        }
+
         try {
             CSTStatusInfo parsedStatusInfo = CSTJsonParserUtil
                     .readJsonObject(jsonRaw, CSTStatusInfo.class);
