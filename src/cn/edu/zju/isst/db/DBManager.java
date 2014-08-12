@@ -18,9 +18,9 @@ public class DBManager {
 
     private static final String MAIN_TABLE = "main";
 
-    private SQLiteDatabase db;
-
     private static DBManager INSTANCE = new DBManager();
+
+    private SQLiteDatabase db;
 
     private DBManager() {
     }

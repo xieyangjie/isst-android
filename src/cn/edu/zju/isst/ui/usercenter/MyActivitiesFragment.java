@@ -63,9 +63,10 @@ public class MyActivitiesFragment extends ListFragment implements
 
     private static MyActivitiesFragment INSTANCE = new MyActivitiesFragment();
 
-    public static MyActivitiesFragment getInstance() {
-        return INSTANCE;
-    }
+    private final List<MyPublicActivity> m_listPublic = new ArrayList<MyPublicActivity>();
+
+    private final List<MyParticipatedActivity> m_listParticipated
+            = new ArrayList<MyParticipatedActivity>();
 
     private int m_nVisibleLastIndex;
 
@@ -78,11 +79,6 @@ public class MyActivitiesFragment extends ListFragment implements
     private ArrayList<String> m_arrayListType = new ArrayList<String>();
 
     private LoadType m_loadType;
-
-    private final List<MyPublicActivity> m_listPublic = new ArrayList<MyPublicActivity>();
-
-    private final List<MyParticipatedActivity> m_listParticipated
-            = new ArrayList<MyParticipatedActivity>();
 
     private Handler m_handlerArchiveList;
 
@@ -104,6 +100,10 @@ public class MyActivitiesFragment extends ListFragment implements
 
     }
 
+    public static MyActivitiesFragment getInstance() {
+        return INSTANCE;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         SpinnerAdapter adapter = new ArrayAdapter<String>(getActivity(),
@@ -119,18 +119,38 @@ public class MyActivitiesFragment extends ListFragment implements
         setHasOptionsMenu(true);
     }
 
+    /*
+     * (non-Javadoc)
+     *
+     * @see
+     * android.support.v4.app.Fragment#onCreateOptionsMenu(android.view.Menu,
+     * android.view.MenuInflater)
+     */
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        // inflater.inflate(R.menu.news_list_fragment_ab_menu, menu);
+    }
+
+    /*
+     * (non-Javadoc)
+     *
+     * @see
+     * android.support.v4.app.Fragment#onOptionsItemSelected(android.view.MenuItem
+     * )
+     */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         return inflater.inflate(R.layout.my_activties_list_fragment, null);
-    }
-
-    @Override
-    public void onDestroyView() {
-        // 得到ActionBar
-        ActionBar actionBar = getActivity().getActionBar();
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-        super.onDestroyView();
     }
 
     @Override
@@ -167,48 +187,12 @@ public class MyActivitiesFragment extends ListFragment implements
         super.onViewCreated(view, savedInstanceState);
     }
 
-    /**
-     * 实现 ActionBar.OnNavigationListener接口
-     */
-    private class DropDownListenser implements OnNavigationListener {
-
-        @Override
-        public boolean onNavigationItemSelected(int arg0, long arg1) {
-            L.i("arg0 = " + arg0 + " ; m_type = " + m_type);
-            if (arg0 != m_type) {
-                m_type = arg0;
-                requestData(LoadType.REFRESH);
-            }
-            return false;
-        }
-    }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * android.support.v4.app.Fragment#onCreateOptionsMenu(android.view.Menu,
-     * android.view.MenuInflater)
-     */
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        // inflater.inflate(R.menu.news_list_fragment_ab_menu, menu);
-    }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * android.support.v4.app.Fragment#onOptionsItemSelected(android.view.MenuItem
-     * )
-     */
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            default:
-                return super.onOptionsItemSelected(item);
-        }
+    public void onDestroyView() {
+        // 得到ActionBar
+        ActionBar actionBar = getActivity().getActionBar();
+        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+        super.onDestroyView();
     }
 
     /*
@@ -459,6 +443,22 @@ public class MyActivitiesFragment extends ListFragment implements
      */
     public enum LoadType {
         REFRESH, LOADMORE;
+    }
+
+    /**
+     * 实现 ActionBar.OnNavigationListener接口
+     */
+    private class DropDownListenser implements OnNavigationListener {
+
+        @Override
+        public boolean onNavigationItemSelected(int arg0, long arg1) {
+            L.i("arg0 = " + arg0 + " ; m_type = " + m_type);
+            if (arg0 != m_type) {
+                m_type = arg0;
+                requestData(LoadType.REFRESH);
+            }
+            return false;
+        }
     }
 
     /**

@@ -53,6 +53,8 @@ import static cn.edu.zju.isst.constant.Constants.STATUS_REQUEST_SUCCESS;
 public class BaseJobsListFragment extends ListFragment implements
         OnScrollListener {
 
+    private final List<Job> m_listAchive = new ArrayList<Job>();
+
     private int m_nVisibleLastIndex;
 
     private int m_nCurrentPage;
@@ -62,8 +64,6 @@ public class BaseJobsListFragment extends ListFragment implements
     private JobCategory m_jobCategory;
 
     private LoadType m_loadType;
-
-    private final List<Job> m_listAchive = new ArrayList<Job>();
 
     private Handler m_handlerJobList;
 
@@ -88,47 +88,6 @@ public class BaseJobsListFragment extends ListFragment implements
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-    }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * android.support.v4.app.ListFragment#onCreateView(android.view.LayoutInflater
-     * , android.view.ViewGroup, android.os.Bundle)
-     */
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.job_list_fragment, null);
-    }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see android.support.v4.app.ListFragment#onViewCreated(android.view.View,
-     * android.os.Bundle)
-     */
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        initComponent(view);
-
-        if (m_bIsFirstTime) {
-            initJobList();
-        }
-
-        initHandler();
-
-        setUpAdapter();
-
-        setUpListener();
-
-        if (m_bIsFirstTime) {
-            requestData(LoadType.REFRESH);
-            m_bIsFirstTime = false;
-        }
     }
 
     /*
@@ -170,6 +129,47 @@ public class BaseJobsListFragment extends ListFragment implements
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    /*
+     * (non-Javadoc)
+     *
+     * @see
+     * android.support.v4.app.ListFragment#onCreateView(android.view.LayoutInflater
+     * , android.view.ViewGroup, android.os.Bundle)
+     */
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+            Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.job_list_fragment, null);
+    }
+
+    /*
+     * (non-Javadoc)
+     *
+     * @see android.support.v4.app.ListFragment#onViewCreated(android.view.View,
+     * android.os.Bundle)
+     */
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        initComponent(view);
+
+        if (m_bIsFirstTime) {
+            initJobList();
+        }
+
+        initHandler();
+
+        setUpAdapter();
+
+        setUpListener();
+
+        if (m_bIsFirstTime) {
+            requestData(LoadType.REFRESH);
+            m_bIsFirstTime = false;
         }
     }
 

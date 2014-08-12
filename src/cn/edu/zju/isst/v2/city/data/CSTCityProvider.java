@@ -12,22 +12,7 @@ import cn.edu.zju.isst.v2.db.SimpleTableProvider;
  */
 public class CSTCityProvider extends SimpleTableProvider {
 
-    public enum Columns {
-        ID("id"),
-        NAME("name"),
-        CITY_MASTER("citymaster");
-
-        public String key;
-
-        private Columns(String key) {
-            this.key = key;
-        }
-    }
-
     public static final String TABLE_NAME = "city";
-
-    public static final Uri CONTENT_URI = CSTProvider.CONTENT_URI.buildUpon().appendPath(TABLE_NAME)
-            .build();
 
     public static final String CREATE_TABLE_QUERY = "CREATE TABLE " + TABLE_NAME + " ("
             + _ID + " INTEGER PRIMARY KEY, "
@@ -35,6 +20,9 @@ public class CSTCityProvider extends SimpleTableProvider {
             + Columns.NAME.key + " VARCHAR(255), "
             + Columns.CITY_MASTER.key + " BLOB, "
             + "UNIQUE (" + Columns.ID.key + ") ON CONFLICT REPLACE)";
+
+    public static final Uri CONTENT_URI = CSTProvider.CONTENT_URI.buildUpon().appendPath(TABLE_NAME)
+            .build();
 
     public CSTCityProvider(Context context) {
         super(context);
@@ -53,5 +41,17 @@ public class CSTCityProvider extends SimpleTableProvider {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(CREATE_TABLE_QUERY);
+    }
+
+    public enum Columns {
+        ID("id"),
+        NAME("name"),
+        CITY_MASTER("citymaster");
+
+        public String key;
+
+        private Columns(String key) {
+            this.key = key;
+        }
     }
 }

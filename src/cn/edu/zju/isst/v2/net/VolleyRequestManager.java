@@ -16,11 +16,11 @@ public class VolleyRequestManager {
 
     private static VolleyRequestManager mInstance;
 
+    private static Context mContext;
+
     private RequestQueue mRequestQueue;
 
     private ImageLoader mImageLoader;
-
-    private static Context mContext;
 
     private VolleyRequestManager(Context context) {
         mContext = context;

@@ -11,17 +11,17 @@ import cn.edu.zju.isst.v2.net.CSTStatusInfo;
  */
 public abstract class CSTDataItem<T> implements Serializable {
 
+    public List<T> itemList = new ArrayList<>();
+
     private CSTStatusInfo statusInfo;
 
-    public List<T> itemList = new ArrayList<>();
+    public CSTStatusInfo getStatusInfo() {
+        return statusInfo;
+    }
 
     public CSTDataItem<T> setStatusInfo(CSTStatusInfo statusInfo) {
         this.statusInfo = statusInfo;
         return this;
-    }
-
-    public CSTStatusInfo getStatusInfo() {
-        return statusInfo;
     }
 
 }

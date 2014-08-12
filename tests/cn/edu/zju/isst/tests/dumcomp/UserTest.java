@@ -9,7 +9,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,12 +19,14 @@ import cn.edu.zju.isst.v2.user.data.CSTUser;
 import cn.edu.zju.isst.v2.user.data.CSTUserDataDelegate;
 import cn.edu.zju.isst.v2.user.data.CSTUserProvider;
 
-import static android.app.PendingIntent.getActivity;
-
 public class UserTest extends Activity {
+
     private Button add_user;
+
     private Button delete_user;
+
     private ListView listView;
+
     private CSTUserProvider provider;
 
     @Override
@@ -101,9 +102,24 @@ public class UserTest extends Activity {
         });
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        return true;
+    }
+
     public void show() {
         ArrayList<CSTUser> users = new ArrayList<CSTUser>();
-        Cursor cursor = getContentResolver().query(CSTUserProvider.CONTENT_URI, null, null, null, null);
+        Cursor cursor = getContentResolver()
+                .query(CSTUserProvider.CONTENT_URI, null, null, null, null);
         while (cursor.moveToNext()) {
             CSTUser userdemo = CSTUserDataDelegate.getUser(cursor);
             users.add(userdemo);
@@ -117,19 +133,5 @@ public class UserTest extends Activity {
         SimpleAdapter adapter = new SimpleAdapter(this, list, android.R.layout.simple_list_item_1,
                 new String[]{"name"}, new int[]{android.R.id.text1});
         listView.setAdapter(adapter);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        return true;
     }
 }

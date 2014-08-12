@@ -46,6 +46,17 @@ public class PullToRefeshView extends LinearLayout implements OnTouchListener {
     public static final int STATUS_REFRESH_FINISHED = 3;
 
     /**
+     * 当前处理什么状态，可选值有STATUS_PULL_TO_REFRESH, STATUS_RELEASE_TO_REFRESH,
+     * STATUS_REFRESHING 和 STATUS_REFRESH_FINISHED
+     */
+    private int currentStatus = STATUS_REFRESH_FINISHED;
+
+    /**
+     * 记录上一次的状态是什么，避免进行重复操作
+     */
+    private int lastStatus = currentStatus;
+
+    /**
      * 下拉头部回滚的速度
      */
     public static final int SCROLL_SPEED = -20;
@@ -135,23 +146,12 @@ public class PullToRefeshView extends LinearLayout implements OnTouchListener {
      */
     private int mId = -1;
 
+    ;
+
     /**
      * 下拉头的高度
      */
     private int hideHeaderHeight;
-
-    /**
-     * 当前处理什么状态，可选值有STATUS_PULL_TO_REFRESH, STATUS_RELEASE_TO_REFRESH,
-     * STATUS_REFRESHING 和 STATUS_REFRESH_FINISHED
-     */
-    private int currentStatus = STATUS_REFRESH_FINISHED;
-
-    ;
-
-    /**
-     * 记录上一次的状态是什么，避免进行重复操作
-     */
-    private int lastStatus = currentStatus;
 
     /**
      * 手指按下时的屏幕纵坐标
@@ -413,6 +413,33 @@ public class PullToRefeshView extends LinearLayout implements OnTouchListener {
     }
 
     /**
+     * 使当前线程睡眠指定的毫秒数。
+     *
+     * @param time 指定当前线程睡眠多久，以毫秒为单位
+     */
+    private void sleep(int time) {
+        try {
+            Thread.sleep(time);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 下拉刷新的监听器，使用下拉刷新的地方应该注册此监听器来获取刷新回调。
+     *
+     * @author guolin
+     */
+    public interface PullToRefreshListener {
+
+        /**
+         * 刷新时会去回调此方法，在方法内编写具体的刷新逻辑。注意此方法是在子线程中调用的， 你可以不必另开线程来进行耗时操作。
+         */
+        void onRefresh();
+
+    }
+
+    /**
      * 正在刷新的任务，在此任务中会去回调注册进来的下拉刷新监听器。
      *
      * @author guolin
@@ -482,33 +509,6 @@ public class PullToRefeshView extends LinearLayout implements OnTouchListener {
             header.setLayoutParams(headerLayoutParams);
             currentStatus = STATUS_REFRESH_FINISHED;
         }
-    }
-
-    /**
-     * 使当前线程睡眠指定的毫秒数。
-     *
-     * @param time 指定当前线程睡眠多久，以毫秒为单位
-     */
-    private void sleep(int time) {
-        try {
-            Thread.sleep(time);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * 下拉刷新的监听器，使用下拉刷新的地方应该注册此监听器来获取刷新回调。
-     *
-     * @author guolin
-     */
-    public interface PullToRefreshListener {
-
-        /**
-         * 刷新时会去回调此方法，在方法内编写具体的刷新逻辑。注意此方法是在子线程中调用的， 你可以不必另开线程来进行耗时操作。
-         */
-        void onRefresh();
-
     }
 
 }

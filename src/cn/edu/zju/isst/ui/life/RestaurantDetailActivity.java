@@ -43,11 +43,11 @@ import static cn.edu.zju.isst.constant.Constants.STATUS_REQUEST_SUCCESS;
  */
 public class RestaurantDetailActivity extends BaseActivity {
 
+    private final List<RestaurantMenu> m_listRestaurantMenu = new ArrayList<RestaurantMenu>();
+
     private int m_nId;
 
     private Restaurant m_restaurantCurrent;
-
-    private final List<RestaurantMenu> m_listRestaurantMenu = new ArrayList<RestaurantMenu>();
 
     private Handler m_handlerRestaurantDetail;
 

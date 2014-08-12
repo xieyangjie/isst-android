@@ -12,23 +12,7 @@ import cn.edu.zju.isst.v2.db.SimpleTableProvider;
  */
 public class CSTCommentProvider extends SimpleTableProvider {
 
-    public enum Columns {
-        ID("id"),
-        CONTENT("content"),
-        CREATED_AT("created_at"),
-        CSTUSER("user");
-
-        public String key;
-
-        private Columns(String key) {
-            this.key = key;
-        }
-    }
-
     public static final String TABLE_NAME = "citycomment";
-
-    public static final Uri CONTENT_URI = CSTProvider.CONTENT_URI.buildUpon().appendPath(TABLE_NAME)
-            .build();
 
     public static final String CREATE_TABLE_QUERY = "CREATE TABLE " + TABLE_NAME + " ("
             + _ID + " INTEGER PRIMARY KEY, "
@@ -37,6 +21,9 @@ public class CSTCommentProvider extends SimpleTableProvider {
             + Columns.CREATED_AT.key + " INTEGER, "
             + Columns.CSTUSER.key + " BLOB, "
             + "UNIQUE (" + Columns.ID.key + ") ON CONFLICT REPLACE)";
+
+    public static final Uri CONTENT_URI = CSTProvider.CONTENT_URI.buildUpon().appendPath(TABLE_NAME)
+            .build();
 
     public CSTCommentProvider(Context context) {
         super(context);
@@ -55,5 +42,18 @@ public class CSTCommentProvider extends SimpleTableProvider {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(CREATE_TABLE_QUERY);
+    }
+
+    public enum Columns {
+        ID("id"),
+        CONTENT("content"),
+        CREATED_AT("created_at"),
+        CSTUSER("user");
+
+        public String key;
+
+        private Columns(String key) {
+            this.key = key;
+        }
     }
 }

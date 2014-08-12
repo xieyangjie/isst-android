@@ -12,6 +12,57 @@ import cn.edu.zju.isst.v2.db.SimpleTableProvider;
  */
 public class CSTUserProvider extends SimpleTableProvider {
 
+    public static final String TABLE_NAME = "user";
+
+    public static final String CREATE_TABLE_QUERY = "CREATE TABLE " + TABLE_NAME + " ("
+            + _ID + " INTEGER PRIMARY KEY, "
+            + Columns.ID.key + " VARCHAR(255), "
+            + Columns.USER_NAME.key + " VARCHAR(255), "
+            + Columns.PASSWORD.key + " VARCHAR(255), "
+            + Columns.NAME.key + " VARCHAR(255), "
+            + Columns.GENDER.key + " VARCHAR(32), "
+            + Columns.GRADE.key + " INTEGER, "
+            + Columns.CLASS_ID.key + " INTEGER, "
+            + Columns.CLASS_NAME.key + " VARCHAR(255), "
+            + Columns.MAJOR.key + " VARCHAR(255), "
+            + Columns.CITY_ID.key + " INTEGER, "
+            + Columns.CITY_NAME.key + " VARCHAR(255), "
+            + Columns.EMAIL.key + " VARCHAR(255), "
+            + Columns.PHONE.key + " VARCHAR(255), "
+            + Columns.QQ.key + " VARCHAR(255), "
+            + Columns.COMPANY.key + " VARCHAR(255), "
+            + Columns.JOB_TITLE.key + " VARCHAR(255), "
+            + Columns.SIGN.key + " VARCHAR(255), "
+            + Columns.IS_CASTELLAN.key + " INTEGER, "
+            + Columns.PVT_QQ.key + " INTEGER, "
+            + Columns.PVT_EMAIL.key + " INTEGER, "
+            + Columns.PVT_PHONE.key + " INTEGER, "
+            + Columns.PVT_COMPANY.key + " INTEGER, "
+            + Columns.PVT_JOB_TITLE.key + " INTEGER, "
+            + "UNIQUE (" + Columns.ID.key + ") ON CONFLICT REPLACE)";
+
+    public static final Uri CONTENT_URI = CSTProvider.CONTENT_URI.buildUpon().appendPath(TABLE_NAME)
+            .build();
+
+    public CSTUserProvider(Context context) {
+        super(context);
+    }
+
+    @Override
+    protected Uri getBaseContentUri() {
+        return CSTProvider.CONTENT_URI;
+    }
+
+    @Override
+    public String getTableName() {
+        return TABLE_NAME;
+    }
+
+    @Override
+    public void onCreate(SQLiteDatabase db) {
+        db.execSQL(CREATE_TABLE_QUERY);
+    }
+
     public enum Columns {
         ID("id"),
         USER_NAME("user_name"),
@@ -42,56 +93,5 @@ public class CSTUserProvider extends SimpleTableProvider {
         private Columns(String key) {
             this.key = key;
         }
-    }
-
-    public static final String TABLE_NAME = "user";
-
-    public static final Uri CONTENT_URI = CSTProvider.CONTENT_URI.buildUpon().appendPath(TABLE_NAME)
-            .build();
-
-    public static final String CREATE_TABLE_QUERY = "CREATE TABLE " + TABLE_NAME + " ("
-            + _ID + " INTEGER PRIMARY KEY, "
-            + Columns.ID.key + " VARCHAR(255), "
-            + Columns.USER_NAME.key + " VARCHAR(255), "
-            + Columns.PASSWORD.key + " VARCHAR(255), "
-            + Columns.NAME.key + " VARCHAR(255), "
-            + Columns.GENDER.key + " VARCHAR(32), "
-            + Columns.GRADE.key + " INTEGER, "
-            + Columns.CLASS_ID.key + " INTEGER, "
-            + Columns.CLASS_NAME.key + " VARCHAR(255), "
-            + Columns.MAJOR.key + " VARCHAR(255), "
-            + Columns.CITY_ID.key + " INTEGER, "
-            + Columns.CITY_NAME.key + " VARCHAR(255), "
-            + Columns.EMAIL.key + " VARCHAR(255), "
-            + Columns.PHONE.key + " VARCHAR(255), "
-            + Columns.QQ.key + " VARCHAR(255), "
-            + Columns.COMPANY.key + " VARCHAR(255), "
-            + Columns.JOB_TITLE.key + " VARCHAR(255), "
-            + Columns.SIGN.key + " VARCHAR(255), "
-            + Columns.IS_CASTELLAN.key + " INTEGER, "
-            + Columns.PVT_QQ.key + " INTEGER, "
-            + Columns.PVT_EMAIL.key + " INTEGER, "
-            + Columns.PVT_PHONE.key + " INTEGER, "
-            + Columns.PVT_COMPANY.key + " INTEGER, "
-            + Columns.PVT_JOB_TITLE.key + " INTEGER, "
-            + "UNIQUE (" + Columns.ID.key + ") ON CONFLICT REPLACE)";
-
-    public CSTUserProvider(Context context) {
-        super(context);
-    }
-
-    @Override
-    protected Uri getBaseContentUri() {
-        return CSTProvider.CONTENT_URI;
-    }
-
-    @Override
-    public String getTableName() {
-        return TABLE_NAME;
-    }
-
-    @Override
-    public void onCreate(SQLiteDatabase db) {
-        db.execSQL(CREATE_TABLE_QUERY);
     }
 }

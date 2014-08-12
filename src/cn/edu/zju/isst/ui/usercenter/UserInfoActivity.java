@@ -31,9 +31,9 @@ public class UserInfoActivity extends BaseActivity {
 
     public static final int RESULT_CODE_CANCEL = 0x20;
 
-    private User m_userCurrent;
-
     private final ViewHolder m_viewHolder = new ViewHolder();
+
+    private User m_userCurrent;
 
     /*
      * (non-Javadoc)
@@ -54,35 +54,6 @@ public class UserInfoActivity extends BaseActivity {
         initUser();
 
         bindData(m_userCurrent);
-    }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see android.app.Activity#onActivityResult(int, int,
-     * android.content.Intent)
-     */
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (requestCode) {
-            case REQUEST_CODE_EDIT:
-                switch (resultCode) {
-                    case RESULT_CODE_DONE:
-                        CM.showConfirm(UserInfoActivity.this, "success!");
-                        m_userCurrent = data.hasExtra("updatedUser") ? (User) data
-                                .getSerializableExtra("updatedUser") : DataManager
-                                .getCurrentUser();
-                        bindData(m_userCurrent);
-                        break;
-
-                    default:
-                        break;
-                }
-                break;
-
-            default:
-                break;
-        }
     }
 
     /*
@@ -116,6 +87,35 @@ public class UserInfoActivity extends BaseActivity {
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    /*
+     * (non-Javadoc)
+     *
+     * @see android.app.Activity#onActivityResult(int, int,
+     * android.content.Intent)
+     */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case REQUEST_CODE_EDIT:
+                switch (resultCode) {
+                    case RESULT_CODE_DONE:
+                        CM.showConfirm(UserInfoActivity.this, "success!");
+                        m_userCurrent = data.hasExtra("updatedUser") ? (User) data
+                                .getSerializableExtra("updatedUser") : DataManager
+                                .getCurrentUser();
+                        bindData(m_userCurrent);
+                        break;
+
+                    default:
+                        break;
+                }
+                break;
+
+            default:
+                break;
         }
     }
 

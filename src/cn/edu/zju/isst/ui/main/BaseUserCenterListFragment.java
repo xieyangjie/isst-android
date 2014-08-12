@@ -56,6 +56,8 @@ import static cn.edu.zju.isst.constant.Constants.STATUS_REQUEST_SUCCESS;
 public class BaseUserCenterListFragment extends ListFragment implements
         OnScrollListener {
 
+    private final List<UserCenterList> m_listAchive = new ArrayList<UserCenterList>();
+
     private int m_nVisibleLastIndex;
 
     private int m_nCurrentPage;
@@ -65,8 +67,6 @@ public class BaseUserCenterListFragment extends ListFragment implements
     private UserCenterCategory m_userCenterCategory;
 
     private LoadType m_loadType;
-
-    private final List<UserCenterList> m_listAchive = new ArrayList<UserCenterList>();
 
     private Handler m_handlerUserCenterList;
 
@@ -91,47 +91,6 @@ public class BaseUserCenterListFragment extends ListFragment implements
         super.onCreate(savedInstanceState);
         // action_bar_activities_item
         setHasOptionsMenu(true);
-    }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * android.support.v4.app.ListFragment#onCreateView(android.view.LayoutInflater
-     * , android.view.ViewGroup, android.os.Bundle)
-     */
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.usercenter_list_fragment, null);
-    }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see android.support.v4.app.ListFragment#onViewCreated(android.view.View,
-     * android.os.Bundle)
-     */
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        initComponent(view);
-
-        if (m_bIsFirstTime) {
-            initUserCenterList();
-            m_bIsFirstTime = false;
-        }
-
-        initHandler();
-
-        setUpAdapter();
-
-        setUpListener();
-
-        if (m_listAchive.size() == 0) {
-            requestData(LoadType.REFRESH);
-        }
     }
 
     /*
@@ -173,6 +132,47 @@ public class BaseUserCenterListFragment extends ListFragment implements
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    /*
+     * (non-Javadoc)
+     *
+     * @see
+     * android.support.v4.app.ListFragment#onCreateView(android.view.LayoutInflater
+     * , android.view.ViewGroup, android.os.Bundle)
+     */
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+            Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.usercenter_list_fragment, null);
+    }
+
+    /*
+     * (non-Javadoc)
+     *
+     * @see android.support.v4.app.ListFragment#onViewCreated(android.view.View,
+     * android.os.Bundle)
+     */
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        initComponent(view);
+
+        if (m_bIsFirstTime) {
+            initUserCenterList();
+            m_bIsFirstTime = false;
+        }
+
+        initHandler();
+
+        setUpAdapter();
+
+        setUpListener();
+
+        if (m_listAchive.size() == 0) {
+            requestData(LoadType.REFRESH);
         }
     }
 

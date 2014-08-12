@@ -55,6 +55,8 @@ import static cn.edu.zju.isst.constant.Constants.STATUS_REQUEST_SUCCESS;
 public class BaseArchiveListFragment extends ListFragment implements
         OnScrollListener {
 
+    private final List<Archive> m_listAchive = new ArrayList<Archive>();
+
     private int m_nVisibleLastIndex;
 
     private int m_nCurrentPage;
@@ -64,8 +66,6 @@ public class BaseArchiveListFragment extends ListFragment implements
     private ArchiveCategory m_archiveCategory;
 
     private LoadType m_loadType;
-
-    private final List<Archive> m_listAchive = new ArrayList<Archive>();
 
     private Handler m_handlerArchiveList;
 
@@ -81,14 +81,53 @@ public class BaseArchiveListFragment extends ListFragment implements
     }
 
     /*
-     * (non-Javadoc)
-     *
-     * @see android.support.v4.app.Fragment#onCreate(android.os.Bundle)
-     */
+         * (non-Javadoc)
+         *
+         * @see android.support.v4.app.Fragment#onCreate(android.os.Bundle)
+         */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+    }
+
+    /*
+     * (non-Javadoc)
+     *
+     * @see android.support.v4.app.Fragment#onActivityCreated(android.os.Bundle)
+     */
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+    }
+
+    /*
+     * (non-Javadoc)
+     *
+     * @see
+     * android.support.v4.app.Fragment#onCreateOptionsMenu(android.view.Menu,
+     * android.view.MenuInflater)
+     */
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+//		inflater.inflate(R.menu.news_list_fragment_ab_menu, menu);
+    }
+
+    /*
+     * (non-Javadoc)
+     *
+     * @see
+     * android.support.v4.app.Fragment#onOptionsItemSelected(android.view.MenuItem
+     * )
+     */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     /*
@@ -142,45 +181,6 @@ public class BaseArchiveListFragment extends ListFragment implements
 //			m_bIsFirstTime = false;
 //		}
 
-    }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see android.support.v4.app.Fragment#onActivityCreated(android.os.Bundle)
-     */
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-    }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * android.support.v4.app.Fragment#onCreateOptionsMenu(android.view.Menu,
-     * android.view.MenuInflater)
-     */
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-//		inflater.inflate(R.menu.news_list_fragment_ab_menu, menu);
-    }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * android.support.v4.app.Fragment#onOptionsItemSelected(android.view.MenuItem
-     * )
-     */
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            default:
-                return super.onOptionsItemSelected(item);
-        }
     }
 
     /*
@@ -369,6 +369,7 @@ public class BaseArchiveListFragment extends ListFragment implements
     protected void syncArchiveList() {
         DataManager.syncArchiveList(m_archiveCategory, m_listAchive);
     }
+
 
     /**
      * 加载方式枚举类

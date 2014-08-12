@@ -116,18 +116,6 @@ public class PushMessagesActivity extends BaseActivity {
         PushMessageApi.getMsgList(1, 20, new RequestListener() {
 
             @Override
-            public void onHttpError(CSTResponse response) {
-                // TODO Auto-generated method stub
-
-            }
-
-            @Override
-            public void onException(Exception e) {
-                // TODO Auto-generated method stub
-
-            }
-
-            @Override
             public void onComplete(Object result) {
                 Message msg = mHandler.obtainMessage();
                 try {
@@ -142,6 +130,18 @@ public class PushMessagesActivity extends BaseActivity {
                 }
 
                 mHandler.sendMessage(msg);
+
+            }
+
+            @Override
+            public void onHttpError(CSTResponse response) {
+                // TODO Auto-generated method stub
+
+            }
+
+            @Override
+            public void onException(Exception e) {
+                // TODO Auto-generated method stub
 
             }
         });

@@ -140,18 +140,6 @@ public class LoadingActivity extends Activity {
         VersionApi.getVersionInfo(new RequestListener() {
 
             @Override
-            public void onHttpError(CSTResponse response) {
-                // TODO Auto-generated method stub
-
-            }
-
-            @Override
-            public void onException(Exception e) {
-                // TODO Auto-generated method stub
-
-            }
-
-            @Override
             public void onComplete(Object result) {
                 Message msg = m_handlerLoading.obtainMessage();
                 try {
@@ -166,6 +154,18 @@ public class LoadingActivity extends Activity {
                 }
 
                 m_handlerLoading.sendMessage(msg);
+
+            }
+
+            @Override
+            public void onHttpError(CSTResponse response) {
+                // TODO Auto-generated method stub
+
+            }
+
+            @Override
+            public void onException(Exception e) {
+                // TODO Auto-generated method stub
 
             }
         });

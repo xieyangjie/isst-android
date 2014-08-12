@@ -45,6 +45,8 @@ import static cn.edu.zju.isst.constant.Constants.STATUS_REQUEST_SUCCESS;
  */
 public class RestaurantListFragment extends ListFragment {
 
+    private static RestaurantListFragment INSTANCE = new RestaurantListFragment();
+
     private final List<Restaurant> m_listRestaurant = new ArrayList<Restaurant>();
 
     private Handler m_handlerRestaurantList;
@@ -52,8 +54,6 @@ public class RestaurantListFragment extends ListFragment {
     private RestaurantListAdapter m_adapterRestaurantList;
 
     private ListView m_lsvRestaurantList;
-
-    private static RestaurantListFragment INSTANCE = new RestaurantListFragment();
 
     public RestaurantListFragment() {
     }
@@ -75,7 +75,18 @@ public class RestaurantListFragment extends ListFragment {
 
     /*
      * (non-Javadoc)
-     * 
+     *
+     * @see android.support.v4.app.Fragment#onActivityCreated(android.os.Bundle)
+     */
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        // TODO Auto-generated method stub
+        super.onActivityCreated(savedInstanceState);
+    }
+
+    /*
+     * (non-Javadoc)
+     *
      * @see
      * android.support.v4.app.ListFragment#onCreateView(android.view.LayoutInflater
      * , android.view.ViewGroup, android.os.Bundle)
@@ -88,7 +99,7 @@ public class RestaurantListFragment extends ListFragment {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.support.v4.app.ListFragment#onViewCreated(android.view.View,
      * android.os.Bundle)
      */
@@ -129,17 +140,6 @@ public class RestaurantListFragment extends ListFragment {
         m_adapterRestaurantList = new RestaurantListAdapter(getActivity());
 
         setListAdapter(m_adapterRestaurantList);
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see android.support.v4.app.Fragment#onActivityCreated(android.os.Bundle)
-     */
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        // TODO Auto-generated method stub
-        super.onActivityCreated(savedInstanceState);
     }
 
     /*

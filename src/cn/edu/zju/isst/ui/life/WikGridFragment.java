@@ -56,17 +56,17 @@ import static cn.edu.zju.isst.constant.Constants.STATUS_REQUEST_SUCCESS;
  */
 public class WikGridFragment extends Fragment implements OnScrollListener {
 
-    private int m_nVisibleLastIndex;
+    private static WikGridFragment INSTANCE = new WikGridFragment();
 
     private final List<Archive> m_listAchive = new ArrayList<Archive>();
+
+    private int m_nVisibleLastIndex;
 
     private Handler m_handlerWikiList;
 
     private WikiListAdapter m_adapterWikiList;
 
     private GridView m_gvWiki;
-
-    private static WikGridFragment INSTANCE = new WikGridFragment();
 
     public WikGridFragment() {
     }

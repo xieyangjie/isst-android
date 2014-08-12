@@ -126,19 +126,6 @@ public class JobCommentListActivity extends BaseActivity implements
     /*
      * (non-Javadoc)
      *
-     * @see android.app.Activity#onCreateView(android.view.View,
-     * java.lang.String, android.content.Context, android.util.AttributeSet)
-     */
-    @Override
-    public View onCreateView(View parent, String name, Context context,
-            AttributeSet attrs) {
-        // TODO Auto-generated method stub
-        return super.onCreateView(parent, name, context, attrs);
-    }
-
-    /*
-     * (non-Javadoc)
-     *
      * @see
      * android.support.v4.app.Fragment#onOptionsItemSelected(android.view.MenuItem
      * )
@@ -152,6 +139,19 @@ public class JobCommentListActivity extends BaseActivity implements
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    /*
+     * (non-Javadoc)
+     *
+     * @see android.app.Activity#onCreateView(android.view.View,
+     * java.lang.String, android.content.Context, android.util.AttributeSet)
+     */
+    @Override
+    public View onCreateView(View parent, String name, Context context,
+            AttributeSet attrs) {
+        // TODO Auto-generated method stub
+        return super.onCreateView(parent, name, context, attrs);
     }
 
     @Override
@@ -332,18 +332,6 @@ public class JobCommentListActivity extends BaseActivity implements
         Message msg = m_handler.obtainMessage();
 
         @Override
-        public void onHttpError(CSTResponse response) {
-            HttpErrorWeeder.fckHttpError(response, msg);
-            m_handler.sendMessage(msg);
-        }
-
-        @Override
-        public void onException(Exception e) {
-            ExceptionWeeder.fckException(e, msg);
-            m_handler.sendMessage(msg);
-        }
-
-        @Override
         public void onComplete(Object result) {
             // TODO Auto-generated method stub
             m_requestType = RequestType.GET;
@@ -357,7 +345,19 @@ public class JobCommentListActivity extends BaseActivity implements
             }
 
             m_handler.sendMessage(msg);
+        }        @Override
+        public void onHttpError(CSTResponse response) {
+            HttpErrorWeeder.fckHttpError(response, msg);
+            m_handler.sendMessage(msg);
         }
+
+        @Override
+        public void onException(Exception e) {
+            ExceptionWeeder.fckException(e, msg);
+            m_handler.sendMessage(msg);
+        }
+
+
     }
 
     public class SendCommentRequestListener implements RequestListener {

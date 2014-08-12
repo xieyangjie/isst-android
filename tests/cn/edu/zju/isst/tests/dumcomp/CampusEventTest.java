@@ -15,14 +15,18 @@ import java.util.HashMap;
 import java.util.Map;
 
 import cn.edu.zju.isst.R;
+import cn.edu.zju.isst.v2.campus.event.data.CSTCampusEvent;
 import cn.edu.zju.isst.v2.campus.event.data.CSTCampusEventDataDelegate;
 import cn.edu.zju.isst.v2.campus.event.data.CSTCampusEventProvider;
-import cn.edu.zju.isst.v2.campus.event.data.CSTCampusEvent;
 
 public class CampusEventTest extends Activity {
+
     private Button add_campusevent;
+
     private Button delete_campusevent;
+
     private CSTCampusEventProvider provider;
+
     private ListView listView;
 
     @Override
@@ -70,24 +74,6 @@ public class CampusEventTest extends Activity {
         });
     }
 
-    public void show() {
-        ArrayList<CSTCampusEvent> campusactivities = new ArrayList<CSTCampusEvent>();
-        Cursor cursor = getContentResolver().query(CSTCampusEventProvider.CONTENT_URI, null, null, null, null);
-        while (cursor.moveToNext()) {
-            CSTCampusEvent campusactivitydemo = CSTCampusEventDataDelegate.getCampusEvent(cursor);
-            campusactivities.add(campusactivitydemo);
-        }
-        ArrayList<Map<String, String>> list = new ArrayList<Map<String, String>>();
-        for (CSTCampusEvent ca : campusactivities) {
-            HashMap<String, String> map = new HashMap<String, String>();
-            map.put("title", ca.description);
-            list.add(map);
-        }
-        SimpleAdapter adapter = new SimpleAdapter(this, list, android.R.layout.simple_list_item_1,
-                new String[]{"title"}, new int[]{android.R.id.text1});
-        listView.setAdapter(adapter);
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -105,5 +91,24 @@ public class CampusEventTest extends Activity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void show() {
+        ArrayList<CSTCampusEvent> campusactivities = new ArrayList<CSTCampusEvent>();
+        Cursor cursor = getContentResolver()
+                .query(CSTCampusEventProvider.CONTENT_URI, null, null, null, null);
+        while (cursor.moveToNext()) {
+            CSTCampusEvent campusactivitydemo = CSTCampusEventDataDelegate.getCampusEvent(cursor);
+            campusactivities.add(campusactivitydemo);
+        }
+        ArrayList<Map<String, String>> list = new ArrayList<Map<String, String>>();
+        for (CSTCampusEvent ca : campusactivities) {
+            HashMap<String, String> map = new HashMap<String, String>();
+            map.put("title", ca.description);
+            list.add(map);
+        }
+        SimpleAdapter adapter = new SimpleAdapter(this, list, android.R.layout.simple_list_item_1,
+                new String[]{"title"}, new int[]{android.R.id.text1});
+        listView.setAdapter(adapter);
     }
 }

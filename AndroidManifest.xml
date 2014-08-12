@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="cn.edu.zju.isst"
+<manifest
+    package="cn.edu.zju.isst"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:versionCode="3"
     android:versionName="0.3-alpha">

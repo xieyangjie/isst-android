@@ -41,15 +41,13 @@ public class CSTProvider extends ContentProvider {
 
     private static final String AUTHORITY = "cn.edu.zju.isst.v2.db.cstprovider";
 
-    private static final String DATABASE_NAME = "isst_database.db";
-
     public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY);
+
+    private static final String DATABASE_NAME = "isst_database.db";
 
     private static final int VER_03_ALPHA = 1;
 
     private static final int DB_VERSION = VER_03_ALPHA;
-
-    private Map<String, Provider> mProviderMap = new HashMap<>();
 
     private static final UriMatcher sURIMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 
@@ -64,34 +62,7 @@ public class CSTProvider extends ContentProvider {
         sURIMatcher.addURI(AUTHORITY, CSTCommentProvider.TABLE_NAME, TABLE_COMMENT_CODE);
     }
 
-    private class DatabaseHelper extends SQLiteOpenHelper {
-
-        private DatabaseHelper(Context context) {
-            super(context, DATABASE_NAME, null, DB_VERSION);
-        }
-
-        @Override
-        public void onCreate(SQLiteDatabase db) {
-            for (Provider provider : mProviderMap.values()) {
-                provider.onCreate(db);
-            }
-        }
-
-        @Override
-        public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-            int version = oldVersion;
-
-            switch (oldVersion) {
-
-            }
-
-            if (version != DB_VERSION) {
-                for (Provider provider : mProviderMap.values()) {
-                    provider.resetContents(db);
-                }
-            }
-        }
-    }
+    private Map<String, Provider> mProviderMap = new HashMap<>();
 
     private DatabaseHelper mDatabaseHelper;
 
@@ -132,6 +103,11 @@ public class CSTProvider extends ContentProvider {
     }
 
     @Override
+    public int bulkInsert(Uri uri, ContentValues[] values) {
+        return getProvider(uri).bulkInsert(uri, values);
+    }
+
+    @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
         return getProvider(uri).delete(uri, selection, selectionArgs);
     }
@@ -139,11 +115,6 @@ public class CSTProvider extends ContentProvider {
     @Override
     public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
         return getProvider(uri).update(uri, values, selection, selectionArgs);
-    }
-
-    @Override
-    public int bulkInsert(Uri uri, ContentValues[] values) {
-        return getProvider(uri).bulkInsert(uri, values);
     }
 
     private Provider getProvider(Uri uri) {
@@ -172,6 +143,35 @@ public class CSTProvider extends ContentProvider {
                 return CSTCommentProvider.TABLE_NAME;
             default:
                 throw new IllegalArgumentException("Unknown URI: " + uri);
+        }
+    }
+
+    private class DatabaseHelper extends SQLiteOpenHelper {
+
+        private DatabaseHelper(Context context) {
+            super(context, DATABASE_NAME, null, DB_VERSION);
+        }
+
+        @Override
+        public void onCreate(SQLiteDatabase db) {
+            for (Provider provider : mProviderMap.values()) {
+                provider.onCreate(db);
+            }
+        }
+
+        @Override
+        public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+            int version = oldVersion;
+
+            switch (oldVersion) {
+
+            }
+
+            if (version != DB_VERSION) {
+                for (Provider provider : mProviderMap.values()) {
+                    provider.resetContents(db);
+                }
+            }
         }
     }
 }

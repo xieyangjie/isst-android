@@ -236,10 +236,24 @@ public class User implements Serializable {
     }
 
     /**
+     * @param cityId the cityId to set
+     */
+    public void setCityId(int cityId) {
+        this.cityId = cityId;
+    }
+
+    /**
      * @return the email
      */
     public String getEmail() {
         return email;
+    }
+
+    /**
+     * @param email the email to set
+     */
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     /**
@@ -250,10 +264,24 @@ public class User implements Serializable {
     }
 
     /**
+     * @param phone the phone to set
+     */
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    /**
      * @return the qq
      */
     public String getQq() {
         return qq;
+    }
+
+    /**
+     * @param qq the qq to set
+     */
+    public void setQq(String qq) {
+        this.qq = qq;
     }
 
     /**
@@ -264,6 +292,13 @@ public class User implements Serializable {
     }
 
     /**
+     * @param company the company to set
+     */
+    public void setCompany(String company) {
+        this.company = company;
+    }
+
+    /**
      * @return the position
      */
     public String getPosition() {
@@ -271,10 +306,24 @@ public class User implements Serializable {
     }
 
     /**
+     * @param position the position to set
+     */
+    public void setPosition(String position) {
+        this.position = position;
+    }
+
+    /**
      * @return the signature
      */
     public String getSignature() {
         return signature;
+    }
+
+    /**
+     * @param signature the signature to set
+     */
+    public void setSignature(String signature) {
+        this.signature = signature;
     }
 
     /**
@@ -292,87 +341,17 @@ public class User implements Serializable {
     }
 
     /**
-     * @return the privateEmail
-     */
-    public boolean isPrivateEmail() {
-        return privateEmail;
-    }
-
-    /**
-     * @return the privatePhone
-     */
-    public boolean isPrivatePhone() {
-        return privatePhone;
-    }
-
-    /**
-     * @return the privateCompany
-     */
-    public boolean isPrivateCompany() {
-        return privateCompany;
-    }
-
-    /**
-     * @return the privatePosition
-     */
-    public boolean isPrivatePosition() {
-        return privatePosition;
-    }
-
-    /**
-     * @param cityId the cityId to set
-     */
-    public void setCityId(int cityId) {
-        this.cityId = cityId;
-    }
-
-    /**
-     * @param email the email to set
-     */
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    /**
-     * @param phone the phone to set
-     */
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    /**
-     * @param qq the qq to set
-     */
-    public void setQq(String qq) {
-        this.qq = qq;
-    }
-
-    /**
-     * @param company the company to set
-     */
-    public void setCompany(String company) {
-        this.company = company;
-    }
-
-    /**
-     * @param position the position to set
-     */
-    public void setPosition(String position) {
-        this.position = position;
-    }
-
-    /**
-     * @param signature the signature to set
-     */
-    public void setSignature(String signature) {
-        this.signature = signature;
-    }
-
-    /**
      * @param privateQQ the privateQQ to set
      */
     public void setPrivateQQ(boolean privateQQ) {
         this.privateQQ = privateQQ;
+    }
+
+    /**
+     * @return the privateEmail
+     */
+    public boolean isPrivateEmail() {
+        return privateEmail;
     }
 
     /**
@@ -383,6 +362,13 @@ public class User implements Serializable {
     }
 
     /**
+     * @return the privatePhone
+     */
+    public boolean isPrivatePhone() {
+        return privatePhone;
+    }
+
+    /**
      * @param privatePhone the privatePhone to set
      */
     public void setPrivatePhone(boolean privatePhone) {
@@ -390,10 +376,24 @@ public class User implements Serializable {
     }
 
     /**
+     * @return the privateCompany
+     */
+    public boolean isPrivateCompany() {
+        return privateCompany;
+    }
+
+    /**
      * @param privateCompany the privateCompany to set
      */
     public void setPrivateCompany(boolean privateCompany) {
         this.privateCompany = privateCompany;
+    }
+
+    /**
+     * @return the privatePosition
+     */
+    public boolean isPrivatePosition() {
+        return privatePosition;
     }
 
     /**

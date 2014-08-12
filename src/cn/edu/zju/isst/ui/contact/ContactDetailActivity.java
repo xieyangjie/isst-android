@@ -25,10 +25,10 @@ public class ContactDetailActivity extends BaseActivity {
 
     private final static String PRIVATE_INFO = "未公开";
 
+    private final List<City> m_listCity = new ArrayList<City>();
+
     // 用户
     private User m_user;
-
-    private final List<City> m_listCity = new ArrayList<City>();
 
     // 控件
     private TextView m_tvName;
@@ -136,6 +136,51 @@ public class ContactDetailActivity extends BaseActivity {
     }
 
     /**
+     * 显示用户详情
+     */
+    private void showUserDetail() {
+        if (J.isNullOrEmpty(m_user)) {
+            return;
+        }
+        // 姓名
+        m_tvName.setText(m_user.getName());
+        // 性别
+        if (m_user.getGender() > 0) {
+            m_tvGender.setText(m_user.getGender() == 1 ? "男" : "女");
+        }
+        // 年级
+        m_tvGrade.setText("" + m_user.getGrade() + "级");
+        // 专业
+        m_tvMajor.setText(m_user.getMajor());
+        // 电话
+        m_tvMobile.setText(m_user.getPhone());
+        // Email
+        m_tvEmail.setText(m_user.getEmail());
+        // 城市
+        int cityID = m_user.getCityId();
+        m_tvCity.setText(getCityName(cityID));
+        // 公司
+        m_tvCompany.setText(m_user.getCompany());
+        // 职位
+        m_tvPosition.setText(m_user.getPosition());
+        if (m_user.isPrivatePhone()) {
+            m_tvMobile.setText(PRIVATE_INFO);
+            m_ibtnMobileCall.setVisibility(View.GONE);
+            m_ibtnMessage.setVisibility(View.GONE);
+        }
+        if (m_user.isPrivateEmail()) {
+            m_tvEmail.setText(PRIVATE_INFO);
+            m_ibtnEmail.setVisibility(View.GONE);
+        }
+        if (m_user.isPrivateCompany()) {
+            m_tvCompany.setText(PRIVATE_INFO);
+        }
+        if (m_user.isPrivatePosition()) {
+            m_tvPosition.setText(PRIVATE_INFO);
+        }
+    }
+
+    /**
      * 拨打电话Listner
      *
      * @author yyy
@@ -188,50 +233,5 @@ public class ContactDetailActivity extends BaseActivity {
             }
         }
 
-    }
-
-    /**
-     * 显示用户详情
-     */
-    private void showUserDetail() {
-        if (J.isNullOrEmpty(m_user)) {
-            return;
-        }
-        // 姓名
-        m_tvName.setText(m_user.getName());
-        // 性别
-        if (m_user.getGender() > 0) {
-            m_tvGender.setText(m_user.getGender() == 1 ? "男" : "女");
-        }
-        // 年级
-        m_tvGrade.setText("" + m_user.getGrade() + "级");
-        // 专业
-        m_tvMajor.setText(m_user.getMajor());
-        // 电话
-        m_tvMobile.setText(m_user.getPhone());
-        // Email
-        m_tvEmail.setText(m_user.getEmail());
-        // 城市
-        int cityID = m_user.getCityId();
-        m_tvCity.setText(getCityName(cityID));
-        // 公司
-        m_tvCompany.setText(m_user.getCompany());
-        // 职位
-        m_tvPosition.setText(m_user.getPosition());
-        if (m_user.isPrivatePhone()) {
-            m_tvMobile.setText(PRIVATE_INFO);
-            m_ibtnMobileCall.setVisibility(View.GONE);
-            m_ibtnMessage.setVisibility(View.GONE);
-        }
-        if (m_user.isPrivateEmail()) {
-            m_tvEmail.setText(PRIVATE_INFO);
-            m_ibtnEmail.setVisibility(View.GONE);
-        }
-        if (m_user.isPrivateCompany()) {
-            m_tvCompany.setText(PRIVATE_INFO);
-        }
-        if (m_user.isPrivatePosition()) {
-            m_tvPosition.setText(PRIVATE_INFO);
-        }
     }
 }

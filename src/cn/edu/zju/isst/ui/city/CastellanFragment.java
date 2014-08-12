@@ -35,6 +35,10 @@ public class CastellanFragment extends Fragment {
 
     private static final String PRIVATE_INFO = "未公开";
 
+    private static CastellanFragment INSTANCE = new CastellanFragment();
+
+    private final List<City> m_listCity = new ArrayList<City>();
+
     private TextView m_tvName;
 
     private TextView m_tvGender;
@@ -63,11 +67,7 @@ public class CastellanFragment extends Fragment {
 
     private User m_user;
 
-    private final List<City> m_listCity = new ArrayList<City>();
-
     private ArrayList<String> m_arrayListCity = new ArrayList<String>();
-
-    private static CastellanFragment INSTANCE = new CastellanFragment();
 
     /**
      *
@@ -99,14 +99,6 @@ public class CastellanFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         return inflater.inflate(R.layout.castellan_fragment, null);
-    }
-
-    @Override
-    public void onDestroyView() {
-        // 得到ActionBar
-        ActionBar actionBar = getActivity().getActionBar();
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-        super.onDestroyView();
     }
 
     @Override
@@ -150,6 +142,14 @@ public class CastellanFragment extends Fragment {
         }
 
         super.onViewCreated(view, savedInstanceState);
+    }
+
+    @Override
+    public void onDestroyView() {
+        // 得到ActionBar
+        ActionBar actionBar = getActivity().getActionBar();
+        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+        super.onDestroyView();
     }
 
     /**

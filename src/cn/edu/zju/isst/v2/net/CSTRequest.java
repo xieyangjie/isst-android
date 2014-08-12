@@ -26,13 +26,13 @@ public abstract class CSTRequest<T> extends Request<T> {
     }
 
     @Override
-    protected Map<String, String> getParams() throws AuthFailureError {
-        return mParams;
+    public Map<String, String> getHeaders() throws AuthFailureError {
+        return mHeaders;
     }
 
     @Override
-    public Map<String, String> getHeaders() throws AuthFailureError {
-        return mHeaders;
+    protected Map<String, String> getParams() throws AuthFailureError {
+        return mParams;
     }
 
     @Override

@@ -52,6 +52,10 @@ import static cn.edu.zju.isst.constant.Constants.STATUS_REQUEST_SUCCESS;
 public class CampusActivityListFragment extends ListFragment implements
         OnScrollListener {
 
+    private static CampusActivityListFragment INSTANCE = new CampusActivityListFragment();
+
+    private final List<CampusActivity> m_listCampusActivity = new ArrayList<CampusActivity>();
+
     private int m_nVisibleLastIndex;
 
     private int m_nCurrentPage;
@@ -60,15 +64,11 @@ public class CampusActivityListFragment extends ListFragment implements
 
     private LoadType m_loadType;
 
-    private final List<CampusActivity> m_listCampusActivity = new ArrayList<CampusActivity>();
-
     private Handler m_handlerCampusActivityList;
 
     private CampusActivityListAdapter m_adapterCampusActivityList;
 
     private ListView m_lsvCampusActivityList;
-
-    private static CampusActivityListFragment INSTANCE = new CampusActivityListFragment();
 
     public CampusActivityListFragment() {
         m_nCurrentPage = 1;
@@ -92,7 +92,48 @@ public class CampusActivityListFragment extends ListFragment implements
 
     /*
      * (non-Javadoc)
-     * 
+     *
+     * @see android.support.v4.app.Fragment#onActivityCreated(android.os.Bundle)
+     */
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+    }
+
+    /*
+     * (non-Javadoc)
+     *
+     * @see
+     * android.support.v4.app.Fragment#onCreateOptionsMenu(android.view.Menu,
+     * android.view.MenuInflater)
+     */
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.news_list_fragment_ab_menu, menu);
+    }
+
+    /*
+     * (non-Javadoc)
+     *
+     * @see
+     * android.support.v4.app.Fragment#onOptionsItemSelected(android.view.MenuItem
+     * )
+     */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_refresh:
+                requestData(LoadType.REFRESH);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    /*
+     * (non-Javadoc)
+     *
      * @see
      * android.support.v4.app.ListFragment#onCreateView(android.view.LayoutInflater
      * , android.view.ViewGroup, android.os.Bundle)
@@ -105,7 +146,7 @@ public class CampusActivityListFragment extends ListFragment implements
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.support.v4.app.ListFragment#onViewCreated(android.view.View,
      * android.os.Bundle)
      */
@@ -128,47 +169,6 @@ public class CampusActivityListFragment extends ListFragment implements
         if (m_bIsFirstTime) {
             requestData(LoadType.REFRESH);
             m_bIsFirstTime = false;
-        }
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see android.support.v4.app.Fragment#onActivityCreated(android.os.Bundle)
-     */
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * android.support.v4.app.Fragment#onCreateOptionsMenu(android.view.Menu,
-     * android.view.MenuInflater)
-     */
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.news_list_fragment_ab_menu, menu);
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * android.support.v4.app.Fragment#onOptionsItemSelected(android.view.MenuItem
-     * )
-     */
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_refresh:
-                requestData(LoadType.REFRESH);
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
         }
     }
 

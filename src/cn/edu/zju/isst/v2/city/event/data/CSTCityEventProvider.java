@@ -12,30 +12,7 @@ import cn.edu.zju.isst.v2.db.SimpleTableProvider;
  */
 public class CSTCityEventProvider extends SimpleTableProvider {
 
-    public enum Columns {
-        ID("id"),
-        TITLE("title"),
-        IMGURL("imgUrl"),
-        CITYID("cityId"),
-        LOCATION("location"),
-        STARTTIME("startTime"),
-        EXPIRETIME("expireTime"),
-        UPDATEAT("updateAt"),
-        CONTENT("content"),
-        ISPARTICIPATE("isParticipate"),
-        PUBLISHER("publisher");
-
-        public String key;
-
-        private Columns(String key) {
-            this.key = key;
-        }
-    }
-
     public static final String TABLE_NAME = "cityevent";
-
-    public static final Uri CONTENT_URI = CSTProvider.CONTENT_URI.buildUpon().appendPath(TABLE_NAME)
-            .build();
 
     public static final String CREATE_TABLE_QUERY = "CREATE TABLE " + TABLE_NAME + " ("
             + _ID + " INTEGER PRIMARY KEY, "
@@ -51,6 +28,9 @@ public class CSTCityEventProvider extends SimpleTableProvider {
             + Columns.ISPARTICIPATE.key + " INTEGER, "
             + Columns.PUBLISHER.key + " BLOB, "
             + "UNIQUE (" + Columns.ID.key + ") ON CONFLICT REPLACE)";
+
+    public static final Uri CONTENT_URI = CSTProvider.CONTENT_URI.buildUpon().appendPath(TABLE_NAME)
+            .build();
 
     public CSTCityEventProvider(Context context) {
         super(context);
@@ -69,5 +49,25 @@ public class CSTCityEventProvider extends SimpleTableProvider {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(CREATE_TABLE_QUERY);
+    }
+
+    public enum Columns {
+        ID("id"),
+        TITLE("title"),
+        IMGURL("imgUrl"),
+        CITYID("cityId"),
+        LOCATION("location"),
+        STARTTIME("startTime"),
+        EXPIRETIME("expireTime"),
+        UPDATEAT("updateAt"),
+        CONTENT("content"),
+        ISPARTICIPATE("isParticipate"),
+        PUBLISHER("publisher");
+
+        public String key;
+
+        private Columns(String key) {
+            this.key = key;
+        }
     }
 }

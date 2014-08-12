@@ -29,7 +29,8 @@ public class CSTCityDataDelegate {
                 .query(CSTCityProvider.CONTENT_URI, null, CSTCityProvider.Columns.ID.key + " = ?",
                         new String[]{
                                 id
-                        }, null);
+                        }, null
+                );
         if (cursor != null && cursor.moveToFirst()) {
             try {
                 return getCity(cursor);

@@ -35,6 +35,8 @@ import static cn.edu.zju.isst.constant.Constants.STATUS_REQUEST_SUCCESS;
  */
 public class CityActivityDetailActivity extends BaseActivity {
 
+    private final ViewHolder mViewHolder = new ViewHolder();
+
     private int mId;
 
     private int mCityId;
@@ -44,8 +46,6 @@ public class CityActivityDetailActivity extends BaseActivity {
     private Handler mHandler;
 
     private Handler mBtnHandler;
-
-    private final ViewHolder mViewHolder = new ViewHolder();
 
     private ProgressDialog m_pgdWating;
 
@@ -148,18 +148,6 @@ public class CityActivityDetailActivity extends BaseActivity {
                 new RequestListener() {
 
                     @Override
-                    public void onHttpError(CSTResponse response) {
-                        // TODO Auto-generated method stub
-
-                    }
-
-                    @Override
-                    public void onException(Exception e) {
-                        // TODO Auto-generated method stub
-
-                    }
-
-                    @Override
                     public void onComplete(Object result) {
                         Message msg = mHandler.obtainMessage();
 
@@ -183,6 +171,18 @@ public class CityActivityDetailActivity extends BaseActivity {
                         }
 
                         mHandler.sendMessage(msg);
+
+                    }
+
+                    @Override
+                    public void onHttpError(CSTResponse response) {
+                        // TODO Auto-generated method stub
+
+                    }
+
+                    @Override
+                    public void onException(Exception e) {
+                        // TODO Auto-generated method stub
 
                     }
                 }

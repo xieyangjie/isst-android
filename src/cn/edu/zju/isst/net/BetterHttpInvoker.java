@@ -46,6 +46,23 @@ public class BetterHttpInvoker {
     }
 
     /**
+     * 读取输入流
+     *
+     * @param in 输入流
+     * @return 字节流
+     * @throws IOException 未处理异常
+     */
+    private static byte[] readStream(InputStream in) throws IOException {
+        byte[] buf = new byte[1024];
+        int count = 0;
+        ByteArrayOutputStream out = new ByteArrayOutputStream(1024);
+        while ((count = in.read(buf)) != -1) {
+            out.write(buf, 0, count);
+        }
+        return out.toByteArray();
+    }
+
+    /**
      * GET请求
      *
      * @param uri     URL
@@ -146,23 +163,6 @@ public class BetterHttpInvoker {
             }
         }
         return response;
-    }
-
-    /**
-     * 读取输入流
-     *
-     * @param in 输入流
-     * @return 字节流
-     * @throws IOException 未处理异常
-     */
-    private static byte[] readStream(InputStream in) throws IOException {
-        byte[] buf = new byte[1024];
-        int count = 0;
-        ByteArrayOutputStream out = new ByteArrayOutputStream(1024);
-        while ((count = in.read(buf)) != -1) {
-            out.write(buf, 0, count);
-        }
-        return out.toByteArray();
     }
 
     /**

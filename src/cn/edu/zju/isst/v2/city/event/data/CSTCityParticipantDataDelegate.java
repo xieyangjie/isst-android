@@ -60,7 +60,8 @@ public class CSTCityParticipantDataDelegate {
                         CSTCityParticipantProvider.Columns.ID.key + " = ?",
                         new String[]{
                                 id
-                        }, null);
+                        }, null
+                );
         if (cursor != null && cursor.moveToFirst()) {
             try {
                 return getCityParticipant(cursor);

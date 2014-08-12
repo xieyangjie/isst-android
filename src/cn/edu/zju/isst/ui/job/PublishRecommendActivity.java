@@ -153,18 +153,6 @@ public class PublishRecommendActivity extends BaseActivity {
                         new RequestListener() {
 
                             @Override
-                            public void onHttpError(CSTResponse response) {
-                                // TODO Auto-generated method stub
-
-                            }
-
-                            @Override
-                            public void onException(Exception e) {
-                                // TODO Auto-generated method stub
-
-                            }
-
-                            @Override
                             public void onComplete(Object result) {
                                 // TODO Auto-generated method stub
                                 Message msg = m_handler.obtainMessage();
@@ -178,6 +166,18 @@ public class PublishRecommendActivity extends BaseActivity {
                                 }
 
                                 m_handler.sendMessage(msg);
+                            }
+
+                            @Override
+                            public void onHttpError(CSTResponse response) {
+                                // TODO Auto-generated method stub
+
+                            }
+
+                            @Override
+                            public void onException(Exception e) {
+                                // TODO Auto-generated method stub
+
                             }
                         }
                 );

@@ -48,6 +48,8 @@ import static cn.edu.zju.isst.constant.Constants.STATUS_REQUEST_SUCCESS;
 public class CityActivityListFragment extends ListFragment implements
         OnScrollListener {
 
+    private static CityActivityListFragment INSTANCE = new CityActivityListFragment();
+
     private final List<CityActivity> mCityActivities = new ArrayList<CityActivity>();
 
     private User m_currentUser;
@@ -57,8 +59,6 @@ public class CityActivityListFragment extends ListFragment implements
     private CityActivityListAdapter mListAdapter;
 
     private ListView mCityActivityListView;
-
-    private static CityActivityListFragment INSTANCE = new CityActivityListFragment();
 
     public CityActivityListFragment() {
     }

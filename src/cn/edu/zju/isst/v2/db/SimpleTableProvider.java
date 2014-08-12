@@ -17,21 +17,21 @@ public abstract class SimpleTableProvider implements Provider, BaseColumns {
 
     protected SQLiteDatabase mDatabase;
 
-    protected abstract Uri getBaseContentUri();
-
     protected SimpleTableProvider(Context context) {
         mContext = context;
     }
 
-    @Override
-    public void setDBRef(SQLiteDatabase database) {
-        mDatabase = database;
-    }
+    protected abstract Uri getBaseContentUri();
 
     @Override
     public void resetContents(SQLiteDatabase db) {
         db.execSQL("DROP TABLE IF EXISTS " + getTableName());
         onCreate(db);
+    }
+
+    @Override
+    public void setDBRef(SQLiteDatabase database) {
+        mDatabase = database;
     }
 
     @Override
@@ -47,6 +47,35 @@ public abstract class SimpleTableProvider implements Provider, BaseColumns {
         cursor.setNotificationUri(mContext.getContentResolver(), uri);
 
         return cursor;
+    }
+
+    @Override
+    public Uri insert(Uri uri, ContentValues values) {
+        String tableName = getTableName();
+
+        long rowId = mDatabase.insertOrThrow(tableName, null, values);
+        notifyChange(uri);
+
+        return getBaseContentUri().buildUpon().appendPath(tableName)
+                .appendPath(Long.toString(rowId)).build();
+    }
+
+    @Override
+    public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
+        String tableName = getTableName();
+
+        int count = mDatabase.update(tableName, values, selection, selectionArgs);
+        notifyChange(uri);
+        return count;
+    }
+
+    @Override
+    public int delete(Uri uri, String selection, String[] selectionArgs) {
+        String tableName = getTableName();
+
+        int count = mDatabase.delete(tableName, selection, selectionArgs);
+        notifyChange(uri);
+        return count;
     }
 
     @Override
@@ -67,35 +96,6 @@ public abstract class SimpleTableProvider implements Provider, BaseColumns {
         notifyChange(uri);
 
         return valuesArray.length;
-    }
-
-    @Override
-    public Uri insert(Uri uri, ContentValues values) {
-        String tableName = getTableName();
-
-        long rowId = mDatabase.insertOrThrow(tableName, null, values);
-        notifyChange(uri);
-
-        return getBaseContentUri().buildUpon().appendPath(tableName)
-                .appendPath(Long.toString(rowId)).build();
-    }
-
-    @Override
-    public int delete(Uri uri, String selection, String[] selectionArgs) {
-        String tableName = getTableName();
-
-        int count = mDatabase.delete(tableName, selection, selectionArgs);
-        notifyChange(uri);
-        return count;
-    }
-
-    @Override
-    public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
-        String tableName = getTableName();
-
-        int count = mDatabase.update(tableName, values, selection, selectionArgs);
-        notifyChange(uri);
-        return count;
     }
 
     private void notifyChange(Uri uri) {

@@ -20,6 +20,19 @@ public class Pinyin4j {
     }
 
     /**
+     * 将拼音数组合并成一个字符串
+     */
+    private static String concatPinyinStringArray(String[] pinyinArray) {
+        StringBuffer pinyinSbf = new StringBuffer();
+        if ((pinyinArray != null) && (pinyinArray.length > 0)) {
+            for (int i = 0; i < pinyinArray.length; i++) {
+                pinyinSbf.append(pinyinArray[i]);
+            }
+        }
+        return pinyinSbf.toString();
+    }
+
+    /**
      * 汉字按照拼音排序的比较器
      *
      * @author yyy
@@ -35,19 +48,6 @@ public class Pinyin4j {
                             .toHanyuPinyinStringArray(c2))
             );
         }
-    }
-
-    /**
-     * 将拼音数组合并成一个字符串
-     */
-    private static String concatPinyinStringArray(String[] pinyinArray) {
-        StringBuffer pinyinSbf = new StringBuffer();
-        if ((pinyinArray != null) && (pinyinArray.length > 0)) {
-            for (int i = 0; i < pinyinArray.length; i++) {
-                pinyinSbf.append(pinyinArray[i]);
-            }
-        }
-        return pinyinSbf.toString();
     }
 }
 

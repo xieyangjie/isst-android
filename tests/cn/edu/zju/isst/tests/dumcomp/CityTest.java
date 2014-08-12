@@ -9,7 +9,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,9 +21,13 @@ import cn.edu.zju.isst.v2.city.data.CSTCityProvider;
 import cn.edu.zju.isst.v2.user.data.CSTUser;
 
 public class CityTest extends Activity {
+
     private Button add_city;
+
     private Button delete_city;
+
     private CSTCityProvider provider;
+
     private ListView listView;
 
     @Override
@@ -33,7 +36,7 @@ public class CityTest extends Activity {
         setContentView(R.layout.activity_model_test);
         provider = new CSTCityProvider(getApplicationContext());
         listView = (ListView) findViewById(R.id.listView);
-        add_city=(Button)findViewById(R.id.add);
+        add_city = (Button) findViewById(R.id.add);
         add_city.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -61,15 +64,15 @@ public class CityTest extends Activity {
                 user.pvtJobTitle = true;
                 user.pvtPhoneNum = true;
                 user.pvtQq = true;
-                CSTCity city=new CSTCity();
-                city.id=1;
-                city.name="宁波";
-                city.cityMaster=user;
-                CSTCityDataDelegate.saveCampusActivity(getApplicationContext(),city);
+                CSTCity city = new CSTCity();
+                city.id = 1;
+                city.name = "宁波";
+                city.cityMaster = user;
+                CSTCityDataDelegate.saveCampusActivity(getApplicationContext(), city);
                 show();
             }
         });
-        delete_city=(Button)findViewById(R.id.delete);
+        delete_city = (Button) findViewById(R.id.delete);
         delete_city.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -78,24 +81,6 @@ public class CityTest extends Activity {
             }
         });
     }
-    public void show() {
-        ArrayList<CSTCity> cities = new ArrayList<CSTCity>();
-        Cursor cursor = getContentResolver().query(CSTCityProvider.CONTENT_URI, null, null, null, null);
-        while (cursor.moveToNext()) {
-            CSTCity citydemo = CSTCityDataDelegate.getCity(cursor);
-            cities.add(citydemo);
-        }
-        ArrayList<Map<String, String>> list = new ArrayList<Map<String, String>>();
-        for (CSTCity city : cities) {
-            HashMap<String, String> map = new HashMap<String, String>();
-            map.put("name", city.cityMaster.gender.getTypeName());
-            list.add(map);
-        }
-        SimpleAdapter adapter = new SimpleAdapter(this, list, android.R.layout.simple_list_item_1,
-                new String[]{"name"}, new int[]{android.R.id.text1});
-        listView.setAdapter(adapter);
-    }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -114,5 +99,24 @@ public class CityTest extends Activity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void show() {
+        ArrayList<CSTCity> cities = new ArrayList<CSTCity>();
+        Cursor cursor = getContentResolver()
+                .query(CSTCityProvider.CONTENT_URI, null, null, null, null);
+        while (cursor.moveToNext()) {
+            CSTCity citydemo = CSTCityDataDelegate.getCity(cursor);
+            cities.add(citydemo);
+        }
+        ArrayList<Map<String, String>> list = new ArrayList<Map<String, String>>();
+        for (CSTCity city : cities) {
+            HashMap<String, String> map = new HashMap<String, String>();
+            map.put("name", city.cityMaster.gender.getTypeName());
+            list.add(map);
+        }
+        SimpleAdapter adapter = new SimpleAdapter(this, list, android.R.layout.simple_list_item_1,
+                new String[]{"name"}, new int[]{android.R.id.text1});
+        listView.setAdapter(adapter);
     }
 }
