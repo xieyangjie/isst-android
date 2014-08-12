@@ -24,7 +24,7 @@ public class CSTSerialUtil {
         }
     }
 
-    public static Object antiserialize(final byte[] bytes) {
+    public static Object deserialize(final byte[] bytes) {
         try {
             ByteArrayInputStream bis = new ByteArrayInputStream(bytes);
             ObjectInputStream ois = new ObjectInputStream(bis);

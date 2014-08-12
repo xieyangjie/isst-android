@@ -4,7 +4,7 @@
 package cn.edu.zju.isst.ui.job;
 
 import cn.edu.zju.isst.api.ArchiveCategory;
-import cn.edu.zju.isst.v2.archive.gui.BaseArchiveListFragment;
+import cn.edu.zju.isst.ui.life.BaseArchiveListFragment;
 
 /**
  * @author theasir

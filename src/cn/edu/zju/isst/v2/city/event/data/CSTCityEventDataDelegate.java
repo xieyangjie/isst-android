@@ -35,7 +35,7 @@ public class CSTCityEventDataDelegate {
         cityevent.isParticipate =
                 cursor.getInt(cursor.getColumnIndex(CSTCityEventProvider.Columns.ISPARTICIPATE.key))
                         == 1 ? true : false;
-        cityevent.publisher = (CSTPublisher) CSTSerialUtil.antiserialize(
+        cityevent.publisher = (CSTPublisher) CSTSerialUtil.deserialize(
                 cursor.getBlob(cursor.getColumnIndex(CSTCityEventProvider.Columns.PUBLISHER.key)));
         return cityevent;
     }

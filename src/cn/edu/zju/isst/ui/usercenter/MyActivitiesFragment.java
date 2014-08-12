@@ -563,9 +563,9 @@ public class MyActivitiesFragment extends ListFragment implements
                 convertView = inflater
                         .inflate(R.layout.archive_list_item, null);
                 holder.titleTxv = (TextView) convertView
-                        .findViewById(R.id.archive_list_item_title_txv);
+                        .findViewById(R.id.title_txv);
                 holder.dateTxv = (TextView) convertView
-                        .findViewById(R.id.archive_list_item_date_txv);
+                        .findViewById(R.id.date_txv);
 
                 convertView.setTag(holder);
             } else {

@@ -4,7 +4,6 @@
 package cn.edu.zju.isst.ui.life;
 
 import cn.edu.zju.isst.api.ArchiveCategory;
-import cn.edu.zju.isst.v2.archive.gui.BaseArchiveListFragment;
 
 /**
  * 学习园地列表页

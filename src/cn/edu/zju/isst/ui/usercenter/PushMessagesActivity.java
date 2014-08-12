@@ -208,11 +208,11 @@ public class PushMessagesActivity extends BaseActivity {
                 convertView = inflater
                         .inflate(R.layout.archive_list_item, null);
                 holder.titleTxv = (TextView) convertView
-                        .findViewById(R.id.archive_list_item_title_txv);
+                        .findViewById(R.id.title_txv);
                 holder.contentTxv = (TextView) convertView
-                        .findViewById(R.id.archive_list_item_description_txv);
+                        .findViewById(R.id.description_txv);
                 holder.createdTimeTxv = (TextView) convertView
-                        .findViewById(R.id.archive_list_item_date_txv);
+                        .findViewById(R.id.date_txv);
 
                 convertView.setTag(holder);
             } else {
@@ -224,7 +224,7 @@ public class PushMessagesActivity extends BaseActivity {
                     .get(position).createdTime));
             holder.contentTxv.setText(mMessages.get(position).content);
 
-            convertView.findViewById(R.id.archive_list_item_publisher_txv)
+            convertView.findViewById(R.id.publisher_txv)
                     .setVisibility(View.GONE);
 
             return convertView;

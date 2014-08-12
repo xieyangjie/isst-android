@@ -1,9 +1,10 @@
-package cn.edu.zju.isst.ui.main;
+package cn.edu.zju.isst.ui.life;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.annotation.SuppressLint;
 import android.app.ListFragment;
 import android.content.Context;
 import android.content.Intent;
@@ -15,12 +16,10 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -28,21 +27,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.edu.zju.isst.R;
-import cn.edu.zju.isst.api.UserCenterApi;
-import cn.edu.zju.isst.api.UserCenterCategory;
+import cn.edu.zju.isst.api.ArchiveCategory;
+import cn.edu.zju.isst.db.Archive;
 import cn.edu.zju.isst.db.DataManager;
-import cn.edu.zju.isst.db.UserCenterList;
 import cn.edu.zju.isst.exception.ExceptionWeeder;
 import cn.edu.zju.isst.exception.HttpErrorWeeder;
 import cn.edu.zju.isst.net.CSTResponse;
 import cn.edu.zju.isst.net.NetworkConnection;
 import cn.edu.zju.isst.net.RequestListener;
-import cn.edu.zju.isst.ui.job.PublishRecommendActivity;
-import cn.edu.zju.isst.ui.job.RecommendDetailActivity;
+import cn.edu.zju.isst.ui.main.NewMainActivity;
 import cn.edu.zju.isst.util.J;
 import cn.edu.zju.isst.util.L;
 import cn.edu.zju.isst.util.TimeString;
-import cn.edu.zju.isst.ui.life.ArchiveDetailActivity;
+import cn.edu.zju.isst.v2.archive.net.ArchiveApi;
+import cn.edu.zju.isst.widget.PullToRefeshView;
+import cn.edu.zju.isst.widget.PullToRefeshView.PullToRefreshListener;
 
 import static cn.edu.zju.isst.constant.Constants.NETWORK_NOT_CONNECTED;
 import static cn.edu.zju.isst.constant.Constants.STATUS_NOT_LOGIN;
@@ -53,10 +52,10 @@ import static cn.edu.zju.isst.constant.Constants.STATUS_REQUEST_SUCCESS;
  *
  * @author theasir
  */
-public class BaseUserCenterListFragment extends ListFragment implements
+public class BaseArchiveListFragment extends ListFragment implements
         OnScrollListener {
 
-    private final List<UserCenterList> m_listAchive = new ArrayList<UserCenterList>();
+    private final List<Archive> m_listAchive = new ArrayList<Archive>();
 
     private int m_nVisibleLastIndex;
 
@@ -64,32 +63,31 @@ public class BaseUserCenterListFragment extends ListFragment implements
 
     private boolean m_bIsFirstTime;
 
-    private UserCenterCategory m_userCenterCategory;
+    private ArchiveCategory m_archiveCategory;
 
     private LoadType m_loadType;
 
-    private Handler m_handlerUserCenterList;
+    private Handler m_handlerArchiveList;
 
-    private UserCenterListAdapter m_adapterUserCenterList;
+    private ArchiveListAdapter m_adapterArchiveList;
 
-    private View m_viewContainer;
+    private PullToRefeshView m_ptrView;
 
-    private ListView m_lsvUserCenterList;
+    private ListView m_lsvArchiveList;
 
-    public BaseUserCenterListFragment() {
+    public BaseArchiveListFragment() {
         m_nCurrentPage = 1;
         m_bIsFirstTime = true;
     }
 
     /*
-     * (non-Javadoc)
-     *
-     * @see android.support.v4.app.Fragment#onCreate(android.os.Bundle)
-     */
+         * (non-Javadoc)
+         *
+         * @see android.support.v4.app.Fragment#onCreate(android.os.Bundle)
+         */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // action_bar_activities_item
         setHasOptionsMenu(true);
     }
 
@@ -114,7 +112,7 @@ public class BaseUserCenterListFragment extends ListFragment implements
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.news_list_fragment_ab_menu, menu);
+//		inflater.inflate(R.menu.news_list_fragment_ab_menu, menu);
     }
 
     /*
@@ -127,9 +125,6 @@ public class BaseUserCenterListFragment extends ListFragment implements
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_refresh:
-                requestData(LoadType.REFRESH);
-                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -145,7 +140,7 @@ public class BaseUserCenterListFragment extends ListFragment implements
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.usercenter_list_fragment, null);
+        return inflater.inflate(R.layout.archive_list_fragment, null);
     }
 
     /*
@@ -157,11 +152,11 @@ public class BaseUserCenterListFragment extends ListFragment implements
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        L.i(this.getClass().getName() + "----enter---- onViewCreated");
         initComponent(view);
 
         if (m_bIsFirstTime) {
-            initUserCenterList();
+            initArchiveList();
             m_bIsFirstTime = false;
         }
 
@@ -171,9 +166,21 @@ public class BaseUserCenterListFragment extends ListFragment implements
 
         setUpListener();
 
-        if (m_listAchive.size() == 0) {
-            requestData(LoadType.REFRESH);
-        }
+        //L.d(tag, msg)
+        m_ptrView.setOnRefreshListener(new PullToRefreshListener() {
+
+            @Override
+            public void onRefresh() {
+                L.i(this.getClass().getName() + "-----enter onViewCreated---onRefresh---");
+                requestData(LoadType.REFRESH);
+            }
+        }, 0);
+
+//		if (m_bIsFirstTime) {
+////			requestData(LoadType.REFRESH);
+//			m_bIsFirstTime = false;
+//		}
+
     }
 
     /*
@@ -187,18 +194,7 @@ public class BaseUserCenterListFragment extends ListFragment implements
     public void onListItemClick(ListView l, View v, int position, long id) {
         L.i(this.getClass().getName() + " onListItemClick postion = "
                 + position);
-        Intent intent = null;
-        switch (m_userCenterCategory) {
-            case MYRECOMMEND:
-                intent = new Intent(getActivity(), RecommendDetailActivity.class);
-                break;
-            case MYEXPIENCE:
-                intent = new Intent(getActivity(), ArchiveDetailActivity.class);
-                break;
-            default:
-                break;
-        }
-
+        Intent intent = new Intent(getActivity(), ArchiveDetailActivity.class);
         intent.putExtra("id", m_listAchive.get(position).getId());
         getActivity().startActivity(intent);
     }
@@ -206,7 +202,7 @@ public class BaseUserCenterListFragment extends ListFragment implements
     @Override
     public void onScrollStateChanged(AbsListView view, int scrollState) {
         if (scrollState == SCROLL_STATE_IDLE
-                && m_nVisibleLastIndex == m_adapterUserCenterList.getCount() - 1) {
+                && m_nVisibleLastIndex == m_adapterArchiveList.getCount() - 1) {
             requestData(LoadType.LOADMORE);
         }
     }
@@ -217,48 +213,35 @@ public class BaseUserCenterListFragment extends ListFragment implements
         m_nVisibleLastIndex = firstVisibleItem + visibleItemCount - 1;
     }
 
-    public void setUserCenterCategory(UserCenterCategory userCenterCategory) {
-        m_userCenterCategory = userCenterCategory;
+    public void setArchiveCategory(ArchiveCategory archiveCategory) {
+        m_archiveCategory = archiveCategory;
     }
 
     protected void initComponent(View view) {
-        m_lsvUserCenterList = (ListView) view.findViewById(android.R.id.list);
-        View viewContainer = (View) view
-                .findViewById(R.id.usercenter_public_btn_container);
-        if (m_userCenterCategory == UserCenterCategory.MYRECOMMEND) {
-            viewContainer.setVisibility(View.VISIBLE);
-            Button btnPublish = (Button) view
-                    .findViewById(R.id.usercenter_public_btn);
-            btnPublish.setOnClickListener(new OnClickListener() {
-
-                @Override
-                public void onClick(View v) {
-                    // TODO Auto-generated method stub
-                    Intent intent = new Intent(getActivity(),
-                            PublishRecommendActivity.class);
-                    startActivity(intent);
-                }
-            });
-        } else {
-            viewContainer.setVisibility(View.GONE);
-        }
+        m_ptrView = (PullToRefeshView) view
+                .findViewById(R.id.archive_list_fragment_ptr_view);
+        m_lsvArchiveList = (ListView) view.findViewById(android.R.id.list);
     }
 
     /**
      * 初始化归档列表，若有缓存则读取缓存
      */
-    protected void initUserCenterList() {
+    protected void initArchiveList() {
+        List<Archive> dbArchiveList = getArchiveList();
         m_listAchive.clear();
-        List<UserCenterList> dbUserCenterList = getUserCenterList();
-        if (!J.isNullOrEmpty(dbUserCenterList)) {
-            for (UserCenterList userCenterList : dbUserCenterList) {
-                m_listAchive.add(userCenterList);
+        if (!J.isNullOrEmpty(dbArchiveList)) {
+            for (Archive archive : dbArchiveList) {
+                m_listAchive.add(archive);
             }
+        }
+        if (J.isNullOrEmpty(m_listAchive)) {
+            requestData(LoadType.REFRESH);
         }
     }
 
+    @SuppressLint("HandlerLeak")
     protected void initHandler() {
-        m_handlerUserCenterList = new Handler() {
+        m_handlerArchiveList = new Handler() {
 
             /*
              * (non-Javadoc)
@@ -267,6 +250,7 @@ public class BaseUserCenterListFragment extends ListFragment implements
              */
             @Override
             public void handleMessage(Message msg) {
+                m_ptrView.finishRefreshing();
                 switch (msg.what) {
                     case STATUS_REQUEST_SUCCESS:
                         switch (m_loadType) {
@@ -279,7 +263,7 @@ public class BaseUserCenterListFragment extends ListFragment implements
                             default:
                                 break;
                         }
-                        m_adapterUserCenterList.notifyDataSetChanged();
+                        m_adapterArchiveList.notifyDataSetChanged();
                         break;
                     case STATUS_NOT_LOGIN:// TODO
                         ((NewMainActivity) getActivity()).updateLogin();
@@ -295,12 +279,12 @@ public class BaseUserCenterListFragment extends ListFragment implements
     }
 
     protected void setUpAdapter() {
-        m_adapterUserCenterList = new UserCenterListAdapter(getActivity());
-        setListAdapter(m_adapterUserCenterList);
+        m_adapterArchiveList = new ArchiveListAdapter(getActivity());
+        setListAdapter(m_adapterArchiveList);
     }
 
     protected void setUpListener() {
-        m_lsvUserCenterList.setOnScrollListener(this);
+        m_lsvArchiveList.setOnScrollListener(this);
     }
 
     /**
@@ -319,10 +303,9 @@ public class BaseUserCenterListFragment extends ListFragment implements
             JSONArray jsonArray = jsonObject.getJSONArray("body");
 
             for (int i = 0; i < jsonArray.length(); i++) {
-                m_listAchive.add(new UserCenterList((JSONObject) jsonArray
-                        .get(i)));
+                m_listAchive.add(new Archive((JSONObject) jsonArray.get(i)));
             }
-            syncUserCenterList();
+            syncArchiveList();
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -342,8 +325,7 @@ public class BaseUserCenterListFragment extends ListFragment implements
             jsonArray = jsonObject.getJSONArray("body");
 
             for (int i = 0; i < jsonArray.length(); i++) {
-                m_listAchive.add(new UserCenterList((JSONObject) jsonArray
-                        .get(i)));
+                m_listAchive.add(new Archive((JSONObject) jsonArray.get(i)));
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -356,36 +338,38 @@ public class BaseUserCenterListFragment extends ListFragment implements
      * @param type 加载方式
      */
     protected void requestData(LoadType type) {
+
         if (NetworkConnection.isNetworkConnected(getActivity())) {
             m_loadType = type;
             switch (type) {
                 case REFRESH:
-                    UserCenterApi.getUserCenterList(m_userCenterCategory, 1, 20,
-                            new UserCenterListRequestListener());
+                    ArchiveApi.getArchiveList(m_archiveCategory, 1, 20, "",
+                            new ArchiveListRequestListener());
                     m_nCurrentPage = 1;
                     break;
                 case LOADMORE:
-                    UserCenterApi.getUserCenterList(m_userCenterCategory,
-                            ++m_nCurrentPage, 20,
-                            new UserCenterListRequestListener());
+                    ArchiveApi.getArchiveList(m_archiveCategory, ++m_nCurrentPage,
+                            20, "", new ArchiveListRequestListener());
                     break;
                 default:
                     break;
             }
         } else {
-            Message msg = m_handlerUserCenterList.obtainMessage();
+            Message msg = m_handlerArchiveList.obtainMessage();
             msg.what = NETWORK_NOT_CONNECTED;
-            m_handlerUserCenterList.sendMessage(msg);
+            m_handlerArchiveList.sendMessage(msg);
         }
+
     }
 
-    protected List<UserCenterList> getUserCenterList() {
-        return DataManager.getUserCenterList(m_userCenterCategory);
+    protected List<Archive> getArchiveList() {
+        return DataManager.getArchiveList(m_archiveCategory);
     }
 
-    protected void syncUserCenterList() {
-        DataManager.syncUserCenterList(m_userCenterCategory, m_listAchive);
+    protected void syncArchiveList() {
+        DataManager.syncArchiveList(m_archiveCategory, m_listAchive);
     }
+
 
     /**
      * 加载方式枚举类
@@ -401,11 +385,11 @@ public class BaseUserCenterListFragment extends ListFragment implements
      *
      * @author theasir
      */
-    public class UserCenterListRequestListener implements RequestListener {
+    public class ArchiveListRequestListener implements RequestListener {
 
         @Override
         public void onComplete(Object result) {
-            Message msg = m_handlerUserCenterList.obtainMessage();
+            Message msg = m_handlerArchiveList.obtainMessage();
             try {
                 if (!J.isValidJsonValue("status", (JSONObject) result)) {
                     return;
@@ -417,23 +401,23 @@ public class BaseUserCenterListFragment extends ListFragment implements
                 e.printStackTrace();
             }
 
-            m_handlerUserCenterList.sendMessage(msg);
+            m_handlerArchiveList.sendMessage(msg);
         }
 
         @Override
         public void onHttpError(CSTResponse response) {
             L.i(this.getClass().getName() + " onHttpError!");
-            Message msg = m_handlerUserCenterList.obtainMessage();
+            Message msg = m_handlerArchiveList.obtainMessage();
             HttpErrorWeeder.fckHttpError(response, msg);
-            m_handlerUserCenterList.sendMessage(msg);
+            m_handlerArchiveList.sendMessage(msg);
         }
 
         @Override
         public void onException(Exception e) {
             L.i(this.getClass().getName() + " onException!");
-            Message msg = m_handlerUserCenterList.obtainMessage();
+            Message msg = m_handlerArchiveList.obtainMessage();
             ExceptionWeeder.fckException(e, msg);
-            m_handlerUserCenterList.sendMessage(msg);
+            m_handlerArchiveList.sendMessage(msg);
         }
 
     }
@@ -452,8 +436,6 @@ public class BaseUserCenterListFragment extends ListFragment implements
         public TextView publisherTxv;
 
         public TextView descriptionTxv;
-
-        public View indicatorView;
     }
 
     /**
@@ -461,11 +443,11 @@ public class BaseUserCenterListFragment extends ListFragment implements
      *
      * @author theasir
      */
-    public class UserCenterListAdapter extends BaseAdapter {
+    public class ArchiveListAdapter extends BaseAdapter {
 
         private LayoutInflater inflater;
 
-        public UserCenterListAdapter(Context context) {
+        public ArchiveListAdapter(Context context) {
             this.inflater = LayoutInflater.from(context);
         }
 
@@ -491,12 +473,16 @@ public class BaseUserCenterListFragment extends ListFragment implements
             if (convertView == null) {
                 holder = new ViewHolder();
 
-                convertView = inflater.inflate(R.layout.usercenter_list_item,
-                        null);
+                convertView = inflater
+                        .inflate(R.layout.archive_list_item, null);
                 holder.titleTxv = (TextView) convertView
-                        .findViewById(R.id.usercenter_list_item_title_txv);
+                        .findViewById(R.id.title_txv);
                 holder.dateTxv = (TextView) convertView
-                        .findViewById(R.id.usercenter_list_item_date_txv);
+                        .findViewById(R.id.date_txv);
+                holder.publisherTxv = (TextView) convertView
+                        .findViewById(R.id.publisher_txv);
+                holder.descriptionTxv = (TextView) convertView
+                        .findViewById(R.id.description_txv);
 
                 convertView.setTag(holder);
             } else {
@@ -506,8 +492,10 @@ public class BaseUserCenterListFragment extends ListFragment implements
             holder.titleTxv.setText(m_listAchive.get(position).getTitle());
             holder.dateTxv.setText(TimeString.toYMD(m_listAchive.get(position)
                     .getUpdatedAt()));
-
-            // holder.indicatorView.setBackgroundColor(Color.BLUE);
+            holder.publisherTxv.setText(m_listAchive.get(position)
+                    .getPublisher().getName());
+            holder.descriptionTxv.setText(m_listAchive.get(position)
+                    .getDescription());
 
             return convertView;
         }

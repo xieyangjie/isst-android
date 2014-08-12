@@ -13,6 +13,8 @@ import android.provider.BaseColumns;
  */
 public abstract class SimpleTableProvider implements Provider, BaseColumns {
 
+    protected static SimpleTableProvider INSTANCE;
+
     protected Context mContext;
 
     protected SQLiteDatabase mDatabase;

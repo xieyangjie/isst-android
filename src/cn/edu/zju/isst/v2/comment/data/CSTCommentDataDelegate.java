@@ -18,7 +18,7 @@ public class CSTCommentDataDelegate {
         comment.id = cursor.getInt(cursor.getColumnIndex(CSTCommentProvider.Columns.ID.key));
         comment.content = cursor
                 .getString(cursor.getColumnIndex(CSTCommentProvider.Columns.CONTENT.key));
-        comment.user = (CSTUser) CSTSerialUtil.antiserialize(
+        comment.user = (CSTUser) CSTSerialUtil.deserialize(
                 cursor.getBlob(cursor.getColumnIndex(CSTCommentProvider.Columns.CSTUSER.key)));
         return comment;
     }
