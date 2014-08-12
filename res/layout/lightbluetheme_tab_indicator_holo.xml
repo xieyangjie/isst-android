@@ -13,7 +13,8 @@
      limitations under the License.
 -->
 
-<LinearLayout style="@style/TabLightBlueTheme"
+<LinearLayout
+    style="@style/TabLightBlueTheme"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="@dimen/tab_host_default_height"
     android:gravity="center"

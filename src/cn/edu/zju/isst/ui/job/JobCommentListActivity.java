@@ -345,7 +345,9 @@ public class JobCommentListActivity extends BaseActivity implements
             }
 
             m_handler.sendMessage(msg);
-        }        @Override
+        }
+
+        @Override
         public void onHttpError(CSTResponse response) {
             HttpErrorWeeder.fckHttpError(response, msg);
             m_handler.sendMessage(msg);
