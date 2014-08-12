@@ -22,7 +22,7 @@ public class CSTJsonParser {
             return null;
         }
 
-        if (item == null){
+        if (item == null) {
             throw new IllegalArgumentException("CSTDataItem MUST NOT be null!");
         }
 

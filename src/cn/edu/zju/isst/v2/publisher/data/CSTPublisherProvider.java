@@ -30,6 +30,10 @@ public class CSTPublisherProvider extends SimpleTableProvider {
         super(context);
     }
 
+    public SimpleTableProvider getInstance(Context context) {
+        return null;
+    }
+
     @Override
     protected Uri getBaseContentUri() {
         return CSTProvider.CONTENT_URI;

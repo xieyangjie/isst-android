@@ -1,7 +1,7 @@
 /**
  *
  */
-package cn.edu.zju.isst.v2.archive.gui;
+package cn.edu.zju.isst.ui.life;
 
 import org.json.JSONException;
 import org.json.JSONObject;

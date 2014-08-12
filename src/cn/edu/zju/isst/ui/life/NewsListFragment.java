@@ -1,7 +1,7 @@
 /**
  *
  */
-package cn.edu.zju.isst.v2.archive.gui;
+package cn.edu.zju.isst.ui.life;
 
 import cn.edu.zju.isst.api.ArchiveCategory;
 

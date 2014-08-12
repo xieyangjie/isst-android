@@ -18,7 +18,7 @@ public class CSTCityDataDelegate {
         CSTCity city = new CSTCity();
         city.id = cursor.getInt(cursor.getColumnIndex(CSTUserProvider.Columns.ID.key));
         city.name = cursor.getString(cursor.getColumnIndex(CSTCityProvider.Columns.NAME.key));
-        city.cityMaster = (CSTUser) CSTSerialUtil.antiserialize(
+        city.cityMaster = (CSTUser) CSTSerialUtil.deserialize(
                 cursor.getBlob(cursor.getColumnIndex(CSTCityProvider.Columns.CITY_MASTER.key)));
         return city;
     }

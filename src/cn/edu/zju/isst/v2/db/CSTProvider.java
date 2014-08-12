@@ -12,6 +12,7 @@ import android.net.Uri;
 import java.util.HashMap;
 import java.util.Map;
 
+import cn.edu.zju.isst.v2.archive.data.CSTArchiveProvider;
 import cn.edu.zju.isst.v2.campus.event.data.CSTCampusEventProvider;
 import cn.edu.zju.isst.v2.city.data.CSTCityProvider;
 import cn.edu.zju.isst.v2.city.event.data.CSTCityEventProvider;
@@ -27,17 +28,19 @@ public class CSTProvider extends ContentProvider {
 
     private static final int TABLE_USER_CODE = 1;
 
-    private static final int TABLE_CAMPUSEvent_CODE = 2;
+    private static final int TABLE_ARCHIVE_CODE = 0x02;
 
-    private static final int TABLE_CITY_CODE = 3;
-
-    private static final int TABLE_PUBLISHER_CODE = 4;
-
-    private static final int TABLE_CITYEVENT_CODE = 5;
-
-    private static final int TABLE_CITYPARTICIPANT_CODE = 6;
-
-    private static final int TABLE_COMMENT_CODE = 7;
+//    private static final int TABLE_CAMPUSEvent_CODE = 2;
+//
+//    private static final int TABLE_CITY_CODE = 3;
+//
+//    private static final int TABLE_PUBLISHER_CODE = 4;
+//
+//    private static final int TABLE_CITYEVENT_CODE = 5;
+//
+//    private static final int TABLE_CITYPARTICIPANT_CODE = 6;
+//
+//    private static final int TABLE_COMMENT_CODE = 7;
 
     private static final String AUTHORITY = "cn.edu.zju.isst.v2.db.cstprovider";
 
@@ -53,13 +56,14 @@ public class CSTProvider extends ContentProvider {
 
     static {
         sURIMatcher.addURI(AUTHORITY, CSTUserProvider.TABLE_NAME, TABLE_USER_CODE);
-        sURIMatcher.addURI(AUTHORITY, CSTCampusEventProvider.TABLE_NAME, TABLE_CAMPUSEvent_CODE);
-        sURIMatcher.addURI(AUTHORITY, CSTCityProvider.TABLE_NAME, TABLE_CITY_CODE);
-        sURIMatcher.addURI(AUTHORITY, CSTPublisherProvider.TABLE_NAME, TABLE_PUBLISHER_CODE);
-        sURIMatcher.addURI(AUTHORITY, CSTCityEventProvider.TABLE_NAME, TABLE_CITYEVENT_CODE);
-        sURIMatcher.addURI(AUTHORITY, CSTCityParticipantProvider.TABLE_NAME,
-                TABLE_CITYPARTICIPANT_CODE);
-        sURIMatcher.addURI(AUTHORITY, CSTCommentProvider.TABLE_NAME, TABLE_COMMENT_CODE);
+        sURIMatcher.addURI(AUTHORITY, CSTArchiveProvider.TABLE_NAME, TABLE_ARCHIVE_CODE);
+//        sURIMatcher.addURI(AUTHORITY, CSTCampusEventProvider.TABLE_NAME, TABLE_CAMPUSEvent_CODE);
+//        sURIMatcher.addURI(AUTHORITY, CSTCityProvider.TABLE_NAME, TABLE_CITY_CODE);
+//        sURIMatcher.addURI(AUTHORITY, CSTPublisherProvider.TABLE_NAME, TABLE_PUBLISHER_CODE);
+//        sURIMatcher.addURI(AUTHORITY, CSTCityEventProvider.TABLE_NAME, TABLE_CITYEVENT_CODE);
+//        sURIMatcher.addURI(AUTHORITY, CSTCityParticipantProvider.TABLE_NAME,
+//                TABLE_CITYPARTICIPANT_CODE);
+//        sURIMatcher.addURI(AUTHORITY, CSTCommentProvider.TABLE_NAME, TABLE_COMMENT_CODE);
     }
 
     private Map<String, Provider> mProviderMap = new HashMap<>();
@@ -71,14 +75,16 @@ public class CSTProvider extends ContentProvider {
         mDatabaseHelper = new DatabaseHelper(getContext());
         mProviderMap
                 .put(CSTUserProvider.TABLE_NAME, new CSTUserProvider(getContext()));
-        mProviderMap.
-                put(CSTCampusEventProvider.TABLE_NAME, new CSTCampusEventProvider(getContext()));
-        mProviderMap.put(CSTCityProvider.TABLE_NAME, new CSTCityProvider(getContext()));
-        mProviderMap.put(CSTPublisherProvider.TABLE_NAME, new CSTPublisherProvider(getContext()));
-        mProviderMap.put(CSTCityEventProvider.TABLE_NAME, new CSTCityEventProvider(getContext()));
-        mProviderMap.put(CSTCityParticipantProvider.TABLE_NAME,
-                new CSTCityParticipantProvider(getContext()));
-        mProviderMap.put(CSTCommentProvider.TABLE_NAME, new CSTCommentProvider(getContext()));
+        mProviderMap
+                .put(CSTArchiveProvider.TABLE_NAME, CSTArchiveProvider.getInstance(getContext()));
+//        mProviderMap.
+//                put(CSTCampusEventProvider.TABLE_NAME, new CSTCampusEventProvider(getContext()));
+//        mProviderMap.put(CSTCityProvider.TABLE_NAME, new CSTCityProvider(getContext()));
+//        mProviderMap.put(CSTPublisherProvider.TABLE_NAME, new CSTPublisherProvider(getContext()));
+//        mProviderMap.put(CSTCityEventProvider.TABLE_NAME, new CSTCityEventProvider(getContext()));
+//        mProviderMap.put(CSTCityParticipantProvider.TABLE_NAME,
+//                new CSTCityParticipantProvider(getContext()));
+//        mProviderMap.put(CSTCommentProvider.TABLE_NAME, new CSTCommentProvider(getContext()));
         SQLiteDatabase writableDatabase = mDatabaseHelper.getWritableDatabase();
         for (Provider provider : mProviderMap.values()) {
             provider.setDBRef(writableDatabase);
@@ -129,18 +135,20 @@ public class CSTProvider extends ContentProvider {
         switch (sURIMatcher.match(uri)) {
             case TABLE_USER_CODE:
                 return CSTUserProvider.TABLE_NAME;
-            case TABLE_CAMPUSEvent_CODE:
-                return CSTCampusEventProvider.TABLE_NAME;
-            case TABLE_CITY_CODE:
-                return CSTCityProvider.TABLE_NAME;
-            case TABLE_PUBLISHER_CODE:
-                return CSTPublisherProvider.TABLE_NAME;
-            case TABLE_CITYEVENT_CODE:
-                return CSTCityEventProvider.TABLE_NAME;
-            case TABLE_CITYPARTICIPANT_CODE:
-                return CSTCityParticipantProvider.TABLE_NAME;
-            case TABLE_COMMENT_CODE:
-                return CSTCommentProvider.TABLE_NAME;
+            case TABLE_ARCHIVE_CODE:
+                return CSTArchiveProvider.TABLE_NAME;
+//            case TABLE_CAMPUSEvent_CODE:
+//                return CSTCampusEventProvider.TABLE_NAME;
+//            case TABLE_CITY_CODE:
+//                return CSTCityProvider.TABLE_NAME;
+//            case TABLE_PUBLISHER_CODE:
+//                return CSTPublisherProvider.TABLE_NAME;
+//            case TABLE_CITYEVENT_CODE:
+//                return CSTCityEventProvider.TABLE_NAME;
+//            case TABLE_CITYPARTICIPANT_CODE:
+//                return CSTCityParticipantProvider.TABLE_NAME;
+//            case TABLE_COMMENT_CODE:
+//                return CSTCommentProvider.TABLE_NAME;
             default:
                 throw new IllegalArgumentException("Unknown URI: " + uri);
         }

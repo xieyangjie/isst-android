@@ -18,6 +18,9 @@ public class CSTArchive extends CSTDataItem<CSTArchive> {
     @JsonProperty("title")
     public String title;
 
+    @JsonProperty("categoryId")
+    public int categoryId;
+
     @JsonProperty("description")
     public String description;
 

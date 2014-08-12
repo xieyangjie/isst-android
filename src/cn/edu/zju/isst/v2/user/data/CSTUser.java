@@ -41,19 +41,19 @@ public class CSTUser extends CommonUser {
     public enum Gender {
         MALE(1), FEMALE(2);
 
-        private final int value;
+        private final int key;
 
         private String typeName;
 
-        Gender(int value) {
-            this.value = value;
-            this.typeName = value == 1 ? "男" : value == 2 ? "女" : null;
+        Gender(int key) {
+            this.key = key;
+            this.typeName = key == 1 ? "男" : key == 2 ? "女" : null;
         }
 
         @JsonCreator
         public static Gender fromValue(int typeCode) {
             for (Gender g : Gender.values()) {
-                if (g.value == typeCode) {
+                if (g.key == typeCode) {
                     return g;
                 }
             }
@@ -65,8 +65,8 @@ public class CSTUser extends CommonUser {
         }
 
         @JsonValue
-        public int getValue() {
-            return this.value;
+        public int getKey() {
+            return this.key;
         }
 
         @Override

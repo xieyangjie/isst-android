@@ -19,7 +19,7 @@ public class CSTUserDataDelegate {
         user.pwd = cursor.getString(cursor.getColumnIndex(CSTUserProvider.Columns.PASSWORD.key));
         user.name = cursor.getString(cursor.getColumnIndex(CSTUserProvider.Columns.NAME.key));
         if (cursor.getString(cursor.getColumnIndex(CSTUserProvider.Columns.GENDER.key))
-                .equals("男")) {
+                .equals(CSTUser.Gender.MALE.getTypeName())) {
             user.gender = CSTUser.Gender.MALE;
         } else {
             user.gender = CSTUser.Gender.FEMALE;

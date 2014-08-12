@@ -38,7 +38,8 @@ import cn.edu.zju.isst.ui.life.WikGridFragment;
 import cn.edu.zju.isst.ui.login.LoginActivity;
 import cn.edu.zju.isst.ui.usercenter.UserCenterFragment;
 import cn.edu.zju.isst.util.L;
-import cn.edu.zju.isst.v2.archive.gui.NewsListFragment;
+import cn.edu.zju.isst.ui.life.NewsListFragment;
+import cn.edu.zju.isst.v2.archive.gui.BaseArchiveListFragment;
 
 /**
  * @author theasir
@@ -65,7 +66,12 @@ public class NewMainActivity extends BaseActivity {
         mCurrentFragment = null;
 
         if (savedInstanceState == null) {
-            mCurrentFragment = NewsListFragment.getInstance();
+            mCurrentFragment = new BaseArchiveListFragment() {
+                @Override
+                protected void setCategory(int categoryId) {
+
+                }
+            };
             getFragmentManager().beginTransaction()
                     .add(R.id.content_frame, mCurrentFragment).commit();
             mTitle = Nav.NEWS.getName();
