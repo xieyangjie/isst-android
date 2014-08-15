@@ -15,6 +15,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 
+import com.android.volley.Request;
+import com.android.volley.VolleyError;
+
 import cn.edu.zju.isst.R;
 import cn.edu.zju.isst.api.VersionApi;
 import cn.edu.zju.isst.net.CSTResponse;
@@ -25,6 +28,10 @@ import cn.edu.zju.isst.ui.login.LoginActivity;
 import cn.edu.zju.isst.ui.main.NewMainActivity;
 import cn.edu.zju.isst.util.J;
 import cn.edu.zju.isst.util.L;
+import cn.edu.zju.isst.v2.net.CSTStatusInfo;
+import cn.edu.zju.isst.v2.net.NewCSTResponse;
+import cn.edu.zju.isst.v2.net.Response.VersionResponse;
+import cn.edu.zju.isst.v2.net.VolleyImpl;
 
 import static cn.edu.zju.isst.constant.Constants.STATUS_REQUEST_SUCCESS;
 
@@ -137,38 +144,29 @@ public class LoadingActivity extends Activity {
     }
 
     private void requestVersionInfo() {
-        VersionApi.getVersionInfo(new RequestListener() {
+        VolleyImpl.requestJsonObject(Request.Method.GET,
+                "http://www.cst.zju.edu.cn/isst/api/android/version", null,
+                new VersionResponse(this) {
+                    @Override
+                    public void onResponse(JSONObject result) {
+                        //TODO handle response
+                        L.i("requestVersionInfo (JSONObject result)：  " + result.toString());
 
-            @Override
-            public void onHttpError(CSTResponse response) {
-                // TODO Auto-generated method stub
-
-            }
-
-            @Override
-            public void onException(Exception e) {
-                // TODO Auto-generated method stub
-
-            }
-
-            @Override
-            public void onComplete(Object result) {
-                Message msg = m_handlerLoading.obtainMessage();
-                try {
-                    if (!J.isValidJsonValue("status", (JSONObject) result)) {
-                        return;
+                        Message msg = m_handlerLoading.obtainMessage();
+                        try {
+                            if (!J.isValidJsonValue("status", (JSONObject) result)) {
+                                return;
+                            }
+                            msg.what = ((JSONObject) result).getInt("status");
+                            msg.obj = ((JSONObject) result).getJSONObject("body").getInt("build");
+                        } catch (JSONException e) {
+                            L.i(this.getClass().getName() + " onComplete!");
+                            e.printStackTrace();
+                        }
+                        m_handlerLoading.sendMessage(msg);
                     }
-                    msg.what = ((JSONObject) result).getInt("status");
-                    msg.obj = ((JSONObject) result).getJSONObject("body").getInt("build");
-                } catch (JSONException e) {
-                    L.i(this.getClass().getName() + " onComplete!");
-                    e.printStackTrace();
                 }
-
-                m_handlerLoading.sendMessage(msg);
-
-            }
-        });
+        );
     }
 
     private void jump() {

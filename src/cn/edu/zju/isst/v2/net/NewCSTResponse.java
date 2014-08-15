@@ -11,13 +11,16 @@ import cn.edu.zju.isst.util.L;
 /**
  * Created by i308844 on 7/28/14.
  */
-public abstract class CSTResponse<T> implements Response.Listener<T>, Response.ErrorListener,
+public abstract class NewCSTResponse<T> implements Response.Listener<T>, Response.ErrorListener,
         CSTResponseStatusListener {
 
     protected Context mContext;
 
-    protected CSTResponse(Context context){
+    protected NewCSTResponse(Context context) {
         this.mContext = context;
+    }
+
+    protected NewCSTResponse() {
     }
 
     @Override
@@ -36,8 +39,8 @@ public abstract class CSTResponse<T> implements Response.Listener<T>, Response.E
         return null;
     }
 
-    protected void dispatchStatus(CSTStatusInfo statusInfo){
-        if (statusInfo.status == Constants.STATUS_REQUEST_SUCCESS){
+    protected void dispatchStatus(CSTStatusInfo statusInfo) {
+        if (statusInfo.status == Constants.STATUS_REQUEST_SUCCESS) {
             onSuccessStatus();
         } else {
             onErrorStatus(statusInfo);

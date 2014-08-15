@@ -38,6 +38,8 @@ import cn.edu.zju.isst.ui.main.BaseActivity;
 import cn.edu.zju.isst.ui.main.NewMainActivity;
 import cn.edu.zju.isst.util.CM;
 import cn.edu.zju.isst.util.L;
+import cn.edu.zju.isst.v2.net.NewCSTResponse;
+import cn.edu.zju.isst.v2.net.Response.LoginResponse;
 
 import static cn.edu.zju.isst.constant.Constants.NETWORK_NOT_CONNECTED;
 import static cn.edu.zju.isst.constant.Constants.STATUS_LOGIN_AUTH_EXPIRED;
@@ -218,6 +220,7 @@ public class LoginActivity extends BaseActivity {
 
             @Override
             public void onClick(View v) {
+
                 m_strUserName = m_edtxUserName.getText().toString();
                 m_strPassword = m_edtxPassword.getText().toString()
                         .toCharArray();
@@ -250,46 +253,44 @@ public class LoginActivity extends BaseActivity {
                 if (NetworkConnection.isNetworkConnected(LoginActivity.this)) {
                     LoginApi.validate(m_strUserName,
                             String.valueOf(m_strPassword), 0.0, 0.0,
-                            new RequestListener() {
+                            new LoginResponse(LoginActivity.this) {
 
                                 @Override
-                                public void onComplete(Object result) {
+                                public void onResponse(JSONObject result) {
                                     Message msg = m_handlerLogin
                                             .obtainMessage();
 
                                     try {
                                         msg.what = ((JSONObject) result)
                                                 .getInt("status");
-                                        msg.obj = (JSONObject) result;
-                                        L.i("Msg = " + msg.what);
-                                    } catch (Exception e) {
-                                        L.e("Login Requestlistener onComplete Exception!");
-                                        onException(e);
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
                                     }
+                                    msg.obj = (JSONObject) result;
+                                    L.i("Msg = " + msg.what);
 
                                     m_handlerLogin.sendMessage(msg);
 
                                 }
 
-                                @Override
-                                public void onHttpError(CSTResponse response) {
-                                    L.w("Login Requestlistener onHttpError!");
-                                    Message msg = m_handlerLogin
-                                            .obtainMessage();
-                                    HttpErrorWeeder.fckHttpError(response, msg);
-                                    m_handlerLogin.sendMessage(msg);
-                                }
-
-                                @Override
-                                public void onException(Exception e) {
-                                    L.e("Login Requestlistener onException!");
-                                    e.printStackTrace();
-                                    Message msg = m_handlerLogin
-                                            .obtainMessage();
-                                    ExceptionWeeder.fckException(e, msg);
-                                    m_handlerLogin.sendMessage(msg);
-                                }
-
+//                                @Override
+//                                public void onHttpError(CSTResponse response) {
+//                                    L.w("Login Requestlistener onHttpError!");
+//                                    Message msg = m_handlerLogin
+//                                            .obtainMessage();
+//                                    HttpErrorWeeder.fckHttpError(response, msg);
+//                                    m_handlerLogin.sendMessage(msg);
+//                                }
+//
+//                                @Override
+//                                public void onException(Exception e) {
+//                                    L.e("Login Requestlistener onException!");
+//                                    e.printStackTrace();
+//                                    Message msg = m_handlerLogin
+//                                            .obtainMessage();
+//                                    ExceptionWeeder.fckException(e, msg);
+//                                    m_handlerLogin.sendMessage(msg);
+//                                }
                             }
                     );
                 } else {
@@ -297,6 +298,8 @@ public class LoginActivity extends BaseActivity {
                     msg.what = NETWORK_NOT_CONNECTED;
                     m_handlerLogin.sendMessage(msg);
                 }
+
+
             }
         });
     }

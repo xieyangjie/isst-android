@@ -3,6 +3,9 @@
  */
 package cn.edu.zju.isst.api;
 
+import com.android.volley.Request;
+
+import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
@@ -10,8 +13,15 @@ import java.util.Locale;
 import java.util.Map;
 
 import cn.edu.zju.isst.db.User;
+import cn.edu.zju.isst.net.BetterAsyncWebServiceRunner;
 import cn.edu.zju.isst.net.RequestListener;
+import cn.edu.zju.isst.util.J;
 import cn.edu.zju.isst.util.L;
+import cn.edu.zju.isst.v2.net.CSTHttpUtil;
+import cn.edu.zju.isst.v2.net.Response.LoginResponse;
+import cn.edu.zju.isst.v2.net.Response.UpdateLoginResponse;
+import cn.edu.zju.isst.v2.net.Response.VersionResponse;
+import cn.edu.zju.isst.v2.net.VolleyImpl;
 
 /**
  * 登录接口
@@ -41,7 +51,7 @@ public class LoginApi extends CSTApi {
      * @param listener  回调对象
      */
     public static void validate(String userName, String password,
-            double longitude, double latitude, RequestListener listener) {
+            double longitude, double latitude, LoginResponse listener) {
         Map<String, String> paramsMap = new HashMap<String, String>();
         paramsMap.put("username", userName);
         paramsMap.put("password", password);
@@ -62,7 +72,11 @@ public class LoginApi extends CSTApi {
         L.i("LoginToken", "token=" + paramsMap.get("token") + "&"
                 + "timestamp=" + paramsMap.get("timestamp"));
 
-        request("POST", SUB_URL, paramsMap, listener);
+        VolleyImpl.requestJsonObject(Request.Method.POST,
+                "http://www.cst.zju.edu.cn/isst/api/login", paramsMap,
+                listener);
+//        request("POST", SUB_URL, paramsMap, listener);
+
     }
 
     /**
@@ -74,8 +88,9 @@ public class LoginApi extends CSTApi {
      * @param listener    回调对象
      */
     public static void update(User currentUser, double longitude,
-            double latitude, RequestListener listener) {
+            double latitude, UpdateLoginResponse listener) {
         Map<String, String> paramsMap = new HashMap<String, String>();
+        String paramsMapString = null;
         paramsMap.put("userId", String.valueOf(currentUser.getId()));
         paramsMap.put(
                 "token",
@@ -94,8 +109,16 @@ public class LoginApi extends CSTApi {
 
         L.i("TEST", "token=" + paramsMap.get("token") + "&" + "timestamp="
                 + paramsMap.get("timestamp"));
-
-        request("POST", SUB_URL + "/update", paramsMap, listener);
+        try {
+            paramsMapString = (J.isNullOrEmpty(paramsMap) ? ""
+                    : ("?" + CSTHttpUtil.paramsToString(paramsMap)));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+//        request("POST", SUB_URL + "/update", paramsMap, listener);
+        VolleyImpl.requestJsonObject(Request.Method.GET,
+                "http://www.cst.zju.edu.cn/isst" + SUB_URL + "/update" + paramsMapString, null,
+                listener);
     }
 
     /**

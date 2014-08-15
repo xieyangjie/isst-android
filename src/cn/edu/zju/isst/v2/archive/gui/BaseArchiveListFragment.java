@@ -40,6 +40,7 @@ import cn.edu.zju.isst.ui.main.NewMainActivity;
 import cn.edu.zju.isst.util.J;
 import cn.edu.zju.isst.util.L;
 import cn.edu.zju.isst.util.TimeString;
+import cn.edu.zju.isst.v2.net.Response.ArchiveListResponse;
 import cn.edu.zju.isst.widget.PullToRefeshView;
 import cn.edu.zju.isst.widget.PullToRefeshView.PullToRefreshListener;
 
@@ -137,10 +138,10 @@ public class BaseArchiveListFragment extends ListFragment implements
             }
         }, 0);
 
-//		if (m_bIsFirstTime) {
-////			requestData(LoadType.REFRESH);
-//			m_bIsFirstTime = false;
-//		}
+        if (m_bIsFirstTime) {
+            requestData(LoadType.REFRESH);
+            m_bIsFirstTime = false;
+        }
 
     }
 
@@ -384,10 +385,10 @@ public class BaseArchiveListFragment extends ListFragment implements
      *
      * @author theasir
      */
-    public class ArchiveListRequestListener implements RequestListener {
+    public class ArchiveListRequestListener extends ArchiveListResponse {
 
         @Override
-        public void onComplete(Object result) {
+        public void onResponse(JSONObject result) {
             Message msg = m_handlerArchiveList.obtainMessage();
             try {
                 if (!J.isValidJsonValue("status", (JSONObject) result)) {
@@ -403,21 +404,21 @@ public class BaseArchiveListFragment extends ListFragment implements
             m_handlerArchiveList.sendMessage(msg);
         }
 
-        @Override
-        public void onHttpError(CSTResponse response) {
-            L.i(this.getClass().getName() + " onHttpError!");
-            Message msg = m_handlerArchiveList.obtainMessage();
-            HttpErrorWeeder.fckHttpError(response, msg);
-            m_handlerArchiveList.sendMessage(msg);
-        }
-
-        @Override
-        public void onException(Exception e) {
-            L.i(this.getClass().getName() + " onException!");
-            Message msg = m_handlerArchiveList.obtainMessage();
-            ExceptionWeeder.fckException(e, msg);
-            m_handlerArchiveList.sendMessage(msg);
-        }
+//        @Override
+//        public void onHttpError(CSTResponse response) {
+//            L.i(this.getClass().getName() + " onHttpError!");
+//            Message msg = m_handlerArchiveList.obtainMessage();
+//            HttpErrorWeeder.fckHttpError(response, msg);
+//            m_handlerArchiveList.sendMessage(msg);
+//        }
+//
+//        @Override
+//        public void onException(Exception e) {
+//            L.i(this.getClass().getName() + " onException!");
+//            Message msg = m_handlerArchiveList.obtainMessage();
+//            ExceptionWeeder.fckException(e, msg);
+//            m_handlerArchiveList.sendMessage(msg);
+//        }
 
     }
 

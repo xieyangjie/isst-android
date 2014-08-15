@@ -25,6 +25,7 @@ import cn.edu.zju.isst.ui.main.BaseActivity;
 import cn.edu.zju.isst.util.J;
 import cn.edu.zju.isst.util.L;
 import cn.edu.zju.isst.util.TimeString;
+import cn.edu.zju.isst.v2.net.Response.ArchiveDetailResponse;
 
 import static cn.edu.zju.isst.constant.Constants.STATUS_NOT_LOGIN;
 import static cn.edu.zju.isst.constant.Constants.STATUS_REQUEST_SUCCESS;
@@ -105,10 +106,10 @@ public class ArchiveDetailActivity extends BaseActivity {
 
         };
 
-        ArchiveApi.getArchiveDetail(m_nId, new RequestListener() {
+        ArchiveApi.getArchiveDetail(m_nId, new ArchiveDetailResponse(this) {
 
             @Override
-            public void onComplete(Object result) {
+            public void onResponse(JSONObject result) {
                 Message msg = m_handlerArchiveDetail.obtainMessage();
 
                 try {
@@ -140,21 +141,20 @@ public class ArchiveDetailActivity extends BaseActivity {
 
             }
 
-            @Override
-            public void onHttpError(CSTResponse response) {
-                // TODO Auto-generated method stub
+//            @Override
+//            public void onHttpError(CSTResponse response) {
+//                // TODO Auto-generated method stub
+//
+//            }
 
-            }
-
-            @Override
-            public void onException(Exception e) {
-                // m_archiveCurrent = new Archive(null);
-                L.i("ArchiveDetailActivity onError : id = " + m_nId + "!");
-                if (L.isDebuggable()) {
-                    e.printStackTrace();
-                }
-
-            }
+//            @Override
+//            public void onException(Exception e) {
+//                // m_archiveCurrent = new Archive(null);
+//                L.i("ArchiveDetailActivity onError : id = " + m_nId + "!");
+//                if (L.isDebuggable()) {
+//                    e.printStackTrace();
+//                }
+//            }
 
         });
 

@@ -22,6 +22,7 @@ import cn.edu.zju.isst.net.RequestListener;
 import cn.edu.zju.isst.ui.login.LoginActivity;
 import cn.edu.zju.isst.util.CM;
 import cn.edu.zju.isst.util.L;
+import cn.edu.zju.isst.v2.net.Response.UpdateLoginResponse;
 
 import static cn.edu.zju.isst.constant.Constants.EXCEPTION_CLASSCAST;
 import static cn.edu.zju.isst.constant.Constants.EXCEPTION_IO;
@@ -60,34 +61,34 @@ public class BaseActivity extends Activity implements LoginSimulation,
     @Override
     public void updateLogin() {
         User currentUser = DataManager.getCurrentUser();
-        LoginApi.update(currentUser, 0.0, 0.0, new RequestListener() {
+        LoginApi.update(currentUser, 0.0, 0.0, new UpdateLoginResponse(this) {
 
             @Override
-            public void onComplete(Object result) {
+            public void onResponse(JSONObject result) {
                 Message msg = m_handlerUpdateLogin.obtainMessage();
                 try {
                     msg.what = ((JSONObject) result).getInt("status");
                     msg.obj = (JSONObject) result;
-                } catch (Exception e) {
+                    L.i(this.getClass().getName() + "(Update Login) " + result.toString());
+                } catch (JSONException e) {
                     L.i(this.getClass().getName() + " onComplete Exception!");
-                    onException(e);
+                    e.printStackTrace();
                 }
                 m_handlerUpdateLogin.sendMessage(msg);
-
             }
 
-            @Override
-            public void onHttpError(CSTResponse response) {
-                L.i(this.getClass().getName() + " onHttpError!");
-
-            }
-
-            @Override
-            public void onException(Exception e) {
-                L.i(this.getClass().getName() + " onException!");
-                e.printStackTrace();
-
-            }
+//            @Override
+//            public void onHttpError(CSTResponse response) {
+//                L.i(this.getClass().getName() + " onHttpError!");
+//
+//            }
+//
+//            @Override
+//            public void onException(Exception e) {
+//                L.i(this.getClass().getName() + " onException!");
+//                e.printStackTrace();
+//
+//            }
         });
 
     }

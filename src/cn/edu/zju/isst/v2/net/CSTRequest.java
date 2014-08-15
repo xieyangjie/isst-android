@@ -18,7 +18,7 @@ public abstract class CSTRequest<T> extends Request<T> {
     private Map<String, String> mHeaders;
 
     public CSTRequest(int method, String url, Map<String, String> params,
-            CSTResponse<T> response) {
+            NewCSTResponse<T> response) {
         super(method, url, response);
         this.mListener = response;
         this.mParams = params;
@@ -31,7 +31,7 @@ public abstract class CSTRequest<T> extends Request<T> {
     }
 
     @Override
-    public Map<String, String> getHeaders() throws AuthFailureError {
+    public Map<String, String> getHeaders() {
         return mHeaders;
     }
 
