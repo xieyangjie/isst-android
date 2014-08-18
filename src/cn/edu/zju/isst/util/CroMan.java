@@ -14,7 +14,7 @@ import de.keyboardsurfer.android.widget.crouton.Style;
  *
  * @author theasir
  */
-public class CM {
+public class CroMan {
 
     public static void showAlert(final Activity activity, final String text) {
         Crouton.showText(activity, text, Style.ALERT);

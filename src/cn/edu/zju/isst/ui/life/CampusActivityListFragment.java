@@ -38,9 +38,9 @@ import cn.edu.zju.isst.net.CSTResponse;
 import cn.edu.zju.isst.net.NetworkConnection;
 import cn.edu.zju.isst.net.RequestListener;
 import cn.edu.zju.isst.ui.main.BaseActivity;
-import cn.edu.zju.isst.util.J;
-import cn.edu.zju.isst.util.L;
-import cn.edu.zju.isst.util.TimeString;
+import cn.edu.zju.isst.util.Judge;
+import cn.edu.zju.isst.util.Lgr;
+import cn.edu.zju.isst.util.TSUtil;
 
 import static cn.edu.zju.isst.constant.Constants.NETWORK_NOT_CONNECTED;
 import static cn.edu.zju.isst.constant.Constants.STATUS_NOT_LOGIN;
@@ -181,7 +181,7 @@ public class CampusActivityListFragment extends ListFragment implements
      */
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        L.i(this.getClass().getName() + " onListItemClick postion = "
+        Lgr.i(this.getClass().getName() + " onListItemClick postion = "
                 + position);
         Intent intent = new Intent(getActivity(),
                 CampusActivityDetailActivity.class);
@@ -191,7 +191,7 @@ public class CampusActivityListFragment extends ListFragment implements
 
     @Override
     public void onScrollStateChanged(AbsListView view, int scrollState) {
-        L.i(this.getClass().getName()
+        Lgr.i(this.getClass().getName()
                 + " onScrollStateChanged VisibleLastIndex = "
                 + m_nVisibleLastIndex);
         if (scrollState == SCROLL_STATE_IDLE
@@ -218,7 +218,7 @@ public class CampusActivityListFragment extends ListFragment implements
     private void initCampusActivityList() {
         List<CampusActivity> dbCampusActivityList = DataManager
                 .getCampusActivityList();
-        if (!J.isNullOrEmpty(dbCampusActivityList)) {
+        if (!Judge.isNullOrEmpty(dbCampusActivityList)) {
             for (CampusActivity news : dbCampusActivityList) {
                 m_listCampusActivity.add(news);
             }
@@ -284,7 +284,7 @@ public class CampusActivityListFragment extends ListFragment implements
             m_listCampusActivity.clear();
         }
         try {
-            if (!J.isValidJsonValue("body", jsonObject)) {
+            if (!Judge.isValidJsonValue("body", jsonObject)) {
                 return;
             }
             JSONArray jsonArray = jsonObject.getJSONArray("body");
@@ -293,11 +293,11 @@ public class CampusActivityListFragment extends ListFragment implements
                 m_listCampusActivity.add(new CampusActivity(
                         (JSONObject) jsonArray.get(i)));
             }
-            L.i(this.getClass().getName() + " refreshList: "
+            Lgr.i(this.getClass().getName() + " refreshList: "
                     + "Added campusActivity to newsList!");
             DataManager.syncCampusActivityList(m_listCampusActivity);
         } catch (JSONException e) {
-            L.i(this.getClass().getName() + " refreshList!");
+            Lgr.i(this.getClass().getName() + " refreshList!");
             e.printStackTrace();
         }
     }
@@ -310,7 +310,7 @@ public class CampusActivityListFragment extends ListFragment implements
     private void loadMore(JSONObject jsonObject) {
         JSONArray jsonArray;
         try {
-            if (!J.isValidJsonValue("body", jsonObject)) {
+            if (!Judge.isValidJsonValue("body", jsonObject)) {
                 return;
             }
             jsonArray = jsonObject.getJSONArray("body");
@@ -319,10 +319,10 @@ public class CampusActivityListFragment extends ListFragment implements
                 m_listCampusActivity.add(new CampusActivity(
                         (JSONObject) jsonArray.get(i)));
             }
-            L.i(this.getClass().getName() + " loadMore: "
+            Lgr.i(this.getClass().getName() + " loadMore: "
                     + "Added campusActivity to newsList!");
         } catch (JSONException e) {
-            L.i(this.getClass().getName() + " loadMore!");
+            Lgr.i(this.getClass().getName() + " loadMore!");
             e.printStackTrace();
         }
     }
@@ -375,13 +375,13 @@ public class CampusActivityListFragment extends ListFragment implements
         public void onComplete(Object result) {
             Message msg = m_handlerCampusActivityList.obtainMessage();
             try {
-                if (!J.isValidJsonValue("status", (JSONObject) result)) {
+                if (!Judge.isValidJsonValue("status", (JSONObject) result)) {
                     return;
                 }
                 msg.what = ((JSONObject) result).getInt("status");
                 msg.obj = (JSONObject) result;
             } catch (JSONException e) {
-                L.i(this.getClass().getName() + " onComplete!");
+                Lgr.i(this.getClass().getName() + " onComplete!");
                 e.printStackTrace();
             }
 
@@ -390,7 +390,7 @@ public class CampusActivityListFragment extends ListFragment implements
 
         @Override
         public void onHttpError(CSTResponse response) {
-            L.i(this.getClass().getName() + " onHttpError!");
+            Lgr.i(this.getClass().getName() + " onHttpError!");
             Message msg = m_handlerCampusActivityList.obtainMessage();
             HttpErrorWeeder.fckHttpError(response, msg);
             m_handlerCampusActivityList.sendMessage(msg);
@@ -398,7 +398,7 @@ public class CampusActivityListFragment extends ListFragment implements
 
         @Override
         public void onException(Exception e) {
-            L.i(this.getClass().getName() + " onException!");
+            Lgr.i(this.getClass().getName() + " onException!");
             Message msg = m_handlerCampusActivityList.obtainMessage();
             ExceptionWeeder.fckException(e, msg);
             m_handlerCampusActivityList.sendMessage(msg);
@@ -483,11 +483,11 @@ public class CampusActivityListFragment extends ListFragment implements
 
             holder.titleTxv.setText(m_listCampusActivity.get(position)
                     .getTitle());
-            holder.updateTimeTxv.setText(TimeString.toYMD(m_listCampusActivity
+            holder.updateTimeTxv.setText(TSUtil.toYMD(m_listCampusActivity
                     .get(position).getUpdatedAt()));
-            holder.startTimeTxv.setText(TimeString.toHM(m_listCampusActivity
+            holder.startTimeTxv.setText(TSUtil.toHM(m_listCampusActivity
                     .get(position).getStartTime()));
-            holder.expireTimeTxv.setText(TimeString.toHM(m_listCampusActivity
+            holder.expireTimeTxv.setText(TSUtil.toHM(m_listCampusActivity
                     .get(position).getExpireTime()));
             holder.descriptionTxv.setText(m_listCampusActivity.get(position)
                     .getDescription());

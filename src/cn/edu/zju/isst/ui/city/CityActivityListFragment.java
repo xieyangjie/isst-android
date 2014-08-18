@@ -35,9 +35,9 @@ import cn.edu.zju.isst.exception.HttpErrorWeeder;
 import cn.edu.zju.isst.net.CSTResponse;
 import cn.edu.zju.isst.net.NetworkConnection;
 import cn.edu.zju.isst.net.RequestListener;
-import cn.edu.zju.isst.util.J;
-import cn.edu.zju.isst.util.L;
-import cn.edu.zju.isst.util.TimeString;
+import cn.edu.zju.isst.util.Judge;
+import cn.edu.zju.isst.util.Lgr;
+import cn.edu.zju.isst.util.TSUtil;
 
 import static cn.edu.zju.isst.constant.Constants.NETWORK_NOT_CONNECTED;
 import static cn.edu.zju.isst.constant.Constants.STATUS_REQUEST_SUCCESS;
@@ -156,7 +156,7 @@ public class CityActivityListFragment extends ListFragment implements
             mCityActivities.clear();
         }
         try {
-            if (!J.isValidJsonValue("body", jsonObject)) {
+            if (!Judge.isValidJsonValue("body", jsonObject)) {
                 return;
             }
             JSONArray jsonArray = jsonObject.getJSONArray("body");
@@ -167,7 +167,7 @@ public class CityActivityListFragment extends ListFragment implements
             }
             // DataManager.syncCampusActivityList(m_listCampusActivity);
         } catch (JSONException e) {
-            L.i(this.getClass().getName() + " refreshList!");
+            Lgr.i(this.getClass().getName() + " refreshList!");
             e.printStackTrace();
         }
     }
@@ -189,13 +189,13 @@ public class CityActivityListFragment extends ListFragment implements
         public void onComplete(Object result) {
             Message msg = mHandler.obtainMessage();
             try {
-                if (!J.isValidJsonValue("status", (JSONObject) result)) {
+                if (!Judge.isValidJsonValue("status", (JSONObject) result)) {
                     return;
                 }
                 msg.what = ((JSONObject) result).getInt("status");
                 msg.obj = (JSONObject) result;
             } catch (JSONException e) {
-                L.i(this.getClass().getName() + " onComplete!");
+                Lgr.i(this.getClass().getName() + " onComplete!");
                 e.printStackTrace();
             }
 
@@ -204,7 +204,7 @@ public class CityActivityListFragment extends ListFragment implements
 
         @Override
         public void onHttpError(CSTResponse response) {
-            L.i(this.getClass().getName() + " onHttpError!");
+            Lgr.i(this.getClass().getName() + " onHttpError!");
             Message msg = mHandler.obtainMessage();
             HttpErrorWeeder.fckHttpError(response, msg);
             mHandler.sendMessage(msg);
@@ -212,7 +212,7 @@ public class CityActivityListFragment extends ListFragment implements
 
         @Override
         public void onException(Exception e) {
-            L.i(this.getClass().getName() + " onException!");
+            Lgr.i(this.getClass().getName() + " onException!");
             Message msg = mHandler.obtainMessage();
             ExceptionWeeder.fckException(e, msg);
             mHandler.sendMessage(msg);
@@ -284,12 +284,12 @@ public class CityActivityListFragment extends ListFragment implements
             holder.titleTxv.setText(mCityActivities.get(position).title);
             holder.updateTimeTxv
                     .setText("发布时间:"
-                            + TimeString.toYMD(mCityActivities.get(position).updatedAt));
+                            + TSUtil.toYMD(mCityActivities.get(position).updatedAt));
             holder.startTimeTxv.setText("开始时间:"
-                    + TimeString.toMD(mCityActivities.get(position).startTime));
+                    + TSUtil.toMD(mCityActivities.get(position).startTime));
             holder.expireTimeTxv
                     .setText("结束时间:"
-                            + TimeString.toMD(mCityActivities.get(position).expireTime));
+                            + TSUtil.toMD(mCityActivities.get(position).expireTime));
             holder.publisherTxv.setText("发布者:"
                     + mCityActivities.get(position).publisher.getName());
 

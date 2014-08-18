@@ -45,9 +45,9 @@ import cn.edu.zju.isst.net.NetworkConnection;
 import cn.edu.zju.isst.net.RequestListener;
 import cn.edu.zju.isst.ui.city.CityActivityDetailActivity;
 import cn.edu.zju.isst.ui.main.NewMainActivity;
-import cn.edu.zju.isst.util.J;
-import cn.edu.zju.isst.util.L;
-import cn.edu.zju.isst.util.TimeString;
+import cn.edu.zju.isst.util.Judge;
+import cn.edu.zju.isst.util.Lgr;
+import cn.edu.zju.isst.util.TSUtil;
 import cn.edu.zju.isst.widget.PullToRefeshView;
 import cn.edu.zju.isst.widget.PullToRefeshView.PullToRefreshListener;
 
@@ -178,7 +178,7 @@ public class MyActivitiesFragment extends ListFragment implements
 
             @Override
             public void onRefresh() {
-                L.i(this.getClass().getName()
+                Lgr.i(this.getClass().getName()
                         + "-----enter onViewCreated---onRefresh---");
                 requestData(LoadType.REFRESH);
             }
@@ -204,7 +204,7 @@ public class MyActivitiesFragment extends ListFragment implements
      */
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        L.i(this.getClass().getName() + " onListItemClick postion = "
+        Lgr.i(this.getClass().getName() + " onListItemClick postion = "
                 + position);
         Intent intent = new Intent(getActivity(),
                 CityActivityDetailActivity.class);
@@ -246,23 +246,23 @@ public class MyActivitiesFragment extends ListFragment implements
     protected void initArchiveList() {
         List<MyPublicActivity> dbPublicList = getPublicList();
         m_listPublic.clear();
-        if (!J.isNullOrEmpty(dbPublicList)) {
+        if (!Judge.isNullOrEmpty(dbPublicList)) {
             for (MyPublicActivity publicActivity : dbPublicList) {
                 m_listPublic.add(publicActivity);
             }
         }
-        if (J.isNullOrEmpty(m_listPublic)) {
+        if (Judge.isNullOrEmpty(m_listPublic)) {
             requestData(LoadType.REFRESH);
         }
         // /
         List<MyParticipatedActivity> dbParticipatedList = getParticipatedList();
         m_listParticipated.clear();
-        if (!J.isNullOrEmpty(dbParticipatedList)) {
+        if (!Judge.isNullOrEmpty(dbParticipatedList)) {
             for (MyParticipatedActivity participatedActivity : dbParticipatedList) {
                 m_listParticipated.add(participatedActivity);
             }
         }
-        if (J.isNullOrEmpty(m_listParticipated)) {
+        if (Judge.isNullOrEmpty(m_listParticipated)) {
             requestData(LoadType.REFRESH);
         }
     }
@@ -328,7 +328,7 @@ public class MyActivitiesFragment extends ListFragment implements
             m_listParticipated.clear();
         }
         try {
-            if (!J.isValidJsonValue("body", jsonObject)) {
+            if (!Judge.isValidJsonValue("body", jsonObject)) {
                 return;
             }
             JSONArray jsonArray = jsonObject.getJSONArray("body");
@@ -358,7 +358,7 @@ public class MyActivitiesFragment extends ListFragment implements
     protected void loadMore(JSONObject jsonObject) {
         JSONArray jsonArray;
         try {
-            if (!J.isValidJsonValue("body", jsonObject)) {
+            if (!Judge.isValidJsonValue("body", jsonObject)) {
                 return;
             }
             jsonArray = jsonObject.getJSONArray("body");
@@ -452,7 +452,7 @@ public class MyActivitiesFragment extends ListFragment implements
 
         @Override
         public boolean onNavigationItemSelected(int arg0, long arg1) {
-            L.i("arg0 = " + arg0 + " ; m_type = " + m_type);
+            Lgr.i("arg0 = " + arg0 + " ; m_type = " + m_type);
             if (arg0 != m_type) {
                 m_type = arg0;
                 requestData(LoadType.REFRESH);
@@ -472,13 +472,13 @@ public class MyActivitiesFragment extends ListFragment implements
         public void onComplete(Object result) {
             Message msg = m_handlerArchiveList.obtainMessage();
             try {
-                if (!J.isValidJsonValue("status", (JSONObject) result)) {
+                if (!Judge.isValidJsonValue("status", (JSONObject) result)) {
                     return;
                 }
                 msg.what = ((JSONObject) result).getInt("status");
                 msg.obj = (JSONObject) result;
             } catch (JSONException e) {
-                L.i(this.getClass().getName() + " onComplete!");
+                Lgr.i(this.getClass().getName() + " onComplete!");
                 e.printStackTrace();
             }
 
@@ -487,7 +487,7 @@ public class MyActivitiesFragment extends ListFragment implements
 
         @Override
         public void onHttpError(CSTResponse response) {
-            L.i(this.getClass().getName() + " onHttpError!");
+            Lgr.i(this.getClass().getName() + " onHttpError!");
             Message msg = m_handlerArchiveList.obtainMessage();
             HttpErrorWeeder.fckHttpError(response, msg);
             m_handlerArchiveList.sendMessage(msg);
@@ -495,7 +495,7 @@ public class MyActivitiesFragment extends ListFragment implements
 
         @Override
         public void onException(Exception e) {
-            L.i(this.getClass().getName() + " onException!");
+            Lgr.i(this.getClass().getName() + " onException!");
             Message msg = m_handlerArchiveList.obtainMessage();
             ExceptionWeeder.fckException(e, msg);
             m_handlerArchiveList.sendMessage(msg);
@@ -573,12 +573,12 @@ public class MyActivitiesFragment extends ListFragment implements
             }
             if (m_type == 0) {
                 holder.titleTxv.setText(m_listPublic.get(position).getTitle());
-                holder.dateTxv.setText(TimeString.toYMD(m_listPublic.get(
+                holder.dateTxv.setText(TSUtil.toYMD(m_listPublic.get(
                         position).getUpdatedAt()));
             } else {
                 holder.titleTxv.setText(m_listParticipated.get(position)
                         .getTitle());
-                holder.dateTxv.setText(TimeString.toYMD(m_listParticipated.get(
+                holder.dateTxv.setText(TSUtil.toYMD(m_listParticipated.get(
                         position).getUpdatedAt()));
 
             }

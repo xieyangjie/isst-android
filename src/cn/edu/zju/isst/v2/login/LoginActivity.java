@@ -1,7 +1,7 @@
 /**
  *
  */
-package cn.edu.zju.isst.ui.login;
+package cn.edu.zju.isst.v2.login;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -36,8 +36,8 @@ import cn.edu.zju.isst.net.RequestListener;
 import cn.edu.zju.isst.settings.CSTSettings;
 import cn.edu.zju.isst.ui.main.BaseActivity;
 import cn.edu.zju.isst.ui.main.NewMainActivity;
-import cn.edu.zju.isst.util.CM;
-import cn.edu.zju.isst.util.L;
+import cn.edu.zju.isst.util.CroMan;
+import cn.edu.zju.isst.util.Lgr;
 
 import static cn.edu.zju.isst.constant.Constants.NETWORK_NOT_CONNECTED;
 import static cn.edu.zju.isst.constant.Constants.STATUS_LOGIN_AUTH_EXPIRED;
@@ -183,7 +183,7 @@ public class LoginActivity extends BaseActivity {
                         m_edtxUserName.requestFocus();
                         m_edtxPassword.setText("");
                         try {
-                            CM.showAlert(LoginActivity.this,
+                            CroMan.showAlert(LoginActivity.this,
                                     ((JSONObject) msg.obj).getString("message"));
                         } catch (JSONException e) {
                             // TODO Auto-generated catch block
@@ -194,7 +194,7 @@ public class LoginActivity extends BaseActivity {
                         m_edtxPassword.setText("");
                         m_edtxPassword.requestFocus();
                         try {
-                            CM.showAlert(LoginActivity.this,
+                            CroMan.showAlert(LoginActivity.this,
                                     ((JSONObject) msg.obj).getString("message"));
                         } catch (JSONException e) {
                             // TODO Auto-generated catch block
@@ -261,9 +261,9 @@ public class LoginActivity extends BaseActivity {
                                         msg.what = ((JSONObject) result)
                                                 .getInt("status");
                                         msg.obj = (JSONObject) result;
-                                        L.i("Msg = " + msg.what);
+                                        Lgr.i("Msg = " + msg.what);
                                     } catch (Exception e) {
-                                        L.e("Login Requestlistener onComplete Exception!");
+                                        Lgr.e("Login Requestlistener onComplete Exception!");
                                         onException(e);
                                     }
 
@@ -273,7 +273,7 @@ public class LoginActivity extends BaseActivity {
 
                                 @Override
                                 public void onHttpError(CSTResponse response) {
-                                    L.w("Login Requestlistener onHttpError!");
+                                    Lgr.w("Login Requestlistener onHttpError!");
                                     Message msg = m_handlerLogin
                                             .obtainMessage();
                                     HttpErrorWeeder.fckHttpError(response, msg);
@@ -282,7 +282,7 @@ public class LoginActivity extends BaseActivity {
 
                                 @Override
                                 public void onException(Exception e) {
-                                    L.e("Login Requestlistener onException!");
+                                    Lgr.e("Login Requestlistener onException!");
                                     e.printStackTrace();
                                     Message msg = m_handlerLogin
                                             .obtainMessage();

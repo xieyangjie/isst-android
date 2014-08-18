@@ -11,13 +11,9 @@ import java.util.Locale;
 /**
  * @author yyy
  */
-public class TimeString {
+public class TSUtil {
 
-    /**
-     *
-     */
-    private TimeString() {
-        // TODO Auto-generated constructor stub
+    private TSUtil() {
     }
 
     public static String toYMD(long time) {

@@ -9,7 +9,7 @@ import android.widget.CursorAdapter;
 import android.widget.TextView;
 
 import cn.edu.zju.isst.R;
-import cn.edu.zju.isst.util.TimeString;
+import cn.edu.zju.isst.util.TSUtil;
 import cn.edu.zju.isst.v2.archive.data.CSTArchive;
 import cn.edu.zju.isst.v2.archive.data.CSTArchiveDataDelegate;
 
@@ -35,7 +35,7 @@ public class ArchiveListAdapter extends CursorAdapter {
 
         ViewHolder holder = getBindViewHolder(view);
         holder.titleTxv.setText(archive.title);
-        holder.dateTxv.setText(TimeString.toYMD(archive.updateTime));
+        holder.dateTxv.setText(TSUtil.toYMD(archive.updateTime));
         holder.publisherTxv.setText("" + archive.publisherId);
         holder.descriptionTxv.setText(archive.description);
     }

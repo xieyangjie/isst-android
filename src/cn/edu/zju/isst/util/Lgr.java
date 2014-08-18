@@ -7,7 +7,7 @@ import android.util.Log;
  *
  * @author theasir
  */
-public class L {
+public class Lgr {
 
     private static final String TAG = "CarpeDiem";
 
@@ -18,7 +18,7 @@ public class L {
     }
 
     public static void setDebuggable(boolean isDebuggable) {
-        L.isDebuggable = isDebuggable;
+        Lgr.isDebuggable = isDebuggable;
     }
 
     // 下面四个是默认tag的函数

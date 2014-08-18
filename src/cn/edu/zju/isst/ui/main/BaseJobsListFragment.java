@@ -37,9 +37,9 @@ import cn.edu.zju.isst.net.NetworkConnection;
 import cn.edu.zju.isst.net.RequestListener;
 import cn.edu.zju.isst.ui.job.JobDetailActivity;
 import cn.edu.zju.isst.ui.job.RecommendDetailActivity;
-import cn.edu.zju.isst.util.J;
-import cn.edu.zju.isst.util.L;
-import cn.edu.zju.isst.util.TimeString;
+import cn.edu.zju.isst.util.Judge;
+import cn.edu.zju.isst.util.Lgr;
+import cn.edu.zju.isst.util.TSUtil;
 
 import static cn.edu.zju.isst.constant.Constants.NETWORK_NOT_CONNECTED;
 import static cn.edu.zju.isst.constant.Constants.STATUS_NOT_LOGIN;
@@ -182,7 +182,7 @@ public class BaseJobsListFragment extends ListFragment implements
      */
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        L.i(this.getClass().getName() + " onListItemClick postion = "
+        Lgr.i(this.getClass().getName() + " onListItemClick postion = "
                 + position);
         Intent intent = new Intent(getActivity(), JobDetailActivity.class);
         if (m_jobCategory == JobCategory.RECOMMEND) {
@@ -238,7 +238,7 @@ public class BaseJobsListFragment extends ListFragment implements
      */
     protected void initJobList() {
         List<Job> dbJobList = getJobList();
-        if (!J.isNullOrEmpty(dbJobList)) {
+        if (!Judge.isNullOrEmpty(dbJobList)) {
             for (Job job : dbJobList) {
                 m_listAchive.add(job);
             }
@@ -301,7 +301,7 @@ public class BaseJobsListFragment extends ListFragment implements
             m_listAchive.clear();
         }
         try {
-            if (!J.isValidJsonValue("body", jsonObject)) {
+            if (!Judge.isValidJsonValue("body", jsonObject)) {
                 return;
             }
             JSONArray jsonArray = jsonObject.getJSONArray("body");
@@ -323,7 +323,7 @@ public class BaseJobsListFragment extends ListFragment implements
     protected void loadMore(JSONObject jsonObject) {
         JSONArray jsonArray;
         try {
-            if (!J.isValidJsonValue("body", jsonObject)) {
+            if (!Judge.isValidJsonValue("body", jsonObject)) {
                 return;
             }
             jsonArray = jsonObject.getJSONArray("body");
@@ -392,13 +392,13 @@ public class BaseJobsListFragment extends ListFragment implements
         public void onComplete(Object result) {
             Message msg = m_handlerJobList.obtainMessage();
             try {
-                if (!J.isValidJsonValue("status", (JSONObject) result)) {
+                if (!Judge.isValidJsonValue("status", (JSONObject) result)) {
                     return;
                 }
                 msg.what = ((JSONObject) result).getInt("status");
                 msg.obj = (JSONObject) result;
             } catch (JSONException e) {
-                L.i(this.getClass().getName() + " onComplete!");
+                Lgr.i(this.getClass().getName() + " onComplete!");
                 e.printStackTrace();
             }
 
@@ -407,7 +407,7 @@ public class BaseJobsListFragment extends ListFragment implements
 
         @Override
         public void onHttpError(CSTResponse response) {
-            L.i(this.getClass().getName() + " onHttpError!");
+            Lgr.i(this.getClass().getName() + " onHttpError!");
             Message msg = m_handlerJobList.obtainMessage();
             HttpErrorWeeder.fckHttpError(response, msg);
             m_handlerJobList.sendMessage(msg);
@@ -415,7 +415,7 @@ public class BaseJobsListFragment extends ListFragment implements
 
         @Override
         public void onException(Exception e) {
-            L.i(this.getClass().getName() + " onException!");
+            Lgr.i(this.getClass().getName() + " onException!");
             Message msg = m_handlerJobList.obtainMessage();
             ExceptionWeeder.fckException(e, msg);
             m_handlerJobList.sendMessage(msg);
@@ -495,7 +495,7 @@ public class BaseJobsListFragment extends ListFragment implements
             }
 
             holder.titleTxv.setText(m_listAchive.get(position).getTitle());
-            holder.dateTxv.setText(TimeString.toYMD(m_listAchive.get(position)
+            holder.dateTxv.setText(TSUtil.toYMD(m_listAchive.get(position)
                     .getUpdatedAt()));
             holder.publisherTxv.setText(m_listAchive.get(position)
                     .getPublisher().getName());

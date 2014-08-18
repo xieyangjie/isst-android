@@ -33,8 +33,8 @@ import cn.edu.zju.isst.db.Restaurant;
 import cn.edu.zju.isst.net.CSTResponse;
 import cn.edu.zju.isst.net.NetworkConnection;
 import cn.edu.zju.isst.net.RequestListener;
-import cn.edu.zju.isst.util.J;
-import cn.edu.zju.isst.util.L;
+import cn.edu.zju.isst.util.Judge;
+import cn.edu.zju.isst.util.Lgr;
 
 import static cn.edu.zju.isst.constant.Constants.NETWORK_NOT_CONNECTED;
 import static cn.edu.zju.isst.constant.Constants.STATUS_NOT_LOGIN;
@@ -111,7 +111,7 @@ public class RestaurantListFragment extends ListFragment {
 
         initRestaurantList();
 
-        if (J.isNullOrEmpty(m_listRestaurant)) {
+        if (Judge.isNullOrEmpty(m_listRestaurant)) {
             requestData();
         }
 
@@ -151,7 +151,7 @@ public class RestaurantListFragment extends ListFragment {
      */
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        L.i(this.getClass().getName() + " onListItemClick postion = "
+        Lgr.i(this.getClass().getName() + " onListItemClick postion = "
                 + position);
         Intent intent = new Intent(getActivity(),
                 RestaurantDetailActivity.class);
@@ -164,7 +164,7 @@ public class RestaurantListFragment extends ListFragment {
         if (!m_listRestaurant.isEmpty()) {
             m_listRestaurant.clear();
         }
-        if (!J.isNullOrEmpty(dbRestaurantList)) {
+        if (!Judge.isNullOrEmpty(dbRestaurantList)) {
             for (Restaurant restaurant : dbRestaurantList) {
                 m_listRestaurant.add(restaurant);
             }
@@ -181,11 +181,11 @@ public class RestaurantListFragment extends ListFragment {
                 m_listRestaurant.add(new Restaurant((JSONObject) jsonArray
                         .get(i)));
             }
-            L.i(this.getClass().getName() + " updateList: "
+            Lgr.i(this.getClass().getName() + " updateList: "
                     + "Added restautants!");
             DataManager.syncRestaurantList(m_listRestaurant);
         } catch (JSONException e) {
-            L.i(this.getClass().getName() + " updateList!");
+            Lgr.i(this.getClass().getName() + " updateList!");
             e.printStackTrace();
         }
     }
@@ -212,7 +212,7 @@ public class RestaurantListFragment extends ListFragment {
                     updateList((JSONObject) result);
                 }
             } catch (JSONException e) {
-                L.i(this.getClass().getName() + " onComplete!");
+                Lgr.i(this.getClass().getName() + " onComplete!");
                 e.printStackTrace();
             }
 
@@ -304,7 +304,7 @@ public class RestaurantListFragment extends ListFragment {
 
                 @Override
                 public void onClick(View v) {
-                    if (!J.isNullOrEmpty(dialNumber)) {
+                    if (!Judge.isNullOrEmpty(dialNumber)) {
                         Intent intent = new Intent(Intent.ACTION_DIAL, Uri
                                 .parse("tel://" + dialNumber));
                         RestaurantListFragment.this.getActivity()

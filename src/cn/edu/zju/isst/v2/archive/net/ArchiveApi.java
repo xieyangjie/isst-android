@@ -9,7 +9,7 @@ import java.util.Map;
 import cn.edu.zju.isst.api.ArchiveCategory;
 import cn.edu.zju.isst.api.CSTApi;
 import cn.edu.zju.isst.net.RequestListener;
-import cn.edu.zju.isst.util.L;
+import cn.edu.zju.isst.util.Lgr;
 
 /**
  * 归档接口
@@ -47,7 +47,7 @@ public class ArchiveApi extends CSTApi {
      */
     public static void getArchiveList(ArchiveCategory category, int page,
             int pageSize, String keywords, RequestListener listener) {
-        L.i("API---getArchiveList----enter");
+        Lgr.i("API---getArchiveList----enter");
         StringBuilder sb = new StringBuilder();
         sb.append(SUB_URL).append("categories/").append(category.getSubUrl());
 

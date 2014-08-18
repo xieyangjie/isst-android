@@ -18,8 +18,8 @@ import cn.edu.zju.isst.db.City;
 import cn.edu.zju.isst.db.DataManager;
 import cn.edu.zju.isst.db.User;
 import cn.edu.zju.isst.ui.main.BaseActivity;
-import cn.edu.zju.isst.util.J;
-import cn.edu.zju.isst.util.L;
+import cn.edu.zju.isst.util.Judge;
+import cn.edu.zju.isst.util.Lgr;
 
 public class ContactDetailActivity extends BaseActivity {
 
@@ -113,12 +113,12 @@ public class ContactDetailActivity extends BaseActivity {
      */
     private void getCityList() {
         List<City> dbList = DataManager.getCityList();
-        if (!J.isNullOrEmpty(dbList)) {
+        if (!Judge.isNullOrEmpty(dbList)) {
             for (City city : dbList) {
                 m_listCity.add(city);
             }
         }
-        L.i(" yyy getCityList");
+        Lgr.i(" yyy getCityList");
     }
 
     /**
@@ -139,7 +139,7 @@ public class ContactDetailActivity extends BaseActivity {
      * 显示用户详情
      */
     private void showUserDetail() {
-        if (J.isNullOrEmpty(m_user)) {
+        if (Judge.isNullOrEmpty(m_user)) {
             return;
         }
         // 姓名

@@ -38,8 +38,8 @@ import cn.edu.zju.isst.exception.HttpErrorWeeder;
 import cn.edu.zju.isst.net.CSTResponse;
 import cn.edu.zju.isst.net.NetworkConnection;
 import cn.edu.zju.isst.net.RequestListener;
-import cn.edu.zju.isst.util.J;
-import cn.edu.zju.isst.util.L;
+import cn.edu.zju.isst.util.Judge;
+import cn.edu.zju.isst.util.Lgr;
 import cn.edu.zju.isst.v2.archive.net.ArchiveApi;
 
 import static cn.edu.zju.isst.constant.Constants.NETWORK_NOT_CONNECTED;
@@ -153,7 +153,7 @@ public class WikGridFragment extends Fragment implements OnScrollListener {
             public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
                     long arg3) {
                 // TODO Auto-generated method stub
-                L.i(this.getClass().getName() + " onListItemClick postion = ");
+                Lgr.i(this.getClass().getName() + " onListItemClick postion = ");
                 Intent intent = new Intent(getActivity(),
                         ArchiveDetailActivity.class);
                 intent.putExtra("id", m_listAchive.get(arg2).getId());
@@ -234,7 +234,7 @@ public class WikGridFragment extends Fragment implements OnScrollListener {
         if (!m_listAchive.isEmpty()) {
             m_listAchive.clear();
         }
-        if (!J.isNullOrEmpty(dbWikiList)) {
+        if (!Judge.isNullOrEmpty(dbWikiList)) {
             for (Archive wiki : dbWikiList) {
                 m_listAchive.add(wiki);
             }
@@ -255,11 +255,11 @@ public class WikGridFragment extends Fragment implements OnScrollListener {
             for (int i = 0; i < jsonArray.length(); i++) {
                 m_listAchive.add(new Archive((JSONObject) jsonArray.get(i)));
             }
-            L.i(this.getClass().getName() + " refreshList: "
+            Lgr.i(this.getClass().getName() + " refreshList: "
                     + "Added archives to wikiList!");
             DataManager.syncWikiList(m_listAchive);
         } catch (JSONException e) {
-            L.i(this.getClass().getName() + " refreshList!");
+            Lgr.i(this.getClass().getName() + " refreshList!");
             e.printStackTrace();
         }
     }
@@ -276,10 +276,10 @@ public class WikGridFragment extends Fragment implements OnScrollListener {
             for (int i = 0; i < jsonArray.length(); i++) {
                 m_listAchive.add(new Archive((JSONObject) jsonArray.get(i)));
             }
-            L.i(this.getClass().getName() + " loadMore: "
+            Lgr.i(this.getClass().getName() + " loadMore: "
                     + "Added archives to wikiList!");
         } catch (JSONException e) {
-            L.i(this.getClass().getName() + " loadMore!");
+            Lgr.i(this.getClass().getName() + " loadMore!");
             e.printStackTrace();
         }
     }
@@ -349,7 +349,7 @@ public class WikGridFragment extends Fragment implements OnScrollListener {
                         break;
                 }
             } catch (JSONException e) {
-                L.i(this.getClass().getName() + " onComplete!");
+                Lgr.i(this.getClass().getName() + " onComplete!");
                 e.printStackTrace();
             }
 
@@ -358,7 +358,7 @@ public class WikGridFragment extends Fragment implements OnScrollListener {
 
         @Override
         public void onHttpError(CSTResponse response) {
-            L.i(this.getClass().getName() + " onHttpError!");
+            Lgr.i(this.getClass().getName() + " onHttpError!");
             Message msg = m_handlerWikiList.obtainMessage();
             HttpErrorWeeder.fckHttpError(response, msg);
             m_handlerWikiList.sendMessage(msg);
@@ -366,7 +366,7 @@ public class WikGridFragment extends Fragment implements OnScrollListener {
 
         @Override
         public void onException(Exception e) {
-            L.i(this.getClass().getName() + " onException!");
+            Lgr.i(this.getClass().getName() + " onException!");
             Message msg = m_handlerWikiList.obtainMessage();
             ExceptionWeeder.fckException(e, msg);
             m_handlerWikiList.sendMessage(msg);

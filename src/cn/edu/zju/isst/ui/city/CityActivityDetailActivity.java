@@ -24,8 +24,8 @@ import cn.edu.zju.isst.db.CityActivity;
 import cn.edu.zju.isst.net.CSTResponse;
 import cn.edu.zju.isst.net.RequestListener;
 import cn.edu.zju.isst.ui.main.BaseActivity;
-import cn.edu.zju.isst.util.CM;
-import cn.edu.zju.isst.util.TimeString;
+import cn.edu.zju.isst.util.CroMan;
+import cn.edu.zju.isst.util.TSUtil;
 
 import static cn.edu.zju.isst.constant.Constants.STATUS_NOT_LOGIN;
 import static cn.edu.zju.isst.constant.Constants.STATUS_REQUEST_SUCCESS;
@@ -119,7 +119,7 @@ public class CityActivityDetailActivity extends BaseActivity {
                 m_pgdWating.dismiss();
                 switch (msg.what) {
                     case STATUS_REQUEST_SUCCESS:
-                        CM.showConfirm(CityActivityDetailActivity.this, "提交成功！");
+                        CroMan.showConfirm(CityActivityDetailActivity.this, "提交成功！");
                         mCityActivity.isParticipate = !mCityActivity.isParticipate;
                         showDetail();
                         break;
@@ -278,8 +278,8 @@ public class CityActivityDetailActivity extends BaseActivity {
     private void showDetail() {
         setTitle(mCityActivity.title);
         mViewHolder.durationTxv.setText("活动时间:"
-                + TimeString.toHM(mCityActivity.startTime) + "-"
-                + TimeString.toHM(mCityActivity.expireTime));
+                + TSUtil.toHM(mCityActivity.startTime) + "-"
+                + TSUtil.toHM(mCityActivity.expireTime));
         mViewHolder.locationTxv.setText("活动地点:" + mCityActivity.location);
         mViewHolder.contentWebv.loadDataWithBaseURL(null, mCityActivity.content,
                 "text/html", "utf-8", null);

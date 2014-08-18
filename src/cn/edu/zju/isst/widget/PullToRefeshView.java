@@ -18,7 +18,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import cn.edu.zju.isst.R;
-import cn.edu.zju.isst.util.L;
+import cn.edu.zju.isst.util.Lgr;
 
 /**
  * @author theasir
@@ -178,7 +178,7 @@ public class PullToRefeshView extends LinearLayout implements OnTouchListener {
      */
     public PullToRefeshView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        L.i(this.getClass().getName() + "----enter---PullToRefresh");
+        Lgr.i(this.getClass().getName() + "----enter---PullToRefresh");
         preferences = PreferenceManager.getDefaultSharedPreferences(context);
         header = LayoutInflater.from(context).inflate(R.layout.pull_to_refresh, null, true);
         progressBar = (ProgressBar) header.findViewById(R.id.progress_bar);
@@ -288,7 +288,7 @@ public class PullToRefeshView extends LinearLayout implements OnTouchListener {
      * 当所有的刷新逻辑完成后，记录调用一下，否则你的ListView将一直处于正在刷新状态。
      */
     public void finishRefreshing() {
-        L.i(this.getClass().getName() + "----enter---finishRefreshing");
+        Lgr.i(this.getClass().getName() + "----enter---finishRefreshing");
         currentStatus = STATUS_REFRESH_FINISHED;
         preferences.edit().putLong(UPDATED_AT + mId, System.currentTimeMillis()).commit();
         new HideHeaderTask().execute();

@@ -21,9 +21,9 @@ import cn.edu.zju.isst.db.Archive;
 import cn.edu.zju.isst.net.CSTResponse;
 import cn.edu.zju.isst.net.RequestListener;
 import cn.edu.zju.isst.ui.main.BaseActivity;
-import cn.edu.zju.isst.util.J;
-import cn.edu.zju.isst.util.L;
-import cn.edu.zju.isst.util.TimeString;
+import cn.edu.zju.isst.util.Judge;
+import cn.edu.zju.isst.util.Lgr;
+import cn.edu.zju.isst.util.TSUtil;
 import cn.edu.zju.isst.v2.archive.net.ArchiveApi;
 
 import static cn.edu.zju.isst.constant.Constants.STATUS_NOT_LOGIN;
@@ -92,7 +92,7 @@ public class ArchiveDetailActivity extends BaseActivity {
             public void handleMessage(Message msg) {
                 switch (msg.what) {
                     case STATUS_REQUEST_SUCCESS:
-                        L.i("Handler Success Archieve id = "
+                        Lgr.i("Handler Success Archieve id = "
                                 + m_archiveCurrent.getId());
                         showArchiveDetail();
                         break;
@@ -113,13 +113,13 @@ public class ArchiveDetailActivity extends BaseActivity {
 
                 try {
                     JSONObject jsonObject = (JSONObject) result;
-                    if (!J.isValidJsonValue("status", jsonObject)) {
+                    if (!Judge.isValidJsonValue("status", jsonObject)) {
                         return;
                     }
                     final int status = jsonObject.getInt("status");
                     switch (status) {
                         case STATUS_REQUEST_SUCCESS:
-                            if (!J.isValidJsonValue("status", jsonObject)) {
+                            if (!Judge.isValidJsonValue("status", jsonObject)) {
                                 break;
                             }
                             m_archiveCurrent = new Archive(jsonObject
@@ -149,8 +149,8 @@ public class ArchiveDetailActivity extends BaseActivity {
             @Override
             public void onException(Exception e) {
                 // m_archiveCurrent = new Archive(null);
-                L.i("ArchiveDetailActivity onError : id = " + m_nId + "!");
-                if (L.isDebuggable()) {
+                Lgr.i("ArchiveDetailActivity onError : id = " + m_nId + "!");
+                if (Lgr.isDebuggable()) {
                     e.printStackTrace();
                 }
 
@@ -202,11 +202,11 @@ public class ArchiveDetailActivity extends BaseActivity {
      * 绑定数据并显示
      */
     private void showArchiveDetail() {
-        if (J.isNullOrEmpty(m_archiveCurrent)) {
+        if (Judge.isNullOrEmpty(m_archiveCurrent)) {
             return;
         }
         m_txvTitle.setText(m_archiveCurrent.getTitle());
-        m_txvDate.setText(TimeString.toFull(m_archiveCurrent.getUpdatedAt()));
+        m_txvDate.setText(TSUtil.toFull(m_archiveCurrent.getUpdatedAt()));
         m_txvPublisher.setText(m_archiveCurrent.getPublisher().getName());
         m_webvContent.loadDataWithBaseURL(null, m_archiveCurrent.getContent(),
                 "text/html", "utf-8", null);

@@ -12,7 +12,7 @@ import android.net.Uri;
 
 import java.io.FileNotFoundException;
 
-import cn.edu.zju.isst.util.L;
+import cn.edu.zju.isst.util.Lgr;
 
 /**
  * @author stevwayne
@@ -60,7 +60,7 @@ public class UpdateManager {
                 DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
 
         final long ref = dm.enqueue(request);
-        L.i("UpdateApkId", "" + ref);
+        Lgr.i("UpdateApkId", "" + ref);
 
         IntentFilter filter = new IntentFilter(
                 DownloadManager.ACTION_DOWNLOAD_COMPLETE);
@@ -71,12 +71,12 @@ public class UpdateManager {
             public void onReceive(Context context, Intent intent) {
                 long recceiveRef = intent.getLongExtra(
                         DownloadManager.EXTRA_DOWNLOAD_ID, -1);
-                L.i("UpdateApkId", "Downloaded Apk Id: " + recceiveRef);
+                Lgr.i("UpdateApkId", "Downloaded Apk Id: " + recceiveRef);
                 if (ref == recceiveRef) {
                     try {
-                        L.i("UpdateApkId", "Before Open File");
+                        Lgr.i("UpdateApkId", "Before Open File");
                         dm.openDownloadedFile(recceiveRef);
-                        L.i("UpdateApkId", "After Open File");
+                        Lgr.i("UpdateApkId", "After Open File");
                     } catch (FileNotFoundException e) {
                         // TODO Auto-generated catch block
                         e.printStackTrace();
