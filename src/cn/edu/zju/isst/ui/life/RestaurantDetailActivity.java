@@ -32,8 +32,8 @@ import cn.edu.zju.isst.db.RestaurantMenu;
 import cn.edu.zju.isst.net.CSTResponse;
 import cn.edu.zju.isst.net.RequestListener;
 import cn.edu.zju.isst.ui.main.BaseActivity;
-import cn.edu.zju.isst.util.J;
-import cn.edu.zju.isst.util.L;
+import cn.edu.zju.isst.util.Judge;
+import cn.edu.zju.isst.util.Lgr;
 
 import static cn.edu.zju.isst.constant.Constants.STATUS_NOT_LOGIN;
 import static cn.edu.zju.isst.constant.Constants.STATUS_REQUEST_SUCCESS;
@@ -90,12 +90,12 @@ public class RestaurantDetailActivity extends BaseActivity {
                 switch (msg.what) {
                     case STATUS_REQUEST_SUCCESS:
                         // TODO 优化策略
-                        if (!J.isNullOrEmpty(m_restaurantCurrent)) {
-                            L.i("Handler Success Restaurant id = "
+                        if (!Judge.isNullOrEmpty(m_restaurantCurrent)) {
+                            Lgr.i("Handler Success Restaurant id = "
                                     + m_restaurantCurrent.getId());
                             showRestaurantDetail();
                         }
-                        if (!J.isNullOrEmpty(m_listRestaurantMenu)) {
+                        if (!Judge.isNullOrEmpty(m_listRestaurantMenu)) {
                             m_adapterMenu.notifyDataSetChanged();
                         }
                         break;
@@ -151,10 +151,10 @@ public class RestaurantDetailActivity extends BaseActivity {
                 m_listRestaurantMenu.add(new RestaurantMenu(
                         (JSONObject) jsonArray.get(i)));
             }
-            L.i(this.getClass().getName() + " updateMenu: "
+            Lgr.i(this.getClass().getName() + " updateMenu: "
                     + "Added menu to menuList!");
         } catch (JSONException e) {
-            L.i(this.getClass().getName() + " updateMenu!");
+            Lgr.i(this.getClass().getName() + " updateMenu!");
             e.printStackTrace();
         }
     }
@@ -258,7 +258,7 @@ public class RestaurantDetailActivity extends BaseActivity {
 
             @Override
             public void onClick(View v) {
-                if (!J.isNullOrEmpty(dialNumber)) {
+                if (!Judge.isNullOrEmpty(dialNumber)) {
                     Intent intent = new Intent(Intent.ACTION_DIAL, Uri
                             .parse("tel://" + dialNumber));
                     RestaurantDetailActivity.this.startActivity(intent);

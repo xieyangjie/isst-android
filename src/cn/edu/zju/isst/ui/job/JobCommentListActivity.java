@@ -37,9 +37,9 @@ import cn.edu.zju.isst.exception.HttpErrorWeeder;
 import cn.edu.zju.isst.net.CSTResponse;
 import cn.edu.zju.isst.net.RequestListener;
 import cn.edu.zju.isst.ui.main.BaseActivity;
-import cn.edu.zju.isst.util.CM;
-import cn.edu.zju.isst.util.J;
-import cn.edu.zju.isst.util.TimeString;
+import cn.edu.zju.isst.util.CroMan;
+import cn.edu.zju.isst.util.Judge;
+import cn.edu.zju.isst.util.TSUtil;
 import cn.edu.zju.isst.widget.PullToRefeshView;
 import cn.edu.zju.isst.widget.PullToRefeshView.PullToRefreshListener;
 
@@ -237,7 +237,7 @@ public class JobCommentListActivity extends BaseActivity implements
         m_nCurrentPage++;
         JSONArray jsonArray = new JSONArray();
         try {
-            if (J.isValidJsonValue("body", obj)) {
+            if (Judge.isValidJsonValue("body", obj)) {
                 jsonArray = obj.getJSONArray("body");
                 for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject jsonObject = jsonArray.getJSONObject(i);
@@ -256,7 +256,7 @@ public class JobCommentListActivity extends BaseActivity implements
     }
 
     private String getDataSting(long date) {
-        return TimeString.toMD(date);
+        return TSUtil.toMD(date);
     }
 
     private void dealMsgAfterGet(Message msg) {
@@ -292,7 +292,7 @@ public class JobCommentListActivity extends BaseActivity implements
         switch (msg.what) {
 
             case STATUS_REQUEST_SUCCESS:
-                CM.showInfo(this, PUBLIC_SUCCESS);
+                CroMan.showInfo(this, PUBLIC_SUCCESS);
                 requestData(LoadType.REFRESH);
                 break;
             case STATUS_NOT_LOGIN:// TODO

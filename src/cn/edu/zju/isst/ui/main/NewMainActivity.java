@@ -35,9 +35,9 @@ import cn.edu.zju.isst.ui.life.CampusActivityListFragment;
 import cn.edu.zju.isst.ui.life.RestaurantListFragment;
 import cn.edu.zju.isst.ui.life.StudyListFragment;
 import cn.edu.zju.isst.ui.life.WikGridFragment;
-import cn.edu.zju.isst.ui.login.LoginActivity;
+import cn.edu.zju.isst.v2.login.LoginActivity;
 import cn.edu.zju.isst.ui.usercenter.UserCenterFragment;
-import cn.edu.zju.isst.util.L;
+import cn.edu.zju.isst.util.Lgr;
 import cn.edu.zju.isst.ui.life.NewsListFragment;
 import cn.edu.zju.isst.v2.archive.gui.BaseArchiveListFragment;
 
@@ -188,7 +188,7 @@ public class NewMainActivity extends BaseActivity {
 
             @Override
             public void onHttpError(CSTResponse response) {
-                L.i("logout onHttpError: " + response.getStatus());
+                Lgr.i("logout onHttpError: " + response.getStatus());
 
             }
 

@@ -46,8 +46,8 @@ import cn.edu.zju.isst.exception.HttpErrorWeeder;
 import cn.edu.zju.isst.net.CSTResponse;
 import cn.edu.zju.isst.net.NetworkConnection;
 import cn.edu.zju.isst.net.RequestListener;
-import cn.edu.zju.isst.util.J;
-import cn.edu.zju.isst.util.L;
+import cn.edu.zju.isst.util.Judge;
+import cn.edu.zju.isst.util.Lgr;
 
 import static cn.edu.zju.isst.constant.Constants.NETWORK_NOT_CONNECTED;
 import static cn.edu.zju.isst.constant.Constants.STATUS_NOT_LOGIN;
@@ -163,7 +163,7 @@ public class ContactListFragment extends Fragment {
         if (!m_listUser.isEmpty()) {
             m_listUser.clear();
         }
-        if (!J.isNullOrEmpty(dbAlumniList)) {
+        if (!Judge.isNullOrEmpty(dbAlumniList)) {
             for (User Alumni : dbAlumniList) {
                 m_listUser.add(Alumni);
             }
@@ -215,7 +215,7 @@ public class ContactListFragment extends Fragment {
         if (m_ft == FilterType.MY_CLASS) {
             sb.append(" 班级：" + "本班");
         }
-        if (!J.isNullOrEmpty(m_userFilter.name)) {
+        if (!Judge.isNullOrEmpty(m_userFilter.name)) {
             sb.append(" 姓名：" + m_userFilter.name);
         }
         if (m_userFilter.gender != 0) {
@@ -224,10 +224,10 @@ public class ContactListFragment extends Fragment {
         if (m_userFilter.grade != 0) {
             sb.append(" 年级：" + m_userFilter.grade);
         }
-        if (!J.isNullOrEmpty(m_userFilter.major)) {
+        if (!Judge.isNullOrEmpty(m_userFilter.major)) {
             sb.append(" 方向：" + m_userFilter.major);
         }
-        if (!J.isNullOrEmpty(m_userFilter.company)) {
+        if (!Judge.isNullOrEmpty(m_userFilter.company)) {
             sb.append(" 公司：" + m_userFilter.company);
         }
         if (m_userFilter.cityId != 0) {
@@ -296,7 +296,7 @@ public class ContactListFragment extends Fragment {
         //筛选同城
         else if (m_ft == FilterType.MY_CITY) {
             m_userFilter.cityId = DataManager.getCurrentUser().getCityId();
-            L.i("yyy" + m_userFilter.cityId);
+            Lgr.i("yyy" + m_userFilter.cityId);
             m_userFilter.cityString = "同城";
             getUserListFromApi(m_userFilter);
         }
@@ -370,7 +370,7 @@ public class ContactListFragment extends Fragment {
                     }
                 }
             } catch (JSONException e) {
-                L.i(this.getClass().getName() + " onComplete!");
+                Lgr.i(this.getClass().getName() + " onComplete!");
                 e.printStackTrace();
             }
 
@@ -379,7 +379,7 @@ public class ContactListFragment extends Fragment {
 
         @Override
         public void onHttpError(CSTResponse response) {
-            L.i(this.getClass().getName() + " onHttpError!");
+            Lgr.i(this.getClass().getName() + " onHttpError!");
             Message msg = m_handlerAlumniList.obtainMessage();
             HttpErrorWeeder.fckHttpError(response, msg);
             m_handlerAlumniList.sendMessage(msg);
@@ -387,7 +387,7 @@ public class ContactListFragment extends Fragment {
 
         @Override
         public void onException(Exception e) {
-            L.i(this.getClass().getName() + " onException!");
+            Lgr.i(this.getClass().getName() + " onException!");
             Message msg = m_handlerAlumniList.obtainMessage();
             ExceptionWeeder.fckException(e, msg);
             m_handlerAlumniList.sendMessage(msg);

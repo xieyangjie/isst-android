@@ -1,12 +1,10 @@
 /**
  *
  */
-package cn.edu.zju.isst.ui.loading;
+package cn.edu.zju.isst.v2.splash.gui;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -16,15 +14,18 @@ import android.os.Handler;
 import android.os.Message;
 
 import cn.edu.zju.isst.R;
-import cn.edu.zju.isst.api.VersionApi;
-import cn.edu.zju.isst.net.CSTResponse;
-import cn.edu.zju.isst.net.RequestListener;
 import cn.edu.zju.isst.net.UpdateManager;
 import cn.edu.zju.isst.settings.CSTSettings;
-import cn.edu.zju.isst.ui.login.LoginActivity;
+import cn.edu.zju.isst.v2.login.LoginActivity;
 import cn.edu.zju.isst.ui.main.NewMainActivity;
-import cn.edu.zju.isst.util.J;
-import cn.edu.zju.isst.util.L;
+import cn.edu.zju.isst.util.Lgr;
+import cn.edu.zju.isst.v2.data.CSTJsonParser;
+import cn.edu.zju.isst.v2.gui.CSTBaseActivity;
+import cn.edu.zju.isst.v2.net.CSTJsonRequest;
+import cn.edu.zju.isst.v2.net.CSTNetworkEngine;
+import cn.edu.zju.isst.v2.net.CSTRequest;
+import cn.edu.zju.isst.v2.splash.data.CSTVersion;
+import cn.edu.zju.isst.v2.splash.net.VersionResponse;
 
 import static cn.edu.zju.isst.constant.Constants.STATUS_REQUEST_SUCCESS;
 
@@ -33,11 +34,15 @@ import static cn.edu.zju.isst.constant.Constants.STATUS_REQUEST_SUCCESS;
  *
  * @author theasir
  */
-public class LoadingActivity extends Activity {
+public class LoadingActivity extends CSTBaseActivity {
 
-    private Handler m_handlerLoading;
+    private static final String VERSION_URL = "/api/android/version";
 
-    private AlertDialog.Builder m_aldUpdate;
+    private CSTNetworkEngine mEngine = CSTNetworkEngine.getInstance();
+
+    private Handler mHandler;
+
+    private AlertDialog.Builder mAldUpdate;
 
     /*
      * (non-Javadoc)
@@ -65,10 +70,10 @@ public class LoadingActivity extends Activity {
     }
 
     private void initAlertDialog() {
-        m_aldUpdate = new AlertDialog.Builder(LoadingActivity.this);
-        m_aldUpdate.setTitle(R.string.new_update_avaliable);
-        m_aldUpdate.setMessage(R.string.update_detail);
-        m_aldUpdate.setPositiveButton(R.string.OK,
+        mAldUpdate = new AlertDialog.Builder(LoadingActivity.this);
+        mAldUpdate.setTitle(R.string.new_update_avaliable);
+        mAldUpdate.setMessage(R.string.update_detail);
+        mAldUpdate.setPositiveButton(R.string.OK,
                 new DialogInterface.OnClickListener() {
 
                     @Override
@@ -82,7 +87,7 @@ public class LoadingActivity extends Activity {
                 }
         );
 
-        m_aldUpdate.setNegativeButton(R.string.cancel,
+        mAldUpdate.setNegativeButton(R.string.cancel,
                 new DialogInterface.OnClickListener() {
 
                     @Override
@@ -92,7 +97,7 @@ public class LoadingActivity extends Activity {
                 }
         );
 
-        m_aldUpdate.setOnCancelListener(new DialogInterface.OnCancelListener() {
+        mAldUpdate.setOnCancelListener(new DialogInterface.OnCancelListener() {
 
             @Override
             public void onCancel(DialogInterface dialog) {
@@ -102,7 +107,7 @@ public class LoadingActivity extends Activity {
     }
 
     private void initHandler() {
-        m_handlerLoading = new Handler() {
+        mHandler = new Handler() {
 
             /*
              * (non-Javadoc)
@@ -115,18 +120,15 @@ public class LoadingActivity extends Activity {
                     case STATUS_REQUEST_SUCCESS:
                         try {
                             if (getPackageManager().getPackageInfo(getPackageName(), 0).versionCode
-                                    < (Integer) msg.obj) {
-                                m_aldUpdate.show();
+                                    < ((CSTVersion) msg.obj).buildNum) {
+                                mAldUpdate.show();
                             } else {
                                 jump();
                             }
                         } catch (NameNotFoundException e) {
-                            // TODO Auto-generated catch block
                             e.printStackTrace();
                         }
-
                         break;
-
                     default:
                         jump();
                         break;
@@ -137,42 +139,27 @@ public class LoadingActivity extends Activity {
     }
 
     private void requestVersionInfo() {
-        VersionApi.getVersionInfo(new RequestListener() {
-
+        VersionResponse verResponse = new VersionResponse(this) {
             @Override
-            public void onComplete(Object result) {
-                Message msg = m_handlerLoading.obtainMessage();
-                try {
-                    if (!J.isValidJsonValue("status", (JSONObject) result)) {
-                        return;
-                    }
-                    msg.what = ((JSONObject) result).getInt("status");
-                    msg.obj = ((JSONObject) result).getJSONObject("body").getInt("build");
-                } catch (JSONException e) {
-                    L.i(this.getClass().getName() + " onComplete!");
-                    e.printStackTrace();
-                }
-
-                m_handlerLoading.sendMessage(msg);
-
+            public void onResponse(JSONObject response) {
+                CSTVersion version = (CSTVersion) CSTJsonParser
+                        .parseJson(response, new CSTVersion());
+                Lgr.i(response.toString());
+                //Tricky for no authentication for this request. So if success, status will always be 0. Thus not handle status.
+                Message msg = mHandler.obtainMessage();
+                msg.what = version.getStatusInfo().status;
+                msg.obj = version;
+                mHandler.sendMessage(msg);
             }
+        };
+        CSTJsonRequest verRequest = new CSTJsonRequest(CSTRequest.Method.GET, VERSION_URL, null,
+                verResponse);
 
-            @Override
-            public void onHttpError(CSTResponse response) {
-                // TODO Auto-generated method stub
-
-            }
-
-            @Override
-            public void onException(Exception e) {
-                // TODO Auto-generated method stub
-
-            }
-        });
+        mEngine.requestJson(verRequest);
     }
 
     private void jump() {
-        L.i(this.getClass().getName() + " jump isAutoLogin? "
+        Lgr.i(this.getClass().getName() + " jump isAutoLogin? "
                 + CSTSettings.isAutoLogin(LoadingActivity.this));
         if (CSTSettings.isAutoLogin(LoadingActivity.this)) {
             LoadingActivity.this.startActivity(new Intent(LoadingActivity.this,

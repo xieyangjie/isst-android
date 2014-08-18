@@ -18,7 +18,7 @@ import cn.edu.zju.isst.db.City;
 import cn.edu.zju.isst.db.DataManager;
 import cn.edu.zju.isst.db.User;
 import cn.edu.zju.isst.ui.main.BaseActivity;
-import cn.edu.zju.isst.util.CM;
+import cn.edu.zju.isst.util.CroMan;
 
 /**
  * @author theasir
@@ -102,7 +102,7 @@ public class UserInfoActivity extends BaseActivity {
             case REQUEST_CODE_EDIT:
                 switch (resultCode) {
                     case RESULT_CODE_DONE:
-                        CM.showConfirm(UserInfoActivity.this, "success!");
+                        CroMan.showConfirm(UserInfoActivity.this, "success!");
                         m_userCurrent = data.hasExtra("updatedUser") ? (User) data
                                 .getSerializableExtra("updatedUser") : DataManager
                                 .getCurrentUser();

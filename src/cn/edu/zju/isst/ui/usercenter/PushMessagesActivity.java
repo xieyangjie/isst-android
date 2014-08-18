@@ -29,9 +29,9 @@ import cn.edu.zju.isst.db.PushMessage;
 import cn.edu.zju.isst.net.CSTResponse;
 import cn.edu.zju.isst.net.RequestListener;
 import cn.edu.zju.isst.ui.main.BaseActivity;
-import cn.edu.zju.isst.util.J;
-import cn.edu.zju.isst.util.L;
-import cn.edu.zju.isst.util.TimeString;
+import cn.edu.zju.isst.util.Judge;
+import cn.edu.zju.isst.util.Lgr;
+import cn.edu.zju.isst.util.TSUtil;
 
 import static cn.edu.zju.isst.constant.Constants.STATUS_REQUEST_SUCCESS;
 
@@ -119,13 +119,13 @@ public class PushMessagesActivity extends BaseActivity {
             public void onComplete(Object result) {
                 Message msg = mHandler.obtainMessage();
                 try {
-                    if (!J.isValidJsonValue("status", (JSONObject) result)) {
+                    if (!Judge.isValidJsonValue("status", (JSONObject) result)) {
                         return;
                     }
                     msg.what = ((JSONObject) result).getInt("status");
                     msg.obj = (JSONObject) result;
                 } catch (JSONException e) {
-                    L.i(this.getClass().getName() + " onComplete!");
+                    Lgr.i(this.getClass().getName() + " onComplete!");
                     e.printStackTrace();
                 }
 
@@ -152,7 +152,7 @@ public class PushMessagesActivity extends BaseActivity {
             mMessages.clear();
         }
         try {
-            if (!J.isValidJsonValue("body", jsonObject)) {
+            if (!Judge.isValidJsonValue("body", jsonObject)) {
                 return;
             }
             JSONArray jsonArray = jsonObject.getJSONArray("body");
@@ -220,7 +220,7 @@ public class PushMessagesActivity extends BaseActivity {
             }
 
             holder.titleTxv.setText(mMessages.get(position).title);
-            holder.createdTimeTxv.setText(TimeString.toYMD(mMessages
+            holder.createdTimeTxv.setText(TSUtil.toYMD(mMessages
                     .get(position).createdTime));
             holder.contentTxv.setText(mMessages.get(position).content);
 

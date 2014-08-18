@@ -16,12 +16,12 @@ import java.util.Map;
  *         <p/>
  *         TODO WIP
  */
-public class J {
+public class Judge {
 
     /**
      * 私有构造器，防止对象实例化
      */
-    private J() {
+    private Judge() {
     }
 
     /**

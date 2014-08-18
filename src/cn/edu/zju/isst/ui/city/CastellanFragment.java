@@ -25,8 +25,8 @@ import cn.edu.zju.isst.R;
 import cn.edu.zju.isst.db.City;
 import cn.edu.zju.isst.db.DataManager;
 import cn.edu.zju.isst.db.User;
-import cn.edu.zju.isst.util.J;
-import cn.edu.zju.isst.util.L;
+import cn.edu.zju.isst.util.Judge;
+import cn.edu.zju.isst.util.Lgr;
 
 /**
  * @author yyy
@@ -206,13 +206,13 @@ public class CastellanFragment extends Fragment {
     private void getCityList() {
         List<City> dbList = DataManager.getCityList();
         m_arrayListCity.add("城市");
-        if (!J.isNullOrEmpty(dbList)) {
+        if (!Judge.isNullOrEmpty(dbList)) {
             for (City city : dbList) {
                 m_listCity.add(city);
                 m_arrayListCity.add(city.getName());
             }
         }
-        L.i(" yyy getCityList");
+        Lgr.i(" yyy getCityList");
     }
 
     /**
