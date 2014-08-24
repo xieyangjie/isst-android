@@ -1,7 +1,7 @@
 /**
  *
  */
-package cn.edu.zju.isst.v2.login;
+package cn.edu.zju.isst.v2.login.gui;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -17,6 +17,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -38,6 +39,7 @@ import cn.edu.zju.isst.ui.main.BaseActivity;
 import cn.edu.zju.isst.ui.main.NewMainActivity;
 import cn.edu.zju.isst.util.CroMan;
 import cn.edu.zju.isst.util.Lgr;
+import cn.edu.zju.isst.v2.user.net.UserResponse;
 
 import static cn.edu.zju.isst.constant.Constants.NETWORK_NOT_CONNECTED;
 import static cn.edu.zju.isst.constant.Constants.STATUS_LOGIN_AUTH_EXPIRED;
@@ -247,51 +249,72 @@ public class LoginActivity extends BaseActivity {
                 m_pgdWating = ProgressDialog.show(LoginActivity.this,
                         getString(R.string.loading),
                         getString(R.string.please_wait), true, false);
-                if (NetworkConnection.isNetworkConnected(LoginActivity.this)) {
-                    LoginApi.validate(m_strUserName,
-                            String.valueOf(m_strPassword), 0.0, 0.0,
-                            new RequestListener() {
 
-                                @Override
-                                public void onComplete(Object result) {
-                                    Message msg = m_handlerLogin
-                                            .obtainMessage();
-
-                                    try {
-                                        msg.what = ((JSONObject) result)
-                                                .getInt("status");
-                                        msg.obj = (JSONObject) result;
-                                        Lgr.i("Msg = " + msg.what);
-                                    } catch (Exception e) {
-                                        Lgr.e("Login Requestlistener onComplete Exception!");
-                                        onException(e);
-                                    }
-
-                                    m_handlerLogin.sendMessage(msg);
-
-                                }
-
-                                @Override
-                                public void onHttpError(CSTResponse response) {
-                                    Lgr.w("Login Requestlistener onHttpError!");
-                                    Message msg = m_handlerLogin
-                                            .obtainMessage();
-                                    HttpErrorWeeder.fckHttpError(response, msg);
-                                    m_handlerLogin.sendMessage(msg);
-                                }
-
-                                @Override
-                                public void onException(Exception e) {
-                                    Lgr.e("Login Requestlistener onException!");
-                                    e.printStackTrace();
-                                    Message msg = m_handlerLogin
-                                            .obtainMessage();
-                                    ExceptionWeeder.fckException(e, msg);
-                                    m_handlerLogin.sendMessage(msg);
-                                }
-
+//                            String.valueOf(m_strPassword), 0.0, 0.0,
+//                            new RequestListener() {
+//
+//                                @Override
+//                                public void onComplete(Object result) {
+//                                    Message msg = m_handlerLogin
+//                                            .obtainMessage();
+//
+//                                    try {
+//                                        msg.what = ((JSONObject) result)
+//                                                .getInt("status");
+//                                        msg.obj = (JSONObject) result;
+//                                        Lgr.i("Msg = " + msg.what);
+//                                    } catch (Exception e) {
+//                                        Lgr.e("Login Requestlistener onComplete Exception!");
+//                                        onException(e);
+//                                    }
+//
+//                                    m_handlerLogin.sendMessage(msg);
+//
+//                                }
+//
+//                                @Override
+//                                public void onHttpError(CSTResponse response) {
+//                                    Lgr.w("Login Requestlistener onHttpError!");
+//                                    Message msg = m_handlerLogin
+//                                            .obtainMessage();
+//                                    HttpErrorWeeder.fckHttpError(response, msg);
+//                                    m_handlerLogin.sendMessage(msg);
+//                                }
+//
+//                                @Override
+//                                public void onException(Exception e) {
+//                                    Lgr.e("Login Requestlistener onException!");
+//                                    e.printStackTrace();
+//                                    Message msg = m_handlerLogin
+//                                            .obtainMessage();
+//                                    ExceptionWeeder.fckException(e, msg);
+//                                    m_handlerLogin.sendMessage(msg);
+//                                }
+//
+//                            }
+                if (NetworkConnection.isNetworkConnected(LoginActivity.this)){
+                    UserResponse logResponse = new UserResponse(LoginActivity.this, true){
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            super.onResponse(response);
+//                            CSTUser login = (CSTUser) CSTJsonParser
+//                                    .parseJson(response, new CSTUser());
+                            Lgr.i(response.toString());
+                            Message msg = m_handlerLogin.obtainMessage();
+                            try {
+                                msg.what = response.getInt("status");
+                                msg.obj = response;
+                            } catch (JSONException e) {
+                                e.printStackTrace();
                             }
-                    );
+//                            msg.obj = login;
+                            m_handlerLogin.sendMessage(msg);
+                        }
+                    };
+                    cn.edu.zju.isst.v2.login.net.LoginApi.validate(m_strUserName,
+                            String.valueOf(m_strPassword), 0.0, 0.0, logResponse);
+
+
                 } else {
                     Message msg = m_handlerLogin.obtainMessage();
                     msg.what = NETWORK_NOT_CONNECTED;

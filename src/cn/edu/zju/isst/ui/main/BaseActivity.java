@@ -19,7 +19,7 @@ import cn.edu.zju.isst.db.GlobalDataCache;
 import cn.edu.zju.isst.db.User;
 import cn.edu.zju.isst.net.CSTResponse;
 import cn.edu.zju.isst.net.RequestListener;
-import cn.edu.zju.isst.v2.login.LoginActivity;
+import cn.edu.zju.isst.v2.login.gui.LoginActivity;
 import cn.edu.zju.isst.util.CroMan;
 import cn.edu.zju.isst.util.Lgr;
 

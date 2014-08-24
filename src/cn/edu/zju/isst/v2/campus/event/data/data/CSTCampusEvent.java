@@ -1,5 +1,6 @@
-package cn.edu.zju.isst.v2.campus.event.data;
+package cn.edu.zju.isst.v2.campus.event.data.data;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import cn.edu.zju.isst.v2.model.CSTDataItem;
@@ -7,6 +8,7 @@ import cn.edu.zju.isst.v2.model.CSTDataItem;
 /**
  * Created by tan on 2014/7/30.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class CSTCampusEvent extends CSTDataItem<CSTCampusEvent> {
 
     @JsonProperty("id")

@@ -1,4 +1,4 @@
-package cn.edu.zju.isst.v2.campus.event.data;
+package cn.edu.zju.isst.v2.campus.event.data.data;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -33,6 +33,13 @@ public class CSTCampusEventProvider extends SimpleTableProvider {
     public CSTCampusEventProvider(Context context) {
         super(context);
     }
+
+//    public static CSTCampusEventProvider getInstance(Context context) {
+//        if (INSTANCE == null) {
+//            INSTANCE = new CSTCampusEventProvider(context);
+//        }
+//        return (CSTCampusEventProvider) INSTANCE;
+//    }
 
     public SimpleTableProvider getInstance(Context context) {
         return null;

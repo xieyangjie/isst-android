@@ -1,9 +1,14 @@
-package cn.edu.zju.isst.v2.campus.event.data;
+package cn.edu.zju.isst.v2.campus.event.data.data;
 
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.CursorLoader;
+import android.content.Loader;
 import android.database.Cursor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by lqynydyxf on 2014/8/5.
@@ -32,6 +37,12 @@ public class CSTCampusEventDataDelegate {
         campusevent.expireTime = cursor
                 .getInt(cursor.getColumnIndex(CSTCampusEventProvider.Columns.EXPIRETIME.key));
         return campusevent;
+    }
+
+    public static Loader<Cursor> getDataCursor(Context context, String[] projection,
+            String selection, String[] selectionArgs, String sortOrder) {
+        return new CursorLoader(context, CSTCampusEventProvider.CONTENT_URI, projection, selection,
+                selectionArgs, sortOrder);
     }
 
     public static CSTCampusEvent getCampusEvent(Context context, String id) {
@@ -75,5 +86,19 @@ public class CSTCampusEventDataDelegate {
         values.put(CSTCampusEventProvider.Columns.STARTTIME.key, campusevent.startTime);
         values.put(CSTCampusEventProvider.Columns.EXPIRETIME.key, campusevent.expireTime);
         return values;
+    }
+
+
+    private static ContentValues[] getCampusActivityListValues(CSTCampusEvent campusEvent) {
+        List<ContentValues> valuesList = new ArrayList<>();
+        for (CSTCampusEvent singleCampusEvent : campusEvent.itemList) {
+            valuesList.add(getCampusActivityValue(singleCampusEvent));
+        }
+        return valuesList.toArray(new ContentValues[valuesList.size()]);
+    }
+
+    public static void saveCampusActivityList(Context context, CSTCampusEvent campusEvent) {
+        ContentResolver resolver = context.getContentResolver();
+        resolver.bulkInsert(CSTCampusEventProvider.CONTENT_URI, getCampusActivityListValues(campusEvent));
     }
 }

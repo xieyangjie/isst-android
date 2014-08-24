@@ -16,7 +16,7 @@ import android.os.Message;
 import cn.edu.zju.isst.R;
 import cn.edu.zju.isst.net.UpdateManager;
 import cn.edu.zju.isst.settings.CSTSettings;
-import cn.edu.zju.isst.v2.login.LoginActivity;
+import cn.edu.zju.isst.v2.login.gui.LoginActivity;
 import cn.edu.zju.isst.ui.main.NewMainActivity;
 import cn.edu.zju.isst.util.Lgr;
 import cn.edu.zju.isst.v2.data.CSTJsonParser;
@@ -142,6 +142,7 @@ public class LoadingActivity extends CSTBaseActivity {
         VersionResponse verResponse = new VersionResponse(this) {
             @Override
             public void onResponse(JSONObject response) {
+                super.onResponse(response);
                 CSTVersion version = (CSTVersion) CSTJsonParser
                         .parseJson(response, new CSTVersion());
                 Lgr.i(response.toString());

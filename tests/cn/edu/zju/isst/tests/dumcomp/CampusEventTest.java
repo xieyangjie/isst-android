@@ -15,9 +15,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import cn.edu.zju.isst.R;
-import cn.edu.zju.isst.v2.campus.event.data.CSTCampusEvent;
-import cn.edu.zju.isst.v2.campus.event.data.CSTCampusEventDataDelegate;
-import cn.edu.zju.isst.v2.campus.event.data.CSTCampusEventProvider;
+import cn.edu.zju.isst.v2.campus.event.data.data.CSTCampusEvent;
+import cn.edu.zju.isst.v2.campus.event.data.data.CSTCampusEventDataDelegate;
+import cn.edu.zju.isst.v2.campus.event.data.data.CSTCampusEventProvider;
 
 public class CampusEventTest extends Activity {
 

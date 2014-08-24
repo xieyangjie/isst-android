@@ -21,6 +21,7 @@ import cn.edu.zju.isst.api.ArchiveCategory;
 import cn.edu.zju.isst.net.CSTResponse;
 import cn.edu.zju.isst.net.RequestListener;
 import cn.edu.zju.isst.ui.life.ArchiveDetailActivity;
+import cn.edu.zju.isst.util.Lgr;
 import cn.edu.zju.isst.v2.archive.data.CSTArchive;
 import cn.edu.zju.isst.v2.archive.data.CSTArchiveDataDelegate;
 import cn.edu.zju.isst.v2.archive.data.CSTArchiveProvider;
@@ -142,7 +143,7 @@ public abstract class BaseArchiveListFragment extends CSTBaseFragment
                         .parseJson((JSONObject) result, new CSTArchive());
                 CSTArchiveDataDelegate
                         .saveArchiveList(BaseArchiveListFragment.this.getActivity(), archive);
-
+                Lgr.i(result.toString());
                 Message msg = mHandler.obtainMessage();
                 msg.what = 0;
                 mHandler.sendMessage(msg);

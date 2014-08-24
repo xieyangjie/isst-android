@@ -7,5 +7,5 @@
         android:id="@android:id/list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"></ListView>
-
+    <include layout="@layout/simple_swipe_refresh_list_view" />
 </RelativeLayout>

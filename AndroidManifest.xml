@@ -34,7 +34,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".v2.login.LoginActivity"
+            android:name=".v2.login.gui.LoginActivity"
             android:label="@string/login" />
         <activity android:name=".ui.main.NewMainActivity" />
         <activity android:name=".ui.life.ArchiveDetailActivity" />

@@ -10,7 +10,7 @@ import java.util.List;
 
 import cn.edu.zju.isst.tests.util.CSTFileUtil;
 import cn.edu.zju.isst.tests.util.CSTPrinter;
-import cn.edu.zju.isst.v2.campus.event.data.CSTCampusEvent;
+import cn.edu.zju.isst.v2.campus.event.data.data.CSTCampusEvent;
 import cn.edu.zju.isst.v2.city.data.CSTCity;
 import cn.edu.zju.isst.v2.city.event.data.CSTCityEvent;
 import cn.edu.zju.isst.v2.city.event.data.CSTCityParticipant;
