@@ -32,7 +32,6 @@ import cn.edu.zju.isst.ui.job.ExperienceListFragment;
 import cn.edu.zju.isst.ui.job.InternshipListFragment;
 import cn.edu.zju.isst.ui.job.RecommedListFragment;
 import cn.edu.zju.isst.ui.life.CampusActivityListFragment;
-import cn.edu.zju.isst.ui.life.RestaurantListFragment;
 import cn.edu.zju.isst.ui.life.StudyListFragment;
 import cn.edu.zju.isst.ui.life.WikGridFragment;
 import cn.edu.zju.isst.v2.login.LoginActivity;
@@ -40,6 +39,7 @@ import cn.edu.zju.isst.ui.usercenter.UserCenterFragment;
 import cn.edu.zju.isst.util.Lgr;
 import cn.edu.zju.isst.ui.life.NewsListFragment;
 import cn.edu.zju.isst.v2.archive.gui.BaseArchiveListFragment;
+import cn.edu.zju.isst.v2.restaurant.gui.NewRestaurantListFragment;
 
 /**
  * @author theasir
@@ -227,7 +227,7 @@ public class NewMainActivity extends BaseActivity {
                     switchContent(CampusActivityListFragment.getInstance());
                     break;
                 case SERV:
-                    switchContent(RestaurantListFragment.getInstance());
+                    switchContent(NewRestaurantListFragment.getInstance());
                     break;
                 case STUD:
                     switchContent(StudyListFragment.getInstance());

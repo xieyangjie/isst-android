@@ -19,6 +19,7 @@ import cn.edu.zju.isst.v2.city.event.data.CSTCityEventProvider;
 import cn.edu.zju.isst.v2.city.event.data.CSTCityParticipantProvider;
 import cn.edu.zju.isst.v2.comment.data.CSTCommentProvider;
 import cn.edu.zju.isst.v2.publisher.data.CSTPublisherProvider;
+import cn.edu.zju.isst.v2.restaurant.data.CSTRestaurantProvider;
 import cn.edu.zju.isst.v2.user.data.CSTUserProvider;
 
 /**
@@ -29,6 +30,7 @@ public class CSTProvider extends ContentProvider {
     private static final int TABLE_USER_CODE = 1;
 
     private static final int TABLE_ARCHIVE_CODE = 0x02;
+    private static final int TABLE_RESTAURANT_CODE=9;
 
 //    private static final int TABLE_CAMPUSEvent_CODE = 2;
 //
@@ -57,6 +59,7 @@ public class CSTProvider extends ContentProvider {
     static {
         sURIMatcher.addURI(AUTHORITY, CSTUserProvider.TABLE_NAME, TABLE_USER_CODE);
         sURIMatcher.addURI(AUTHORITY, CSTArchiveProvider.TABLE_NAME, TABLE_ARCHIVE_CODE);
+        sURIMatcher.addURI(AUTHORITY,CSTRestaurantProvider.TABLE_NAME,TABLE_RESTAURANT_CODE);
 //        sURIMatcher.addURI(AUTHORITY, CSTCampusEventProvider.TABLE_NAME, TABLE_CAMPUSEvent_CODE);
 //        sURIMatcher.addURI(AUTHORITY, CSTCityProvider.TABLE_NAME, TABLE_CITY_CODE);
 //        sURIMatcher.addURI(AUTHORITY, CSTPublisherProvider.TABLE_NAME, TABLE_PUBLISHER_CODE);
@@ -77,6 +80,7 @@ public class CSTProvider extends ContentProvider {
                 .put(CSTUserProvider.TABLE_NAME, new CSTUserProvider(getContext()));
         mProviderMap
                 .put(CSTArchiveProvider.TABLE_NAME, CSTArchiveProvider.getInstance(getContext()));
+        mProviderMap.put(CSTRestaurantProvider.TABLE_NAME,new CSTRestaurantProvider(getContext()));
 //        mProviderMap.
 //                put(CSTCampusEventProvider.TABLE_NAME, new CSTCampusEventProvider(getContext()));
 //        mProviderMap.put(CSTCityProvider.TABLE_NAME, new CSTCityProvider(getContext()));
@@ -137,6 +141,8 @@ public class CSTProvider extends ContentProvider {
                 return CSTUserProvider.TABLE_NAME;
             case TABLE_ARCHIVE_CODE:
                 return CSTArchiveProvider.TABLE_NAME;
+            case TABLE_RESTAURANT_CODE:
+                return CSTRestaurantProvider.TABLE_NAME;
 //            case TABLE_CAMPUSEvent_CODE:
 //                return CSTCampusEventProvider.TABLE_NAME;
 //            case TABLE_CITY_CODE:

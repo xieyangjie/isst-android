@@ -41,7 +41,7 @@ public class CSTCityDataDelegate {
         return null;//Should throw exception to avoid null pointer?
     }
 
-    public static void saveCampusActivity(Context context, CSTCity city) {
+    public static void saveCity(Context context, CSTCity city) {
         ContentResolver resolver = context.getContentResolver();
         resolver.insert(CSTCityProvider.CONTENT_URI, getCityValue(city));
     }
