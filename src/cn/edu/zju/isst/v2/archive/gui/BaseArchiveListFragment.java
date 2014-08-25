@@ -1,5 +1,7 @@
 package cn.edu.zju.isst.v2.archive.gui;
 
+import com.android.volley.VolleyError;
+
 import org.json.JSONObject;
 
 import android.app.LoaderManager;
@@ -17,16 +19,17 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import cn.edu.zju.isst.R;
-import cn.edu.zju.isst.api.ArchiveCategory;
-import cn.edu.zju.isst.net.CSTResponse;
-import cn.edu.zju.isst.net.RequestListener;
-import cn.edu.zju.isst.ui.life.ArchiveDetailActivity;
+import cn.edu.zju.isst.constant.Constants;
+import cn.edu.zju.isst.v2.archive.data.ArchiveCategory;
 import cn.edu.zju.isst.v2.archive.data.CSTArchive;
 import cn.edu.zju.isst.v2.archive.data.CSTArchiveDataDelegate;
 import cn.edu.zju.isst.v2.archive.data.CSTArchiveProvider;
-import cn.edu.zju.isst.v2.archive.net.ArchiveApi;
-import cn.edu.zju.isst.v2.data.CSTJsonParser;
+import cn.edu.zju.isst.v2.archive.net.ArchiveRequest;
+import cn.edu.zju.isst.v2.archive.net.ArchiveResponse;
 import cn.edu.zju.isst.v2.gui.CSTBaseFragment;
+import cn.edu.zju.isst.v2.net.CSTNetworkEngine;
+import cn.edu.zju.isst.v2.net.CSTRequest;
+import cn.edu.zju.isst.v2.net.CSTStatusInfo;
 
 /**
  * Created by i308844 on 8/12/14.
@@ -35,7 +38,15 @@ public abstract class BaseArchiveListFragment extends CSTBaseFragment
         implements SwipeRefreshLayout.OnRefreshListener, LoaderManager.LoaderCallbacks<Cursor>,
         AdapterView.OnItemClickListener {
 
-    protected int mCategoryId;
+    public static final String INTENT_ID = "id";
+
+    public static final int DEFAULT_PAGE_SIZE = 20;
+
+    public static final String ARCHIVE_URL = "/api/archives/categories";
+
+    protected ArchiveCategory mCategory;
+
+    private CSTNetworkEngine mEngine = CSTNetworkEngine.getInstance();
 
     private ListView mListView;
 
@@ -44,6 +55,10 @@ public abstract class BaseArchiveListFragment extends CSTBaseFragment
     private SwipeRefreshLayout mSwipeRefreshLayout;
 
     private Handler mHandler;
+
+    private boolean isLoadMore = false;
+
+    private int mCurrentPage = 1;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -80,12 +95,18 @@ public abstract class BaseArchiveListFragment extends CSTBaseFragment
 
     @Override
     public void onRefresh() {
+        isLoadMore = false;
         requestData();
     }
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        return CSTArchiveDataDelegate.getDataCursor(getActivity(), null, null, null,
+        return CSTArchiveDataDelegate.getDataCursor(getActivity(),
+                null,
+                CSTArchiveProvider.Columns.CATEGORY_ID.key + " = ?",
+                new String[]{
+                        "" + mCategory.id
+                },
                 CSTArchiveProvider.Columns.UPDATE_TIME.key + " DESC");
     }
 
@@ -102,11 +123,11 @@ public abstract class BaseArchiveListFragment extends CSTBaseFragment
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Intent intent = new Intent(getActivity(), ArchiveDetailActivity.class);
-        intent.putExtra("id", ((CSTArchive) view.getTag()).id);
+        intent.putExtra(INTENT_ID, ((CSTArchive) view.getTag()).id);
         getActivity().startActivity(intent);
     }
 
-    protected abstract void setCategory(int categoryId);
+    protected abstract void setCategory(ArchiveCategory category);
 
     private void bindAdapter() {
         mAdapter = new ArchiveListAdapter(getActivity(), null);
@@ -123,40 +144,47 @@ public abstract class BaseArchiveListFragment extends CSTBaseFragment
             @Override
             public void handleMessage(Message msg) {
                 switch (msg.what) {
-                    case 0:
-                        mSwipeRefreshLayout.setRefreshing(false);
+                    case Constants.STATUS_REQUEST_SUCCESS:
+
                         break;
                     default:
                         break;
                 }
+                mSwipeRefreshLayout.setRefreshing(false);
             }
         };
     }
 
     private void requestData() {
-        //TODO replace code in this scope with new implemented volley-base network request
-        ArchiveApi.getArchiveList(ArchiveCategory.CAMPUS, 1, 20, "", new RequestListener() {
+        if (isLoadMore) {
+            mCurrentPage++;
+        } else {
+            mCurrentPage = 1;
+        }
+        ArchiveResponse archiveResponse = new ArchiveResponse(getActivity(), false) {
             @Override
-            public void onComplete(Object result) {
-                CSTArchive archive = (CSTArchive) CSTJsonParser
-                        .parseJson((JSONObject) result, new CSTArchive());
-                CSTArchiveDataDelegate
-                        .saveArchiveList(BaseArchiveListFragment.this.getActivity(), archive);
-
+            public void onResponse(JSONObject response) {
+                super.onResponse(response);
                 Message msg = mHandler.obtainMessage();
-                msg.what = 0;
+                msg.what = Constants.STATUS_REQUEST_SUCCESS;
                 mHandler.sendMessage(msg);
             }
 
             @Override
-            public void onHttpError(CSTResponse response) {
-
+            public Object onErrorStatus(CSTStatusInfo statusInfo) {
+                return super.onErrorStatus(statusInfo);
             }
 
             @Override
-            public void onException(Exception e) {
-
+            public void onErrorResponse(VolleyError error) {
+                super.onErrorResponse(error);
             }
-        });
+        };
+        ArchiveRequest archiveRequest = new ArchiveRequest(CSTRequest.Method.GET,
+                ARCHIVE_URL + mCategory.subUrl, null, archiveResponse)
+                .setPage(mCurrentPage)
+                .setPageSize(DEFAULT_PAGE_SIZE);
+
+        mEngine.requestJson(archiveRequest);
     }
 }

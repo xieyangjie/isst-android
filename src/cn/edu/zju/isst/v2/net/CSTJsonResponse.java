@@ -13,7 +13,7 @@ public class CSTJsonResponse extends CSTResponse<JSONObject> implements CSTRespo
 
     protected Context mContext;
 
-    protected CSTJsonResponse(Context context) {
+    public CSTJsonResponse(Context context) {
         super(context);
         this.mContext = context;
     }
