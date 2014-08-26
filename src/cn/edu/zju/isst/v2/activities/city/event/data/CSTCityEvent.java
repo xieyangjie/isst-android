@@ -1,5 +1,6 @@
-package cn.edu.zju.isst.v2.city.event.data;
+package cn.edu.zju.isst.v2.activities.city.event.data;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import cn.edu.zju.isst.v2.data.CSTPublisher;
@@ -8,6 +9,7 @@ import cn.edu.zju.isst.v2.model.CSTDataItem;
 /**
  * Created by tan on 2014/8/3.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class CSTCityEvent extends CSTDataItem<CSTCityEvent> {
 
     @JsonProperty("id")
@@ -40,7 +42,7 @@ public class CSTCityEvent extends CSTDataItem<CSTCityEvent> {
     @JsonProperty("isParticipate")
     public boolean isParticipate;
 
-    @JsonProperty("publisher")
+    @JsonProperty("user")
     public CSTPublisher publisher;
 
     public CSTCityEvent() {

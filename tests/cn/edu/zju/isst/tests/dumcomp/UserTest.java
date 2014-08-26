@@ -130,6 +130,7 @@ public class UserTest extends Activity {
             map.put("name", user.gender.getTypeName());
             list.add(map);
         }
+
         SimpleAdapter adapter = new SimpleAdapter(this, list, android.R.layout.simple_list_item_1,
                 new String[]{"name"}, new int[]{android.R.id.text1});
         listView.setAdapter(adapter);

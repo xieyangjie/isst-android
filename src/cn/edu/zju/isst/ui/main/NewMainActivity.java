@@ -34,8 +34,9 @@ import cn.edu.zju.isst.ui.job.RecommedListFragment;
 import cn.edu.zju.isst.ui.life.RestaurantListFragment;
 import cn.edu.zju.isst.ui.life.StudyListFragment;
 import cn.edu.zju.isst.ui.life.WikGridFragment;
+import cn.edu.zju.isst.v2.activities.city.gui.CSTCityActivityListFragment;
 import cn.edu.zju.isst.v2.archive.gui.BaseArchiveListFragment;
-import cn.edu.zju.isst.v2.campus.event.data.gui.CSTCampusActivityListFragment;
+import cn.edu.zju.isst.v2.activities.campus.gui.CSTCampusActivityListFragment;
 import cn.edu.zju.isst.v2.login.gui.LoginActivity;
 import cn.edu.zju.isst.ui.usercenter.UserCenterFragment;
 import cn.edu.zju.isst.util.Lgr;
@@ -249,7 +250,7 @@ public class NewMainActivity extends BaseActivity {
                     switchContent(CastellanFragment.GetInstance());
                     break;
                 case CIAC:
-                    switchContent(CityActivityListFragment.getInstance());
+                    switchContent(CSTCityActivityListFragment.getInstance());
                     break;
                 case CIAL:
                     switchContent(ContactListFragment

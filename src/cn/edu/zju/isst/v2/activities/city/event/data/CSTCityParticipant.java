@@ -1,4 +1,4 @@
-package cn.edu.zju.isst.v2.city.event.data;
+package cn.edu.zju.isst.v2.activities.city.event.data;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

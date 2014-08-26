@@ -1,9 +1,8 @@
-package cn.edu.zju.isst.v2.campus.event.data.gui;
+package cn.edu.zju.isst.v2.activities.city.gui;
 
 import org.json.JSONObject;
 
 import android.app.LoaderManager;
-import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
@@ -18,62 +17,76 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 import cn.edu.zju.isst.R;
 import cn.edu.zju.isst.net.BetterAsyncWebServiceRunner;
 import cn.edu.zju.isst.net.NetworkConnection;
-import cn.edu.zju.isst.ui.life.CampusActivityDetailActivity;
+import cn.edu.zju.isst.ui.city.CityActivityDetailActivity;
 import cn.edu.zju.isst.util.Judge;
 import cn.edu.zju.isst.util.Lgr;
-import cn.edu.zju.isst.v2.archive.data.CSTArchive;
-import cn.edu.zju.isst.v2.archive.data.CSTArchiveDataDelegate;
-import cn.edu.zju.isst.v2.campus.event.data.data.CSTCampusEvent;
-import cn.edu.zju.isst.v2.campus.event.data.data.CSTCampusEventDataDelegate;
-import cn.edu.zju.isst.v2.campus.event.data.data.CSTCampusEventProvider;
-import cn.edu.zju.isst.v2.campus.event.data.net.CampusActivityResponse;
-import cn.edu.zju.isst.v2.data.CSTJsonParser;
+import cn.edu.zju.isst.v2.activities.base.ActivityRequest;
+import cn.edu.zju.isst.v2.activities.campus.data.CSTCampusEvent;
+
+import cn.edu.zju.isst.v2.activities.city.event.data.CSTCityEvent;
+import cn.edu.zju.isst.v2.activities.city.event.data.CSTCityEventDataDelegate;
+import cn.edu.zju.isst.v2.activities.city.event.data.CSTCityEventProvider;
+import cn.edu.zju.isst.v2.activities.city.net.CityActivityResponse;
 import cn.edu.zju.isst.v2.gui.CSTBaseFragment;
 import cn.edu.zju.isst.v2.net.CSTJsonRequest;
 import cn.edu.zju.isst.v2.net.CSTNetworkEngine;
 import cn.edu.zju.isst.v2.net.CSTRequest;
+import cn.edu.zju.isst.v2.user.data.CSTUser;
+import cn.edu.zju.isst.v2.user.data.CSTUserDataDelegate;
+import cn.edu.zju.isst.v2.user.data.CSTUserProvider;
+
+import android.database.Cursor;
+import android.content.ContextWrapper.*;
 
 import static cn.edu.zju.isst.constant.Constants.NETWORK_NOT_CONNECTED;
 
 /**
- * Created by always on 21/08/2014.
+ * Created by always on 25/08/2014.
  */
-public class CSTCampusActivityListFragment extends CSTBaseFragment
+public class CSTCityActivityListFragment extends CSTBaseFragment
         implements SwipeRefreshLayout.OnRefreshListener, LoaderManager.LoaderCallbacks<Cursor>,
         AdapterView.OnItemClickListener {
 
 //    private final List<CampusActivity> m_listCampusActivity = new ArrayList<CampusActivity>();
 
-    private static CSTCampusActivityListFragment INSTANCE = new CSTCampusActivityListFragment();
+    private static CSTCityActivityListFragment INSTANCE = new CSTCityActivityListFragment();
 
-    private int m_nVisibleLastIndex;
+    private int mCurrentPage = 1;
 
-    private int m_nCurrentPage;
+    private int DEFAULT_PAGE_SIZE = 20;
+
+    private static final String CITY_ACTIVITY_URL = "/api/cities/";
+
+    private static final String SUB_URL = "/activities";
+
+    private static int cityId;
+
+    private CSTUserProvider provider;
 
     private CSTNetworkEngine mEngine = CSTNetworkEngine.getInstance();
 
-    private boolean m_bIsFirstTime;
+    private boolean mIsFirstTime;
 
     private Handler mHandler;
 
     private ListView mListView;
 
-    private CampusActivityListAdapter mAdapter;
+    private CityActivityListAdapter mAdapter;
 
     private SwipeRefreshLayout mSwipeRefreshLayout;
 
-    public CSTCampusActivityListFragment() {
-        m_nCurrentPage = 1;
-        m_bIsFirstTime = true;
+    public CSTCityActivityListFragment() {
+        mIsFirstTime = true;
     }
 
-    public static CSTCampusActivityListFragment getInstance() {
+    public static CSTCityActivityListFragment getInstance() {
         return INSTANCE;
     }
 
@@ -114,8 +127,8 @@ public class CSTCampusActivityListFragment extends CSTBaseFragment
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        return CSTCampusEventDataDelegate.getDataCursor(getActivity(), null, null, null,
-                CSTCampusEventProvider.Columns.UPDATEAT.key + " DESC");
+        return CSTCityEventDataDelegate.getDataCursor(getActivity(), null, null, null,
+                CSTCityEventProvider.Columns.UPDATEAT.key + " DESC");
     }
 
     @Override
@@ -130,8 +143,8 @@ public class CSTCampusActivityListFragment extends CSTBaseFragment
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Intent intent = new Intent(getActivity(), CampusActivityDetailActivity.class);
-        intent.putExtra("id", ((CSTCampusEvent) view.getTag()).id);
+        Intent intent = new Intent(getActivity(), CityActivityDetailActivity.class);
+        intent.putExtra("id", ((CSTCityEvent) view.getTag()).id);
         getActivity().startActivity(intent);
     }
 
@@ -145,7 +158,7 @@ public class CSTCampusActivityListFragment extends CSTBaseFragment
     }
 
     private void bindAdapter() {
-        mAdapter = new CampusActivityListAdapter(getActivity(), null);
+        mAdapter = new CityActivityListAdapter(getActivity(), null);
         mListView.setAdapter(mAdapter);
     }
 
@@ -169,34 +182,40 @@ public class CSTCampusActivityListFragment extends CSTBaseFragment
         };
     }
 
+    private int getCityId() {
+        ArrayList<CSTUser> users = new ArrayList<CSTUser>();
+        Cursor cursor = getActivity().getContentResolver()
+                .query(CSTUserProvider.CONTENT_URI, null, null, null, null);
+        cursor.moveToFirst();
+        for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
+            CSTUser userDemo = CSTUserDataDelegate.getUser(cursor);
+            users.add(userDemo);
+        }
+        for (CSTUser user : users) {
+            cityId = user.cityId;
+            Lgr.i("cityId = " + cityId + "    username = " + user.userName.toString());
+        }
+        cursor.close();
+        return cityId;
+    }
+
     private void requestData() throws UnsupportedEncodingException {
         if (NetworkConnection.isNetworkConnected(getActivity())) {
-            CampusActivityResponse activityResponse = new CampusActivityResponse(getActivity(),
+            CityActivityResponse activityResponse = new CityActivityResponse(getActivity(),
                     true) {
                 @Override
                 public void onResponse(JSONObject result) {
-                    CSTCampusEvent campusEvent = (CSTCampusEvent) CSTJsonParser
-                            .parseJson((JSONObject) result, new CSTCampusEvent());
-                    CSTCampusEventDataDelegate
-                            .saveCampusActivityList(CSTCampusActivityListFragment.this.getActivity(), campusEvent);
+                    super.onResponse(result);
                     Lgr.i(result.toString());
                     Message msg = mHandler.obtainMessage();
                     msg.what = 0;
                     mHandler.sendMessage(msg);
-
                 }
             };
-            Map<String, String> paramsMap = new HashMap<String, String>();
-            paramsMap.put("page", "" + 1);
-            paramsMap.put("pageSize", "" + 20);
-            paramsMap.put("keywords", null);
-            String subUrl = "/api/campus/activities";
 
-            subUrl = subUrl + (Judge.isNullOrEmpty(paramsMap) ? ""
-                    : ("?" + BetterAsyncWebServiceRunner.getInstance().paramsToString(paramsMap)));
-
-            CSTJsonRequest activityRequest = new CSTJsonRequest(CSTRequest.Method.GET, subUrl, null,
-                    activityResponse);
+            ActivityRequest activityRequest = new ActivityRequest(CSTRequest.Method.GET,
+                    CITY_ACTIVITY_URL + getCityId() + SUB_URL, null,
+                    activityResponse).setPage(mCurrentPage).setPageSize(DEFAULT_PAGE_SIZE);
             mEngine.requestJson(activityRequest);
         } else {
             Message msg = mHandler.obtainMessage();

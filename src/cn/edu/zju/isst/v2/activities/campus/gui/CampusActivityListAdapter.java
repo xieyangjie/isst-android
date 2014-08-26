@@ -1,4 +1,4 @@
-package cn.edu.zju.isst.v2.campus.event.data.gui;
+package cn.edu.zju.isst.v2.activities.campus.gui;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -6,15 +6,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
-import android.widget.ListAdapter;
 import android.widget.TextView;
 
 import cn.edu.zju.isst.R;
 import cn.edu.zju.isst.util.TSUtil;
-import cn.edu.zju.isst.v2.archive.data.CSTArchive;
-import cn.edu.zju.isst.v2.archive.data.CSTArchiveDataDelegate;
-import cn.edu.zju.isst.v2.campus.event.data.data.CSTCampusEvent;
-import cn.edu.zju.isst.v2.campus.event.data.data.CSTCampusEventDataDelegate;
+import cn.edu.zju.isst.v2.activities.campus.data.CSTCampusEvent;
+import cn.edu.zju.isst.v2.activities.campus.data.CSTCampusEventDataDelegate;
 
 /**
  * Created by always on 21/08/2014.

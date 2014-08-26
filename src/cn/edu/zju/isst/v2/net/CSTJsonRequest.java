@@ -17,12 +17,10 @@ import java.util.Map;
 public class CSTJsonRequest extends CSTRequest<JSONObject> {
 
     private static final String BASE_URL = "http://www.cst.zju.edu.cn/isst";
-    private static  String SUB_URL = null;
 
     public CSTJsonRequest(int method, String subUrl, Map<String, String> params,
             CSTResponse<JSONObject> response) {
         super(method, BASE_URL + subUrl, params, response);
-        SUB_URL = subUrl;
     }
 
     @Override
@@ -30,7 +28,7 @@ public class CSTJsonRequest extends CSTRequest<JSONObject> {
         try {
             String jsonString = new String(response.data,
                     HttpHeaderParser.parseCharset(response.headers));
-            CSTHttpUtil.refreshCookies(BASE_URL + SUB_URL,response.headers);
+            CSTHttpUtil.refreshCookies(BASE_URL, response.headers);
             return Response.success(new JSONObject(jsonString),
                     HttpHeaderParser.parseCacheHeaders(response));
         } catch (UnsupportedEncodingException e) {

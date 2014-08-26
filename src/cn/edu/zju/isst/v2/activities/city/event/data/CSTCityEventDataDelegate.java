@@ -1,10 +1,16 @@
-package cn.edu.zju.isst.v2.city.event.data;
+package cn.edu.zju.isst.v2.activities.city.event.data;
 
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.CursorLoader;
+import android.content.Loader;
 import android.database.Cursor;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import cn.edu.zju.isst.v2.activities.city.data.CSTCity;
 import cn.edu.zju.isst.v2.data.CSTPublisher;
 import cn.edu.zju.isst.v2.db.util.CSTSerialUtil;
 
@@ -61,7 +67,7 @@ public class CSTCityEventDataDelegate {
 
     public static void saveCityevent(Context context, CSTCityEvent cityevent) {
         ContentResolver resolver = context.getContentResolver();
-        resolver.insert(CSTCityEventProvider.CONTENT_URI, getCityValue(cityevent));
+        resolver.bulkInsert(CSTCityEventProvider.CONTENT_URI, getCityEventListValues(cityevent));
     }
 
     public static void deleteAllCityevent(Context context) {
@@ -85,5 +91,24 @@ public class CSTCityEventDataDelegate {
         values.put(CSTCityEventProvider.Columns.PUBLISHER.key, CSTSerialUtil
                 .serialize(cityevent.publisher));
         return values;
+    }
+
+    public static Loader<Cursor> getDataCursor(Context context, String[] projection,
+            String selection, String[] selectionArgs, String sortOrder) {
+        return new CursorLoader(context, CSTCityEventProvider.CONTENT_URI, projection, selection,
+                selectionArgs, sortOrder);
+    }
+
+    private static ContentValues[] getCityEventListValues(CSTCityEvent archive) {
+        List<ContentValues> valuesList = new ArrayList<>();
+        for (CSTCityEvent singleArchive : archive.itemList) {
+            valuesList.add(getCityValue(singleArchive));
+        }
+        return valuesList.toArray(new ContentValues[valuesList.size()]);
+    }
+
+    public static void getCityEventListValues(Context context, CSTCityEvent cityEvent) {
+        ContentResolver resolver = context.getContentResolver();
+        resolver.bulkInsert(CSTCityEventProvider.CONTENT_URI, getCityEventListValues(cityEvent));
     }
 }

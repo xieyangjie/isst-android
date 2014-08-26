@@ -12,8 +12,10 @@ import android.net.Uri;
 import java.util.HashMap;
 import java.util.Map;
 
+import cn.edu.zju.isst.v2.activities.city.data.CSTCityProvider;
+import cn.edu.zju.isst.v2.activities.city.event.data.CSTCityEventProvider;
 import cn.edu.zju.isst.v2.archive.data.CSTArchiveProvider;
-import cn.edu.zju.isst.v2.campus.event.data.data.CSTCampusEventProvider;
+import cn.edu.zju.isst.v2.activities.campus.data.CSTCampusEventProvider;
 import cn.edu.zju.isst.v2.user.data.CSTUserProvider;
 
 /**
@@ -27,11 +29,11 @@ public class CSTProvider extends ContentProvider {
 
     private static final int TABLE_CAMPUSEvent_CODE = 0x03;
 //
-//    private static final int TABLE_CITY_CODE = 3;
+    private static final int TABLE_CITY_CODE = 4;
 //
 //    private static final int TABLE_PUBLISHER_CODE = 4;
 //
-//    private static final int TABLE_CITYEVENT_CODE = 5;
+    private static final int TABLE_CITYEVENT_CODE = 5;
 //
 //    private static final int TABLE_CITYPARTICIPANT_CODE = 6;
 //
@@ -53,9 +55,9 @@ public class CSTProvider extends ContentProvider {
         sURIMatcher.addURI(AUTHORITY, CSTUserProvider.TABLE_NAME, TABLE_USER_CODE);
         sURIMatcher.addURI(AUTHORITY, CSTArchiveProvider.TABLE_NAME, TABLE_ARCHIVE_CODE);
         sURIMatcher.addURI(AUTHORITY, CSTCampusEventProvider.TABLE_NAME, TABLE_CAMPUSEvent_CODE);
-//        sURIMatcher.addURI(AUTHORITY, CSTCityProvider.TABLE_NAME, TABLE_CITY_CODE);
+        sURIMatcher.addURI(AUTHORITY, CSTCityProvider.TABLE_NAME, TABLE_CITY_CODE);
 //        sURIMatcher.addURI(AUTHORITY, CSTPublisherProvider.TABLE_NAME, TABLE_PUBLISHER_CODE);
-//        sURIMatcher.addURI(AUTHORITY, CSTCityEventProvider.TABLE_NAME, TABLE_CITYEVENT_CODE);
+        sURIMatcher.addURI(AUTHORITY, CSTCityEventProvider.TABLE_NAME, TABLE_CITYEVENT_CODE);
 //        sURIMatcher.addURI(AUTHORITY, CSTCityParticipantProvider.TABLE_NAME,
 //                TABLE_CITYPARTICIPANT_CODE);
 //        sURIMatcher.addURI(AUTHORITY, CSTCommentProvider.TABLE_NAME, TABLE_COMMENT_CODE);
@@ -72,12 +74,13 @@ public class CSTProvider extends ContentProvider {
                 .put(CSTUserProvider.TABLE_NAME, new CSTUserProvider(getContext()));
         mProviderMap
                 .put(CSTArchiveProvider.TABLE_NAME, CSTArchiveProvider.getInstance(getContext()));
-        mProviderMap.
-                put(CSTCampusEventProvider.TABLE_NAME, new CSTCampusEventProvider(getContext()));
-
-//        mProviderMap.put(CSTCityProvider.TABLE_NAME, new CSTCityProvider(getContext()));
+        mProviderMap
+                .put(CSTCampusEventProvider.TABLE_NAME, new CSTCampusEventProvider(getContext()));
+        mProviderMap
+                .put(CSTCityProvider.TABLE_NAME, new CSTCityProvider(getContext()));
 //        mProviderMap.put(CSTPublisherProvider.TABLE_NAME, new CSTPublisherProvider(getContext()));
-//        mProviderMap.put(CSTCityEventProvider.TABLE_NAME, new CSTCityEventProvider(getContext()));
+        mProviderMap
+                .put(CSTCityEventProvider.TABLE_NAME, new CSTCityEventProvider(getContext()));
 //        mProviderMap.put(CSTCityParticipantProvider.TABLE_NAME,
 //                new CSTCityParticipantProvider(getContext()));
 //        mProviderMap.put(CSTCommentProvider.TABLE_NAME, new CSTCommentProvider(getContext()));
@@ -135,12 +138,12 @@ public class CSTProvider extends ContentProvider {
                 return CSTArchiveProvider.TABLE_NAME;
             case TABLE_CAMPUSEvent_CODE:
                 return CSTCampusEventProvider.TABLE_NAME;
-//            case TABLE_CITY_CODE:
-//                return CSTCityProvider.TABLE_NAME;
+            case TABLE_CITY_CODE:
+                return CSTCityProvider.TABLE_NAME;
 //            case TABLE_PUBLISHER_CODE:
 //                return CSTPublisherProvider.TABLE_NAME;
-//            case TABLE_CITYEVENT_CODE:
-//                return CSTCityEventProvider.TABLE_NAME;
+            case TABLE_CITYEVENT_CODE:
+                return CSTCityEventProvider.TABLE_NAME;
 //            case TABLE_CITYPARTICIPANT_CODE:
 //                return CSTCityParticipantProvider.TABLE_NAME;
 //            case TABLE_COMMENT_CODE:

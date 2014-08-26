@@ -1,4 +1,4 @@
-package cn.edu.zju.isst.v2.city.data;
+package cn.edu.zju.isst.v2.activities.city.data;
 
 import android.content.ContentResolver;
 import android.content.ContentValues;

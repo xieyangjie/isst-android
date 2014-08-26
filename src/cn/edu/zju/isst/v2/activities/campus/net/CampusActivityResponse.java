@@ -1,15 +1,13 @@
-package cn.edu.zju.isst.v2.campus.event.data.net;
+package cn.edu.zju.isst.v2.activities.campus.net;
 
 import org.json.JSONObject;
 
 import android.content.Context;
 
-import cn.edu.zju.isst.v2.campus.event.data.data.CSTCampusEvent;
-import cn.edu.zju.isst.v2.campus.event.data.data.CSTCampusEventDataDelegate;
+import cn.edu.zju.isst.v2.activities.campus.data.CSTCampusEvent;
+import cn.edu.zju.isst.v2.activities.campus.data.CSTCampusEventDataDelegate;
 import cn.edu.zju.isst.v2.data.CSTJsonParser;
 import cn.edu.zju.isst.v2.net.CSTJsonResponse;
-import cn.edu.zju.isst.v2.user.data.CSTUser;
-import cn.edu.zju.isst.v2.user.data.CSTUserDataDelegate;
 
 /**
  * Created by always on 22/08/2014.
@@ -30,6 +28,6 @@ public class CampusActivityResponse extends CSTJsonResponse {
         if (clearDatabase) {
             CSTCampusEventDataDelegate.deleteAllCampusActivity(mContext);
         }
-        CSTCampusEventDataDelegate.saveCampusActivity(mContext, event);
+        CSTCampusEventDataDelegate.saveCampusActivityList(mContext, event);
     }
 }

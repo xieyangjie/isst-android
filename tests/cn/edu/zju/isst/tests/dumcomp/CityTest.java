@@ -15,9 +15,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import cn.edu.zju.isst.R;
-import cn.edu.zju.isst.v2.city.data.CSTCity;
-import cn.edu.zju.isst.v2.city.data.CSTCityDataDelegate;
-import cn.edu.zju.isst.v2.city.data.CSTCityProvider;
+import cn.edu.zju.isst.v2.activities.city.data.CSTCity;
+import cn.edu.zju.isst.v2.activities.city.data.CSTCityDataDelegate;
+import cn.edu.zju.isst.v2.activities.city.data.CSTCityProvider;
 import cn.edu.zju.isst.v2.user.data.CSTUser;
 
 public class CityTest extends Activity {
