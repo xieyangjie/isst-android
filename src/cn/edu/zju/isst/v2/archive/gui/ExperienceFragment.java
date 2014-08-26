@@ -7,8 +7,17 @@ import cn.edu.zju.isst.v2.archive.data.ArchiveCategory;
  */
 public class ExperienceFragment extends BaseArchiveListFragment {
 
+    private static ExperienceFragment INSTANCE;
+
+    public static ExperienceFragment getInstance() {
+        if (INSTANCE == null) {
+            INSTANCE = new ExperienceFragment();
+        }
+        return INSTANCE;
+    }
+
     @Override
-    protected void setCategory(ArchiveCategory category) {
+    protected void setCategory() {
         this.mCategory = ArchiveCategory.EXPERIENCE;
     }
 }

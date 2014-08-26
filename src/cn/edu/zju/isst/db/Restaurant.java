@@ -11,10 +11,8 @@ import java.io.Serializable;
 import cn.edu.zju.isst.util.Judge;
 
 /**
- * @deprecated
- * 商家解析类
- *
  * @author theasir
+ * @deprecated 商家解析类
  */
 public class Restaurant implements Serializable {
 

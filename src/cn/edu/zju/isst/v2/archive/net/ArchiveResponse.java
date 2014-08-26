@@ -5,8 +5,10 @@ import org.json.JSONObject;
 import android.content.Context;
 
 import cn.edu.zju.isst.constant.Constants;
+import cn.edu.zju.isst.v2.archive.data.ArchiveCategory;
 import cn.edu.zju.isst.v2.archive.data.CSTArchive;
 import cn.edu.zju.isst.v2.archive.data.CSTArchiveDataDelegate;
+import cn.edu.zju.isst.v2.archive.data.CSTArchiveProvider;
 import cn.edu.zju.isst.v2.data.CSTJsonParser;
 import cn.edu.zju.isst.v2.net.CSTJsonResponse;
 
@@ -17,8 +19,11 @@ public class ArchiveResponse extends CSTJsonResponse {
 
     private boolean isClearDatabase;
 
-    public ArchiveResponse(Context context, boolean isClearDatabase) {
+    private ArchiveCategory mCategory;
+
+    public ArchiveResponse(Context context, ArchiveCategory category, boolean isClearDatabase) {
         super(context);
+        this.mCategory = category;
         this.isClearDatabase = isClearDatabase;
     }
 
@@ -30,7 +35,11 @@ public class ArchiveResponse extends CSTJsonResponse {
             return;
         }
         if (isClearDatabase) {
-            //TODO unhandled clearDatabase flag for caching mechanism
+            CSTArchiveDataDelegate.delete(mContext,
+                    CSTArchiveProvider.Columns.CATEGORY_ID.key + " = ?",
+                    new String[]{
+                            "" + mCategory.id
+                    });
         }
         CSTArchiveDataDelegate.saveArchiveList(mContext, archive);
     }

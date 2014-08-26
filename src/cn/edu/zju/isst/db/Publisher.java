@@ -11,10 +11,8 @@ import java.io.Serializable;
 import cn.edu.zju.isst.util.Judge;
 
 /**
- * @deprecated
- * 发布者解析类
- *
  * @author theasir
+ * @deprecated 发布者解析类
  */
 public class Publisher implements Serializable {
 

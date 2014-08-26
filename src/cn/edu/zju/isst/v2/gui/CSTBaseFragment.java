@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 /**
  * Created by i308844 on 8/12/14.
  */
-public abstract class CSTBaseFragment extends Fragment{
+public abstract class CSTBaseFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -41,6 +41,11 @@ public abstract class CSTBaseFragment extends Fragment{
     }
 
     @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
     public void onPause() {
         super.onPause();
     }
@@ -48,11 +53,6 @@ public abstract class CSTBaseFragment extends Fragment{
     @Override
     public void onStop() {
         super.onStop();
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
     }
 
     @Override

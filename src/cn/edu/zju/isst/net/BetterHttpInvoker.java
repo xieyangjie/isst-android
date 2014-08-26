@@ -19,10 +19,8 @@ import cn.edu.zju.isst.util.Lgr;
 import static cn.edu.zju.isst.constant.Constants.HTTP_CONNECT_TIMEOUT;
 
 /**
- * @deprecated
- * HTTP请求类
- *
  * @see {@link https://code.google.com/p/aerc/}
+ * @deprecated HTTP请求类
  */
 public class BetterHttpInvoker {
 

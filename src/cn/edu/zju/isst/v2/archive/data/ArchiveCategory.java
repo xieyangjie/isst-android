@@ -7,8 +7,8 @@ public enum ArchiveCategory {
 
     NEWS(4, "/campus"),
     WIKI(5, "/encyclopedia"),
-    STUDY(6, "/studying"),
-    EXPERIENCE(7, "/experience");
+    STUDY(2, "/studying"),
+    EXPERIENCE(3, "/experience");
 
     public int id;
 

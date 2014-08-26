@@ -6,8 +6,8 @@ package cn.edu.zju.isst.db;
 import java.util.List;
 
 /**
- * @deprecated
  * @author theasir
+ * @deprecated
  */
 public class GlobalDataTrans {
 

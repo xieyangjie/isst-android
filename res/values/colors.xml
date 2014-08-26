@@ -2,5 +2,9 @@
 <resources>
     <color name="light_gray">#D3D3D3</color>
     <color name="black">#FF000000</color>
-    <color name="text_orange">#e99324</color>
+
+    <color name="cst_orange">#e99324</color>
+    <color name="cst_dark_blue">#081d50</color>
+    <color name="cst_light_blue">#3a589c</color>
+    <color name="cst_blue">#122c67</color>
 </resources>

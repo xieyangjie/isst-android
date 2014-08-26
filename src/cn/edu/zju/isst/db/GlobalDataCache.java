@@ -19,8 +19,8 @@ import cn.edu.zju.isst.util.Lgr;
 import static cn.edu.zju.isst.constant.Constants.STATUS_REQUEST_SUCCESS;
 
 /**
- * @deprecated
  * @author theasir
+ * @deprecated
  */
 public class GlobalDataCache {
 

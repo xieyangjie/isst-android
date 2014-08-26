@@ -19,10 +19,8 @@ import static cn.edu.zju.isst.constant.Constants.EXCEPTION_SOCKETTIMEOUT;
 import static cn.edu.zju.isst.constant.Constants.EXCEPTION_UNKNOWN;
 
 /**
- * @deprecated
- * 异常清除机
- *
  * @author theasir
+ * @deprecated 异常清除机
  */
 public class ExceptionWeeder {
 

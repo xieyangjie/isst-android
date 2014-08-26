@@ -49,10 +49,8 @@ import static cn.edu.zju.isst.constant.Constants.STATUS_NOT_LOGIN;
 import static cn.edu.zju.isst.constant.Constants.STATUS_REQUEST_SUCCESS;
 
 /**
- * @deprecated
- * 归档列表基类
- *
  * @author theasir
+ * @deprecated 归档列表基类
  */
 public class BaseArchiveListFragment extends ListFragment implements
         OnScrollListener {

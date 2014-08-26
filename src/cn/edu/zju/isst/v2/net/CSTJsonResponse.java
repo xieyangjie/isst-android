@@ -9,7 +9,7 @@ import android.content.Context;
 /**
  * Created by i308844 on 8/18/14.
  */
-public class CSTJsonResponse extends CSTResponse<JSONObject> implements CSTResponseStatusListener{
+public class CSTJsonResponse extends CSTResponse<JSONObject> implements CSTResponseStatusListener {
 
     protected Context mContext;
 

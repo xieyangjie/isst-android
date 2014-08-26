@@ -17,6 +17,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import cn.edu.zju.isst.R;
 import cn.edu.zju.isst.constant.Constants;
@@ -36,7 +38,7 @@ import cn.edu.zju.isst.v2.net.CSTStatusInfo;
  */
 public abstract class BaseArchiveListFragment extends CSTBaseFragment
         implements SwipeRefreshLayout.OnRefreshListener, LoaderManager.LoaderCallbacks<Cursor>,
-        AdapterView.OnItemClickListener {
+        AdapterView.OnItemClickListener, View.OnClickListener {
 
     public static final String INTENT_ID = "id";
 
@@ -48,7 +50,15 @@ public abstract class BaseArchiveListFragment extends CSTBaseFragment
 
     private CSTNetworkEngine mEngine = CSTNetworkEngine.getInstance();
 
+    private LayoutInflater mInflater;
+
     private ListView mListView;
+
+    private View mFooter;
+
+    private ProgressBar mLoadMorePrgb;
+
+    private TextView mLoadMoreHint;
 
     private ArchiveListAdapter mAdapter;
 
@@ -60,6 +70,11 @@ public abstract class BaseArchiveListFragment extends CSTBaseFragment
 
     private int mCurrentPage = 1;
 
+    //better implementation is use Fragment#newInstance(args...) instead.
+    protected BaseArchiveListFragment() {
+        setCategory();
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,6 +83,7 @@ public abstract class BaseArchiveListFragment extends CSTBaseFragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
+        mInflater = inflater;
         return inflater.inflate(R.layout.base_archive_list_fragment, container, false);
     }
 
@@ -83,10 +99,15 @@ public abstract class BaseArchiveListFragment extends CSTBaseFragment
     @Override
     protected void initComponent(View view) {
         mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh_layout);
-        mSwipeRefreshLayout.setColorScheme(R.color.lightbluetheme_color,
-                R.color.lightbluetheme_color_half_alpha, R.color.lightbluetheme_color,
-                R.color.lightbluetheme_color_half_alpha);
+        mSwipeRefreshLayout
+                .setColorScheme(R.color.cst_light_blue, R.color.cst_orange, R.color.cst_light_blue,
+                        R.color.cst_orange);
         mListView = (ListView) view.findViewById(R.id.simple_list);
+        mFooter = mInflater.inflate(R.layout.loadmore_footer, mListView, false);
+        mListView.addFooterView(mFooter);
+        mLoadMorePrgb = (ProgressBar) mFooter.findViewById(R.id.footer_loading_progress);
+        mLoadMorePrgb.setVisibility(View.GONE);
+        mLoadMoreHint = (TextView) mFooter.findViewById(R.id.footer_loading_hint);
 
         bindAdapter();
         setUpListener();
@@ -127,7 +148,18 @@ public abstract class BaseArchiveListFragment extends CSTBaseFragment
         getActivity().startActivity(intent);
     }
 
-    protected abstract void setCategory(ArchiveCategory category);
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.loadmore_footer:
+                startLoadMore();
+                break;
+            default:
+                break;
+        }
+    }
+
+    protected abstract void setCategory();
 
     private void bindAdapter() {
         mAdapter = new ArchiveListAdapter(getActivity(), null);
@@ -136,6 +168,7 @@ public abstract class BaseArchiveListFragment extends CSTBaseFragment
 
     private void setUpListener() {
         mListView.setOnItemClickListener(this);
+        mFooter.setOnClickListener(this);
         mSwipeRefreshLayout.setOnRefreshListener(this);
     }
 
@@ -150,7 +183,7 @@ public abstract class BaseArchiveListFragment extends CSTBaseFragment
                     default:
                         break;
                 }
-                mSwipeRefreshLayout.setRefreshing(false);
+                resetLoadingState();
             }
         };
     }
@@ -161,7 +194,8 @@ public abstract class BaseArchiveListFragment extends CSTBaseFragment
         } else {
             mCurrentPage = 1;
         }
-        ArchiveResponse archiveResponse = new ArchiveResponse(getActivity(), false) {
+        ArchiveResponse archiveResponse = new ArchiveResponse(getActivity(), mCategory,
+                !isLoadMore) {
             @Override
             public void onResponse(JSONObject response) {
                 super.onResponse(response);
@@ -186,5 +220,18 @@ public abstract class BaseArchiveListFragment extends CSTBaseFragment
                 .setPageSize(DEFAULT_PAGE_SIZE);
 
         mEngine.requestJson(archiveRequest);
+    }
+
+    private void startLoadMore() {
+        isLoadMore = true;
+        mLoadMorePrgb.setVisibility(View.VISIBLE);
+        mLoadMoreHint.setText(R.string.loading);
+        requestData();
+    }
+
+    private void resetLoadingState() {
+        mSwipeRefreshLayout.setRefreshing(false);
+        mLoadMorePrgb.setVisibility(View.GONE);
+        mLoadMoreHint.setText(R.string.footer_loading_hint);
     }
 }

@@ -15,10 +15,8 @@ import static cn.edu.zju.isst.constant.Constants.HTTPERROR_SERVERERROR;
 import static cn.edu.zju.isst.constant.Constants.HTTPERROR_UNKNOWN;
 
 /**
- * @deprecated
- * HTTP错误处理机
- *
  * @author theasir
+ * @deprecated HTTP错误处理机
  */
 public class HttpErrorWeeder {
 

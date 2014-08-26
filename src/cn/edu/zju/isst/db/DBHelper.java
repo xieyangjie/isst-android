@@ -10,10 +10,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 import cn.edu.zju.isst.util.Lgr;
 
 /**
- * @deprecated
- * 数据库辅助类
- *
  * @author theasir
+ * @deprecated 数据库辅助类
  */
 public class DBHelper extends SQLiteOpenHelper {
 

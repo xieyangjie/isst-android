@@ -22,12 +22,10 @@ import cn.edu.zju.isst.util.Judge;
 import cn.edu.zju.isst.util.Lgr;
 
 /**
- * @deprecated
- * 异步请求类
- *
  * @author theasir
  *         <p/>
  *         TODO 空值处理，数据流或对象为空时的处理
+ * @deprecated 异步请求类
  */
 public class BetterAsyncWebServiceRunner {
 

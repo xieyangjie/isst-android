@@ -14,10 +14,8 @@ import cn.edu.zju.isst.net.RequestListener;
 import cn.edu.zju.isst.util.Lgr;
 
 /**
- * @deprecated
- * 登录接口
- *
  * @author theasir
+ * @deprecated 登录接口
  */
 public class LoginApi extends CSTApi {
 

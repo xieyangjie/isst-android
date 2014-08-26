@@ -4,10 +4,8 @@
 package cn.edu.zju.isst.constant;
 
 /**
- * @deprecated
- * 导航项常量类
- *
  * @author theasir
+ * @deprecated 导航项常量类
  */
 public enum Nav {
 

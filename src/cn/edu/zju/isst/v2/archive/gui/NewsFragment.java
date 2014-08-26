@@ -7,8 +7,17 @@ import cn.edu.zju.isst.v2.archive.data.ArchiveCategory;
  */
 public class NewsFragment extends BaseArchiveListFragment {
 
+    private static NewsFragment INSTANCE;
+
+    public static NewsFragment getInstance() {
+        if (INSTANCE == null) {
+            INSTANCE = new NewsFragment();
+        }
+        return INSTANCE;
+    }
+
     @Override
-    protected void setCategory(ArchiveCategory category) {
+    protected void setCategory() {
         this.mCategory = ArchiveCategory.NEWS;
     }
 }
