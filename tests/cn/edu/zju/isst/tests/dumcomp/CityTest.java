@@ -68,7 +68,7 @@ public class CityTest extends Activity {
                 city.id = 1;
                 city.name = "宁波";
                 city.cityMaster = user;
-                CSTCityDataDelegate.saveCampusActivity(getApplicationContext(), city);
+                CSTCityDataDelegate.saveCity(getApplicationContext(), city);
                 show();
             }
         });

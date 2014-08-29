@@ -152,6 +152,7 @@ public class LoadingActivity extends CSTBaseActivity {
                 mHandler.sendMessage(msg);
             }
         };
+
         CSTJsonRequest verRequest = new CSTJsonRequest(CSTRequest.Method.GET, VERSION_URL, null,
                 verResponse);
 

@@ -1,5 +1,6 @@
 package cn.edu.zju.isst.v2.data;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import cn.edu.zju.isst.v2.model.CSTDataItem;
@@ -7,6 +8,8 @@ import cn.edu.zju.isst.v2.model.CSTDataItem;
 /**
  * Created by tan on 2014/8/3.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
+
 public class CSTRestaurant extends CSTDataItem<CSTRestaurant> {
 
     @JsonProperty("id")
@@ -27,7 +30,7 @@ public class CSTRestaurant extends CSTDataItem<CSTRestaurant> {
     @JsonProperty("businessHours")
     public String businessHours;
 
-    @JsonProperty("content")
+    @JsonProperty("description")
     public String content;
 
     @JsonProperty("restaurantMenu")
@@ -35,4 +38,5 @@ public class CSTRestaurant extends CSTDataItem<CSTRestaurant> {
 
     public CSTRestaurant() {
     }
+
 }

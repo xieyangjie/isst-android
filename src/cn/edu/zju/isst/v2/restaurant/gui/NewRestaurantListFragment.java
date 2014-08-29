@@ -1,50 +1,65 @@
 package cn.edu.zju.isst.v2.restaurant.gui;
 
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.Activity;
+import android.app.LoaderManager;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
-import android.app.ListFragment;
+import android.os.Handler;
+import android.os.Message;
+import android.support.v4.content.Loader;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
+import java.util.Map;
 
 import cn.edu.zju.isst.R;
+import cn.edu.zju.isst.net.BetterAsyncWebServiceRunner;
+import cn.edu.zju.isst.util.Judge;
+import cn.edu.zju.isst.util.Lgr;
+import cn.edu.zju.isst.v2.archive.gui.ArchiveListAdapter;
 import cn.edu.zju.isst.v2.data.CSTJsonParser;
 import cn.edu.zju.isst.v2.data.CSTRestaurant;
+import cn.edu.zju.isst.v2.gui.CSTBaseFragment;
 import cn.edu.zju.isst.v2.net.CSTJsonRequest;
 import cn.edu.zju.isst.v2.net.CSTNetworkEngine;
 import cn.edu.zju.isst.v2.net.CSTRequest;
+import cn.edu.zju.isst.v2.net.CSTResponse;
 import cn.edu.zju.isst.v2.restaurant.data.CSTRestaurantDataDelegate;
+import cn.edu.zju.isst.v2.restaurant.data.CSTRestaurantProvider;
 import cn.edu.zju.isst.v2.restaurant.net.RestaurantResponse;
 
+/**
+ * Created by lqynydyxf on 2014/8/28.
+ */
+public class NewRestaurantListFragment extends CSTBaseFragment
+        implements SwipeRefreshLayout.OnRefreshListener, LoaderManager.LoaderCallbacks<Cursor>,
+        AdapterView.OnItemClickListener {
 
-public class NewRestaurantListFragment extends ListFragment {
+    private ListView mListView;
+
+    private RestaurantListAdapter mAdapter;
+
+    private static NewRestaurantListFragment INSTANCE = new NewRestaurantListFragment();
+
+    private SwipeRefreshLayout mSwipeRefreshLayout;
+
+    private Handler mHandler;
+
+    public static NewRestaurantListFragment getInstance() {
+        return INSTANCE;
+    }
 
     private static final String RESTAURANT_URL = "/api/restaurants";
 
     private CSTNetworkEngine mEngine = CSTNetworkEngine.getInstance();
-
-    private final List<CSTRestaurant> m_listRestaurant = new ArrayList<CSTRestaurant>();
-
-    private ListView list;
-
-    private ArrayList<String> names = new ArrayList<>();
-
-    public NewRestaurantListFragment() {
-    }
-
-    public static NewRestaurantListFragment getInstance() {
-        return new NewRestaurantListFragment();
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -54,48 +69,116 @@ public class NewRestaurantListFragment extends ListFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.restaurant_list_fragment, null);
-        list = (ListView) rootView.findViewById(android.R.id.list);
-        requestRestaurantInfo();
-        list.setAdapter(new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1,
-                names));
-        return rootView;
+        return inflater.inflate(R.layout.base_archive_list_fragment, container, false);
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
+        initComponent(view);
+
+        getLoaderManager().initLoader(0, null, this);
     }
 
     @Override
-    public void onDetach() {
-        super.onDetach();
+    protected void initComponent(View view) {
+        mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh_layout);
+        mSwipeRefreshLayout.setColorScheme(R.color.lightbluetheme_color,
+                R.color.lightbluetheme_color_half_alpha, R.color.lightbluetheme_color,
+                R.color.lightbluetheme_color_half_alpha);
+        mListView = (ListView) view.findViewById(R.id.simple_list);
 
+        bindAdapter();
+        setUpListener();
+        initHandler();
     }
-
 
     @Override
-    public void onListItemClick(ListView l, View v, int position, long id) {
-        Intent i = new Intent(getActivity(), NewRestaurantDetailActivity.class);
-        i.putExtra("id", m_listRestaurant.get(position).id);
-        startActivity(i);
+    public void onRefresh() {
+        requestData();
     }
 
-    private void requestRestaurantInfo() {
-        RestaurantResponse resResponse = new RestaurantResponse(getActivity()) {
+    @Override
+    public android.content.Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        return CSTRestaurantDataDelegate.getDataCursor(getActivity(), null, null, null,
+                CSTRestaurantProvider.Columns.ID.key + " DESC");
+    }
+
+    @Override
+    public void onLoadFinished(android.content.Loader<Cursor> loader, Cursor data) {
+        mAdapter.swapCursor(data);
+    }
+
+    @Override
+    public void onLoaderReset(android.content.Loader<Cursor> loader) {
+        mAdapter.swapCursor(null);
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Intent intent = new Intent(getActivity(), NewRestaurantDetailActivity.class);
+        intent.putExtra("id", ((CSTRestaurant) view.getTag()).id);
+        getActivity().startActivity(intent);
+    }
+
+    private void bindAdapter() {
+        mAdapter = new RestaurantListAdapter(getActivity(), null);
+        mListView.setAdapter(mAdapter);
+    }
+
+    private void setUpListener() {
+        mListView.setOnItemClickListener(this);
+        mSwipeRefreshLayout.setOnRefreshListener(this);
+    }
+
+    private void initHandler() {
+        mHandler = new Handler() {
             @Override
-            public void onResponse(JSONObject response) {
-                CSTRestaurant restaurant = (CSTRestaurant) CSTJsonParser
-                        .parseJson(response, new CSTRestaurant());
-                for(CSTRestaurant res:restaurant.itemList){
-                    names.add(res.name);
+            public void handleMessage(Message msg) {
+                switch (msg.what) {
+                    case 0:
+                        mSwipeRefreshLayout.setRefreshing(false);
+                        break;
+                    default:
+                        break;
                 }
             }
         };
-        CSTJsonRequest resRequest = new CSTJsonRequest(CSTRequest.Method.GET, RESTAURANT_URL, null,
-                resResponse);
+    }
 
+    private void requestData() {
+        //TODO replace code in this scope with new implemented volley-base network request
+        RestaurantResponse resResponse = new RestaurantResponse(getActivity()) {
+            @Override
+            public void onResponse(JSONObject response) {
+                Lgr.i(response.toString());
+                CSTRestaurant restaurant = (CSTRestaurant) CSTJsonParser
+                        .parseJson(response, new CSTRestaurant());
+                CSTRestaurantDataDelegate
+                        .saveRestaurantList(NewRestaurantListFragment.this.getActivity(),
+                                restaurant);
+                Message msg = mHandler.obtainMessage();
+                msg.what = 0;
+                mHandler.sendMessage(msg);
+            }
+        };
+        Map<String, String> paramsMap = new HashMap<>();
+        paramsMap.put("page", "" + 1);
+        paramsMap.put("pageSize", "" + 20);
+        paramsMap.put("keywords", null);
+        String subUrlParams = null;
+        try {
+            subUrlParams = RESTAURANT_URL + (Judge.isNullOrEmpty(paramsMap) ? ""
+                    : ("?" + BetterAsyncWebServiceRunner
+                            .getInstance().paramsToString(paramsMap)));
+            Lgr.i(subUrlParams);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        CSTJsonRequest resRequest = new CSTJsonRequest(CSTRequest.Method.GET, subUrlParams,
+                null,
+                resResponse);
         mEngine.requestJson(resRequest);
     }
 }

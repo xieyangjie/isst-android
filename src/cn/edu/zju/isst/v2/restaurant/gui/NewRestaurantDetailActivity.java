@@ -31,7 +31,6 @@ public class NewRestaurantDetailActivity extends Activity {
 
     private CSTRestaurant m_restaurantCurrent;
 
-    private Handler m_handlerRestaurantDetail;
 
     private TextView m_txvContent;
 
@@ -59,7 +58,6 @@ public class NewRestaurantDetailActivity extends Activity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.restaurant_detail, menu);
         return true;
     }
 

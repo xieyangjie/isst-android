@@ -12,7 +12,8 @@
         android:layout_alignParentLeft="true"
         android:background="@android:color/holo_blue_bright"
         android:contentDescription="@string/restaurant_imageview_icon"
-        android:padding="5dp" />
+        android:padding="5dp"
+        android:src="@android:drawable/btn_star_big_on" />
 
     <TextView
         android:id="@+id/restaurant_list_item_name_txv"

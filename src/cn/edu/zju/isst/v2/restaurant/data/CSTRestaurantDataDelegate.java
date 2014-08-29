@@ -3,8 +3,14 @@ package cn.edu.zju.isst.v2.restaurant.data;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.CursorLoader;
+import android.content.Loader;
 import android.database.Cursor;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import cn.edu.zju.isst.v2.archive.data.CSTArchive;
 import cn.edu.zju.isst.v2.data.CSTRestaurant;
 import cn.edu.zju.isst.v2.data.CSTRestaurantMenu;
 import cn.edu.zju.isst.v2.db.util.CSTSerialUtil;
@@ -61,6 +67,25 @@ public class CSTRestaurantDataDelegate {
     public static void deleteAllRestaurent(Context context) {
         ContentResolver resolver = context.getContentResolver();
         resolver.delete(CSTRestaurantProvider.CONTENT_URI, null, null);
+    }
+
+    public static Loader<Cursor> getDataCursor(Context context, String[] projection,
+            String selection, String[] selectionArgs, String sortOrder) {
+        return new CursorLoader(context, CSTRestaurantProvider.CONTENT_URI, projection, selection,
+                selectionArgs, sortOrder);
+    }
+
+    public static void saveRestaurantList(Context context, CSTRestaurant restaurant) {
+        ContentResolver resolver = context.getContentResolver();
+        resolver.bulkInsert(CSTRestaurantProvider.CONTENT_URI, getRestaurantListValues(restaurant));
+    }
+
+    private static ContentValues[] getRestaurantListValues(CSTRestaurant restaurant) {
+        List<ContentValues> valuesList = new ArrayList<>();
+        for (CSTRestaurant singleRestaurant : restaurant.itemList) {
+            valuesList.add(getRestaurantValues(singleRestaurant));
+        }
+        return valuesList.toArray(new ContentValues[valuesList.size()]);
     }
 
     private static ContentValues getRestaurantValues(CSTRestaurant restaurant) {
