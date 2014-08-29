@@ -82,10 +82,10 @@ public class CityActivity implements Serializable {
                 updatedAt = jsonObject.getLong("updatedAt");
             }
             if (Judge.isValidJsonValue("startTime", jsonObject)) {
-                updatedAt = jsonObject.getLong("startTime");
+                startTime = jsonObject.getLong("startTime");
             }
             if (Judge.isValidJsonValue("expireTime", jsonObject)) {
-                updatedAt = jsonObject.getLong("expireTime");
+                expireTime = jsonObject.getLong("expireTime");
             }
             if (Judge.isValidJsonValue("content", jsonObject)) {
                 content = jsonObject.getString("content");

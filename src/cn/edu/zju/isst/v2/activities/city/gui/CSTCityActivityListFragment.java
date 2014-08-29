@@ -1,5 +1,8 @@
 package cn.edu.zju.isst.v2.activities.city.gui;
 
+import com.android.volley.VolleyError;
+
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.LoaderManager;
@@ -38,12 +41,15 @@ import cn.edu.zju.isst.v2.gui.CSTBaseFragment;
 import cn.edu.zju.isst.v2.net.CSTJsonRequest;
 import cn.edu.zju.isst.v2.net.CSTNetworkEngine;
 import cn.edu.zju.isst.v2.net.CSTRequest;
+import cn.edu.zju.isst.v2.net.CSTStatusInfo;
 import cn.edu.zju.isst.v2.user.data.CSTUser;
 import cn.edu.zju.isst.v2.user.data.CSTUserDataDelegate;
 import cn.edu.zju.isst.v2.user.data.CSTUserProvider;
 
 import android.database.Cursor;
 import android.content.ContextWrapper.*;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import static cn.edu.zju.isst.constant.Constants.NETWORK_NOT_CONNECTED;
 
@@ -52,9 +58,7 @@ import static cn.edu.zju.isst.constant.Constants.NETWORK_NOT_CONNECTED;
  */
 public class CSTCityActivityListFragment extends CSTBaseFragment
         implements SwipeRefreshLayout.OnRefreshListener, LoaderManager.LoaderCallbacks<Cursor>,
-        AdapterView.OnItemClickListener {
-
-//    private final List<CampusActivity> m_listCampusActivity = new ArrayList<CampusActivity>();
+        AdapterView.OnItemClickListener, View.OnClickListener {
 
     private static CSTCityActivityListFragment INSTANCE = new CSTCityActivityListFragment();
 
@@ -62,13 +66,15 @@ public class CSTCityActivityListFragment extends CSTBaseFragment
 
     private int DEFAULT_PAGE_SIZE = 20;
 
+    private boolean isLoadMore = false;
+
+    private boolean isMoreData = false;
+
     private static final String CITY_ACTIVITY_URL = "/api/cities/";
 
     private static final String SUB_URL = "/activities";
 
     private static int cityId;
-
-    private CSTUserProvider provider;
 
     private CSTNetworkEngine mEngine = CSTNetworkEngine.getInstance();
 
@@ -77,6 +83,14 @@ public class CSTCityActivityListFragment extends CSTBaseFragment
     private Handler mHandler;
 
     private ListView mListView;
+
+    private LayoutInflater mInflater;
+
+    private View mFooter;
+
+    private ProgressBar mLoadMorePrgb;
+
+    private TextView mLoadMoreHint;
 
     private CityActivityListAdapter mAdapter;
 
@@ -98,6 +112,7 @@ public class CSTCityActivityListFragment extends CSTBaseFragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
+        mInflater = inflater;
         return inflater.inflate(R.layout.list_fragment, container, false);
     }
 
@@ -108,6 +123,11 @@ public class CSTCityActivityListFragment extends CSTBaseFragment
         initComponent(view);
 
         getLoaderManager().initLoader(0, null, this);
+
+        if (mIsFirstTime) {
+            requestData();
+            mIsFirstTime = false;
+        }
     }
 
 
@@ -118,7 +138,11 @@ public class CSTCityActivityListFragment extends CSTBaseFragment
                 R.color.lightbluetheme_color_half_alpha, R.color.lightbluetheme_color,
                 R.color.lightbluetheme_color_half_alpha);
         mListView = (ListView) view.findViewById(R.id.simple_list);
-
+        mFooter = mInflater.inflate(R.layout.loadmore_footer, mListView, false);
+        mListView.addFooterView(mFooter);
+        mLoadMorePrgb = (ProgressBar) mFooter.findViewById(R.id.footer_loading_progress);
+        mLoadMorePrgb.setVisibility(View.GONE);
+        mLoadMoreHint = (TextView) mFooter.findViewById(R.id.footer_loading_hint);
         bindAdapter();
         setUpListener();
         initHandler();
@@ -145,16 +169,25 @@ public class CSTCityActivityListFragment extends CSTBaseFragment
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Intent intent = new Intent(getActivity(), CityActivityDetailActivity.class);
         intent.putExtra("id", ((CSTCityEvent) view.getTag()).id);
+        intent.putExtra("cityId", ((CSTCityEvent) view.getTag()).cityId);
         getActivity().startActivity(intent);
     }
 
     @Override
-    public void onRefresh() {
-        try {
-            requestData();
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.loadmore_footer:
+                startLoadMore();
+                break;
+            default:
+                break;
         }
+    }
+
+    @Override
+    public void onRefresh() {
+        isLoadMore = false;
+        requestData();
     }
 
     private void bindAdapter() {
@@ -164,6 +197,7 @@ public class CSTCityActivityListFragment extends CSTBaseFragment
 
     private void setUpListener() {
         mListView.setOnItemClickListener(this);
+        mFooter.setOnClickListener(this);
         mSwipeRefreshLayout.setOnRefreshListener(this);
     }
 
@@ -178,6 +212,7 @@ public class CSTCityActivityListFragment extends CSTBaseFragment
                     default:
                         break;
                 }
+                resetLoadingState();
             }
         };
     }
@@ -199,17 +234,43 @@ public class CSTCityActivityListFragment extends CSTBaseFragment
         return cityId;
     }
 
-    private void requestData() throws UnsupportedEncodingException {
+    private void requestData() {
+        if (isLoadMore) {
+            mCurrentPage++;
+        } else {
+            mCurrentPage = 1;
+        }
         if (NetworkConnection.isNetworkConnected(getActivity())) {
             CityActivityResponse activityResponse = new CityActivityResponse(getActivity(),
-                    true) {
+                    !isLoadMore) {
                 @Override
                 public void onResponse(JSONObject result) {
                     super.onResponse(result);
                     Lgr.i(result.toString());
                     Message msg = mHandler.obtainMessage();
-                    msg.what = 0;
+                    try {
+                        msg.what = result.getInt("status");
+                        if (isLoadMore) {
+                            if (result.getJSONArray("body").length() == 0) {
+                                isMoreData = false;
+                            } else {
+                                isMoreData = true;
+                            }
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                     mHandler.sendMessage(msg);
+                }
+
+                @Override
+                public Object onErrorStatus(CSTStatusInfo statusInfo) {
+                    return super.onErrorStatus(statusInfo);
+                }
+
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    super.onErrorResponse(error);
                 }
             };
 
@@ -221,6 +282,23 @@ public class CSTCityActivityListFragment extends CSTBaseFragment
             Message msg = mHandler.obtainMessage();
             msg.what = NETWORK_NOT_CONNECTED;
             mHandler.sendMessage(msg);
+        }
+    }
+
+    private void startLoadMore() {
+        isLoadMore = true;
+        mLoadMorePrgb.setVisibility(View.VISIBLE);
+        mLoadMoreHint.setText(R.string.loading);
+        requestData();
+    }
+
+    private void resetLoadingState() {
+        mSwipeRefreshLayout.setRefreshing(false);
+        mLoadMorePrgb.setVisibility(View.GONE);
+        if (isLoadMore && !isMoreData) {
+            mLoadMoreHint.setText(R.string.footer_loading_hint_no_data);
+        } else {
+            mLoadMoreHint.setText(R.string.footer_loading_hint);
         }
     }
 }

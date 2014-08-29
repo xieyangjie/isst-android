@@ -24,7 +24,6 @@ public class CampusActivityResponse extends CSTJsonResponse {
     @Override
     public void onResponse(JSONObject response) {
         CSTCampusEvent event = (CSTCampusEvent) CSTJsonParser.parseJson(response, new CSTCampusEvent());
-        //TODO must not pass null or empty user
         if (clearDatabase) {
             CSTCampusEventDataDelegate.deleteAllCampusActivity(mContext);
         }

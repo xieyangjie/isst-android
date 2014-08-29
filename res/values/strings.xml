@@ -87,4 +87,6 @@
     <string name="title_activity_city_participant_test">CityParticipantTest</string>
     <string name="title_activity_comment_test">CommentTest</string>
 
+    <string name="footer_loading_hint">加载更多</string>
+    <string name="footer_loading_hint_no_data">没有更多数据</string>
 </resources>

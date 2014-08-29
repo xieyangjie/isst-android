@@ -39,7 +39,7 @@ public class CSTCityEvent extends CSTDataItem<CSTCityEvent> {
     @JsonProperty("content")
     public String content;
 
-    @JsonProperty("isParticipate")
+    @JsonProperty("participated")
     public boolean isParticipate;
 
     @JsonProperty("user")

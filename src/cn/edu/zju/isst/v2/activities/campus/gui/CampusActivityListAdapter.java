@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import cn.edu.zju.isst.R;
@@ -69,6 +70,8 @@ public class CampusActivityListAdapter extends CursorAdapter {
         public TextView expireTimeTxv;
 
         public TextView descriptionTxv;
+
+        public ImageView headImgv;
 
         public View indicatorView;
     }

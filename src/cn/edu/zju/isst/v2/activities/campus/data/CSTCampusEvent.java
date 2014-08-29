@@ -29,6 +29,9 @@ public class CSTCampusEvent extends CSTDataItem<CSTCampusEvent> {
     @JsonProperty("publisherName")
     public String pubName;
 
+    @JsonProperty("location")
+    public String location;
+
     @JsonProperty("updatedAt")
     public long updatedAt;
 

@@ -36,10 +36,14 @@ public class CityActivityListAdapter extends CursorAdapter {
 
         ViewHolder holder = getBindViewHolder(view);
         holder.titleTxv.setText(cityEvent.title);
-        holder.updateTimeTxv.setText(TSUtil.toYMD(cityEvent.updatedAt));
-        holder.startTimeTxv.setText(TSUtil.toHM(cityEvent.startTime));
-        holder.expireTimeTxv.setText(TSUtil.toHM(cityEvent.expireTime));
-        holder.publisherTxv.setText(cityEvent.publisher.name);
+        holder.updateTimeTxv.setText("发布时间:"
+                + TSUtil.toYMD(cityEvent.updatedAt));
+        holder.startTimeTxv.setText("开始时间:"
+                + TSUtil.toHM(cityEvent.startTime));
+        holder.expireTimeTxv.setText("结束时间:"
+                + TSUtil.toHM(cityEvent.expireTime));
+        holder.publisherTxv.setText("发布者:"
+                + cityEvent.publisher.name);
     }
 
     protected ViewHolder getBindViewHolder(View view) {
