@@ -29,12 +29,11 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:text="@string/cancel" />
-    </RelativeLayout>
 
-    <ListView
-        android:id="@+id/contact_list_fragment_contacts_lsv"
+    </RelativeLayout>
+    <include layout="@layout/simple_swipe_refresh_list_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/contact_filter_activity_filter_area"></ListView>
+        android:layout_below="@id/contact_filter_activity_filter_area"/>
 
 </RelativeLayout>

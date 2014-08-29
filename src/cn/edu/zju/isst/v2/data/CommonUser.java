@@ -12,6 +12,9 @@ public class CommonUser extends BasicUser {
     @JsonProperty("username")
     public String userName;
 
+    @JsonProperty("password")
+    public String password;
+
     @JsonProperty("gender")
     public CSTUser.Gender gender;
 

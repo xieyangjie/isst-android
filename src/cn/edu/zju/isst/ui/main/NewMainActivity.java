@@ -15,7 +15,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-
 import cn.edu.zju.isst.R;
 import cn.edu.zju.isst.api.LogoutApi;
 import cn.edu.zju.isst.constant.Nav;
@@ -25,8 +24,8 @@ import cn.edu.zju.isst.net.RequestListener;
 import cn.edu.zju.isst.settings.CSTSettings;
 import cn.edu.zju.isst.ui.city.CastellanFragment;
 import cn.edu.zju.isst.ui.city.CityActivityListFragment;
+
 import cn.edu.zju.isst.ui.contact.ContactListFragment;
-import cn.edu.zju.isst.ui.contact.ContactListFragment.FilterType;
 import cn.edu.zju.isst.ui.job.EmploymentListFragment;
 import cn.edu.zju.isst.ui.job.ExperienceListFragment;
 import cn.edu.zju.isst.ui.job.InternshipListFragment;
@@ -35,6 +34,7 @@ import cn.edu.zju.isst.ui.life.CampusActivityListFragment;
 import cn.edu.zju.isst.ui.life.RestaurantListFragment;
 import cn.edu.zju.isst.ui.life.StudyListFragment;
 import cn.edu.zju.isst.ui.life.WikGridFragment;
+import cn.edu.zju.isst.v2.contact.gui.BaseContactListFragment;
 import cn.edu.zju.isst.v2.login.LoginActivity;
 import cn.edu.zju.isst.ui.usercenter.UserCenterFragment;
 import cn.edu.zju.isst.util.Lgr;
@@ -252,11 +252,11 @@ public class NewMainActivity extends BaseActivity {
                     break;
                 case CIAL:
                     switchContent(ContactListFragment
-                            .getInstance(FilterType.MY_CITY));
+                            .getInstance(ContactListFragment.FilterType.MY_CITY));
                     break;
                 case CONT:
-                    switchContent(ContactListFragment
-                            .getInstance(FilterType.MY_CLASS));
+                    switchContent(BaseContactListFragment
+                            .getInstance(BaseContactListFragment.FilterType.MY_CLASS));
                     break;
                 case USCE:
                     switchContent(UserCenterFragment.getInstance());
