@@ -54,41 +54,6 @@ public class CSTAlumniDataDelegate {
         return alumni;
     }
 
-    public static CSTAlumni selectAlumni(Context context, CSTContactFilter mFilter){
-        ContentResolver resolver = context.getContentResolver();
-        Cursor cursor = resolver
-                .query(CSTAlumniProvider.CONTENT_URI, null,CSTAlumniProvider.Columns.ID +
-                        " like '%"+"?"+"%' and " + CSTAlumniProvider.Columns.NAME +
-                        " like '%"+"?"+"%' and " + CSTAlumniProvider.Columns.USERNAME +
-                        " like '%"+"?"+"%' and " + CSTAlumniProvider.Columns.GENDER +
-                        " like '%"+"?"+"%' and " + CSTAlumniProvider.Columns.GRADE +
-                        " like '%"+"?"+"%' and " + CSTAlumniProvider.Columns.CLAZZID +
-                        " like '%"+"?"+"%' and " + CSTAlumniProvider.Columns.MAJORNAME +
-                        " like '%"+"?"+"%' and " + CSTAlumniProvider.Columns.CITYID +
-                        " like '%"+"?"+"%' and " + CSTAlumniProvider.Columns.COMPANY
-                        ,
-                        new String[]{
-                        String.valueOf(mFilter.id),
-                        mFilter.name,
-                        mFilter.username,
-                        String.valueOf(mFilter.gender),
-                        String.valueOf(mFilter.grade),
-                        String.valueOf(mFilter.classId),
-                        mFilter.major,
-                        String.valueOf(mFilter.cityId),
-                        mFilter.company
-                        }, null
-                );
-        if (cursor != null && cursor.moveToFirst()) {
-            try {
-                return getAlumni(cursor);
-            } finally {
-                cursor.close();
-            }
-        }
-        return null;
-    }
-
     public static void saveAlumniList(Context context, CSTAlumni alumni) {
         ContentResolver resolver = context.getContentResolver();
         resolver.bulkInsert(CSTAlumniProvider.CONTENT_URI, getAlumniListValues(alumni));

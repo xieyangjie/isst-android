@@ -35,6 +35,7 @@ import cn.edu.zju.isst.util.Judge;
 import cn.edu.zju.isst.util.Lgr;
 import cn.edu.zju.isst.v2.contact.data.CSTAlumni;
 import cn.edu.zju.isst.v2.contact.data.CSTAlumniDataDelegate;
+import cn.edu.zju.isst.v2.contact.data.CSTAlumniProvider;
 import cn.edu.zju.isst.v2.contact.data.CSTContactFilter;
 import cn.edu.zju.isst.v2.contact.net.ContactResponse;
 import cn.edu.zju.isst.v2.data.CSTJsonParser;
@@ -216,6 +217,10 @@ public class BaseContactListFragment extends CSTBaseFragment
 
         mFilter.grade = 2013;
         mFilter.gender= 2;
+        mFilter.major= "";
+        mFilter.company= "";
+        mFilter.username= "";
+        mFilter.name= "";
         initHandler();
 
         bindAdapter();
@@ -238,7 +243,22 @@ public class BaseContactListFragment extends CSTBaseFragment
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
        /* return CSTAlumniDataDelegate.getDataCursor(getActivity(),null,null,null, CSTAlumniProvider
                 .Columns.NAME.key + " DESC");*/
-        return CSTAlumniDataDelegate.getDataCursor(getActivity(),null,null,null, null);
+        String selection = CSTAlumniProvider.Columns.NAME +
+                " like ? and " + CSTAlumniProvider.Columns.USERNAME +
+                " like ? and " + CSTAlumniProvider.Columns.GENDER +
+                " like ? and " + CSTAlumniProvider.Columns.GRADE +
+                " like ? and "  + CSTAlumniProvider.Columns.MAJORNAME +
+                " like ? and " + CSTAlumniProvider.Columns.COMPANY+
+                " like ? ";
+        String[] selectionArgs = new String[]{
+                    "%"+mFilter.name+"%",
+                    "%"+mFilter.username+"%",
+                    "%"+String.valueOf(mFilter.gender)+"%",
+                    "%"+String.valueOf(mFilter.grade)+"%",
+                    "%"+mFilter.major+"%",
+                    "%"+mFilter.company+"%"
+        };
+        return CSTAlumniDataDelegate.getDataCursor(getActivity(),null,selection,selectionArgs, null);
     }
 
     @Override
@@ -263,7 +283,7 @@ public class BaseContactListFragment extends CSTBaseFragment
     }
 
     private void bindAdapter() {
-        mAdapter = new ContactListAdapter(getActivity(), null, mFilter);
+        mAdapter = new ContactListAdapter(getActivity(), null);
         mListView.setAdapter(mAdapter);
         try {
             requestData();

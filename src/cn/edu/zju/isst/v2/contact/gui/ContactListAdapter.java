@@ -12,7 +12,6 @@ import cn.edu.zju.isst.R;
 import cn.edu.zju.isst.util.Lgr;
 import cn.edu.zju.isst.v2.contact.data.CSTAlumni;
 import cn.edu.zju.isst.v2.contact.data.CSTAlumniDataDelegate;
-
 /**
  * Created by i308844 on 8/12/14.
  */
@@ -34,7 +33,6 @@ public class ContactListAdapter extends CursorAdapter {
         Lgr.i("ContactListAdapter", "——bindView");
         CSTAlumni alumni = CSTAlumniDataDelegate.getAlumni(cursor);
         view.setTag(alumni);
-
         ViewHolder holder = getBindViewHolder(view);
         holder.nameTxv.setText(alumni.name);
     }
