@@ -19,10 +19,10 @@ import cn.edu.zju.isst.constant.Constants;
 import cn.edu.zju.isst.db.City;
 import cn.edu.zju.isst.db.DataManager;
 import cn.edu.zju.isst.db.Major;
-import cn.edu.zju.isst.ui.contact.ContactFilter;
 import cn.edu.zju.isst.ui.main.BaseActivity;
 import cn.edu.zju.isst.util.Judge;
 import cn.edu.zju.isst.util.Lgr;
+import cn.edu.zju.isst.v2.contact.data.CSTContactFilter;
 
 /**
  * Created by tan on 2014/8/29.
@@ -173,7 +173,7 @@ public class CSTContactFilterActivity extends BaseActivity {
         public void onClick(View v) {
 
             Intent data = new Intent();
-            ContactFilter uf = new ContactFilter();
+            CSTContactFilter uf = new CSTContactFilter();
 
             // 姓名
             String name = m_edtName.getText().toString().trim();

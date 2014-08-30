@@ -31,11 +31,11 @@ import java.util.Map;
 import cn.edu.zju.isst.R;
 import cn.edu.zju.isst.net.BetterAsyncWebServiceRunner;
 import cn.edu.zju.isst.net.NetworkConnection;
-import cn.edu.zju.isst.ui.contact.ContactFilter;
 import cn.edu.zju.isst.util.Judge;
 import cn.edu.zju.isst.util.Lgr;
 import cn.edu.zju.isst.v2.contact.data.CSTAlumni;
 import cn.edu.zju.isst.v2.contact.data.CSTAlumniDataDelegate;
+import cn.edu.zju.isst.v2.contact.data.CSTContactFilter;
 import cn.edu.zju.isst.v2.contact.net.ContactResponse;
 import cn.edu.zju.isst.v2.data.CSTJsonParser;
 import cn.edu.zju.isst.v2.gui.CSTBaseFragment;
@@ -58,7 +58,7 @@ public class BaseContactListFragment extends CSTBaseFragment
 
     private CSTAlumni mAlumni ;
 
-    private ContactFilter mFilter = new ContactFilter();
+    private CSTContactFilter mFilter = new CSTContactFilter();
 
     private ContactListAdapter mAdapter;
 
@@ -139,8 +139,8 @@ public class BaseContactListFragment extends CSTBaseFragment
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == Constants.RESULT_CODE_BETWEEN_CONTACT) {
-            mFilter = (ContactFilter) data.getExtras().getSerializable(
-                    "mFilter");
+            mFilter.setContactFilter((CSTContactFilter) data.getExtras().getSerializable(
+                    "mFilter"));
             m_ft = FilterType.MY_FILTER;
             try {
                 requestData();
@@ -214,6 +214,8 @@ public class BaseContactListFragment extends CSTBaseFragment
                 R.color.lightbluetheme_color_half_alpha);
         mListView = (ListView) view.findViewById(R.id.simple_list);
 
+        mFilter.grade = 2013;
+        mFilter.gender= 2;
         initHandler();
 
         bindAdapter();
@@ -261,7 +263,7 @@ public class BaseContactListFragment extends CSTBaseFragment
     }
 
     private void bindAdapter() {
-        mAdapter = new ContactListAdapter(getActivity(), null);
+        mAdapter = new ContactListAdapter(getActivity(), null, mFilter);
         mListView.setAdapter(mAdapter);
         try {
             requestData();
