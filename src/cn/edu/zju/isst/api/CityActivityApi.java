@@ -11,8 +11,8 @@ import java.util.Map;
 import cn.edu.zju.isst.net.RequestListener;
 
 /**
- * @deprecated
  * @author theasir
+ * @deprecated
  */
 public class CityActivityApi extends CSTApi {
 

@@ -6,8 +6,8 @@ package cn.edu.zju.isst.api;
 import cn.edu.zju.isst.net.RequestListener;
 
 /**
- * @deprecated
  * @author theasir
+ * @deprecated
  */
 public class LogoutApi extends CSTApi {
 

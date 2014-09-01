@@ -39,6 +39,7 @@ import cn.edu.zju.isst.ui.main.NewMainActivity;
 import cn.edu.zju.isst.util.Judge;
 import cn.edu.zju.isst.util.Lgr;
 import cn.edu.zju.isst.util.TSUtil;
+import cn.edu.zju.isst.v2.archive.gui.ArchiveDetailActivity;
 import cn.edu.zju.isst.v2.archive.net.ArchiveApi;
 import cn.edu.zju.isst.widget.PullToRefeshView;
 import cn.edu.zju.isst.widget.PullToRefeshView.PullToRefreshListener;
@@ -48,9 +49,8 @@ import static cn.edu.zju.isst.constant.Constants.STATUS_NOT_LOGIN;
 import static cn.edu.zju.isst.constant.Constants.STATUS_REQUEST_SUCCESS;
 
 /**
- * 归档列表基类
- *
  * @author theasir
+ * @deprecated 归档列表基类
  */
 public class BaseArchiveListFragment extends ListFragment implements
         OnScrollListener {

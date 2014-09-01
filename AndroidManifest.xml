@@ -37,7 +37,7 @@
             android:name=".v2.login.LoginActivity"
             android:label="@string/login" />
         <activity android:name=".ui.main.NewMainActivity" />
-        <activity android:name=".ui.life.ArchiveDetailActivity" />
+        <activity android:name=".v2.archive.gui.ArchiveDetailActivity" />
         <activity android:name=".ui.job.JobDetailActivity" />
         <activity android:name=".ui.job.RecommendDetailActivity" />
         <activity android:name=".ui.job.JobCommentListActivity" />

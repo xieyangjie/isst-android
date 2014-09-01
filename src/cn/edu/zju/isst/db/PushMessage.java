@@ -11,8 +11,8 @@ import java.io.Serializable;
 import cn.edu.zju.isst.util.Judge;
 
 /**
- * @deprecated
  * @author theasir
+ * @deprecated
  */
 public class PushMessage implements Serializable {
 

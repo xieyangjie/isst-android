@@ -16,10 +16,8 @@ import cn.edu.zju.isst.util.Judge;
 import cn.edu.zju.isst.util.Lgr;
 
 /**
- * @deprecated
- * 接口基类
- *
  * @author theasir
+ * @deprecated 接口基类
  */
 public class CSTApi {
 

@@ -6,7 +6,6 @@ import android.content.Context;
 
 import cn.edu.zju.isst.v2.data.CSTJsonParser;
 import cn.edu.zju.isst.v2.net.CSTJsonResponse;
-import cn.edu.zju.isst.v2.net.CSTResponse;
 import cn.edu.zju.isst.v2.user.data.CSTUser;
 import cn.edu.zju.isst.v2.user.data.CSTUserDataDelegate;
 

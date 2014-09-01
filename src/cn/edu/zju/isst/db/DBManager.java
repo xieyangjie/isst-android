@@ -10,10 +10,8 @@ import android.database.sqlite.SQLiteDatabase;
 import cn.edu.zju.isst.util.Lgr;
 
 /**
- * @deprecated
- * 数据库管理类
- *
  * @author theasir
+ * @deprecated 数据库管理类
  */
 public class DBManager {
 

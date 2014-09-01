@@ -9,7 +9,7 @@ import android.content.Context;
  */
 public abstract class CSTResponse<T> implements Response.Listener<T>, Response.ErrorListener {
 
-    public CSTResponse(Context context){
+    public CSTResponse(Context context) {
 
     }
 }

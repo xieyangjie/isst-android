@@ -6,8 +6,8 @@ import java.util.Map;
 import cn.edu.zju.isst.net.RequestListener;
 
 /**
- * @deprecated
  * @author xyj
+ * @deprecated
  */
 
 public class UserCenterApi extends CSTApi {

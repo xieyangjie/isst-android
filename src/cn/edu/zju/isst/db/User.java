@@ -11,10 +11,8 @@ import java.io.Serializable;
 import cn.edu.zju.isst.util.Judge;
 
 /**
- * @deprecated
- * 用户解析类
- *
  * @author theasir
+ * @deprecated 用户解析类
  */
 public class User implements Serializable {
 

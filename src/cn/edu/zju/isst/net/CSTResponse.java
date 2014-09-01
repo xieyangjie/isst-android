@@ -7,12 +7,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @deprecated
- * 响应类
- *
  * @see {@link https://code.google.com/p/aerc/}
  * <p/>
  * Represents the result of a Http request.
+ * @deprecated 响应类
  */
 public class CSTResponse {
 

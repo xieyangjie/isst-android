@@ -21,10 +21,8 @@ import cn.edu.zju.isst.util.Judge;
 import cn.edu.zju.isst.util.Lgr;
 
 /**
- * @deprecated
- * 数据操作类
- *
  * @author theasir
+ * @deprecated 数据操作类
  */
 public class DataManager {
 

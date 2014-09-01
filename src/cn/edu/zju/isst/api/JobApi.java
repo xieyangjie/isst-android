@@ -9,12 +9,10 @@ import java.util.Map;
 import cn.edu.zju.isst.net.RequestListener;
 
 /**
- * @deprecated
- * 归档接口
- *
  * @author theasir
  *         <p/>
  *         TODO WIP
+ * @deprecated 归档接口
  */
 public class JobApi extends CSTApi {
 

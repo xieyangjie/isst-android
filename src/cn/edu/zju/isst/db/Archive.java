@@ -11,10 +11,8 @@ import java.io.Serializable;
 import cn.edu.zju.isst.util.Judge;
 
 /**
- * @deprecated
- * 归档解析类
- *
  * @author theasir
+ * @deprecated 归档解析类
  */
 public class Archive implements Serializable {
 

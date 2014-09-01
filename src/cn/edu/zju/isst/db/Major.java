@@ -11,8 +11,8 @@ import java.io.Serializable;
 import cn.edu.zju.isst.util.Judge;
 
 /**
- * @deprecated
  * @author xyj
+ * @deprecated
  */
 public class Major implements Serializable {
 

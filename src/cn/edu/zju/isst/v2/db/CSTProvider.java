@@ -13,12 +13,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import cn.edu.zju.isst.v2.archive.data.CSTArchiveProvider;
-import cn.edu.zju.isst.v2.campus.event.data.CSTCampusEventProvider;
-import cn.edu.zju.isst.v2.city.data.CSTCityProvider;
-import cn.edu.zju.isst.v2.city.event.data.CSTCityEventProvider;
-import cn.edu.zju.isst.v2.city.event.data.CSTCityParticipantProvider;
-import cn.edu.zju.isst.v2.comment.data.CSTCommentProvider;
-import cn.edu.zju.isst.v2.publisher.data.CSTPublisherProvider;
 import cn.edu.zju.isst.v2.user.data.CSTUserProvider;
 
 /**
