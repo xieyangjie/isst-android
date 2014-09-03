@@ -15,9 +15,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import cn.edu.zju.isst.R;
-import cn.edu.zju.isst.v2.activities.campus.data.CSTCampusEvent;
-import cn.edu.zju.isst.v2.activities.campus.data.CSTCampusEventDataDelegate;
-import cn.edu.zju.isst.v2.activities.campus.data.CSTCampusEventProvider;
+import cn.edu.zju.isst.v2.event.campus.data.CSTCampusEvent;
+import cn.edu.zju.isst.v2.event.campus.data.CSTCampusEventDataDelegate;
+import cn.edu.zju.isst.v2.event.campus.data.CSTCampusEventProvider;
 
 public class CampusEventTest extends Activity {
 
@@ -59,8 +59,8 @@ public class CampusEventTest extends Activity {
                 ce1.updatedAt = 10;
                 ce1.startTime = 9;
                 ce1.expireTime = 11;
-                CSTCampusEventDataDelegate.saveCampusActivity(getApplicationContext(), ce);
-                CSTCampusEventDataDelegate.saveCampusActivity(getApplicationContext(), ce1);
+                CSTCampusEventDataDelegate.saveCampusEvent(getApplicationContext(), ce);
+                CSTCampusEventDataDelegate.saveCampusEvent(getApplicationContext(), ce1);
                 show();
             }
         });
@@ -68,7 +68,7 @@ public class CampusEventTest extends Activity {
         delete_campusevent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CSTCampusEventDataDelegate.deleteAllCampusActivity(getApplicationContext());
+                CSTCampusEventDataDelegate.deleteAllCampusEvent(getApplicationContext());
                 show();
             }
         });

@@ -12,10 +12,10 @@ import android.net.Uri;
 import java.util.HashMap;
 import java.util.Map;
 
-import cn.edu.zju.isst.v2.activities.city.data.CSTCityProvider;
-import cn.edu.zju.isst.v2.activities.city.event.data.CSTCityEventProvider;
+import cn.edu.zju.isst.v2.event.city.data.CSTCityProvider;
+import cn.edu.zju.isst.v2.event.city.event.data.CSTCityEventProvider;
 import cn.edu.zju.isst.v2.archive.data.CSTArchiveProvider;
-import cn.edu.zju.isst.v2.activities.campus.data.CSTCampusEventProvider;
+import cn.edu.zju.isst.v2.event.campus.data.CSTCampusEventProvider;
 import cn.edu.zju.isst.v2.user.data.CSTUserProvider;
 
 /**

@@ -1,5 +1,6 @@
 package cn.edu.zju.isst.v2.data;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import cn.edu.zju.isst.v2.user.data.CSTUser;
@@ -7,6 +8,7 @@ import cn.edu.zju.isst.v2.user.data.CSTUser;
 /**
  * Created by tan on 2014/8/6.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class CommonUser extends BasicUser {
 
     @JsonProperty("username")

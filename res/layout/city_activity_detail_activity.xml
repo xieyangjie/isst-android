@@ -5,7 +5,7 @@
     android:orientation="vertical">
 
     <ImageView
-        android:id="@+id/city_activity_detail_picture_imgv"
+        android:id="@+id/city_event_detail_picture_imgv"
         android:layout_width="match_parent"
         android:layout_height="160dp"
         android:layout_gravity="center_horizontal"
@@ -19,35 +19,45 @@
         android:padding="10dp">
 
         <TextView
-            android:id="@+id/city_activity_detail_duration_txv"
+            android:id="@+id/city_event_detail_duration_txv"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="3" />
 
         <TextView
-            android:id="@+id/city_activity_detail_location_txv"
+            android:id="@+id/city_event_detail_location_txv"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1" />
     </LinearLayout>
 
-    <ScrollView
+
+    <WebView
+        android:id="@+id/city_event_detail_content_webv"
+        android:layout_weight="1"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
-
-        <WebView
-            android:id="@+id/city_activity_detail_content_webv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal" />
-    </ScrollView>
-
-    <Button
-        android:id="@+id/city_activity_detail_participate_btn"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:textColor="@android:color/white" />
+        android:layout_gravity="center_horizontal" />
 
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/city_event_show_participants_list_btn"
+            android:padding="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:textColor="@android:color/white" />
+
+        <Button
+            android:id="@+id/city_event_detail_participate_btn"
+            android:padding="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:textColor="@android:color/white" />
+    </RelativeLayout>
 </LinearLayout>

@@ -3,9 +3,6 @@
  */
 package cn.edu.zju.isst.ui.life;
 
-import com.fasterxml.jackson.core.JsonParser;
-
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.ActionBar;
@@ -18,12 +15,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import cn.edu.zju.isst.R;
-import cn.edu.zju.isst.db.CampusActivity;
 import cn.edu.zju.isst.ui.main.BaseActivity;
 import cn.edu.zju.isst.util.Lgr;
 import cn.edu.zju.isst.util.TSUtil;
-import cn.edu.zju.isst.v2.activities.campus.data.CSTCampusEvent;
-import cn.edu.zju.isst.v2.activities.campus.net.CampusActivityDetailResponse;
+import cn.edu.zju.isst.v2.event.campus.data.CSTCampusEvent;
+import cn.edu.zju.isst.v2.event.campus.net.CampusEventDetailResponse;
 import cn.edu.zju.isst.v2.data.CSTJsonParser;
 import cn.edu.zju.isst.v2.net.CSTJsonRequest;
 import cn.edu.zju.isst.v2.net.CSTNetworkEngine;
@@ -53,6 +49,8 @@ public class CampusActivityDetailActivity extends BaseActivity {
 
     private static final String SUB_URL = "/api/campus/activities/";
 
+    private static final String EVENT_ID = "id";
+
     private int mId;
 
     /*
@@ -64,7 +62,7 @@ public class CampusActivityDetailActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.campus_activity_detail_activity);
-        mId = getIntent().getIntExtra("id", -1);
+        mId = getIntent().getIntExtra(EVENT_ID, -1);
         initComponent();
         setUpActionbar();
         initHandle();
@@ -113,29 +111,15 @@ public class CampusActivityDetailActivity extends BaseActivity {
     }
 
     private void requestData() {
-        CampusActivityDetailResponse detailResponse = new CampusActivityDetailResponse(this) {
+        CampusEventDetailResponse detailResponse = new CampusEventDetailResponse(this) {
             @Override
             public void onResponse(JSONObject response) {
                 Message msg = mHandlerCampusActivityDetail.obtainMessage();
-                try {
-                    final int status = response.getInt("status");
-                    switch (status) {
-                        case STATUS_REQUEST_SUCCESS:
-                            mCSTCampusEvent = (CSTCampusEvent) CSTJsonParser
-                                    .parseJson(response, new CSTCampusEvent());
-
-                            Lgr.i(response.toString());
-                            break;
-                        case STATUS_NOT_LOGIN:
-                            break;
-                        default:
-                            break;
-                    }
-                    msg.what = status;
-                } catch (JSONException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
+                mCSTCampusEvent = (CSTCampusEvent) CSTJsonParser
+                        .parseJson(response, new CSTCampusEvent());
+                Lgr.i(response.toString());
+                final int status = mCSTCampusEvent.getStatusInfo().status;
+                msg.what = status;
                 mHandlerCampusActivityDetail.sendMessage(msg);
             }
         };
@@ -154,12 +138,13 @@ public class CampusActivityDetailActivity extends BaseActivity {
 
     private void showCampusActivityDetail() {
         setTitle(mCSTCampusEvent.title);
-        mTxvDuration.setText(TSUtil.toHM(mCSTCampusEvent.startTime) + "-" + TSUtil
-                .toHM(mCSTCampusEvent.expireTime));
-        mTxvLocation.setText("地点：" + mCSTCampusEvent.location);
-        mWebvContent.loadDataWithBaseURL(null,
-                mCSTCampusEvent.content, "text/html", "utf-8",
-                null);
+        mTxvDuration.setText(getResources().getString(R.string.note_event_duration)
+                + TSUtil.toHM(mCSTCampusEvent.startTime) + "-"
+                + TSUtil.toHM(mCSTCampusEvent.expireTime));
+        mTxvLocation.setText(
+                getResources().getString(R.string.note_event_location) + mCSTCampusEvent.location);
+        mWebvContent.loadDataWithBaseURL(null, mCSTCampusEvent.content,
+                "text/html", "utf-8", null);
     }
 
 }

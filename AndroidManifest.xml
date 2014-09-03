@@ -50,6 +50,7 @@
         <activity android:name=".ui.contact.ContactDetailActivity" />
         <activity android:name=".ui.contact.ContactFilterActivity" />
         <activity android:name=".ui.city.CityActivityDetailActivity" />
+        <activity android:name=".v2.event.city.gui.CityEventParticipantsListActivity" />
 
         <provider
             android:name=".v2.db.CSTProvider"

@@ -24,7 +24,6 @@ import cn.edu.zju.isst.net.CSTResponse;
 import cn.edu.zju.isst.net.RequestListener;
 import cn.edu.zju.isst.settings.CSTSettings;
 import cn.edu.zju.isst.ui.city.CastellanFragment;
-import cn.edu.zju.isst.ui.city.CityActivityListFragment;
 import cn.edu.zju.isst.ui.contact.ContactListFragment;
 import cn.edu.zju.isst.ui.contact.ContactListFragment.FilterType;
 import cn.edu.zju.isst.ui.job.EmploymentListFragment;
@@ -34,9 +33,9 @@ import cn.edu.zju.isst.ui.job.RecommedListFragment;
 import cn.edu.zju.isst.ui.life.RestaurantListFragment;
 import cn.edu.zju.isst.ui.life.StudyListFragment;
 import cn.edu.zju.isst.ui.life.WikGridFragment;
-import cn.edu.zju.isst.v2.activities.city.gui.CSTCityActivityListFragment;
+import cn.edu.zju.isst.v2.event.city.gui.CSTCityEventListFragment;
 import cn.edu.zju.isst.v2.archive.gui.BaseArchiveListFragment;
-import cn.edu.zju.isst.v2.activities.campus.gui.CSTCampusActivityListFragment;
+import cn.edu.zju.isst.v2.event.campus.gui.CSTCampusEventListFragment;
 import cn.edu.zju.isst.v2.login.gui.LoginActivity;
 import cn.edu.zju.isst.ui.usercenter.UserCenterFragment;
 import cn.edu.zju.isst.util.Lgr;
@@ -226,7 +225,7 @@ public class NewMainActivity extends BaseActivity {
                     switchContent(WikGridFragment.getInstance());
                     break;
                 case SCAC:
-                    switchContent(CSTCampusActivityListFragment.getInstance());
+                    switchContent(CSTCampusEventListFragment.getInstance());
                     break;
                 case SERV:
                     switchContent(RestaurantListFragment.getInstance());
@@ -250,7 +249,7 @@ public class NewMainActivity extends BaseActivity {
                     switchContent(CastellanFragment.GetInstance());
                     break;
                 case CIAC:
-                    switchContent(CSTCityActivityListFragment.getInstance());
+                    switchContent(CSTCityEventListFragment.getInstance());
                     break;
                 case CIAL:
                     switchContent(ContactListFragment
@@ -266,7 +265,6 @@ public class NewMainActivity extends BaseActivity {
                 default:
                     break;
             }
-
             mDrawerLayout.closeDrawer(mDrawerList);
         }
 

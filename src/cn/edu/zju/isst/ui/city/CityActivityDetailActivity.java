@@ -5,11 +5,11 @@ package cn.edu.zju.isst.ui.city;
 
 import com.android.volley.VolleyError;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.ActionBar;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -25,11 +25,12 @@ import cn.edu.zju.isst.ui.main.BaseActivity;
 import cn.edu.zju.isst.util.CroMan;
 import cn.edu.zju.isst.util.Lgr;
 import cn.edu.zju.isst.util.TSUtil;
-import cn.edu.zju.isst.v2.activities.base.ActivityRequest;
-import cn.edu.zju.isst.v2.activities.city.event.data.CSTCityEvent;
-import cn.edu.zju.isst.v2.activities.city.net.CityActivityDetailResponse;
-import cn.edu.zju.isst.v2.activities.city.net.CityActivityParticipateResponse;
 import cn.edu.zju.isst.v2.data.CSTJsonParser;
+import cn.edu.zju.isst.v2.event.base.EventRequest;
+import cn.edu.zju.isst.v2.event.city.event.data.CSTCityEvent;
+import cn.edu.zju.isst.v2.event.city.gui.CityEventParticipantsListActivity;
+import cn.edu.zju.isst.v2.event.city.net.CityEventDetailResponse;
+import cn.edu.zju.isst.v2.event.city.net.CityEventParticipateResponse;
 import cn.edu.zju.isst.v2.net.CSTJsonRequest;
 import cn.edu.zju.isst.v2.net.CSTNetworkEngine;
 import cn.edu.zju.isst.v2.net.CSTRequest;
@@ -51,25 +52,34 @@ public class CityActivityDetailActivity extends BaseActivity {
 
     private Handler mBtnHandler;
 
-    private ProgressDialog mPgdWating;
+    private ProgressDialog mPgdWaiting;
 
     private CSTNetworkEngine mEngine = CSTNetworkEngine.getInstance();
 
     private static final String SUB_URL = "/api/cities";
 
+    private static final String CITY_ID = "cityId";
+
+    private static final String EVENT_ID = "id";
+
+    private static final String EVENT_TITLE = "eventTitle";
+
     private int mId;
 
     private int mCityId;
 
+    private String mEventTitle;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.city_activity_detail_layout);
+        setContentView(R.layout.city_activity_detail_activity);
 
         setUpActionbar();
 
-        mId = getIntent().getIntExtra("id", -1);
-        mCityId = getIntent().getIntExtra("cityId", -1);
+        mId = getIntent().getIntExtra(EVENT_ID, -1);
+        mCityId = getIntent().getIntExtra(CITY_ID, -1);
+        mEventTitle = getIntent().getStringExtra(EVENT_TITLE);
 
         initComponent();
 
@@ -98,12 +108,14 @@ public class CityActivityDetailActivity extends BaseActivity {
     }
 
     private void initComponent() {
-        mViewHolder.pictureImgv = (ImageView) findViewById(R.id.city_activity_detail_picture_imgv);
-        mViewHolder.durationTxv = (TextView) findViewById(R.id.city_activity_detail_duration_txv);
-        mViewHolder.locationTxv = (TextView) findViewById(R.id.city_activity_detail_location_txv);
-        mViewHolder.contentWebv = (WebView) findViewById(R.id.city_activity_detail_content_webv);
+        mViewHolder.pictureImgv = (ImageView) findViewById(R.id.city_event_detail_picture_imgv);
+        mViewHolder.durationTxv = (TextView) findViewById(R.id.city_event_detail_duration_txv);
+        mViewHolder.locationTxv = (TextView) findViewById(R.id.city_event_detail_location_txv);
+        mViewHolder.contentWebv = (WebView) findViewById(R.id.city_event_detail_content_webv);
+        mViewHolder.showParticipantsBtn = (Button) findViewById(
+                R.id.city_event_show_participants_list_btn);
         mViewHolder.participateBtn = (Button) findViewById(
-                R.id.city_activity_detail_participate_btn);
+                R.id.city_event_detail_participate_btn);
     }
 
     private void initHandler() {
@@ -128,13 +140,14 @@ public class CityActivityDetailActivity extends BaseActivity {
 
             @Override
             public void handleMessage(Message msg) {
-                mPgdWating.dismiss();
+                mPgdWaiting.dismiss();
                 switch (msg.what) {
                     case STATUS_REQUEST_SUCCESS:
-                        CroMan.showConfirm(CityActivityDetailActivity.this, "提交成功！");
+                        CroMan.showConfirm(CityActivityDetailActivity.this,
+                                R.string.participate_commit_success);
                         mCSTCityEvent.isParticipate = !mCSTCityEvent.isParticipate;
                         showDetail();
-                        Lgr.i("提交成功！");
+                        Lgr.i(getResources().getString(R.string.participate_commit_success));
                         break;
                     case STATUS_NOT_LOGIN:
                         break;
@@ -155,35 +168,33 @@ public class CityActivityDetailActivity extends BaseActivity {
                         performParticipateAction();
                     }
                 });
+        mViewHolder.showParticipantsBtn
+                .setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(CityActivityDetailActivity.this,
+                                CityEventParticipantsListActivity.class);
+                        intent.putExtra(EVENT_ID, mId);
+                        intent.putExtra(CITY_ID, mCityId);
+                        intent.putExtra(EVENT_TITLE, mEventTitle);
+                        startActivity(intent);
+                    }
+                });
     }
 
     private void requestData() {
         StringBuilder sb = new StringBuilder();
         sb.append(SUB_URL).append("/" + mCityId).append("/activities")
                 .append("/" + mId);
-        CityActivityDetailResponse detailResponse = new CityActivityDetailResponse(this) {
+        CityEventDetailResponse detailResponse = new CityEventDetailResponse(this) {
             @Override
             public void onResponse(JSONObject response) {
                 Message msg = mHandler.obtainMessage();
                 Lgr.i(response.toString());
-                try {
-                    final int status = response.getInt("status");
-                    switch (status) {
-                        case STATUS_REQUEST_SUCCESS:
-                            mCSTCityEvent = (CSTCityEvent) CSTJsonParser
-                                    .parseJson(response, new CSTCityEvent());
-                            break;
-                        case STATUS_NOT_LOGIN:
-                            break;
-                        default:
-                            break;
-                    }
-                    msg.what = status;
-                } catch (JSONException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-
-                }
+                mCSTCityEvent = (CSTCityEvent) CSTJsonParser
+                        .parseJson(response, new CSTCityEvent());
+                final int status = mCSTCityEvent.getStatusInfo().status;
+                msg.what = status;
                 mHandler.sendMessage(msg);
             }
 
@@ -198,39 +209,27 @@ public class CityActivityDetailActivity extends BaseActivity {
             }
         };
 
-        CSTJsonRequest detailRequest = new ActivityRequest(CSTRequest.Method.GET,
+        CSTJsonRequest detailRequest = new EventRequest(CSTRequest.Method.GET,
                 sb.toString(), null,
                 detailResponse);
         mEngine.requestJson(detailRequest);
     }
 
     private void performParticipateAction() {
-        mPgdWating = ProgressDialog.show(CityActivityDetailActivity.this,
+        mPgdWaiting = ProgressDialog.show(CityActivityDetailActivity.this,
                 getString(R.string.loading), getString(R.string.please_wait),
                 true, false);
-        CityActivityParticipateResponse participateResponse = new CityActivityParticipateResponse(
+        CityEventParticipateResponse participateResponse = new CityEventParticipateResponse(
                 this) {
             @Override
             public void onResponse(JSONObject response) {
                 Message msg = mBtnHandler.obtainMessage();
                 Lgr.i(response.toString());
-                try {
-                    final int status = response.getInt("status");
-
-                    switch (status) {
-                        case STATUS_REQUEST_SUCCESS:
-                            break;
-                        case STATUS_NOT_LOGIN:
-                            break;
-                        default:
-                            break;
-                    }
-                    msg.what = status;
-                    msg.obj = response.getString("message");
-                } catch (JSONException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
+                mCSTCityEvent = (CSTCityEvent) CSTJsonParser
+                        .parseJson(response, new CSTCityEvent());
+                final int status = mCSTCityEvent.getStatusInfo().status;
+                msg.what = status;
+                msg.obj = mCSTCityEvent.getStatusInfo().message;
                 mBtnHandler.sendMessage(msg);
             }
 
@@ -265,14 +264,17 @@ public class CityActivityDetailActivity extends BaseActivity {
 
     private void showDetail() {
         setTitle(mCSTCityEvent.title);
-        mViewHolder.durationTxv.setText("活动时间:"
+        mViewHolder.durationTxv.setText(getResources().getString(R.string.note_event_duration)
                 + TSUtil.toHM(mCSTCityEvent.startTime) + "-"
                 + TSUtil.toHM(mCSTCityEvent.expireTime));
-        mViewHolder.locationTxv.setText("活动地点:" + mCSTCityEvent.location);
+        mViewHolder.locationTxv.setText(getResources().getString(R.string.note_event_location)
+                + mCSTCityEvent.location);
         mViewHolder.contentWebv.loadDataWithBaseURL(null, mCSTCityEvent.content,
                 "text/html", "utf-8", null);
-        mViewHolder.participateBtn.setText(mCSTCityEvent.isParticipate ? "取消报名"
-                : "报名参加");
+        mViewHolder.participateBtn
+                .setText(mCSTCityEvent.isParticipate ? R.string.participate_event_cancel
+                        : R.string.participate_event);
+        mViewHolder.showParticipantsBtn.setText(R.string.participate_show_list);
     }
 
     private class ViewHolder {
@@ -286,5 +288,7 @@ public class CityActivityDetailActivity extends BaseActivity {
         public WebView contentWebv;
 
         public Button participateBtn;
+
+        public Button showParticipantsBtn;
     }
 }

@@ -88,5 +88,15 @@
     <string name="title_activity_comment_test">CommentTest</string>
 
     <string name="footer_loading_hint">加载更多</string>
-    <string name="footer_loading_hint_no_data">没有更多数据</string>
+    <string name="footer_loading_hint_no_more_data">没有更多数据</string>
+    <string name="note_event_location">地点：</string>
+    <string name="note_event_duration">活动时间：</string>
+    <string name="note_publisher">发布者：</string>
+    <string name="participate_event">报名参加</string>
+    <string name="participate_event_cancel">取消报名</string>
+    <string name="participate_commit_success">提交成功！</string>
+    <string name="participate_show_list">参与列表</string>
+    <string name="participate_empty">还没有同学报名，赶紧参加吧！</string>
+    <string name="note_participants_list">报名列表</string>
+
 </resources>
