@@ -8,7 +8,6 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.content.Loader;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,17 +23,16 @@ import cn.edu.zju.isst.R;
 import cn.edu.zju.isst.net.BetterAsyncWebServiceRunner;
 import cn.edu.zju.isst.util.Judge;
 import cn.edu.zju.isst.util.Lgr;
-import cn.edu.zju.isst.v2.archive.gui.ArchiveListAdapter;
 import cn.edu.zju.isst.v2.data.CSTJsonParser;
 import cn.edu.zju.isst.v2.data.CSTRestaurant;
 import cn.edu.zju.isst.v2.gui.CSTBaseFragment;
 import cn.edu.zju.isst.v2.net.CSTJsonRequest;
 import cn.edu.zju.isst.v2.net.CSTNetworkEngine;
 import cn.edu.zju.isst.v2.net.CSTRequest;
-import cn.edu.zju.isst.v2.net.CSTResponse;
 import cn.edu.zju.isst.v2.restaurant.data.CSTRestaurantDataDelegate;
 import cn.edu.zju.isst.v2.restaurant.data.CSTRestaurantProvider;
 import cn.edu.zju.isst.v2.restaurant.net.RestaurantResponse;
+import cn.edu.zju.isst.constant.Constants;
 
 /**
  * Created by lqynydyxf on 2014/8/28.
@@ -52,6 +50,8 @@ public class NewRestaurantListFragment extends CSTBaseFragment
     private SwipeRefreshLayout mSwipeRefreshLayout;
 
     private Handler mHandler;
+
+    private String ID = "id";
 
     public static NewRestaurantListFragment getInstance() {
         return INSTANCE;
@@ -118,7 +118,7 @@ public class NewRestaurantListFragment extends CSTBaseFragment
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Intent intent = new Intent(getActivity(), NewRestaurantDetailActivity.class);
-        intent.putExtra("id", ((CSTRestaurant) view.getTag()).id);
+        intent.putExtra(ID, ((CSTRestaurant) view.getTag()).id);
         getActivity().startActivity(intent);
     }
 
@@ -137,7 +137,7 @@ public class NewRestaurantListFragment extends CSTBaseFragment
             @Override
             public void handleMessage(Message msg) {
                 switch (msg.what) {
-                    case 0:
+                    case Constants.STATUS_REQUEST_SUCCESS:
                         mSwipeRefreshLayout.setRefreshing(false);
                         break;
                     default:
@@ -148,7 +148,6 @@ public class NewRestaurantListFragment extends CSTBaseFragment
     }
 
     private void requestData() {
-        //TODO replace code in this scope with new implemented volley-base network request
         RestaurantResponse resResponse = new RestaurantResponse(getActivity()) {
             @Override
             public void onResponse(JSONObject response) {
@@ -159,7 +158,7 @@ public class NewRestaurantListFragment extends CSTBaseFragment
                         .saveRestaurantList(NewRestaurantListFragment.this.getActivity(),
                                 restaurant);
                 Message msg = mHandler.obtainMessage();
-                msg.what = 0;
+                msg.what = Constants.STATUS_REQUEST_SUCCESS;
                 mHandler.sendMessage(msg);
             }
         };

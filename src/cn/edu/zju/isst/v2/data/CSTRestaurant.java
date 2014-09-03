@@ -31,7 +31,7 @@ public class CSTRestaurant extends CSTDataItem<CSTRestaurant> {
     public String businessHours;
 
     @JsonProperty("description")
-    public String content;
+    public String description;
 
     @JsonProperty("restaurantMenu")
     public CSTRestaurantMenu restaurantMenu;

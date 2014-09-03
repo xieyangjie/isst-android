@@ -21,7 +21,7 @@ public class CSTRestaurantProvider extends SimpleTableProvider {
         ADDRESS("address"),
         HOTLINE("hotline"),
         BUSINESS_HOURS("businessHours"),
-        CONTENT("content"),
+        DESCRIPTION("description"),
         RESTAURANT_MENU("restaurantMenu");
 
         public String key;
@@ -39,7 +39,7 @@ public class CSTRestaurantProvider extends SimpleTableProvider {
             + Columns.ADDRESS.key + " VARCHAR(255), "
             + Columns.HOTLINE.key + " VARCHAR(255), "
             + Columns.BUSINESS_HOURS.key + " VARCHAR(255), "
-            + Columns.CONTENT.key + " VARCHAR(255), "
+            + Columns.DESCRIPTION.key + " VARCHAR(255), "
             + Columns.RESTAURANT_MENU.key + " BLOB, "
             + "UNIQUE (" + Columns.ID.key + ") ON CONFLICT REPLACE)";
 

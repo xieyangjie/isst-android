@@ -33,8 +33,8 @@ public class CSTRestaurantDataDelegate {
                 .getString(cursor.getColumnIndex(CSTRestaurantProvider.Columns.HOTLINE.key));
         restaurant.businessHours = cursor
                 .getString(cursor.getColumnIndex(CSTRestaurantProvider.Columns.BUSINESS_HOURS.key));
-        restaurant.content = cursor
-                .getString(cursor.getColumnIndex(CSTRestaurantProvider.Columns.CONTENT.key));
+        restaurant.description = cursor
+                .getString(cursor.getColumnIndex(CSTRestaurantProvider.Columns.DESCRIPTION.key));
         restaurant.restaurantMenu = (CSTRestaurantMenu) CSTSerialUtil.deserialize(cursor.getBlob(
                 cursor.getColumnIndex(CSTRestaurantProvider.Columns.RESTAURANT_MENU.key)));
         return restaurant;
@@ -96,7 +96,7 @@ public class CSTRestaurantDataDelegate {
         values.put(CSTRestaurantProvider.Columns.ADDRESS.key, restaurant.address);
         values.put(CSTRestaurantProvider.Columns.HOTLINE.key, restaurant.hotLine);
         values.put(CSTRestaurantProvider.Columns.BUSINESS_HOURS.key, restaurant.businessHours);
-        values.put(CSTRestaurantProvider.Columns.CONTENT.key, restaurant.content);
+        values.put(CSTRestaurantProvider.Columns.DESCRIPTION.key, restaurant.description);
         values.put(CSTRestaurantProvider.Columns.RESTAURANT_MENU.key,
                 CSTSerialUtil.serialize(restaurant.restaurantMenu));
         return values;

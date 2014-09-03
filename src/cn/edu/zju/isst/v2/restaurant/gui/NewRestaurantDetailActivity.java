@@ -32,9 +32,13 @@ public class NewRestaurantDetailActivity extends Activity {
     private CSTRestaurant m_restaurantCurrent;
 
 
-    private TextView m_txvContent;
+    private TextView m_txvDescription;
 
     private TextView m_txvHotline;
+
+    private TextView m_txvAddress;
+
+    private TextView m_txvbusinessHours;
 
     private ImageButton m_ibtnDial;
 
@@ -57,7 +61,6 @@ public class NewRestaurantDetailActivity extends Activity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         return true;
     }
 
@@ -75,8 +78,10 @@ public class NewRestaurantDetailActivity extends Activity {
     }
 
     private void initComponent() {
-        m_txvContent = (TextView) findViewById(R.id.restaurant_detail_activity_content_txv);
+        m_txvDescription = (TextView) findViewById(R.id.restaurant_detail_activity_description_txv);
         m_txvHotline = (TextView) findViewById(R.id.restaurant_detail_activity_hotline_txv);
+        m_txvAddress=(TextView)findViewById(R.id.restaurant_detail_activity_address_txv);
+        m_txvbusinessHours=(TextView)findViewById(R.id.restaurant_detail_activity_business_hours_txv);
         m_ibtnDial = (ImageButton) findViewById(R.id.restaurant_detail_activity_dial_ibtn);
         m_lsvMenu = (ListView) findViewById(R.id.restaurant_detail_activity_menu_lsv);
     }
@@ -84,8 +89,10 @@ public class NewRestaurantDetailActivity extends Activity {
     private void showRestaurantDetail() {
         setTitle(m_restaurantCurrent.name);
 
-        m_txvContent.setText(m_restaurantCurrent.content);
+        m_txvDescription.setText(m_restaurantCurrent.description);
         m_txvHotline.setText(m_restaurantCurrent.hotLine);
+        m_txvAddress.setText(m_restaurantCurrent.address);
+        m_txvbusinessHours.setText(m_restaurantCurrent.businessHours);
 
         final String dialNumber = m_restaurantCurrent.hotLine;
 
