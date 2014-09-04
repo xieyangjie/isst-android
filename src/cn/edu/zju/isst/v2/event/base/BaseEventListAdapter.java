@@ -21,17 +21,15 @@ import cn.edu.zju.isst.v2.event.city.event.data.CSTCityEventDataDelegate;
  */
 public class BaseEventListAdapter extends CursorAdapter {
 
-    private int mActivity;
+    private EventCategory mEventCategory;
 
     private CSTCampusEvent campusEvent;
 
     private CSTCityEvent cityEvent;
 
-    private static final int CAMPUS_EVENT = 0;
-
-    public BaseEventListAdapter(Context context, Cursor c, int i) {
+    public BaseEventListAdapter(Context context, Cursor c, EventCategory eventCategory) {
         super(context, c, 0);
-        mActivity = i;
+        mEventCategory = eventCategory;
     }
 
     @Override
@@ -42,7 +40,7 @@ public class BaseEventListAdapter extends CursorAdapter {
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-        if (mActivity == CAMPUS_EVENT) {
+        if (mEventCategory.getName() == EventCategory.CAMPUSEVENT.getName()) {
             campusEvent = CSTCampusEventDataDelegate.getCampusEvent(cursor);
             view.setTag(campusEvent);
             ViewHolder holder = getBindViewHolder(view);

@@ -27,6 +27,7 @@ import cn.edu.zju.isst.net.NetworkConnection;
 import cn.edu.zju.isst.ui.city.CityActivityDetailActivity;
 import cn.edu.zju.isst.util.CroMan;
 import cn.edu.zju.isst.util.Lgr;
+import cn.edu.zju.isst.v2.event.base.EventCategory;
 import cn.edu.zju.isst.v2.event.base.EventRequest;
 
 import cn.edu.zju.isst.v2.event.base.BaseEventListAdapter;
@@ -61,13 +62,11 @@ public class CSTCityEventListFragment extends CSTBaseFragment
 
     private int DEFAULT_PAGE_SIZE = 20;
 
-    private static final int CITY_EVENT = 1;
+    private EventCategory mEventCategory = EventCategory.CITYEVENT ;
 
     private boolean isLoadMore = false;
 
     private boolean isMoreData = false;
-
-    private static final String CITY_ACTIVITY_URL = "/api/cities/";
 
     private static final String SUB_URL = "/activities";
 
@@ -196,7 +195,7 @@ public class CSTCityEventListFragment extends CSTBaseFragment
     }
 
     private void bindAdapter() {
-        mAdapter = new BaseEventListAdapter(getActivity(), null, CITY_EVENT);
+        mAdapter = new BaseEventListAdapter(getActivity(), null, mEventCategory);
         mListView.setAdapter(mAdapter);
     }
 
@@ -279,7 +278,7 @@ public class CSTCityEventListFragment extends CSTBaseFragment
             };
 
             EventRequest eventRequest = new EventRequest(CSTRequest.Method.GET,
-                    CITY_ACTIVITY_URL + getCityId() + SUB_URL, null,
+                    mEventCategory.getSubUrl() + getCityId() + SUB_URL, null,
                     eventResponse).setPage(mCurrentPage).setPageSize(DEFAULT_PAGE_SIZE);
             mEngine.requestJson(eventRequest);
         } else {

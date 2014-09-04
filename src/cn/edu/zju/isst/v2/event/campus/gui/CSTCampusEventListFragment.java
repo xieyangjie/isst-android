@@ -26,6 +26,7 @@ import cn.edu.zju.isst.net.NetworkConnection;
 import cn.edu.zju.isst.ui.life.CampusActivityDetailActivity;
 import cn.edu.zju.isst.util.Lgr;
 import cn.edu.zju.isst.v2.event.base.BaseEventListAdapter;
+import cn.edu.zju.isst.v2.event.base.EventCategory;
 import cn.edu.zju.isst.v2.event.base.EventRequest;
 import cn.edu.zju.isst.v2.event.campus.data.CSTCampusEvent;
 import cn.edu.zju.isst.v2.event.campus.data.CSTCampusEventDataDelegate;
@@ -52,15 +53,13 @@ public class CSTCampusEventListFragment extends CSTBaseFragment
 
     private int DEFAULT_PAGE_SIZE = 20;
 
-    private static final int CAMPUS_EVENT = 0;
-
     private boolean isLoadMore = false;
 
     private boolean isMoreData = false;
 
     private CSTNetworkEngine mEngine = CSTNetworkEngine.getInstance();
 
-    private static final String CAMPUS_ACTIVITY_URL = "/api/campus/activities";
+    private EventCategory mEventCategory = EventCategory.CAMPUSEVENT;
 
     private static final String EVENT_ID = "id";
 
@@ -177,7 +176,7 @@ public class CSTCampusEventListFragment extends CSTBaseFragment
     }
 
     private void bindAdapter() {
-        mAdapter = new BaseEventListAdapter(getActivity(), null, CAMPUS_EVENT);
+        mAdapter = new BaseEventListAdapter(getActivity(), null, mEventCategory);
         mListView.setAdapter(mAdapter);
     }
 
@@ -241,7 +240,7 @@ public class CSTCampusEventListFragment extends CSTBaseFragment
             };
 
             EventRequest eventRequest = new EventRequest(CSTRequest.Method.GET,
-                    CAMPUS_ACTIVITY_URL, null,
+                    mEventCategory.getSubUrl(), null,
                     activityResponse).setPage(mCurrentPage).setPageSize(DEFAULT_PAGE_SIZE);
             mEngine.requestJson(eventRequest);
         } else {
